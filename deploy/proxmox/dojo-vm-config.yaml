@@ -1,0 +1,42 @@
+# Proxmox VM config for DefectDojo
+# Host: pitcrew (10.10.30.20)
+# Created: 2026-04-08
+# Status: Base OS running, not yet hardened or Docker-installed
+
+vmid: 201
+name: dojo
+memory_mb: 6144
+cores: 4
+cpu: host
+net0:
+  bridge: vmbr0
+  vlan_tag: none  # pitcrew vmbr0 carries VLAN 30 natively; do NOT add tag=30
+  model: virtio
+  mac: "BC:24:11:DE:F0:01"  # explicit stable MAC so cloud-init stays happy across edits
+  firewall: false            # Proxmox firewall intentionally off; UFW handles host-level rules
+disk:
+  size_gb: 40
+  storage: local-lvm
+  discard: true
+  ssd_emulation: true
+ipconfig0:
+  ip: 10.10.30.27/24
+  gateway: 10.10.30.1
+nameserver: 10.10.10.1
+base_image: noble-server-cloudimg-amd64.img  # Ubuntu 24.04 cloud image
+ciuser: ubuntu
+boot_order: scsi0
+bootdisk: scsi0
+serial0: socket
+vga: serial0
+agent: enabled
+
+# Deviations captured during deployment:
+# 1. vmbr0 on pitcrew is VLAN 30 native (no bridge-vlan-aware). Adding tag=30
+#    double-tags and breaks connectivity. Confirmed by inspecting DC01 (VMID 100)
+#    which also has no VLAN tag and works on 10.10.30.40.
+# 2. Interface name is eth0 (not ens18) because Ubuntu 24.04 cloud image uses
+#    predictable naming via the cloud-init overlay.
+# 3. Explicit MAC (BC:24:11:DE:F0:01) pinned upfront to prevent cloud-init
+#    confusion when net0 is edited later.
+# 4. boot order uses modern 'order=scsi0' format, not legacy 'c' + bootdisk.
