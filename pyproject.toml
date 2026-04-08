@@ -1,0 +1,47 @@
+[project]
+name = "homelab-fedramp-low"
+version = "0.1.0"
+description = "Homelab FedRAMP Low ConMon pipelines"
+requires-python = ">=3.10"
+authors = [{name = "Brian Chaplow"}]
+license = {text = "MIT"}
+
+# Runtime dependencies for the ConMon pipelines.
+#
+# Note: Plan 1 originally pinned requires-python=3.12 to match the WSL plan.
+# Reality on this workstation is Git Bash running Python 3.14 natively on
+# Windows, and WSL Ubuntu 22.04 running Python 3.10. compliance-trestle 3.4+
+# supports 3.10-3.12 (and 3.14 works via the PEP 621 upper-bound). ADR 0001
+# pre-flight also noted this deviation. Relaxing to >=3.10 lets the pipelines
+# run from either environment without a deadsnakes PPA.
+dependencies = [
+  "compliance-trestle>=3.4.0",
+  "requests>=2.32.0",
+  "tenacity>=9.0.0",
+  "openpyxl>=3.1.5",
+  "pyyaml>=6.0.2",
+  "pydantic>=2.9.0",
+  "python-dotenv>=1.0.1",
+  "click>=8.1.7",
+  "jsonschema>=4.23.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.3.0",
+  "pytest-mock>=3.14.0",
+  "ruff>=0.6.0",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["pipelines*"]
+exclude = ["tests*", "docs*", "deploy*", "runbooks*", "templates*"]
