@@ -1,0 +1,46 @@
+# Proxmox VM config for RegScale Community Edition
+# Host: smoker (10.10.30.21), Proxmox 9.1.6
+# Created: 2026-04-08
+# Status: Base OS running, not yet hardened or RegScale-installed
+
+vmid: 301
+name: regscale
+memory_mb: 6144
+cores: 4
+cpu: host
+net0:
+  bridge: vmbr0
+  vlan_tag: none           # smoker vmbr0 carries VLAN 30 natively (host IP 10.10.30.21 directly on vmbr0); do NOT add tag=30
+  model: virtio
+  mac: "BC:24:11:DE:F0:02" # explicit stable MAC (.02 to distinguish from dojo .01) so cloud-init stays happy across edits
+  firewall: false
+disk:
+  size_gb: 40
+  storage: local-lvm
+  discard: true
+  ssd_emulation: true
+ipconfig0:
+  ip: 10.10.30.28/24
+  gateway: 10.10.30.1
+nameserver: 10.10.10.1
+searchdomain: local
+base_image: noble-server-cloudimg-amd64.img  # downloaded fresh to smoker on 2026-04-08
+ciuser: ubuntu
+boot_order: scsi0
+serial0: socket
+vga: serial0
+agent: enabled
+
+# Deviations carried over from dojo (Plan 1 Task 13):
+# 1. vmbr0 on smoker is VLAN 30 native (no bridge-vlan-aware setup). Adding
+#    tag=30 would double-tag and break connectivity. Confirmed by inspecting
+#    smoker host config: vmbr0 stanza binds 10.10.30.21 directly without
+#    bridge-vlan-aware. (VM 200 uses tag=40 for VLAN 40 targets — that works
+#    because the upstream MokerLink port carries VLAN 40 tagged in addition
+#    to untagged VLAN 30.)
+# 2. Interface name is eth0 (Ubuntu 24.04 cloud image), not ens18.
+# 3. Explicit MAC pinned upfront. Pattern matches dojo (.01) -> regscale (.02).
+# 4. boot uses modern 'order=scsi0' format, not legacy 'c' + bootdisk.
+# 5. cloud-init sshkey loaded from /etc/pve/priv/authorized_keys on smoker
+#    so PITBOSS pitboss-soc key + brisket bchaplow + sear keys all work
+#    against ubuntu@10.10.30.28 from day one.
