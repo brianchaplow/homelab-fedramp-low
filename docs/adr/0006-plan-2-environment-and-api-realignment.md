@@ -529,8 +529,91 @@ story we want to tell.
 ## Amendments
 
 *(Further deviations discovered during Plan 2 execution that fit this
-ADR's scope rather than warranting a separate ADR will be appended
-here with date + task reference.)*
+ADR's scope rather than warranting a separate ADR are appended here
+with date + task reference.)*
+
+### 2026-04-09 (Task 2) — Future Python 3.16 tripwire
+
+The OSCAL round-trip tests in `tests/test_oscal_roundtrip.py` pass
+cleanly under Python 3.14 + Trestle 4.0.1, confirming Deviation 9's
+"cosmetic warning" hypothesis. However, pytest surfaced a *second*
+warning category that ADR 0006 didn't anticipate:
+
+```
+pydantic/v1/typing.py:77: DeprecationWarning: ForwardRef._evaluate is
+a private API and is retained for compatibility, but will be removed
+in Python 3.16. Use ForwardRef.evaluate() or typing.evaluate_forward_ref()
+instead.
+```
+
+This is **not** the same warning as Deviation 9 — it's a Python 3.16
+removal warning from `pydantic.v1.typing` using a private
+`typing.ForwardRef._evaluate` API. When Python 3.16 releases, this
+stops being a warning and becomes an `AttributeError`, at which point
+Trestle 4.0.1 + pydantic.v1 will not import at all.
+
+**Impact:** none today (we are on 3.14). Tripwire: the OSCAL round-trip
+tests will start failing the moment Python 3.16 arrives on this
+workstation. The failure will be fast, loud, and at test-collection
+time rather than mid-pipeline.
+
+**Mitigation when it fires:** pin Trestle to whatever version first
+removes the pydantic.v1 shim entirely, OR pin Python to 3.15.x until
+Trestle does so. The decision should be its own ADR at that time.
+
+### 2026-04-09 (Task 4) — Trestle 4.0.1 `ssp-generate` output path
+
+**Plan 2 assumed:** `trestle author ssp-generate -p fedramp-rev5-low -o
+mss-ssp` writes to `trestle-workspace/system-security-plans/mss-ssp/`
+(based on the workspace directory layout).
+
+**Reality:** Trestle 4.0.1 writes the markdown scaffold to
+`trestle-workspace/mss-ssp/` — a *top-level* directory named after the
+SSP, not nested under `system-security-plans/`. The
+`system-security-plans/` directory is reserved for assembled OSCAL
+JSON artifacts produced by `ssp-assemble`.
+
+**Impact:** trivial. The markdown directory is a human-editable
+authoring surface; the assembled JSON path is separate. Task 15 (SSP
+assembler wiring) needs to point `ssp-assemble -m mss-ssp` at the
+top-level `mss-ssp/` directory, and the assembled output will land
+under `trestle-workspace/system-security-plans/mss-ssp/system-security-plan.json`.
+
+### 2026-04-09 (Task 1) — DefectDojo product names use ASCII hyphens
+
+**Plan 2 assumed (Task 14):** `HOST_TO_PRODUCT` dictionary uses em
+dashes in product names:
+
+```python
+HOST_TO_PRODUCT = {
+    "brisket": "MSS Core — brisket",
+    "haccp": "MSS Log Analytics — haccp",
+    ...
+}
+```
+
+**Reality:** Plan 1 Task 11's DefectDojo seed script created the
+products with ASCII hyphens (`-`), not em dashes (`—`). Queried the
+live API during Task 1 pre-flight:
+
+```
+id=1  MSS Core - brisket
+id=2  MSS Log Analytics - haccp
+id=3  MSS Network Sensors - smokehouse
+id=4  MSS Boundary Protection - OPNsense
+id=5  MSS GRC Tooling - dojo + regscale
+```
+
+**Additional finding:** there are **5 products**, not 4 — a **5th
+product `MSS Boundary Protection - OPNsense`** exists that Plan 2 Task
+14 doesn't map at all. OPNsense inventory (the boundary firewall on
+10.10.10.1, documented in `inventory/overlay.yaml` under
+`non_agent_assets`) needs to route to product id=4 during Task 14.
+
+**Realignment for Task 14:** `HOST_TO_PRODUCT` uses ASCII hyphens and
+adds `opnsense` → `MSS Boundary Protection - OPNsense`. Any unit test
+assertions in Task 11/14 that reference product names should be
+written against the real strings, not Plan 2's em-dash text.
 
 ---
 
