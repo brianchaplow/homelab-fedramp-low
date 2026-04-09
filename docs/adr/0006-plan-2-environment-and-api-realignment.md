@@ -615,6 +615,47 @@ adds `opnsense` → `MSS Boundary Protection - OPNsense`. Any unit test
 assertions in Task 11/14 that reference product names should be
 written against the real strings, not Plan 2's em-dash text.
 
+### 2026-04-09 (Task 12) — FedRAMP Low ConMon SLA windows are 15/30/90/180, not 30/90/180/365
+
+**Plan 2 assumed** (Task 12 Step 3 `SLA_DAYS`):
+
+```python
+SLA_DAYS = {
+    "Critical": 30,
+    "High": 90,
+    "Medium": 180,
+    "Low": 365,
+}
+```
+
+**Reality:** the FedRAMP Continuous Monitoring Strategy Guide
+specifies ConMon remediation windows per severity as:
+
+| Severity | Days |
+|----------|------|
+| Critical | 15   |
+| High     | 30   |
+| Moderate | 90   |
+| Low      | 180  |
+
+The plan text's numbers are all off by one "bucket" — what the plan
+calls Critical (30d) is actually High; what the plan calls High (90d)
+is actually Moderate; etc. Using the plan values would generate POA&M
+items that all report overdue dates weeks to months later than the
+real SLA — the exact opposite direction from what an auditor would
+accept.
+
+**Realignment:** `pipelines/build/oscal_poam.py` uses the correct
+15/30/90/180 window. Unknown severities fall back to Low (180 days)
+so a missing label does not silently report a past-due date.
+Corresponding tests assert the new window, including an explicit
+Critical case (April 1 + 15 days = April 16) that would have been
+April 31 under the old plan values.
+
+**Impact:** any POA&M rendered from the old plan text would fail
+3PAO review immediately. This ADR amendment is the single source of
+truth for the real SLA windows going forward.
+
 ### 2026-04-09 (Task 6b) — Wazuh indexer sort tiebreaker is `_id`, not `vulnerability.id.keyword`
 
 **Deviation 5 implied** that `WazuhIndexerClient.search_vulnerabilities()`
