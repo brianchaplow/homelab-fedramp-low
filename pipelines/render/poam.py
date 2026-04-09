@@ -161,7 +161,7 @@ def render_poam_from_oscal(
     output_path.parent.mkdir(parents=True, exist_ok=True)
     wb.save(output_path)
     logger.info(
-        "wrote POA&M xlsx with %d items starting at row %d → %s",
+        "wrote POA&M xlsx with %d items starting at row %d -> %s",
         len(items),
         POAM_DATA_START_ROW,
         output_path,

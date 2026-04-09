@@ -62,7 +62,11 @@ def test_findings_to_generic_format_carries_severity_and_host(sample_findings) -
     first = out["findings"][0]
     assert first["title"] == "openssl heap overflow"
     assert first["severity"] == "High"
-    assert first["host"] == "brisket"
+    # DefectDojo Generic Findings Import rejects a top-level 'host' field
+    # (probed live 2026-04-09 — returned "Not allowed fields are present").
+    # Hostname goes through the endpoints list instead.
+    assert "host" not in first
+    assert first["endpoints"] == ["brisket"]
     assert first["cve"] == "CVE-2024-1234"
     assert first["cvssv3_score"] == 8.1
     assert first["component_name"] == "openssl"

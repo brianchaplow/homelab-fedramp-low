@@ -29,20 +29,29 @@ logger = get_logger(__name__)
 
 
 def findings_to_generic_format(findings: list[Finding]) -> dict[str, Any]:
-    """Convert a list of Findings to DefectDojo Generic Findings Import JSON."""
+    """Convert a list of Findings to DefectDojo Generic Findings Import JSON.
+
+    Note on the host field: DefectDojo's Generic Findings Import does
+    NOT accept a top-level ``host`` key. Probing the live 2.57.0 API
+    on 2026-04-09 returned
+    ``"Not allowed fields are present: ['host']"``. The correct way
+    to carry the affected asset is the ``endpoints`` list, which the
+    parser treats as URI strings — we pass a single-element list of
+    the hostname.
+    """
     out_findings: list[dict[str, Any]] = []
     for f in findings:
         item: dict[str, Any] = {
             "title": f.title,
             "description": f.description,
             "severity": f.severity.value,
-            "host": f.affected_host,
             "active": True,
             "verified": False,
             "static_finding": False,
             "dynamic_finding": True,
             "unique_id_from_tool": f.finding_id,
             "date": f.discovered_date.date().isoformat(),
+            "endpoints": [f.affected_host],
         }
         if f.cve:
             item["cve"] = f.cve
@@ -72,7 +81,7 @@ def _engagement_id_for_product(
 
     created = client.create_engagement(product_id=product_id, name=engagement_name)
     logger.info(
-        "created engagement '%s' in product id=%d → engagement id=%s",
+        "created engagement '%s' in product id=%d -> engagement id=%s",
         engagement_name,
         product_id,
         created.get("id"),
@@ -146,7 +155,7 @@ def push_findings_to_defectdojo(
         )
         payload = findings_to_generic_format(group)
         logger.info(
-            "importing %d findings for product '%s' → engagement id=%d",
+            "importing %d findings for product '%s' -> engagement id=%d",
             len(group),
             product_name,
             engagement_id,

@@ -164,7 +164,7 @@ def render_iiw_from_oscal(
     output_path.parent.mkdir(parents=True, exist_ok=True)
     wb.save(output_path)
     logger.info(
-        "wrote IIW xlsx with %d component rows starting at row %d → %s",
+        "wrote IIW xlsx with %d component rows starting at row %d -> %s",
         len(components),
         IIW_TEMPLATE_DATA_START_ROW,
         output_path,

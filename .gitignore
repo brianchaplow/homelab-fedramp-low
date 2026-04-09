@@ -37,3 +37,10 @@ trestle-workspace/.trestle/
 # Temporary download buffer used by Plan 2 Task 2 (NIST catalog download)
 # and any future OSCAL-source fetches. Not meant to be versioned.
 .tmp/
+
+# Live POA&M JSON is regenerated from DefectDojo on every run and can
+# swell past 15 MB. The rendered POA&M xlsx is the shippable artifact;
+# the raw JSON is a regenerable intermediate. Committed once as a
+# sample during Plan 2 Task 14 smoke via an explicit `git add -f` if
+# needed for the portfolio.
+oscal/poam.json

@@ -167,18 +167,47 @@ class DefectDojoClient:
         wait=wait_exponential(multiplier=1, min=1, max=8),
         retry=retry_if_exception_type(requests.RequestException),
     )
-    def list_findings(
-        self, product_id: int | None = None, limit: int = 1000
-    ) -> list[dict[str, Any]]:
-        params: dict[str, Any] = {"limit": limit}
-        if product_id is not None:
-            params["product"] = product_id
+    def _findings_page(
+        self, params: dict[str, Any]
+    ) -> dict[str, Any]:
         resp = requests.get(
             f"{self.url}/api/v2/findings/",
             headers=self.headers,
             params=params,
             verify=self.verify,
-            timeout=30,
+            timeout=60,
         )
         resp.raise_for_status()
-        return resp.json().get("results", [])
+        return resp.json()
+
+    def list_findings(
+        self,
+        product_id: int | None = None,
+        limit: int = 1000,
+        max_pages: int | None = None,
+    ) -> list[dict[str, Any]]:
+        """Return every finding visible to the current API key.
+
+        The DefectDojo /api/v2/findings/ endpoint caps each page at
+        1000 rows. This method auto-paginates via offset until the
+        ``next`` link is null, so callers that want the full backlog
+        (Task 12 POA&M builder, for example) do not have to worry about
+        the cap. Pass ``max_pages`` to stop early.
+        """
+        all_rows: list[dict[str, Any]] = []
+        offset = 0
+        page = 0
+        while True:
+            params: dict[str, Any] = {"limit": limit, "offset": offset}
+            if product_id is not None:
+                params["product"] = product_id
+            body = self._findings_page(params)
+            results = body.get("results", [])
+            all_rows.extend(results)
+            page += 1
+            if not body.get("next"):
+                break
+            if max_pages is not None and page >= max_pages:
+                break
+            offset += len(results) or limit
+        return all_rows

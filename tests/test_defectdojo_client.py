@@ -91,3 +91,58 @@ def test_import_generic_findings(mock_post, mock_resp_factory):
     form = mock_post.call_args.kwargs["data"]
     assert form["engagement"] == 7
     assert form["scan_type"] == "Generic Findings Import"
+
+
+@patch("pipelines.common.defectdojo.requests.get")
+def test_list_findings_auto_paginates(mock_get, mock_resp_factory):
+    """DefectDojo caps each page at 1000; list_findings must walk
+    pages until next=null."""
+    page1 = mock_resp_factory(
+        {
+            "count": 2500,
+            "next": "http://x/api/v2/findings/?offset=1000",
+            "previous": None,
+            "results": [{"id": i} for i in range(1000)],
+        }
+    )
+    page2 = mock_resp_factory(
+        {
+            "count": 2500,
+            "next": "http://x/api/v2/findings/?offset=2000",
+            "previous": None,
+            "results": [{"id": i} for i in range(1000, 2000)],
+        }
+    )
+    page3 = mock_resp_factory(
+        {
+            "count": 2500,
+            "next": None,
+            "previous": None,
+            "results": [{"id": i} for i in range(2000, 2500)],
+        }
+    )
+    mock_get.side_effect = [page1, page2, page3]
+
+    c = DefectDojoClient(url="http://10.10.30.27:8080", api_key="x")
+    rows = c.list_findings()
+
+    assert len(rows) == 2500
+    assert mock_get.call_count == 3
+
+
+@patch("pipelines.common.defectdojo.requests.get")
+def test_list_findings_respects_max_pages(mock_get, mock_resp_factory):
+    page = mock_resp_factory(
+        {
+            "count": 5000,
+            "next": "http://x/api/v2/findings/?offset=1000",
+            "previous": None,
+            "results": [{"id": i} for i in range(1000)],
+        }
+    )
+    mock_get.return_value = page
+
+    c = DefectDojoClient(url="http://10.10.30.27:8080", api_key="x")
+    rows = c.list_findings(max_pages=2)
+    assert len(rows) == 2000
+    assert mock_get.call_count == 2

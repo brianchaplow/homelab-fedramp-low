@@ -57,13 +57,38 @@ cmd="${1:-help}"
 case "$cmd" in
   help)
     cat <<EOF
-Targets:
+Infrastructure targets:
   install         Create .venv and install project + dev deps in editable mode
+  test            Run the pytest suite
   smoke           Run all smoke checks (DefectDojo + RegScale)
   smoke-dojo      Check DefectDojo availability
   smoke-regscale  Check RegScale CE availability
   clean           Remove .venv and build artifacts
+
+Pipeline targets (forwarded to pipelines.cli):
+  inventory       Wazuh inventory → oscal/component-definition.json
+  render-iiw     OSCAL component-def → inventory/IIW-<YYYY-MM>.xlsx
+  ingest-findings Wazuh indexer vulns → DefectDojo (grouped by product)
+  build-poam     DefectDojo findings → oscal/poam.json
+  render-poam    OSCAL POA&M → poam/POAM-<YYYY-MM>.xlsx
+  oscal          Composite: inventory + build-poam
+  conmon         Full monthly cycle: ingest-findings + oscal + render-iiw + render-poam
 EOF
+    ;;
+
+  test)
+    if [ -z "$VENV_PY" ]; then
+      echo "ERROR: no .venv — run ./pipelines.sh install first" >&2
+      exit 1
+    fi
+    # Use the POSIX-style pytest binary when present, else module mode.
+    if [ -x ".venv/Scripts/pytest.exe" ]; then
+      ".venv/Scripts/pytest.exe" tests/ "$@"
+    elif [ -x ".venv/bin/pytest" ]; then
+      ".venv/bin/pytest" tests/ "$@"
+    else
+      "$VENV_PY" -m pytest tests/ "$@"
+    fi
     ;;
 
   install)
@@ -106,8 +131,16 @@ EOF
     ;;
 
   *)
-    echo "Unknown target: $cmd" >&2
-    "$0" help
-    exit 1
+    # Unknown commands forward to the Click CLI (ADR 0006 Deviation 2).
+    # Every pipeline subcommand (inventory, render-iiw, ingest-findings,
+    # build-poam, render-poam, oscal, conmon) lands here and is executed
+    # by pipelines/cli.py via the same venv that pipelines.sh selected.
+    if [ -z "$VENV_PY" ]; then
+      echo "ERROR: no .venv — run ./pipelines.sh install first" >&2
+      exit 1
+    fi
+    load_env
+    shift
+    exec "$VENV_PY" -m pipelines.cli "$cmd" "$@"
     ;;
 esac
