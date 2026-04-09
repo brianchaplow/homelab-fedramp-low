@@ -103,6 +103,34 @@ rm -f $TMPKEY
 qm start <VMID>
 ```
 
+Then, once SSH is reachable, install the **QEMU Guest Agent package** inside
+the VM. The `--agent enabled=1` flag above only wires up the virtio-serial
+device on the hypervisor side; the guest still needs the agent daemon
+running to respond to `guest-ping` and `fs-freeze`. Without it, vzdump
+snapshots are taken without freezing the filesystem (still works, just
+not strictly crash-consistent), and you'll see warnings like:
+
+```
+VM <VMID> qga command 'guest-ping' failed - got timeout
+skipping guest-agent 'fs-freeze', agent configured but not running?
+```
+
+Install on the guest:
+
+```bash
+# On the VM, as ubuntu:
+sudo apt-get install -y qemu-guest-agent
+# Ubuntu 24.04 socket-activates the unit — no systemctl enable needed,
+# just start it and reboot-on-install is fine too:
+sudo systemctl start qemu-guest-agent
+```
+
+Then verify from the Proxmox host:
+
+```bash
+qm agent <VMID> ping && echo OK
+```
+
 Then continue with the service-specific runbook:
 
 - dojo: `deploy/defectdojo/README.md`
