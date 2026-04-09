@@ -52,11 +52,13 @@ from pipelines.build.oscal_ssp import assemble_ssp
 from pipelines.common.config import load_config
 from pipelines.common.defectdojo import DefectDojoClient
 from pipelines.common.logging import get_logger
+from pipelines.common.regscale import RegScaleClient
 from pipelines.common.wazuh import WazuhClient
 from pipelines.common.wazuh_indexer import WazuhIndexerClient
 from pipelines.ingest.inventory import build_components_from_wazuh, load_overlay
 from pipelines.ingest.wazuh_vulns import ingest_wazuh_vulns
 from pipelines.push.defectdojo import push_findings_to_defectdojo
+from pipelines.push.regscale import push_oscal_to_regscale
 from pipelines.render.iiw import render_iiw_from_oscal
 from pipelines.render.poam import render_poam_from_oscal
 
@@ -189,6 +191,48 @@ def render_poam() -> None:
         output_path=out,
     )
     click.echo(f"OK: wrote {out}")
+
+
+# --- RegScale push (best-effort, manual fallback) -----------------------
+
+
+@cli.command("regscale-push")
+def regscale_push() -> None:
+    """Best-effort OSCAL push to RegScale CE.
+
+    RegScale CE has no generic OSCAL import endpoint as of 2026-04-09
+    (ADR 0006 Deviation 7), so every push currently returns
+    ``manual-required`` and points the operator at
+    ``runbooks/regscale-manual-import.md``. When CE ships generic
+    import endpoints, populate
+    ``pipelines/push/regscale.py::OSCAL_IMPORT_PATHS`` and this
+    command switches to a real POST automatically.
+    """
+    cfg = load_config()
+    client = RegScaleClient(
+        cfg.regscale_url,
+        cfg.regscale_username,
+        cfg.regscale_password,
+    )
+    for oscal_path, oscal_type in (
+        (OSCAL_COMPONENT_DEF, "component-definition"),
+        (OSCAL_SSP, "ssp"),
+        (OSCAL_POAM, "poam"),
+    ):
+        if not oscal_path.exists():
+            click.echo(f"SKIP: {oscal_path} not present — run the builder first")
+            continue
+        result = push_oscal_to_regscale(client, oscal_path, oscal_type)
+        click.echo(
+            f"{oscal_type}: status={result['status']} "
+            f"validation={result.get('validation', 'n/a')}"
+        )
+        if result["status"] == "manual-required":
+            click.echo(f"  -> follow {result['runbook']}")
+        elif result["status"] == "ok":
+            click.echo(f"  -> regscale_id={result['regscale_id']}")
+        elif result["status"] == "error":
+            click.echo(f"  -> {result['body']}")
 
 
 # --- SSP assembly (Plan 3 prep) ------------------------------------------
