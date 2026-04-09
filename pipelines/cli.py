@@ -48,6 +48,7 @@ import click
 
 from pipelines.build.oscal_component import build_component_definition
 from pipelines.build.oscal_poam import build_poam_from_defectdojo
+from pipelines.build.oscal_ssp import assemble_ssp
 from pipelines.common.config import load_config
 from pipelines.common.defectdojo import DefectDojoClient
 from pipelines.common.logging import get_logger
@@ -86,9 +87,12 @@ IN_BOUNDARY_WAZUH_AGENTS: tuple[str, ...] = (
 # Conventional artifact paths relative to the repo root.
 OSCAL_COMPONENT_DEF = Path("oscal/component-definition.json")
 OSCAL_POAM = Path("oscal/poam.json")
+OSCAL_SSP = Path("oscal/ssp.json")
 OVERLAY_PATH = Path("inventory/overlay.yaml")
 IIW_TEMPLATE = Path("templates/FedRAMP-IIW-Template-Rev5.xlsx")
 POAM_TEMPLATE = Path("templates/FedRAMP-POAM-Template-Rev5.xlsx")
+TRESTLE_WORKSPACE = Path("trestle-workspace")
+SSP_NAME = "mss-ssp"
 
 
 def _current_month() -> str:
@@ -185,6 +189,26 @@ def render_poam() -> None:
         output_path=out,
     )
     click.echo(f"OK: wrote {out}")
+
+
+# --- SSP assembly (Plan 3 prep) ------------------------------------------
+
+
+@cli.command("ssp-assemble")
+def ssp_assemble() -> None:
+    """Run trestle author ssp-assemble against the markdown scaffold.
+
+    Plan 2 wires the assembly path without filling the 156 control
+    markdown files — running this against the empty scaffold is
+    expected to either produce a minimal SSP or fail with a Trestle
+    diagnostic that tells Plan 3 exactly which controls need prose.
+    """
+    assemble_ssp(
+        ssp_name=SSP_NAME,
+        workspace=TRESTLE_WORKSPACE,
+        output_path=OSCAL_SSP,
+    )
+    click.echo(f"OK: wrote {OSCAL_SSP}")
 
 
 # --- composite stages ----------------------------------------------------
