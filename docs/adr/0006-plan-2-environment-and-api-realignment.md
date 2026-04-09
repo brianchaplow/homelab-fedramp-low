@@ -368,6 +368,78 @@ as a secondary path. No code change needed; this entry exists solely
 for Plan 2 text that mentions "Python 3.12" so the reader knows the
 discrepancy is already reconciled.
 
+## Deviation 11 — GSA/fedramp-automation repo removed; profile bootstrapped from Trestle plugin XML
+
+**Plan 2 assumes:** Task 3 Step 1 downloads the FedRAMP Rev 5 Low
+baseline profile JSON from
+`https://raw.githubusercontent.com/GSA/fedramp-automation/master/dist/content/rev5/baselines/json/FedRAMP_rev5_LOW-baseline_profile.json`.
+Plan 2 even anticipates that GSA "reorganizes their automation repo
+periodically" and offers the fallback of searching the repo for the
+current path.
+
+**Reality:** The entire `GSA/fedramp-automation` repository is gone as
+of 2026-04-09. The `GSA/fedramp-automation` URL returns HTTP 404, no
+alternate branches or paths resolve, and the GitHub API's repo
+metadata endpoint returns `Not Found`. The FedRAMP GitHub organization
+(`FedRAMP/` — confirmed exists) hosts only `community`, `roadmap`,
+`docs`, `docs-alpha`, `Marketplace-poc`, `fedramp-marketplace-preview`,
+and `join`, plus FRMR documentation. None of these host OSCAL
+baselines. NIST's `usnistgov/oscal-content` only hosts NIST-authored
+content (catalogs, profiles, examples from SP 800-53), not FedRAMP
+baselines. The Wayback Machine has no snapshot of the original
+`GSA/fedramp-automation` file URL. Essentially, the canonical URL for
+the FedRAMP Rev 5 Low baseline profile JSON no longer exists on the
+open internet.
+
+The **upstream content survives** in the
+[`oscal-compass/compliance-trestle-fedramp`](https://github.com/oscal-compass/compliance-trestle-fedramp)
+plugin repository. That plugin originally consumed GSA's repo as a
+git submodule pinned before the delete, and a February 2024 commit
+(`feat: updates content and git submodule for FedRAMP Rev5 validation`)
+vendored the pinned snapshot into its own tree at
+`trestle_fedramp/resources/fedramp-source/content/baselines/rev5/`.
+**Only XML versions are in that snapshot** — no JSON peers. Trestle
+4.0.1's `trestle import` explicitly refuses XML with
+`Unsupported file extension .xml`.
+
+**Realignment:** A one-shot Python bootstrap extractor was used to
+read the upstream XML and generate a minimal OSCAL Profile JSON that
+imports the local NIST catalog via
+`trestle://catalogs/nist-800-53-rev5/catalog.json`. The extractor
+preserves:
+
+- Upstream UUID (`512149a6-7f04-4c01-bb1b-78eafd6a950d`)
+- Title, version, published, last-modified, oscal-version
+- All 156 `<with-id>` control references exactly
+
+It does NOT carry across:
+
+- Party definitions (FedRAMP PMO, JAB) and their contact/address blocks
+- Role definitions and responsible-party bindings
+- `<set-parameter>` and `<alter>` modify blocks
+- Back-matter resources (logos, reference documents)
+
+These omissions are documented in `oscal/profile/SOURCE.md` with the
+rationale: they don't affect control coverage, profile resolution, or
+SSP scaffolding, and they can be added selectively during Plan 3 (SSP
+Authoring) if a specific control needs the FedRAMP-specific prose
+text.
+
+**Validation:** The generated profile passes `trestle validate`
+(VALID). `trestle author profile-resolve -n fedramp-rev5-low -o
+fedramp-rev5-low-resolved` produces a resolved catalog with exactly
+156 controls when counted recursively (parents + enhancements),
+matching the upstream XML's `<with-id>` count precisely — zero
+missing, zero extra. The resolved catalog also passes `trestle
+validate`. All acceptance criteria for Plan 2 Task 3 are met.
+
+**Future re-fetch path:** If FedRAMP publishes an updated Rev 5 Low
+baseline OSCAL profile at a new canonical location, the extractor can
+be pointed at that URL and re-run in ~60 seconds. If a fidelity
+upgrade is needed (parties, modify blocks, etc.), the path is to add
+`saxonche` as a dev dependency, pull the NIST OSCAL XML-to-JSON XSLT,
+and transform the full XML. That would be its own ADR amendment.
+
 ## Deferred — PBS backup-failure alerting
 
 ADR 0002 Operator Action Item #2 (wire a Wazuh/Discord alert on PBS
