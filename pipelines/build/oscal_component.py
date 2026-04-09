@@ -71,30 +71,57 @@ def _oscal_type(component: InventoryComponent) -> str:
 def _component_to_oscal(component: InventoryComponent) -> dict[str, Any]:
     """Convert one InventoryComponent to an OSCAL component dict.
 
-    Props are emitted as ``(name, value)`` pairs only when the value is
-    non-empty — OSCAL rejects empty-string prop values.
+    Every non-empty field on the InventoryComponent round-trips into an
+    OSCAL prop so the IIW renderer (Task 9) has enough data to populate
+    the full FedRAMP Integrated Inventory Workbook without re-reading
+    the source overlay. Props are emitted only when non-empty — OSCAL
+    rejects empty-string prop values.
+
+    The ``title``, ``description``, and ``purpose`` top-level fields
+    carry the hostname and function respectively so a Trestle-based
+    reader sees the component correctly even if it ignores props.
     """
-    # ``_maybe`` appends a prop only if its value is a non-empty string.
     props: list[dict[str, str]] = []
 
     def _maybe(name: str, value: str | None) -> None:
         if value:
             props.append({"name": name, "value": value})
 
-    # Always-present architectural props (these are never empty for an
-    # InventoryComponent that made it through the ingest filter).
+    # Asset identity + topology
     _maybe("asset-id", component.unique_id)
     _maybe("ipv4-address", component.ip_address)
-    _maybe("is-virtual", str(component.is_virtual).lower())
-    _maybe("boundary", component.boundary)
-    _maybe("authenticated-scan", str(component.authenticated_scan).lower())
+    _maybe("mac-address", component.mac_address)
+    _maybe("dns-name", component.dns_name)
+    _maybe("netbios-name", component.netbios_name)
 
-    # Optional homelab metadata — only emitted when set.
-    _maybe("asset-tag", component.asset_tag)
-    _maybe("diagram-label", component.diagram_label)
+    # Classification
+    _maybe("asset-type", component.asset_type)
+    _maybe("boundary", component.boundary)
+    _maybe("is-virtual", str(component.is_virtual).lower())
+    _maybe("is-public", str(component.is_public).lower())
+
+    # Scan posture
+    _maybe("authenticated-scan", str(component.authenticated_scan).lower())
+    _maybe("in-latest-scan", str(component.in_latest_scan).lower())
+    _maybe("baseline-config", component.baseline_config)
+
+    # OS + patch level
     _maybe("os-name", component.os_name)
     _maybe("os-version", component.os_version)
+    _maybe("patch-level", component.patch_level)
+
+    # Hardware + software
     _maybe("hardware-model", component.hardware_model)
+    _maybe("software-vendor", component.software_vendor)
+    _maybe("software-name", component.software_name)
+
+    # Operational metadata
+    _maybe("location", component.location)
+    _maybe("function", component.function)
+    _maybe("diagram-label", component.diagram_label)
+    _maybe("asset-tag", component.asset_tag)
+    _maybe("end-of-life", component.end_of_life)
+    _maybe("comments", component.comments)
 
     return {
         "uuid": str(uuid.uuid4()),
