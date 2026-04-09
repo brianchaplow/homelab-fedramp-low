@@ -83,3 +83,66 @@ Nine distinct deviations were discovered during Plan 1 execution beyond the pre-
 ## Next
 
 **Plan 2: OSCAL Foundation + Pipelines.** The pipeline code that consumes the now-running DefectDojo and RegScale CE, reading Wazuh vulnerabilities from the brisket manager API and emitting OSCAL assessment-results via compliance-trestle.
+
+---
+
+## Plan 2 start (2026-04-09)
+
+Plan 2 (OSCAL Foundation + Pipelines) started 2026-04-09 after a critical
+read of the Plan 2 plan file against this ADR surfaced ten substantive
+deviations and required a pre-execution realignment. All deviations are
+consolidated in **ADR 0006 — Plan 2 Environment and API Realignment**,
+which is the canonical reference every downstream Plan 2 task cites
+when it diverges from the literal plan text.
+
+Key pre-execution findings:
+
+- Wazuh `/vulnerability/{agent_id}` REST endpoint was removed in 4.8+
+  (confirmed HTTP 404 on the live manager at v4.14.4). Task 6 `WazuhClient`
+  drops `get_vulnerabilities()`; new Task 6b builds a
+  `WazuhIndexerClient` that queries the `wazuh-states-vulnerabilities-*`
+  index directly (12,949 docs, indexer green at 10.10.20.30:9200).
+- RegScale CE has no long-lived API key — only 24h JWTs. Plan 2's
+  `REGSCALE_API_KEY` references are all rewritten to use a
+  `RegScaleClient` that re-auths per invocation.
+- Plan 2's HTTPS validator in `Config` would reject the real DefectDojo
+  and RegScale URLs (both HTTP per ADRs 0003/0004). Scoped to Wazuh
+  endpoints only.
+- Plan 2's `[wsl]` tags and `~/homelab-fedramp-low` paths reflect a
+  WSL assumption that was never real for this workstation. Every
+  command rewrites to Git Bash conventions.
+- Plan 2 Task 14 would have rewritten `Makefile` with a full build
+  system. Preserving the Plan 1 pipelines.sh-canonical contract: new
+  pipeline commands live in `pipelines/cli.py`, `pipelines.sh` grows a
+  passthrough arm for unknown commands, `Makefile` stays a thin alias.
+- Plan 2 assumed Wazuh agents 014/015 for dojo/regscale. Reality per
+  Plan 1 is 016/017 (haccp and brisket were already 014/015).
+- Plan 2 Task 17 would have written ADR 0003 (already taken). Plan 2's
+  numbering starts at 0006 (this realignment ADR) and the completion
+  ADR lands at whatever number is free at Task 17.
+
+Four operator questions decided up front: hybrid env var defaults
+(constants in code, passwords in `.env`); `pipelines/cli.py` Click app
+with `pipelines.sh` passthrough (verbose docstrings, `test` arm stays
+explicit); PBS alert deferred to a dedicated follow-up phase (interim
+manual tripwire added to `runbooks/monthly-conmon.md`); direct commits
+to `main` matching Plan 1's pattern.
+
+**Plan 1 operator TODO status (re-checked 2026-04-09):**
+
+1. ✅ 2026-04-09 02:00 PBS run successfully closed the 5-day backup gap
+   — verified via `pct exec 300 -- ls /mnt/pbs-store/data/vm/` on smoker.
+   VM 100 (DC01) @ 02:00, VM 101 (WS01) @ 02:03, VM 201 (dojo) @ 02:08,
+   VM 301 (regscale) @ 02:30; VM 200 (TheHive) caught by the weekly job
+   at 06:45. ADR 0005 automount fix held.
+2. 🔴 Wazuh/Discord PBS alert — **deferred out of Plan 2 per ADR 0006**.
+   Interim manual tripwire added to `runbooks/monthly-conmon.md` §"Daily
+   PBS backup tripwire" during Plan 2 Task 1.
+3. 🔴 Restore drill — independent of Plan 2, still owed within 7 days.
+4. ⚠️ Reverse-proxy / TLS posture — no change; documented as a portfolio
+   trade-off for Plan 4 writeup (SC-8).
+5. ✅ RegScale long-lived API key investigation — **resolved by ADR 0006**:
+   the 24h JWT is sufficient (each pipeline invocation re-auths).
+6. ✅ Trestle 4.0.1 under Python 3.14 — imports verified, cosmetic
+   pydantic.v1 warning only. Task 2 adds an OSCAL catalog round-trip
+   test as an early-warning tripwire before Plan 2 commits to the stack.

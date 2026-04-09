@@ -8,7 +8,7 @@ produce the submission package.
 
 ## Status
 
-**STUB — Plan 1 complete, Plan 2 pipelines pending.**
+**STUB — Plan 1 complete, Plan 2 pipelines IN PROGRESS as of 2026-04-09.**
 
 This runbook will be filled in once Plan 2 implements the OSCAL pipelines.
 Until then, the only action taken for the monthly cycle is a smoke check:
@@ -24,8 +24,9 @@ Expected: both DefectDojo and RegScale CE reachable, JWT round-trips.
 
 - All Plan 1 infrastructure verified and green (`./pipelines.sh smoke`)
 - All Plan 2 pipelines installed and callable
-- `/c/Projects/.env` has: `DEFECTDOJO_API_KEY`, `REGSCALE_PASSWORD`,
-  `WAZUH_API_PASSWORD`, `DEFECTDOJO_URL`, `REGSCALE_URL`
+- `/c/Projects/.env` has: `DEFECTDOJO_API_KEY`, `DEFECTDOJO_URL`,
+  `REGSCALE_USERNAME`, `REGSCALE_PASSWORD`, `REGSCALE_URL`,
+  `WAZUH_API_PASSWORD`, `WAZUH_INDEXER_PASSWORD`
 - The dojo and regscale VMs are both backing up daily to PBS (see
   `docs/adr/0005` for the backup chain)
 
@@ -67,9 +68,34 @@ RegScale OK at http://10.10.30.28 (root=200 login=200 seedingstatus=200, JWT rou
 All smoke checks passed.
 ```
 
-## Backup verification
+## Daily PBS backup tripwire (interim — run once per day)
 
-Also confirm both VMs have been backing up daily:
+Until the proper Wazuh/Discord alert is wired (see "Follow-up TODO"
+below), the operator runs this one-line check each morning as a
+tripwire. It will catch a silent PBS failure within 24 hours, which is
+the gap that originally let ADR 0005's 5-day backup hole go unnoticed.
+
+```bash
+ssh root@10.10.30.21 "pct exec 300 -- find /mnt/pbs-store/data/vm -maxdepth 2 -name '*2026*' -mtime -2 -printf '%T+  %p\n' 2>/dev/null | sort -r | head -10"
+```
+
+Expected: at least one snapshot per day for each of VM 100 (DC01), VM
+101 (WS01), VM 200 (TheHive), VM 201 (dojo), VM 301 (regscale). If any
+VM has no snapshot under 36 hours old, investigate immediately — PBS
+has silently stopped backing up that host.
+
+A faster one-liner that just alarms if anything is stale:
+
+```bash
+ssh root@10.10.30.21 "pct exec 300 -- bash -c 'for vm in 100 101 200 201 301; do latest=\$(ls -t /mnt/pbs-store/data/vm/\$vm 2>/dev/null | head -1); age=\$(find /mnt/pbs-store/data/vm/\$vm/\$latest -maxdepth 0 -mmin +2160 2>/dev/null); [ -n \"\$age\" ] && echo \"STALE: vm \$vm latest=\$latest\" || echo \"ok: vm \$vm\"; done'"
+```
+
+Expected: five `ok: vm <id>` lines. Any `STALE:` line is a fault.
+
+## Backup verification (monthly)
+
+Once per month during the ConMon cycle, also confirm the full snapshot
+cadence for the GRC VMs:
 
 ```bash
 ssh root@10.10.30.21 'pct exec 300 -- ls /mnt/pbs-store/data/vm/201/ | tail -5'
@@ -78,15 +104,25 @@ ssh root@10.10.30.21 'pct exec 300 -- ls /mnt/pbs-store/data/vm/301/ | tail -5'
 
 Expected: a snapshot for each of the last 3 calendar days.
 
-## Follow-up TODO captured from Plan 1 Task 12 discovery
+## Follow-up TODO — proper PBS alert wiring (deferred per ADR 0006)
 
 **Wire a Wazuh/Discord alert on PBS backup job failure.** The 5-day gap
 documented in ADR 0005 went unnoticed because the only notification
-target was `mail-to-root` on the PBS LXC, which nobody reads. A Plan 2
-sub-task should:
+target was `mail-to-root` on the PBS LXC, which nobody reads.
 
-- Add a Wazuh custom rule tailing PBS log file or the Proxmox backup job
-  API endpoint (`/cluster/backup-info/not-backed-up`)
-- Route to Shuffle WF that posts to `$discord_webhook_infra`
-- Acceptance: deliberately break the PBS mount, wait for next backup
-  window, confirm the Discord alert fires
+This was originally queued for Plan 2 but deferred out of scope per ADR
+0006 §"Deferred — PBS backup-failure alerting" because the real fix
+requires dedicated research into PBS log shipping (LXC 300 via smoker,
+whether PBS journals surface through the existing Wazuh agent, and
+which Shuffle edge owns the Discord fanout) that would widen Plan 2
+beyond its OSCAL focus.
+
+The daily tripwire above is the interim mitigation until a dedicated
+follow-up phase lands. When that phase executes, it should:
+
+- Add a Wazuh custom rule tailing the PBS log file or the Proxmox
+  backup job API endpoint (`/cluster/backup-info/not-backed-up`)
+- Route to a Shuffle workflow that posts to `$discord_webhook_infra`
+- Acceptance: deliberately break the PBS mount, wait for the next
+  backup window, confirm the Discord alert fires
+- Earn its own ADR at whatever number is free at that time
