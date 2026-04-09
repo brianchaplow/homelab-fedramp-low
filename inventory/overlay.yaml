@@ -1,0 +1,122 @@
+# Inventory overlay for FedRAMP Low Integrated Inventory Workbook (IIW)
+#
+# Wazuh syscollector supplies the facts it knows (OS name/version, kernel,
+# hardware model if reported by dmidecode, CPU, RAM, MAC, IP). This overlay
+# file supplies everything else: location, function, diagram labels, asset
+# tags, virtual/bare-metal flag, and boundary classification.
+#
+# Keyed by Wazuh agent **name**, not id — agent ids drift with enrollment
+# order (see ADR 0006 Deviation 6) but names are stable.
+
+defaults:
+  location: "On-prem homelab rack, Virginia"
+  asset_type: "Server"
+
+# In-boundary agents — every host below gets pulled into the IIW and the
+# OSCAL component-definition.
+agents:
+  brisket:
+    asset_tag: HOMELAB-001
+    function: "SIEM Manager (Wazuh + SOAR + DFIR + OpenCTI + ml-scorer)"
+    diagram_label: S1
+    boundary: in
+    is_virtual: false
+    hardware_model: "Lenovo ThinkStation P3 Tiny Gen 2 (Ultra 9 285, 64GB)"
+    end_of_life: "2029-04"
+    comments: "Core SIEM host — v3 platform per HomeLab-SOC-v3 phases 1-13"
+
+  haccp:
+    asset_tag: HOMELAB-002
+    function: "Log Analytics + PCAP (ELK 8.17 + Arkime + Zeek span0)"
+    diagram_label: S2
+    boundary: in
+    is_virtual: false
+    hardware_model: "Lenovo ThinkStation P340 Tiny (i7-10700T, 32GB)"
+    end_of_life: "2028-04"
+    comments: "ELK + Arkime bare metal, Phase 14 haccp data foundation"
+
+  smokehouse:
+    asset_tag: HOMELAB-003
+    function: "Network IDS Sensors (Suricata + Zeek on VLAN 20)"
+    diagram_label: S3
+    boundary: in
+    is_virtual: false
+    hardware_model: "QNAP TVS-871 (i7-4790S, 16GB, 17TB NFS backup target)"
+    end_of_life: "2027-12"
+    comments: "Sensor host — eth4 SPAN; PBS NFS backup target"
+
+  dojo:
+    asset_tag: HOMELAB-004
+    function: "Vulnerability Management (DefectDojo 2.57.0)"
+    diagram_label: S4
+    boundary: in
+    is_virtual: true
+    hardware_model: "Proxmox VM on pitcrew (VMID 201, 4C/6GB/40GB)"
+    comments: "GRC tooling — DefectDojo. Plan 1 deployment, ADR 0004"
+
+  regscale:
+    asset_tag: HOMELAB-005
+    function: "GRC Workflow + OSCAL Ingest (RegScale CE)"
+    diagram_label: S5
+    boundary: in
+    is_virtual: true
+    hardware_model: "Proxmox VM on smoker (VMID 301, 4C/6GB/40GB)"
+    comments: "GRC tooling — RegScale CE. Plan 1 deployment, ADR 0003"
+
+# Out-of-boundary endpoints — documented here so an auditor can see the
+# full list of monitored assets, but intentionally NOT written to the IIW.
+# These are "customer" assets in the MSS analogy: AD lab and GCP VM.
+out_of_boundary:
+  - hostname: DC01
+    ip: 10.10.30.40
+    reason: "Customer asset (AD lab) being monitored by MSS"
+  - hostname: WS01
+    ip: 10.10.30.41
+    reason: "Customer asset (AD workstation) being monitored by MSS"
+  - hostname: gcp-vm
+    ip: "100.125.40.97"
+    reason: "Customer asset on GCP hosting brianchaplow.com + bytesbourbonbbq.com"
+  - hostname: sear
+    ip: 10.10.20.20
+    reason: "Red team / attack box — explicitly excluded from the MSS boundary"
+  - hostname: pitcrew
+    ip: 10.10.30.20
+    reason: "Proxmox host for AD lab — underlying hypervisor, not a managed service"
+  - hostname: smoker
+    ip: 10.10.30.21
+    reason: "Proxmox host for targets + Caldera + PBS LXC + regscale VM — hypervisor"
+  - hostname: pbs
+    ip: 10.10.30.24
+    reason: "Proxmox Backup Server — out of scope for MSS, in scope for a separate backup ADR"
+  - hostname: PITBOSS
+    ip: 10.10.10.100
+    reason: "Operator workstation — endpoint visibility only, not a managed MSS asset"
+  - hostname: thehive
+    ip: 10.10.30.22
+    reason: "Internal ITSM for the MSS analyst workflow — tracked separately"
+
+# Non-Wazuh-managed in-boundary assets (firewall, switch). These are added
+# to the IIW as unauthenticated rows so the asset count is accurate, even
+# though they cannot run a Wazuh agent.
+non_agent_assets:
+  - hostname: opnsense
+    ip: 10.10.10.1
+    function: "Boundary firewall (Protectli VP2420, OPNsense 24.x)"
+    asset_tag: HOMELAB-FW-001
+    diagram_label: F1
+    asset_type: Appliance
+    is_virtual: false
+    hardware_model: "Protectli VP2420"
+    boundary: in
+    comments: "OPNsense — boundary protection enforcer; logs shipped via syslog to Wazuh"
+
+  - hostname: mokerlink
+    ip: 10.10.10.2
+    function: "L2/L3 microsegmentation (10G managed switch)"
+    asset_tag: HOMELAB-SW-001
+    diagram_label: N1
+    asset_type: Network
+    is_virtual: false
+    hardware_model: "MokerLink 10G08410GSM"
+    boundary: in
+    comments: "Switch ACLs enforce VLAN 20/30 microsegmentation; mirror sessions for Arkime/Zeek"
