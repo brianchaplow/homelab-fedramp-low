@@ -615,6 +615,35 @@ adds `opnsense` → `MSS Boundary Protection - OPNsense`. Any unit test
 assertions in Task 11/14 that reference product names should be
 written against the real strings, not Plan 2's em-dash text.
 
+### 2026-04-09 (Task 6b) — Wazuh indexer sort tiebreaker is `_id`, not `vulnerability.id.keyword`
+
+**Deviation 5 implied** that `WazuhIndexerClient.search_vulnerabilities()`
+would page via `search_after` on `vulnerability.detected_at` then
+`vulnerability.id.keyword`. Live probe against the
+`wazuh-states-vulnerabilities-wazuh.manager` index on 2026-04-09 returned
+`query_shard_exception: No mapping found for [vulnerability.id.keyword]`.
+
+**Root cause:** `vulnerability.id` is already a `keyword`-typed field in
+the mapping (`type: keyword, ignore_above: 1024`) — there is no
+`.keyword` subfield to sort on. Additionally, even `vulnerability.id`
+alone is not reliably unique: the same CVE repeats across multiple
+packages on the same host, so using it as a tiebreaker can cause hit
+loss during `search_after` paging if two hits share the same
+`detected_at` + CVE id.
+
+**Realignment:** The sort clause is
+`[{vulnerability.detected_at: asc}, {_id: asc}]`. The OpenSearch `_id`
+field is always present, always sortable, and guaranteed unique per
+document, so it is the only safe tiebreaker. Verified with a full
+paging sweep that returned the expected hit counts (dojo 1861,
+regscale 1861, brisket 2804, haccp 1899, smokehouse 46 — total 8471
+hits, consistent with the cluster-wide 12,949 counting the three
+Windows agents Plan 2 does not ingest).
+
+**Impact:** cosmetic only — the search body changes by two keystrokes.
+No downstream code depends on the sort key shape, only on the returned
+hit ordering being deterministic.
+
 ---
 
 **Next:** Plan 2 Task 1 (Verify Plan 1 done state and capture
