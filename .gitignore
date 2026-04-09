@@ -28,5 +28,12 @@ desktop.ini
 *.swp
 *.swo
 
-# Trestle workspace state
+# Trestle workspace internal state — catalogs/profiles/SSPs are mirrored
+# to oscal/ and ssp/ for public-repo visibility. The workspace itself is
+# a working tree whose .trestle/ directory contains cached hashes and
+# local config we don't need to track.
 trestle-workspace/.trestle/
+
+# Temporary download buffer used by Plan 2 Task 2 (NIST catalog download)
+# and any future OSCAL-source fetches. Not meant to be versioned.
+.tmp/
