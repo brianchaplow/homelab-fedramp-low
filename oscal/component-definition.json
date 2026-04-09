@@ -1,0 +1,340 @@
+{
+  "component-definition": {
+    "uuid": "2c032486-015b-4ba6-bcb3-dab100c49ab6",
+    "metadata": {
+      "title": "Managed SOC Service",
+      "last-modified": "2026-04-09T17:37:51.874494+00:00",
+      "version": "0.1.0",
+      "oscal-version": "1.1.2"
+    },
+    "components": [
+      {
+        "uuid": "4c2c59fe-814f-4df1-8ba6-fb70c6eb834b",
+        "type": "hardware",
+        "title": "smokehouse",
+        "description": "Network IDS Sensors (Suricata + Zeek on VLAN 20)",
+        "purpose": "Network IDS Sensors (Suricata + Zeek on VLAN 20)",
+        "props": [
+          {
+            "name": "asset-id",
+            "value": "MSS-HOST-SMOKEHOUSE"
+          },
+          {
+            "name": "ipv4-address",
+            "value": "10.10.20.10"
+          },
+          {
+            "name": "is-virtual",
+            "value": "false"
+          },
+          {
+            "name": "boundary",
+            "value": "in"
+          },
+          {
+            "name": "authenticated-scan",
+            "value": "true"
+          },
+          {
+            "name": "asset-tag",
+            "value": "HOMELAB-003"
+          },
+          {
+            "name": "diagram-label",
+            "value": "S3"
+          },
+          {
+            "name": "os-name",
+            "value": "Amazon Linux"
+          },
+          {
+            "name": "os-version",
+            "value": "2023"
+          },
+          {
+            "name": "hardware-model",
+            "value": "QNAP TVS-871 (i7-4790S, 16GB, 17TB NFS backup target)"
+          }
+        ]
+      },
+      {
+        "uuid": "4492df4e-4a21-47e6-a6cb-ff296abaff4d",
+        "type": "hardware",
+        "title": "haccp",
+        "description": "Log Analytics + PCAP (ELK 8.17 + Arkime + Zeek span0)",
+        "purpose": "Log Analytics + PCAP (ELK 8.17 + Arkime + Zeek span0)",
+        "props": [
+          {
+            "name": "asset-id",
+            "value": "MSS-HOST-HACCP"
+          },
+          {
+            "name": "ipv4-address",
+            "value": "10.10.30.25"
+          },
+          {
+            "name": "is-virtual",
+            "value": "false"
+          },
+          {
+            "name": "boundary",
+            "value": "in"
+          },
+          {
+            "name": "authenticated-scan",
+            "value": "true"
+          },
+          {
+            "name": "asset-tag",
+            "value": "HOMELAB-002"
+          },
+          {
+            "name": "diagram-label",
+            "value": "S2"
+          },
+          {
+            "name": "os-name",
+            "value": "Ubuntu"
+          },
+          {
+            "name": "os-version",
+            "value": "24.04.4 LTS (Noble Numbat)"
+          },
+          {
+            "name": "hardware-model",
+            "value": "Lenovo ThinkStation P340 Tiny (i7-10700T, 32GB)"
+          }
+        ]
+      },
+      {
+        "uuid": "7b5d312f-692e-49e6-9a22-0737bf132ade",
+        "type": "hardware",
+        "title": "brisket",
+        "description": "SIEM Manager (Wazuh + SOAR + DFIR + OpenCTI + ml-scorer)",
+        "purpose": "SIEM Manager (Wazuh + SOAR + DFIR + OpenCTI + ml-scorer)",
+        "props": [
+          {
+            "name": "asset-id",
+            "value": "MSS-HOST-BRISKET"
+          },
+          {
+            "name": "ipv4-address",
+            "value": "10.10.20.30"
+          },
+          {
+            "name": "is-virtual",
+            "value": "false"
+          },
+          {
+            "name": "boundary",
+            "value": "in"
+          },
+          {
+            "name": "authenticated-scan",
+            "value": "true"
+          },
+          {
+            "name": "asset-tag",
+            "value": "HOMELAB-001"
+          },
+          {
+            "name": "diagram-label",
+            "value": "S1"
+          },
+          {
+            "name": "os-name",
+            "value": "Ubuntu"
+          },
+          {
+            "name": "os-version",
+            "value": "24.04.4 LTS (Noble Numbat)"
+          },
+          {
+            "name": "hardware-model",
+            "value": "Lenovo ThinkStation P3 Tiny Gen 2 (Ultra 9 285, 64GB)"
+          }
+        ]
+      },
+      {
+        "uuid": "f5c5aede-269c-40cd-ae94-e1d64e1f6f88",
+        "type": "software",
+        "title": "dojo",
+        "description": "Vulnerability Management (DefectDojo 2.57.0)",
+        "purpose": "Vulnerability Management (DefectDojo 2.57.0)",
+        "props": [
+          {
+            "name": "asset-id",
+            "value": "MSS-HOST-DOJO"
+          },
+          {
+            "name": "ipv4-address",
+            "value": "10.10.30.27"
+          },
+          {
+            "name": "is-virtual",
+            "value": "true"
+          },
+          {
+            "name": "boundary",
+            "value": "in"
+          },
+          {
+            "name": "authenticated-scan",
+            "value": "true"
+          },
+          {
+            "name": "asset-tag",
+            "value": "HOMELAB-004"
+          },
+          {
+            "name": "diagram-label",
+            "value": "S4"
+          },
+          {
+            "name": "os-name",
+            "value": "Ubuntu"
+          },
+          {
+            "name": "os-version",
+            "value": "24.04.4 LTS (Noble Numbat)"
+          },
+          {
+            "name": "hardware-model",
+            "value": "Proxmox VM on pitcrew (VMID 201, 4C/6GB/40GB)"
+          }
+        ]
+      },
+      {
+        "uuid": "cd57f15f-ecfd-4b0a-8626-96876331d4fa",
+        "type": "software",
+        "title": "regscale",
+        "description": "GRC Workflow + OSCAL Ingest (RegScale CE)",
+        "purpose": "GRC Workflow + OSCAL Ingest (RegScale CE)",
+        "props": [
+          {
+            "name": "asset-id",
+            "value": "MSS-HOST-REGSCALE"
+          },
+          {
+            "name": "ipv4-address",
+            "value": "10.10.30.28"
+          },
+          {
+            "name": "is-virtual",
+            "value": "true"
+          },
+          {
+            "name": "boundary",
+            "value": "in"
+          },
+          {
+            "name": "authenticated-scan",
+            "value": "true"
+          },
+          {
+            "name": "asset-tag",
+            "value": "HOMELAB-005"
+          },
+          {
+            "name": "diagram-label",
+            "value": "S5"
+          },
+          {
+            "name": "os-name",
+            "value": "Ubuntu"
+          },
+          {
+            "name": "os-version",
+            "value": "24.04.4 LTS (Noble Numbat)"
+          },
+          {
+            "name": "hardware-model",
+            "value": "Proxmox VM on smoker (VMID 301, 4C/6GB/40GB)"
+          }
+        ]
+      },
+      {
+        "uuid": "b1166ea2-d999-4c0d-ae64-5f06d6fbe779",
+        "type": "hardware",
+        "title": "opnsense",
+        "description": "Boundary firewall (Protectli VP2420, OPNsense 24.x)",
+        "purpose": "Boundary firewall (Protectli VP2420, OPNsense 24.x)",
+        "props": [
+          {
+            "name": "asset-id",
+            "value": "MSS-NON-OPNSENSE"
+          },
+          {
+            "name": "ipv4-address",
+            "value": "10.10.10.1"
+          },
+          {
+            "name": "is-virtual",
+            "value": "false"
+          },
+          {
+            "name": "boundary",
+            "value": "in"
+          },
+          {
+            "name": "authenticated-scan",
+            "value": "false"
+          },
+          {
+            "name": "asset-tag",
+            "value": "HOMELAB-FW-001"
+          },
+          {
+            "name": "diagram-label",
+            "value": "F1"
+          },
+          {
+            "name": "hardware-model",
+            "value": "Protectli VP2420"
+          }
+        ]
+      },
+      {
+        "uuid": "276c89be-d7d5-4c00-a474-b1e7936731fb",
+        "type": "network",
+        "title": "mokerlink",
+        "description": "L2/L3 microsegmentation (10G managed switch)",
+        "purpose": "L2/L3 microsegmentation (10G managed switch)",
+        "props": [
+          {
+            "name": "asset-id",
+            "value": "MSS-NON-MOKERLINK"
+          },
+          {
+            "name": "ipv4-address",
+            "value": "10.10.10.2"
+          },
+          {
+            "name": "is-virtual",
+            "value": "false"
+          },
+          {
+            "name": "boundary",
+            "value": "in"
+          },
+          {
+            "name": "authenticated-scan",
+            "value": "false"
+          },
+          {
+            "name": "asset-tag",
+            "value": "HOMELAB-SW-001"
+          },
+          {
+            "name": "diagram-label",
+            "value": "N1"
+          },
+          {
+            "name": "hardware-model",
+            "value": "MokerLink 10G08410GSM"
+          }
+        ]
+      }
+    ]
+  }
+}
