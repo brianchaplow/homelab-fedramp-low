@@ -26,45 +26,45 @@ x-trestle-set-params:
     aggregates:
       - si-01_odp.01
       - si-01_odp.02
-    profile-param-value-origin: <REPLACE_ME>
+    profile-param-value-origin: organization
   si-01_odp.01:
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - Brian Chaplow (system owner, sole operator)
+    profile-param-value-origin: organization
   si-01_odp.02:
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - Brian Chaplow (system owner, sole operator)
+    profile-param-value-origin: organization
   si-01_odp.03:
     alt-identifier: si-1_prm_2
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - annually or after any significant system change, new phase deployment, or security incident
+    profile-param-value-origin: organization
   si-01_odp.04:
     alt-identifier: si-1_prm_3
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - after any significant system change, new phase deployment, or ADR-recorded deviation
+    profile-param-value-origin: organization
   si-01_odp.05:
     alt-identifier: si-1_prm_4
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - annually or when a new ConMon cycle reveals a procedural gap
+    profile-param-value-origin: organization
   si-01_odp.06:
     alt-identifier: si-1_prm_5
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - after a ConMon finding, a security incident, or a phase deployment that changes monitoring tooling
+    profile-param-value-origin: organization
   si-01_odp.07:
     alt-identifier: si-1_prm_6
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - Brian Chaplow (system owner, sole operator)
+    profile-param-value-origin: organization
   si-01_odp.08:
     alt-identifier: si-1_prm_7
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - system-level
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -142,8 +142,10 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: si-1 -->
+The Managed SOC Service maintains a system-level SI policy in `C:\Projects\CLAUDE.md` -- the living document that defines the authorization boundary, monitoring tool inventory, detection rule counts, and operational cadence for Wazuh, Suricata, Zeek, ELK, OpenCTI, Velociraptor, and the XGBoost ML scorer. The file is git-tracked in the parent workspace and is reviewed and updated at each phase milestone boundary. Brian Chaplow, as system owner and sole operator, is designated to manage the development, documentation, and dissemination of SI policy and procedures. The policy is reviewed annually and following any significant system change, new phase deployment, or ADR-recorded deviation. The monitoring stack described in the Service Inventory section of `CLAUDE.md` serves as the authoritative SI procedure reference, with `runbooks/monthly-conmon.md` defining the procedural cadence for ongoing SI-related activities.
 
-#### Implementation Status: planned
+The ADR chain in `homelab-fedramp-low/docs/adr/` functions as the authoritative policy-change log for all SI-significant decisions: ADR 0001 confirmed scope and pre-flight policy before Plan 1 deployment; ADR 0008 recorded the Plan 3 pre-execution realignment of authoring cadence and review decisions. SI procedures are reviewed following any ConMon finding, security incident, or phase deployment that changes monitoring tooling. The `runbooks/monthly-conmon.md` document prescribes the monthly SI procedure cycle, including vulnerability scanning, POA&M update, and OSCAL artifact generation.
+
+#### Implementation Status: implemented
 
 ______________________________________________________________________

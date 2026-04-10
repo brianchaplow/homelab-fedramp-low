@@ -25,8 +25,8 @@ x-trestle-set-params:
   si-02_odp:
     alt-identifier: si-2_prm_1
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - within 30 days for Critical/High CVEs; within 90 days for Moderate CVEs; within 180 days for Low CVEs -- aligned with FedRAMP Low ConMon SLA windows tracked in DefectDojo
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -86,8 +86,10 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: si-2 -->
+System flaws are identified and tracked using the Wazuh vulnerability detection pipeline. The `pipelines/ingest/wazuh_vulns.py` module pages through the `wazuh-states-vulnerabilities-*` OpenSearch index on brisket (10.10.20.30:9200) across all 15 in-boundary agents, producing normalized Finding records. The April 2026 ConMon cycle ingested 8,471 vulnerability findings across 5 agents. DefectDojo 2.57.0 on dojo (10.10.30.27) receives all findings via the ConMon pipeline and tracks each CVE against FedRAMP Low SLA windows: Critical and High CVEs within 30 days, Moderate within 90 days, Low within 180 days. Security-relevant updates are tested for effectiveness and side effects in the lab environment before rollout to production SOC infrastructure -- the 2026-03-31 fleet patch (kernels, Wazuh 4.14.4, Proxmox alignment) was validated on sear before applying across the fleet. Wazuh SCA performs automated configuration-flaw scanning on all enrolled agents, with results surfaced in the Wazuh Dashboard on brisket.
 
-#### Implementation Status: planned
+The monthly ConMon pipeline (`./pipelines.sh conmon`) closes the flaw-remediation loop automatically: ingest from Wazuh Indexer, push to DefectDojo, generate the OSCAL POA&M via `pipelines/build/oscal_poam.py`, and render `poam/POAM-2026-04.xlsx`. ADR 0007 documents the live end-to-end validation of this cycle, confirming 8,471 findings ingested with zero skipped. ADR 0006 Deviation 5 records the pivot from the deprecated Wazuh 4.8 REST vulnerability endpoint to indexer-based ingest -- an example of flaw-remediation procedure incorporated into the configuration management process. Flaw remediation activities are incorporated into the git-tracked configuration baseline, with ADRs serving as the approval mechanism for any deviation from the established remediation cadence.
+
+#### Implementation Status: implemented
 
 ______________________________________________________________________

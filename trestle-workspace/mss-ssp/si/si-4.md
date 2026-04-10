@@ -25,33 +25,33 @@ x-trestle-set-params:
   si-04_odp.01:
     alt-identifier: si-4_prm_1
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - detect attacks and indicators of attack on all in-boundary hosts via Wazuh 214-rule policy plus Suricata signatures plus Zeek protocol metadata; detect TI-matched connections via OpenCTI IOC lookup in the Zeek enrichment pipeline; detect novel entities via novel_entity.rb; detect unauthorized remote connections via Wazuh agent heartbeat and OPNsense syslog
+    profile-param-value-origin: organization
   si-04_odp.02:
     alt-identifier: si-4_prm_2
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - Wazuh MITRE ATT&CK-mapped detection rules (214 active), Zeek connection metadata with JA3/JA4 TLS fingerprinting, XGBoost ML scorer behavioral scoring (PR-AUC 0.9998), Elastic ML auth-anomalies job on Windows Security events
+    profile-param-value-origin: organization
   si-04_odp.03:
     alt-identifier: si-4_prm_3
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - Wazuh alert summaries, Zeek enriched connection events, Ollama-classified tier-1 and tier-2 events, daily nightly briefing
+    profile-param-value-origin: organization
   si-04_odp.04:
     alt-identifier: si-4_prm_4
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - Brian Chaplow (system owner, sole operator) via Discord #soc-alerts (WF1), #morning-briefing (WF10), and #infrastructure-alerts (Grafana)
+    profile-param-value-origin: organization
   si-04_odp.05:
     alt-identifier: si-4_prm_5
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - as needed (real-time Discord alerts for high-confidence events via Shuffle WF1) and daily (WF10 morning briefing at 0530 EST)
+    profile-param-value-origin: organization
   si-04_odp.06:
     alt-identifier: si-4_prm_6
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - monitoring is conducted on infrastructure owned and operated solely by Brian Chaplow; no user privacy interests apply -- single-operator personal homelab system
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -128,8 +128,10 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: si-4 -->
+The Managed SOC Service operates a five-layer detection stack covering all in-boundary hosts across VLANs 10, 20, 30, and 40. Layer 1 -- Wazuh on brisket (10.10.20.30) aggregates security events from all 15 enrolled agents (including brisket host, OPNsense syslog, dojo, and regscale) and applies 214 MITRE ATT&CK-mapped detection rules, shipping alerts to `wazuh-alerts-*` in the Wazuh Indexer on brisket:9200. Layer 2 -- Suricata on smokehouse (10.10.20.10, eth4 SPAN) provides signature-based IDS at the network boundary, with rule sets maintained under `HomeLab-SOC-v2/configs/suricata/`. Layer 3 -- Zeek on haccp span0 (`reference/phase14/zeek/local.zeek`) generates JSON protocol-metadata logs (conn, dns, http, ssl, x509) with JA3/JA4 TLS fingerprints and community-id field correlation, shipped via Filebeat to Logstash on haccp and indexed as `logs-zeek.haccp-default-*` in ELK. The Phase 14 Logstash enrichment pipeline (`reference/phase14/logstash/zeek-enrichment.conf`) applies 5 stages: de-dot → OpenCTI TI lookups (Stage 2, live IOC match against all 6 connector feeds) → novel-entity tracking via `novel_entity.rb` (Stage 3, `haccp-entities-seen` index) → tier routing → Ollama LLM classification on brisket qwen3:8b (Stage 5). A shared token-bucket rate limiter (`reference/phase14/logstash/ruby/tier2_rate_limit.rb`, cap 10/min) gates both tier-1 TI-matched and tier-2 novel-entity events to protect the RTX A1000 GPU, which is power-capped to 40W. Layer 4 -- Arkime on haccp records full PCAP to the 2TB Samsung 990 EVO Plus at `/opt/arkime/raw`, with nightly SSH/rsync archival to smokehouse 17TB NAS at 0300 via `reference/phase14/cron/archive-pcap.sh`, enabling post-incident packet replay for any connection observed on span0. Layer 5 -- ELK on haccp (10.10.30.25) runs 214 Kibana detection rules and an Elastic ML trial-license auth-anomalies job analyzing DC01/WS01 Windows Security events for behavioral anomalies. The XGBoost ML scorer on brisket (`brisket:5002`, PR-AUC 0.9998) applies a sixth independent behavioral scoring pass on individual Wazuh alerts. Velociraptor DFIR on brisket (8889/HTTPS) provides ad-hoc endpoint forensic collection across 7 enrolled clients for targeted investigation when monitoring detects a high-confidence indicator.
 
-#### Implementation Status: planned
+Monitoring information is disseminated in real time and on a daily schedule. Shuffle WF1 (webhook) receives high-confidence Wazuh alerts, enriches them via AbuseIPDB, routes blocking actions to OPNsense and Cloudflare, creates TheHive cases, and posts to Discord #soc-alerts. WF10 (cron 0530 EST) generates a nightly briefing from the Zeek enrichment pipeline output -- including Ollama classification summaries for tier-1 and tier-2 events -- and posts to Discord #morning-briefing. Grafana on brisket (:3000) displays the SOC v3 Overview dashboard and issues the `GPU Thermal Critical -- Brisket Above 90C` alert (uid=dfihoiidr7k00c) to Discord #infrastructure-alerts when the RTX A1000 exceeds 90C. The auditable proof that the monitoring stack was exercised under real load is ADR 0008: during Phase 14 go-live, the Ollama rate limiter had a defect that allowed tier-1 TI events to bypass the bucket, driving GPU temperature to 87C sustained. The stack detected the thermal event, the Grafana alert fired to #infrastructure-alerts, and the fix -- Stage 3b conditional + shared bucket + 40W power cap -- was implemented and validated, returning temperature to 63C and fan duty to 39%. Monitoring coverage and risk level are reviewed at each ConMon cycle; the level of monitoring activity is adjusted when new attack campaigns, CISA advisories, or POA&M findings increase risk to operations. Monitoring is conducted on infrastructure owned and operated solely by Brian Chaplow -- no external user privacy interests apply.
+
+#### Implementation Status: implemented
 
 ______________________________________________________________________

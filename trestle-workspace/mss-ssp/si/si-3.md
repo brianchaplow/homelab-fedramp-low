@@ -25,33 +25,33 @@ x-trestle-set-params:
   si-03_odp.01:
     alt-identifier: si-3_prm_1
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - signature-based and non-signature-based
+    profile-param-value-origin: organization
   si-03_odp.02:
     alt-identifier: si-3_prm_2
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - daily -- Suricata continuous network monitoring plus Wazuh SCA weekly scan; Wazuh agents perform real-time file monitoring via FIM
+    profile-param-value-origin: organization
   si-03_odp.03:
     alt-identifier: si-3_prm_3
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - network entry and exit points (Suricata on smokehouse eth4 SPAN, Zeek on haccp span0) and endpoint (Wazuh FIM on 15 agents)
+    profile-param-value-origin: organization
   si-03_odp.04:
     alt-identifier: si-3_prm_4
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - block malicious code at the OPNsense firewall via Wazuh CDB-fed ACL rules; send alert to Brian Chaplow via Discord #soc-alerts webhook (Shuffle WF1)
+    profile-param-value-origin: organization
   si-03_odp.05:
     alt-identifier: si-3_prm_5
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - Brian Chaplow (system owner, sole operator) via Discord #soc-alerts
+    profile-param-value-origin: organization
   si-03_odp.06:
     alt-identifier: si-3_prm_6
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - Wazuh deduplication in Shuffle WF1 v2 suppresses repeated low-confidence alerts; OPNsense ACL blocks are reviewed manually when a Discord alert fires
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -115,8 +115,10 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: si-3 -->
+Malicious code protection is implemented at network entry and exit points using both signature-based and non-signature-based mechanisms. Suricata on smokehouse (10.10.20.10, eth4 SPAN) provides continuous signature-based detection, with rule sets maintained under `HomeLab-SOC-v2/configs/suricata/` and updated via `suricata-update`. Wazuh on brisket ingests Suricata `eve.json` alerts via the Wazuh agent on smokehouse, correlating malicious traffic signatures against the `wazuh-alerts-*` index. Zeek on haccp span0 (`reference/phase14/zeek/local.zeek`) and smokehouse eth4 provides complementary non-signature protocol-behavior detection -- JA3/JA4 TLS fingerprinting and anomalous connection pattern analysis that catches threats for which signatures do not yet exist. OpenCTI v7 on brisket aggregates IOC feeds from 6 connectors; the sync cron (`0 */6 * * *`) pushes current malicious indicators to Wazuh CDB lists, creating an IOC-driven detection layer updated every 6 hours. On detection, Shuffle WF1 routes high-confidence alerts to OPNsense and Cloudflare for blocking and sends an immediate Discord #soc-alerts notification to Brian Chaplow. Wazuh FIM provides endpoint real-time file monitoring on all 15 agents, detecting unauthorized file modifications as a non-signature behavioral signal.
 
-#### Implementation Status: planned
+The XGBoost ML scorer on brisket (`brisket:5002`, PR-AUC 0.9998) applies behavioral anomaly scoring as a non-signature layer on top of rule-based detection. False positives are addressed through Wazuh deduplication logic in Shuffle WF1 v2, which suppresses repeated low-confidence alerts before they reach the operator. The primary gap for this control is the absence of an endpoint antivirus agent on Linux SOC infrastructure hosts (brisket, haccp, smokehouse) -- malicious code protection on those hosts is network-only (Suricata, Zeek, Wazuh IDS rules) with no host-based AV scanning. OPNsense at the VLAN boundary provides the outer network entry-point blocking layer.
+
+#### Implementation Status: partial
 
 ______________________________________________________________________
