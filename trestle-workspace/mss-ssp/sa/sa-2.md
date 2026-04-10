@@ -59,8 +59,10 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: sa-2 -->
+Security and privacy resource requirements for the Managed SOC Service are determined at the hardware level and documented in `inventory/overlay.yaml` (each in-boundary host's hardware model, function, and EOL date) and in `oscal/component-definition.json` (OSCAL-native resource inventory for all 7 in-boundary components). The MSS platform runs on personally-owned hardware: Lenovo ThinkStation P3 Tiny Gen 2 (brisket -- Ultra 9 285 / 64 GB, primary SOC platform), Lenovo ThinkStation P340 Tiny (haccp -- i7-10700T / 32 GB, ELK + Arkime; pitcrew -- i7-10700T / 32 GB, Proxmox host), and QNAP TVS-871 (smokehouse -- i7-4790S / 16 GB, sensors + NFS backup). The GRC tooling tier (dojo, regscale) is allocated 4 vCPU / 6 GB RAM / 40 GB disk per VM as documented in `deploy/proxmox/dojo-vm-config.yaml` and `deploy/proxmox/regscale-vm-config.yaml` and in ADR 0002. The `inventory/IIW-2026-04.xlsx` (FedRAMP IIW, April 2026) enumerates all 7 in-boundary assets as the capital allocation reference.
 
-#### Implementation Status: planned
+This control is partial because formal capital planning and investment control (CPIC) processes do not exist for a single-operator homelab -- there is no organizational budget cycle, investment board, or discrete security line item in programming documents. Hardware was procured and resource allocation is documented post-hoc in overlay.yaml and the OSCAL component-definition rather than through a pre-acquisition CPIC review. EOL dates in overlay.yaml serve as the lifecycle planning anchor for future replacement decisions.
+
+#### Implementation Status: partial
 
 ______________________________________________________________________

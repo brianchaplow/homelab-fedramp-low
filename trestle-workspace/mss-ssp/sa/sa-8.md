@@ -26,15 +26,15 @@ x-trestle-set-params:
     aggregates:
       - sa-08_odp.01
       - sa-08_odp.02
-    profile-param-value-origin: <REPLACE_ME>
+    profile-param-value-origin: organization
   sa-08_odp.01:
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - defense-in-depth (three enforcement layers -- OPNsense inter-VLAN firewall plus MokerLink switch ACL plus UFW host firewall); least privilege (SSH key auth on all Linux hosts, UFW default-deny, service-specific accounts with minimum permissions); separation of concerns (GRC tooling tier isolated from SOC operational tier across Proxmox hosts); security-first design (Wazuh SCA CIS Ubuntu 24.04 benchmark validated on every new VM at first run); open design (all security configurations git-tracked and ADR-documented)
+    profile-param-value-origin: organization
   sa-08_odp.02:
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - OSCAL-as-source-of-truth (machine-readable schema-validated artifacts eliminate format drift and make security state auditable); no-PII-processed scope (no personal data stored or processed eliminates a class of privacy engineering requirements)
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -88,8 +88,10 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: sa-8 -->
+Security and privacy engineering principles are applied throughout the MSS specification, design, and implementation. The most concrete evidence is the three-layer defense-in-depth network architecture: OPNsense handles inter-VLAN firewall policy (VLAN 40 isolated targets, VLAN 30 lab hosts, VLAN 20 SOC infrastructure); MokerLink L3 ACL enforces switch-level east-west segmentation; UFW default-deny on each host with explicit allows for required service ports only. Least privilege is applied at every layer: SSH key-only authentication on all Linux hosts, service accounts provisioned with minimum required permissions, and no shared credentials between services (all secrets in a gitignored `.env`). The separation-of-concerns principle is expressed structurally: the GRC tooling tier (dojo on pitcrew, regscale on smoker) is isolated from the SOC operational tier (brisket, haccp, smokehouse) across separate Proxmox hypervisors. The security-first design principle is operationalized by the Wazuh SCA module running the CIS Ubuntu 24.04 benchmark on every new VM at first run, as specified in the whole-project design spec (`docs/superpowers/specs/2026-04-07-homelab-fedramp-low-design.md` §7.9). The open-design principle is enforced by the git-tracked configuration-as-code posture: all security configurations are committed, ADR-documented, and auditable.
 
-#### Implementation Status: planned
+This control is partial because no formal systems security engineering methodology (e.g., NIST SP 800-160) was explicitly adopted, and formal privacy engineering methodology beyond OSCAL-as-source-of-truth and the no-PII-processed scope is not documented. The principles above are applied in practice through the whole-project design spec and the ADR record, but not under a named framework. Cross-reference SA-3 (SDLC -- engineering principles applied throughout the lifecycle) and SC-7 (boundary protection -- the primary engineering artifact).
+
+#### Implementation Status: partial
 
 ______________________________________________________________________

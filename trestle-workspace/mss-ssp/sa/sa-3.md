@@ -25,8 +25,8 @@ x-trestle-set-params:
   sa-03_odp:
     alt-identifier: sa-3_prm_1
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - GSD phased lifecycle (Plan 1 through Plan 4) with pre-execution realignment ADRs as security gate records, per-phase design specs incorporating security requirements, and post-phase completion ADRs as done-criteria verification
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -84,8 +84,10 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: sa-3 -->
+The MSS is acquired, developed, and managed using the GSD (Get Stuff Done) phased lifecycle framework: Plan 1 (infrastructure deployment, ADR 0002), Plan 2 (OSCAL pipelines, ADR 0007), Plan 3 (SSP authoring, ADR 0008/0009), and Plan 4+ (ConMon cycles). Each Plan has a design spec (e.g., `/c/Projects/docs/superpowers/specs/2026-04-09-homelab-fedramp-low-plan-3-ssp-authoring-design.md` §4, Gates 1-5) and an implementation plan that incorporates security and privacy considerations explicitly. Pre-execution realignment ADRs (ADR 0006 for Plan 2, ADR 0008 for Plan 3) document risk identification and mitigation decisions made before each phase executes -- the formal security gate record. Brian Chaplow is the single individual identified as holding all information security and privacy roles (system owner, operator, developer, assessor) as documented in `C:\Projects\CLAUDE.md`. Each phase begins with a Gate 1 regression check (`./pipelines.sh smoke` + pytest suite) that confirms security-relevant infrastructure is healthy before new work starts.
 
-#### Implementation Status: planned
+This control is partial because the GSD framework is informal -- no NIST SP 800-64 process was explicitly adopted, role separation beyond the single operator does not exist, and no formal privacy impact assessment process has been documented. The phase/plan/gate structure integrates security at every stage and is the nearest operational equivalent of a formal SDLC for a single-operator system. Cross-reference SA-8 (engineering principles applied during design) and SA-5 (system documentation as SDLC output).
+
+#### Implementation Status: partial
 
 ______________________________________________________________________

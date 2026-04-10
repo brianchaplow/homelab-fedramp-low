@@ -25,13 +25,13 @@ x-trestle-set-params:
   sa-05_odp.01:
     alt-identifier: sa-5_prm_1
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - document the attempt in an ADR, contact the vendor or upstream open-source project, and escalate to an alternative open-source tool if documentation cannot be obtained within 30 days
+    profile-param-value-origin: organization
   sa-05_odp.02:
     alt-identifier: sa-5_prm_2
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - Brian Chaplow (system owner, sole operator)
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -121,8 +121,8 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: sa-5 -->
+Administrator and user documentation for the MSS is maintained across four artifact types: (1) `C:\Projects\CLAUDE.md` -- the authoritative operator reference covering service inventory, SSH quick reference, credentials table, VLAN topology, and conventions (secure configuration and operation guidance for all in-boundary services); (2) per-service deploy READMEs under `deploy/defectdojo/README.md` and `deploy/regscale/README.md` (secure installation and configuration documentation including pinned versions, TLS posture, UFW rules, and password policy); (3) operational runbooks in `runbooks/` covering specific procedures (`monthly-conmon.md`, `cert-trust.md`, `restore-from-pbs.md`, `regscale-manual-import.md`); and (4) ADRs 0001-0008 in `docs/adr/` documenting known vulnerabilities, configuration decisions, and deviations from intended configuration -- ADR 0003 (RegScale CE port 80, wrapper exit behavior, no default password) and ADR 0004 (DefectDojo HTTP-on-8080, Valkey substitution) directly satisfy the SA-5a.3 known-vulnerabilities-regarding-configuration requirement. This SSP and the OSCAL artifacts in `oscal/` constitute the security and privacy documentation required by SA-5b. Documentation is distributed to Brian Chaplow (system owner, sole operator) who produces and consumes it.
 
-#### Implementation Status: planned
+#### Implementation Status: implemented
 
 ______________________________________________________________________

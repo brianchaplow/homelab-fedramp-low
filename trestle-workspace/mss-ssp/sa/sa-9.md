@@ -25,13 +25,13 @@ x-trestle-set-params:
   sa-09_odp.01:
     alt-identifier: sa-9_prm_1
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - "Tailscale: node certificate authentication plus WireGuard encryption in transit; PBS NFS: systemd automount with mount-timeout and idle-timeout hardening per ADR 0005; GCP VM: Wazuh agent enrollment with TLS, SSH key auth only"
+    profile-param-value-origin: organization
   sa-09_odp.02:
     alt-identifier: sa-9_prm_2
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - "daily PBS backup tripwire (manual check per runbooks/monthly-conmon.md Daily PBS backup tripwire section); Wazuh agent keepalive monitoring for GCP VM agent 009; Tailscale admin console for node expiry -- monthly review during ConMon cycle"
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -78,8 +78,10 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: sa-9 -->
+The MSS consumes three external system services, each documented and monitored. (1) Tailscale provides encrypted mesh VPN for remote administrative access from PITBOSS to all in-boundary hosts (brisket TS: 100.124.139.56, haccp TS: 100.74.16.82, smokehouse TS: 100.110.112.98); Tailscale nodes authenticate via device certificates and WireGuard encryption in transit. (2) PBS NFS -- Proxmox Backup Server LXC 300 (smoker, 10.10.30.24) mounts a NFS export from smokehouse (10.10.20.10, 17 TB) as the backup data store; this external dependency for CP-9 backup services is documented in ADR 0005, which also records the 5-day backup gap caused by a mount failure during the 2026-04-07 rack consolidation reboot and the automount hardening fix (`x-systemd.automount,x-systemd.idle-timeout=600,x-systemd.mount-timeout=30`). (3) GCP VM (Wazuh agent 009) -- an externally hosted VM ships logs to the brisket Wazuh Manager; it is explicitly out-of-boundary but the MSS monitoring depends on it for telemetry. Oversight roles: Brian Chaplow (system owner, sole operator) holds all external service oversight responsibility. Compliance monitoring runs on the monthly ConMon cycle via `runbooks/monthly-conmon.md` (PBS backup tripwire, Wazuh agent keepalive check, Tailscale node expiry review).
 
-#### Implementation Status: planned
+This control is partial because no formal service-level agreements exist with any external provider (Tailscale is free tier, PBS NFS is self-hosted, GCP VM is personal) and compliance monitoring is informal -- manual tripwire rather than automated alerting for Tailscale or GCP disconnects. ADR 0005 is the definitive external service governance record: it documents a real external-service failure caught, analyzed, and remediated. Cross-reference CP-9 (backup service -- PBS external dependency) and CA-3 (internal connections including the PBS NFS link).
+
+#### Implementation Status: partial
 
 ______________________________________________________________________

@@ -25,13 +25,13 @@ x-trestle-set-params:
   sa-04_odp.01:
     alt-identifier: sa-4_prm_1
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - not-applicable -- MSS is a single-operator homelab pilot; no formal acquisition contracts are executed. Security and privacy requirements are applied through EULA review (ADR 0001), open-source project selection criteria, and vendor-specific deployment documentation in deploy/ READMEs
+    profile-param-value-origin: organization
   sa-04_odp.02:
     alt-identifier: sa-4_prm_2
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - not-applicable -- single-operator personal system; no contracts beyond COTS EULAs
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -122,8 +122,10 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: sa-4 -->
+The MSS is built primarily on open-source software (Wazuh, ELK, Shuffle, OpenCTI, Velociraptor, TheHive, Cortex, Arkime, Suricata, Zeek, Ollama, Proxmox, DefectDojo, Trestle) and COTS hardware from three primary vendors: Lenovo ThinkStation (four machines), Protectli VP2420 (OPNsense firewall), and MokerLink 10G08410GSM (managed switch). Security functional requirements are incorporated at selection time: open-source projects are selected for active community support and CVE responsiveness; hardware EOL dates are tracked in `inventory/overlay.yaml`; RegScale CE was selected only after an explicit EULA review (ADR 0001) confirming acceptable terms. For the two CE tools (RegScale CE and DefectDojo 2.57.0), acquisition requirements include: no default hardcoded passwords (ADR 0003, ADR 0004), official Docker Compose images from vendor-maintained registries, and HTTP-only posture acknowledged as a deliberate trade-off documented in ADR 0004 §TLS. Wazuh agent SCA runs CIS Ubuntu 24.04 benchmarks on dojo and regscale hosts post-acquisition.
 
-#### Implementation Status: planned
+This control is partial because the homelab has no formal acquisition contracts -- the control's primary mechanism (contract language) is not applicable for a no-cost open-source plus COTS-EULA environment. Security requirements are incorporated through EULA review and deviation ADRs that document security acceptance criteria resolved at deployment time. Cross-reference SA-22 (unsupported components -- tracked via overlay.yaml EOL dates) and SA-5 (security documentation requirements satisfied through deploy READMEs and ADRs).
+
+#### Implementation Status: partial
 
 ______________________________________________________________________

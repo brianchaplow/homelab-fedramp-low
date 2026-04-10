@@ -42,8 +42,8 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: sa-4.10 -->
+This control is not applicable to the Managed SOC Service. The MSS is a single-operator homelab pilot that does not implement Personal Identity Verification (PIV) capability, issue PIV credentials, or process PIV card authentication in any service workflow. No PIV-capable hardware is deployed within the authorization boundary. Authentication is via SSH key pairs on all Linux hosts, individual service account passwords stored in a gitignored `.env` file, and Tailscale node certificates for remote access. The FIPS 201 Approved Products List is not applicable to this deployment.
 
-#### Implementation Status: planned
+#### Implementation Status: not-applicable
 
 ______________________________________________________________________

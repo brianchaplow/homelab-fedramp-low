@@ -26,45 +26,45 @@ x-trestle-set-params:
     aggregates:
       - sa-01_odp.01
       - sa-01_odp.02
-    profile-param-value-origin: <REPLACE_ME>
+    profile-param-value-origin: organization
   sa-01_odp.01:
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - Brian Chaplow (system owner, sole operator)
+    profile-param-value-origin: organization
   sa-01_odp.02:
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - Brian Chaplow (system owner, sole operator)
+    profile-param-value-origin: organization
   sa-01_odp.03:
     alt-identifier: sa-1_prm_2
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - annually and after each plan phase completion
+    profile-param-value-origin: organization
   sa-01_odp.04:
     alt-identifier: sa-1_prm_3
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - plan phase completion, new service enrollment, vendor support-end announcement, or significant change request
+    profile-param-value-origin: organization
   sa-01_odp.05:
     alt-identifier: sa-1_prm_4
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - annually and after each plan phase completion
+    profile-param-value-origin: organization
   sa-01_odp.06:
     alt-identifier: sa-1_prm_5
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - plan phase completion, new service deployment, or deviation requiring an ADR
+    profile-param-value-origin: organization
   sa-01_odp.07:
     alt-identifier: sa-1_prm_6
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - Brian Chaplow (system owner)
+    profile-param-value-origin: organization
   sa-01_odp.08:
     alt-identifier: sa-1_prm_7
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - Brian Chaplow (system owner)
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -142,8 +142,10 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: sa-1 -->
+The Managed SOC Service acquisition policy is documented across this SSP, ADR 0001 (EULA/pre-flight review, serving as the acquisition policy record for RegScale CE), ADR 0008 (Plan 3 pre-execution realignment, codifying authoring policy and implementation-status rubric), and the parent `C:\Projects\CLAUDE.md` (acquisition conventions: open-source stack preference, COTS vendor list, no hardcoded secrets, attack-scope boundaries). The designated policy official is Brian Chaplow (system owner, sole operator). Procedures are documented in per-service deploy READMEs (`deploy/defectdojo/README.md`, `deploy/regscale/README.md`) and in `runbooks/cert-trust.md` for TLS posture decisions. Policy and procedures are reviewed annually and after each plan phase completion; events triggering an off-cycle review include new service enrollment, vendor support-end announcements, or any deviation requiring an ADR.
 
-#### Implementation Status: planned
+This control is partial because no formal dissemination process exists beyond the single operator who both produces and consumes the policy -- a structural limitation of a single-operator system. All policy artifacts are accessible to the sole operator at all times; the gap is the absence of a multi-party dissemination record. Cross-reference SA-3 (the ADR/plan workflow is the closest analog to a formal SDLC incorporating acquisition policy decisions).
+
+#### Implementation Status: partial
 
 ______________________________________________________________________
