@@ -26,45 +26,45 @@ x-trestle-set-params:
     aggregates:
       - at-01_odp.01
       - at-01_odp.02
-    profile-param-value-origin: <REPLACE_ME>
+    profile-param-value-origin: organization
   at-01_odp.01:
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - Brian Chaplow (system owner, sole operator)
+    profile-param-value-origin: organization
   at-01_odp.02:
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - Brian Chaplow (system owner, sole operator)
+    profile-param-value-origin: organization
   at-01_odp.03:
     alt-identifier: at-1_prm_2
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - Brian Chaplow (system owner, sole operator)
+    profile-param-value-origin: organization
   at-01_odp.04:
     alt-identifier: at-1_prm_3
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - annually or when a new ADR records a scope or architecture change
+    profile-param-value-origin: organization
   at-01_odp.05:
     alt-identifier: at-1_prm_4
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - new ADR filing, phase completion, or architecture change
+    profile-param-value-origin: organization
   at-01_odp.06:
     alt-identifier: at-1_prm_5
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - annually or when a new ADR records a scope or architecture change
+    profile-param-value-origin: organization
   at-01_odp.07:
     alt-identifier: at-1_prm_6
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - new ADR filing, phase completion, or architecture change
+    profile-param-value-origin: organization
   at-01_odp.08:
     alt-identifier: at-1_prm_7
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - system-level
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -142,8 +142,10 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: at-1 -->
+This SSP (`trestle-workspace/mss-ssp/`) serves as the system-level awareness and training policy for the MSS homelab. It addresses purpose, scope, roles, responsibilities, and compliance expectations for a single-operator personal system. No separate policy document is needed; the SSP combined with the `homelab-fedramp-low` git history and ADR chain (ADRs 0001--0008) constitutes the policy and procedure record. Brian Chaplow is designated as the sole person responsible for developing, documenting, and disseminating all awareness and training material.
 
-#### Implementation Status: planned
+Policy is reviewed annually and whenever a new ADR records a scope or architecture change. The `runbooks/monthly-conmon.md` defines the ConMon review cadence, and the `C:/Projects/CLAUDE.md` project ledger (last updated 2026-04-08) provides an observable last-review timestamp. The policy gap is that this document is embedded in the SSP rather than a standalone policy artifact; NIST guidance explicitly permits this consolidation, making the status partial rather than not-applicable.
+
+#### Implementation Status: partial
 
 ______________________________________________________________________

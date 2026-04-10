@@ -26,30 +26,30 @@ x-trestle-set-params:
     aggregates:
       - at-03_odp.01
       - at-03_odp.02
-    profile-param-value-origin: <REPLACE_ME>
+    profile-param-value-origin: organization
   at-03_odp.01:
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - Brian Chaplow -- system owner, ISSO, system administrator, SOC analyst, incident responder, vulnerability manager, assessment coordinator (all roles held by sole operator)
+    profile-param-value-origin: organization
   at-03_odp.02:
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - Brian Chaplow (sole operator)
+    profile-param-value-origin: organization
   at-03_odp.03:
     alt-identifier: at-3_prm_2
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - continuous -- operational homelab activity serves as ongoing role-based training
+    profile-param-value-origin: organization
   at-03_odp.04:
     alt-identifier: at-3_prm_3
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - updated with each new phase completion or ADR filing
+    profile-param-value-origin: organization
   at-03_odp.05:
     alt-identifier: at-3_prm_4
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - new phase, new in-boundary component, security incident requiring new role skill
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -109,8 +109,10 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: at-3 -->
+All roles in the MSS homelab -- system owner, ISSO, system administrator, SOC analyst, incident responder, vulnerability manager, and assessment coordinator -- are held by a single person: Brian Chaplow. Role-based training is fulfilled through operational mastery and self-directed study specific to each role. As system administrator, the operator maintains 15 Wazuh agents, manages Proxmox VMs, and resolves infrastructure failures (ADR 0005 PBS automount fix, ADR 0003 RegScale install deviation). As SOC analyst, the operator reviews Wazuh alerts, tunes detection rules, and operates the Phase 14 Zeek + Logstash enrichment pipeline daily. As ISSO and assessment coordinator, the operator authored this SSP, built the OSCAL ConMon pipelines (Plan 2), and executed 130 tests across the FedRAMP Low ConMon program.
 
-#### Implementation Status: planned
+The gap is the absence of a formal pre-access role-based training attestation; the operator self-authorizes, so there is no distinct authorization event to tie a training record to. The ADR chain (ADRs 0001--0008) and the 14-phase homelab build history constitute the auditable record of role-specific competence acquired under real operational conditions.
+
+#### Implementation Status: partial
 
 ______________________________________________________________________

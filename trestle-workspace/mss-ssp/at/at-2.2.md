@@ -44,8 +44,8 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: at-2.2 -->
+Not applicable. The MSS homelab is a single-operator personal system; insider threat as a control concept presupposes a multi-person workforce where one member could act against organizational interests without detection by others. With exactly one operator who is also the system owner, ISSO, and AO-equivalent, there is no distinct insider-versus-organization dynamic and no meaningful training program on recognizing insider-threat indicators.
 
-#### Implementation Status: planned
+#### Implementation Status: not-applicable
 
 ______________________________________________________________________

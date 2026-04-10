@@ -26,43 +26,43 @@ x-trestle-set-params:
     aggregates:
       - at-02_odp.01
       - at-02_odp.02
-    profile-param-value-origin: <REPLACE_ME>
+    profile-param-value-origin: organization
   at-2_prm_2:
     aggregates:
       - at-02_odp.03
       - at-02_odp.04
-    profile-param-value-origin: <REPLACE_ME>
+    profile-param-value-origin: organization
   at-02_odp.01:
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - continuous -- operator reviews WF10 morning briefing daily and reviews Wazuh and OpenCTI alerts as part of normal SOC operations
+    profile-param-value-origin: organization
   at-02_odp.02:
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - Brian Chaplow (system owner, sole operator)
+    profile-param-value-origin: organization
   at-02_odp.03:
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - new phase completion, significant security incident, new CVE class introduced to the environment
+    profile-param-value-origin: organization
   at-02_odp.04:
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - Brian Chaplow (system owner, sole operator)
+    profile-param-value-origin: organization
   at-02_odp.05:
     alt-identifier: at-2_prm_3
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - daily WF10 morning briefing (Discord #morning-briefing), OpenCTI IOC sync every 6 hours, Grafana threat-intel dashboard review, ADR authoring as incident-learning record
+    profile-param-value-origin: organization
   at-02_odp.06:
     alt-identifier: at-2_prm_4
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - continuously via OpenCTI connector feeds and ADR filings
+    profile-param-value-origin: organization
   at-02_odp.07:
     alt-identifier: at-2_prm_5
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - new security incident, new phase adding in-boundary components, significant CVE advisory
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -126,8 +126,10 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: at-2 -->
+The operator maintains continuous security literacy through active operation of the MSS homelab SOC -- reviewing Wazuh alerts from 15 agents, enriching OpenCTI v7 indicators via 6 connectors (MITRE ATT&CK, AbuseIPDB, threat feeds), and receiving the WF10 morning briefing (Shuffle cron 0530 EST, Discord `#morning-briefing`) summarizing the prior night's Zeek network activity from the Phase 14 pipeline. The OpenCTI IOC sync cron (`0 */6 * * *`) pushes current threat indicators to Wazuh CDB lists and the haccp `opencti-threat-intel` ELK index, providing live awareness of active IOCs. ADR 0005 (PBS backup gap detection and automount fix) is a concrete example of applied security awareness: the operator independently identified, diagnosed, and resolved a security-relevant configuration failure.
 
-#### Implementation Status: planned
+The gap is the absence of a formal training completion attestation or scheduled course. Awareness is continuous and operationally driven rather than time-bounded with a recorded completion date. This makes the status partial -- the substance of awareness exists and is current, but no LMS record is generated.
+
+#### Implementation Status: partial
 
 ______________________________________________________________________

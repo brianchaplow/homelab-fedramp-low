@@ -25,8 +25,8 @@ x-trestle-set-params:
   at-04_odp:
     alt-identifier: at-4_prm_1
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - indefinitely while the GitHub repository is active -- git history is immutable and retained at github.com/brianchaplow/homelab-fedramp-low
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -65,8 +65,10 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: at-4 -->
+The `homelab-fedramp-low` git repository on GitHub (`github.com/brianchaplow/homelab-fedramp-low`) serves as the training record for this system. Every ADR filed documents a learning event: a deviation discovered, a technology evaluated, a decision made under real operational conditions. The git commit log provides immutable, timestamped evidence of when each learning event occurred and what decision followed. Eight ADRs filed between 2026-04-08 and 2026-04-09 (ADRs 0001--0008) and the `C:/Projects/CLAUDE.md` phase-completion ledger (Phases 1--14, with dates) constitute the operator's training activity record. Retention is indefinite while the repository remains active; no data-retention cutoff is imposed in a personal homelab context.
 
-#### Implementation Status: planned
+The gap is the absence of a dedicated training-monitoring mechanism that would alert on overdue training. The control requires "document AND monitor"; git history satisfies "document" but monitoring of training currency is manual and not automated.
+
+#### Implementation Status: partial
 
 ______________________________________________________________________
