@@ -25,23 +25,23 @@ x-trestle-set-params:
   ps-05_odp.01:
     alt-identifier: ps-5_prm_1
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - not-applicable - single-operator personal system
+    profile-param-value-origin: organization
   ps-05_odp.02:
     alt-identifier: ps-5_prm_2
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - not-applicable - single-operator personal system
+    profile-param-value-origin: organization
   ps-05_odp.03:
     alt-identifier: ps-5_prm_3
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - not-applicable - single-operator personal system
+    profile-param-value-origin: organization
   ps-05_odp.04:
     alt-identifier: ps-5_prm_4
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - not-applicable - single-operator personal system
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -85,8 +85,8 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: ps-5 -->
+Not applicable. MSS is a single-operator personal system; there are no personnel transfers or reassignments possible because there is only one operator and no organizational hierarchy into which a position change could occur. Access authorizations are static, provisioned to Brian Chaplow at deployment and documented in deploy/ READMEs, with no position-change trigger that would invoke a review or access modification.
 
-#### Implementation Status: planned
+#### Implementation Status: not-applicable
 
 ______________________________________________________________________

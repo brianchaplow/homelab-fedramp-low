@@ -26,15 +26,15 @@ x-trestle-set-params:
     aggregates:
       - ps-03_odp.01
       - ps-03_odp.02
-    profile-param-value-origin: <REPLACE_ME>
+    profile-param-value-origin: organization
   ps-03_odp.01:
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - not-applicable - single-operator personal system
+    profile-param-value-origin: organization
   ps-03_odp.02:
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - not-applicable - single-operator personal system
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -73,8 +73,8 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: ps-3 -->
+Not applicable. MSS is a single-operator personal system; there is only one individual with access -- Brian Chaplow -- and no organizational hiring process through which a pre-access screening requirement or rescreening schedule could be triggered. Access to in-boundary systems is technically enforced via SSH key-only authentication with no external accounts provisioned, which means the control's intent (limiting access to vetted individuals) is achieved architecturally rather than through a personnel screening process.
 
-#### Implementation Status: planned
+#### Implementation Status: not-applicable
 
 ______________________________________________________________________

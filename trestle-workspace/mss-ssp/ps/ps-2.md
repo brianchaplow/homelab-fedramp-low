@@ -25,8 +25,8 @@ x-trestle-set-params:
   ps-02_odp:
     alt-identifier: ps-2_prm_1
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - not-applicable - single-operator personal system
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -66,8 +66,8 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: ps-2 -->
+Not applicable. MSS is a single-operator personal system; there are no organizational positions to designate, no OPM Position Designation System model to apply, and no screening criteria to establish, because Brian Chaplow is the sole operator holding all roles simultaneously with no employer-employee relationship in scope.
 
-#### Implementation Status: planned
+#### Implementation Status: not-applicable
 
 ______________________________________________________________________

@@ -25,13 +25,13 @@ x-trestle-set-params:
   ps-06_odp.01:
     alt-identifier: ps-6_prm_1
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - annually and after each plan phase completion or when the system boundary changes
+    profile-param-value-origin: organization
   ps-06_odp.02:
     alt-identifier: ps-6_prm_2
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - not-applicable - single-operator personal system; no external individuals require re-sign workflow
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -77,8 +77,10 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: ps-6 -->
+The repo LICENSE (MIT License, copyright 2026 Brian Chaplow) serves as the system-level access agreement artifact, establishing ownership and usage terms for the MSS boundary. The CLAUDE.md policy document (`/c/Projects/CLAUDE.md`) documents the behavioral rules the operator commits to: the VLAN 40 attack-only boundary, credential handling conventions, the no-hardcoded-secrets policy, and SSH key-only authentication requirements. ADR 0001 (preflight and EULA analysis) constitutes the pre-access review analog, documenting the decisions made before system deployment began. These collectively address PS-6(a): an access agreement artifact exists and is documented. Review cadence is set at annually and after each plan phase completion or boundary change.
 
-#### Implementation Status: planned
+The gap is at PS-6(c): no external individual has ever been granted access to in-boundary systems, so the pre-signing and re-signing workflow has never been exercised and there is no second signatory. The access agreement artifact exists and the operator-owner implicitly agrees to all terms as the system's author; the external-individual signing workflow has no current applicability because MSS is a single-operator system with no contributors, contractors, or external accounts.
+
+#### Implementation Status: partial
 
 ______________________________________________________________________

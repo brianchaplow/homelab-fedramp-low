@@ -25,13 +25,13 @@ x-trestle-set-params:
   ps-08_odp.01:
     alt-identifier: ps-8_prm_1
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - not-applicable - single-operator personal system
+    profile-param-value-origin: organization
   ps-08_odp.02:
     alt-identifier: ps-8_prm_2
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - not-applicable - single-operator personal system
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -67,8 +67,8 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: ps-8 -->
+Not applicable. MSS is a single-operator personal system; there is only one individual with system access -- Brian Chaplow -- and no employer-employee or supervisor-subordinate relationship through which a formal sanctions process could be imposed or a notification sent. Self-sanction is not a coherent security control. Wazuh monitors all 15 in-boundary agents and provides an independent audit trail for behavioral compliance, but anomaly detection is not a sanctions process.
 
-#### Implementation Status: planned
+#### Implementation Status: not-applicable
 
 ______________________________________________________________________

@@ -26,45 +26,45 @@ x-trestle-set-params:
     aggregates:
       - ps-01_odp.01
       - ps-01_odp.02
-    profile-param-value-origin: <REPLACE_ME>
+    profile-param-value-origin: organization
   ps-01_odp.01:
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - Brian Chaplow (system owner, sole operator)
+    profile-param-value-origin: organization
   ps-01_odp.02:
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - Brian Chaplow (system owner, sole operator)
+    profile-param-value-origin: organization
   ps-01_odp.03:
     alt-identifier: ps-1_prm_2
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - Brian Chaplow (system owner)
+    profile-param-value-origin: organization
   ps-01_odp.04:
     alt-identifier: ps-1_prm_3
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - annually and after each plan phase completion or security incident
+    profile-param-value-origin: organization
   ps-01_odp.05:
     alt-identifier: ps-1_prm_4
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - plan phase completion, new service enrollment, security incident, or regulatory change
+    profile-param-value-origin: organization
   ps-01_odp.06:
     alt-identifier: ps-1_prm_5
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - annually and after each plan phase completion
+    profile-param-value-origin: organization
   ps-01_odp.07:
     alt-identifier: ps-1_prm_6
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - plan phase completion, new service enrollment, or deviation requiring an ADR
+    profile-param-value-origin: organization
   ps-01_odp.08:
     alt-identifier: ps-1_prm_7
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - system-level
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -142,8 +142,10 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: ps-1 -->
+The MSS personnel security policy is documented at the system level. The CLAUDE.md policy document (`/c/Projects/CLAUDE.md`) establishes the single-operator access model, credential conventions, SSH key-only authentication requirements, and the attack-boundary rule (all attacks must target VLAN 40 only). This SSP -- together with ADR 0001 (preflight/EULA analysis), ADR 0002 (Plan 1 deployment completion), and ADR 0008 (Plan 3 pre-execution realignment) -- collectively constitutes the personnel security policy and procedure record for the MSS boundary. Brian Chaplow serves as the sole designated official for policy development, documentation, and dissemination. Policy is reviewed annually and following each plan phase completion or security incident; procedures are reviewed on the same cadence and whenever a deviation requires an ADR.
 
-#### Implementation Status: planned
+The gap relative to a multi-person organization is acknowledged: no formal HR-style policy publication process exists and no designated separate policy official is possible for a single-operator system. Brian Chaplow performs all policy, management, and compliance roles simultaneously. Dissemination is therefore internal to a single role, and the review cycle is event-driven via ADR authoring rather than calendar-driven via a policy committee. This constitutes a partial implementation -- policy artifacts exist and are actively maintained, but the formal multi-role dissemination model presupposed by PS-1 does not apply.
+
+#### Implementation Status: partial
 
 ______________________________________________________________________

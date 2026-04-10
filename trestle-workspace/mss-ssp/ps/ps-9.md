@@ -44,8 +44,8 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: ps-9 -->
+Not applicable. MSS is a single-operator personal system; there are no formal organizational position descriptions to incorporate security and privacy roles into. Brian Chaplow holds all roles simultaneously (system owner, administrator, security officer, and sole operator), and the CLAUDE.md policy document serves as the informal role definition by convention rather than as a position description in any HR or organizational sense.
 
-#### Implementation Status: planned
+#### Implementation Status: not-applicable
 
 ______________________________________________________________________
