@@ -25,18 +25,18 @@ x-trestle-set-params:
   pe-08_odp.01:
     alt-identifier: pe-8_prm_1
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - not-applicable -- single-operator personal system; no visitors admitted to facility
+    profile-param-value-origin: organization
   pe-08_odp.02:
     alt-identifier: pe-8_prm_2
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - not-applicable -- single-operator personal system; no visitor access records generated
+    profile-param-value-origin: organization
   pe-08_odp.03:
     alt-identifier: pe-8_prm_3
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - not-applicable -- single-operator personal system; no visitor access records generated
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -76,8 +76,8 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: pe-8 -->
+This control is not applicable. The Managed SOC Service operates in a private residence with Brian Chaplow as the sole operator and sole occupant of the equipment room. No visitors are admitted to the facility where the system resides. Because no visitor access occurs, visitor access records are not generated, not maintained, and not reviewed -- there is no gap to document, only an absence of applicability. This N/A determination is consistent with PE-2 (access authorizations: single-entry list) and PE-3 (physical access control: no visitor escort procedure because no visitors are admitted). The whole-project design §PE honest-gaps row acknowledges the residential single-operator context that underlies all PE N/A determinations.
 
-#### Implementation Status: planned
+#### Implementation Status: not-applicable
 
 ______________________________________________________________________

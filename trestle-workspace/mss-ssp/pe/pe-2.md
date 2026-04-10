@@ -25,8 +25,8 @@ x-trestle-set-params:
   pe-02_odp:
     alt-identifier: pe-2_prm_1
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - not-applicable -- single-entry access list (system owner only); reviewed continuously by virtue of sole-operator status
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -74,8 +74,10 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: pe-2 -->
+The Managed SOC Service resides in a private residence accessible only to the homeowner/operator, Brian Chaplow. The authorized-access list is a single entry -- the system owner -- enforced by residential security mechanisms: keyed deadbolt exterior doors, a home alarm system, and a dedicated home office/equipment room. Physical access authorization credentials are residential door keys held by the homeowner. No external personnel, contractors, or maintenance staff have authorized access to the facility. Unauthorized physical access would be observable as unexpected service disruptions detected by Wazuh agent monitoring or Grafana alerts on brisket infrastructure health. The access list is implicitly reviewed on a continuous basis: as the sole occupant and keyholder, the operator is the list, and no removal procedure is needed unless circumstances change.
 
-#### Implementation Status: planned
+This implementation is partial rather than not-applicable because a genuine authorized-access list exists (one entry: system owner), physical access credentials are issued (residential keys), and access control is actively enforced by residential mechanisms. The gaps are formality: no badge or ID-card system, no documented review schedule with a separate record, and no formal removal procedure -- all inapplicable for a single-operator residential system. These gaps are acknowledged in the whole-project design §PE honest-gaps row and represent an intentional residential-context scoping decision.
+
+#### Implementation Status: partial
 
 ______________________________________________________________________

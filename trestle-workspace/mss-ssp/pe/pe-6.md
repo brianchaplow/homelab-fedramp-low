@@ -25,13 +25,13 @@ x-trestle-set-params:
   pe-06_odp.01:
     alt-identifier: pe-6_prm_1
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - not-applicable -- no formal physical access log system; Wazuh agent health reviewed daily via WF2 watch digest
+    profile-param-value-origin: organization
   pe-06_odp.02:
     alt-identifier: pe-6_prm_2
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - unexpected host unavailability, Wazuh agent disconnect, or Grafana thermal/infrastructure alert
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -77,8 +77,10 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: pe-6 -->
+Physical access monitoring relies on the Wazuh SIEM and Grafana environmental alerting as the primary detection mechanisms for physical security events. The Grafana alert "GPU Thermal Critical -- Brisket Above 90C" (uid=dfihoiidr7k00c, `brisket-setup/monitoring/build-grafana-alerts.py`) evaluates the `nvidia_smi_temperature_gpu{job="brisket-nvidia"}` metric on a 2-minute window and routes critical alerts to the `#infrastructure-alerts` Discord channel via the `discord-infrastructure` policy. This alert proved operational during the Phase 14 thermal hardening incident (2026-04-08): the brisket RTX A1000 reached 87C under unbounded Ollama load, triggering detection and remediation (power-capped to 40W, temperature reduced to 63C). Wazuh monitors all 15 in-boundary agents continuously; unexpected agent disconnects or service disruptions serve as indirect indicators of physical access events (power loss, accidental cable pull, or equipment tampering). The WF2 watch digest (cron 0600/1800) reviews agent health and outstanding alerts twice daily. Any detected physical security incident is routed to the homeowner/operator for response, who coordinates consequences through the Wazuh/Shuffle/TheHive incident response pipeline for digital impacts.
 
-#### Implementation Status: planned
+This implementation is partial because no dedicated physical access monitoring system is deployed -- no video surveillance cameras, badge readers, or motion sensors exist in the facility. Physical access "log review" is organic: the sole occupant of the equipment room is the homeowner, so anomalous access events would be directly observed rather than reviewed from a log. The Grafana thermal alert and Wazuh agent monitoring provide meaningful physical-access-consequence visibility (equipment tampering or power disruption would manifest as service anomalies) but do not substitute for enterprise-grade physical monitoring controls. This gap is an intentional residential-context scoping decision documented in the whole-project design §PE honest-gaps row.
+
+#### Implementation Status: partial
 
 ______________________________________________________________________

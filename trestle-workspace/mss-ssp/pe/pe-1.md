@@ -26,45 +26,45 @@ x-trestle-set-params:
     aggregates:
       - pe-01_odp.01
       - pe-01_odp.02
-    profile-param-value-origin: <REPLACE_ME>
+    profile-param-value-origin: organization
   pe-01_odp.01:
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - Brian Chaplow (system owner, sole operator)
+    profile-param-value-origin: organization
   pe-01_odp.02:
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - Brian Chaplow (system owner, sole operator)
+    profile-param-value-origin: organization
   pe-01_odp.03:
     alt-identifier: pe-1_prm_2
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - annually and after each plan phase completion or physical infrastructure change
+    profile-param-value-origin: organization
   pe-01_odp.04:
     alt-identifier: pe-1_prm_3
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - plan phase completion, rack rebuild or equipment addition, security incident, or regulatory change
+    profile-param-value-origin: organization
   pe-01_odp.05:
     alt-identifier: pe-1_prm_4
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - annually and after each plan phase completion
+    profile-param-value-origin: organization
   pe-01_odp.06:
     alt-identifier: pe-1_prm_5
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - plan phase completion, new service enrollment, or physical infrastructure change
+    profile-param-value-origin: organization
   pe-01_odp.07:
     alt-identifier: pe-1_prm_6
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - Brian Chaplow (system owner)
+    profile-param-value-origin: organization
   pe-01_odp.08:
     alt-identifier: pe-1_prm_7
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - Brian Chaplow (system owner)
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -114,7 +114,7 @@ x-trestle-global:
 
     - \[PE-01a.01(b)\] the [Selection (one or more): organization-level; mission/business process-level; system-level] physical and environmental protection policy is consistent with applicable laws, Executive Orders, directives, regulations, policies, standards, and guidelines;
 
-- \[PE-01b.\] the [official] is designated to manage the development, documentation, and dissemination of the physical and environmental protection policy and procedures;
+- \[PE-01b.\] the [official] is designated to manage the development, documentation, and disseminate of the physical and environmental protection policy and procedures;
 
 - \[PE-01c.\]
 
@@ -142,8 +142,10 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: pe-1 -->
+The Managed SOC Service operates in a private residence with Brian Chaplow (system owner and sole operator) as the designated official responsible for physical and environmental protection policy. The policy exists as a distributed set of artifacts: this SSP document, ADR 0001 (pre-flight and EULA), ADR 0002 (Plan 1 deployment completion), ADR 0005 (PBS backup gap and automount fix -- documenting a physical rack reboot event and its downstream impact), and ADR 0008 (Plan 3 pre-execution realignment). The whole-project design document explicitly acknowledges the PE family as partial (residential homelab substitutes homeowner access control for enterprise physical security) and the rack build design spec records the physical environment specification including equipment placement, power architecture, airflow, and cable management. Policy review is event-driven: at each plan phase boundary and after any physical infrastructure change. The sole dissemination audience is the system owner.
 
-#### Implementation Status: planned
+This implementation is partial rather than not-applicable because policy artifacts genuinely exist across the ADR corpus and design documents, but no standalone formal enterprise-grade PE policy document has been produced for a single-operator residential system. The gap is formality of document structure, not absence of policy intent. The whole-project design §PE honest-gaps row documents this limitation as intentional: "Partial -- homelab rack locks + camera." This SSP and its associated ADRs collectively constitute the PE policy record for the Managed SOC Service; they address purpose, scope, roles, responsibilities, and compliance consistent with the FedRAMP Rev 5 Low baseline for a private-residence homelab context.
+
+#### Implementation Status: partial
 
 ______________________________________________________________________

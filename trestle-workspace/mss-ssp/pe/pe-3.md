@@ -26,55 +26,55 @@ x-trestle-set-params:
     aggregates:
       - pe-03_odp.09
       - pe-03_odp.10
-    profile-param-value-origin: <REPLACE_ME>
+    profile-param-value-origin: organization
   pe-03_odp.01:
     alt-identifier: pe-3_prm_1
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - exterior residential entry door (keyed deadbolt) and home office/equipment room door
+    profile-param-value-origin: organization
   pe-03_odp.02:
     alt-identifier: pe-3_prm_2
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - residential keyed deadbolt and home alarm system
+    profile-param-value-origin: organization
   pe-03_odp.03:
     alt-identifier: pe-3_prm_3
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - not-applicable -- residential facility; no digital physical access audit log system deployed
+    profile-param-value-origin: organization
   pe-03_odp.04:
     alt-identifier: pe-3_prm_4
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - not-applicable -- no publicly accessible areas within the facility
+    profile-param-value-origin: organization
   pe-03_odp.05:
     alt-identifier: pe-3_prm_5
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - not-applicable -- no visitors are admitted to the equipment area
+    profile-param-value-origin: organization
   pe-03_odp.06:
     alt-identifier: pe-3_prm_6
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - residential door keys (2 copies held by system owner)
+    profile-param-value-origin: organization
   pe-03_odp.07:
     alt-identifier: pe-3_prm_7
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - annually
+    profile-param-value-origin: organization
   pe-03_odp.08:
     alt-identifier: pe-3_prm_8
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - when keys are lost or when the residential property changes ownership
+    profile-param-value-origin: organization
   pe-03_odp.09:
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - not-applicable -- no combination locks deployed
+    profile-param-value-origin: organization
   pe-03_odp.10:
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - when keys are lost or when individuals with key access are no longer authorized
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -146,8 +146,10 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: pe-3 -->
+Physical access to the facility is controlled by residential mechanisms: keyed deadbolt exterior doors and a home alarm system enforce entry and exit control at the two access points (exterior door and home office/equipment room door). Entry requires the homeowner's physical key; the alarm system provides a secondary deterrent and detection layer. The 12U open-frame rack (consolidated 2026-04-07) is located under PITBOSS's desk inside the dedicated office space. No publicly accessible areas exist within the facility. No visitors are admitted to the equipment room. Residential door keys (2 copies) are secured by the homeowner and inventoried annually; key changes occur when keys are lost or when individuals with key access are no longer authorized. The MokerLink managed switch provides complementary logical-layer access control (ACL `sear-brisket`, mirror port isolation), and Wazuh monitors all 15 in-boundary agents for unexpected activity that could indicate unauthorized physical access to a host.
 
-#### Implementation Status: planned
+This implementation is partial because, while physical access is actively controlled by residential mechanisms, no formal digital physical access audit log is maintained for entry/exit events, there is no electronic access control system, and no formal visitor escort procedure exists (there are no visitors). These gaps are a direct consequence of the residential-context scoping: a private residence does not generate badge-reader logs or surveillance footage comparable to a commercial data center. The rack build design document records the physical configuration (equipment placement, layout, power) as the closest analog to a physical access control system specification. ADR 0005 demonstrates that physical events (the 2026-04-07 rack consolidation reboot) are recorded and analyzed, providing informal physical-event tracking even absent a formal audit log system.
+
+#### Implementation Status: partial
 
 ______________________________________________________________________
