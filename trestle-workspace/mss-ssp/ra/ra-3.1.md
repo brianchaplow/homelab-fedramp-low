@@ -25,13 +25,13 @@ x-trestle-set-params:
   ra-03.01_odp.01:
     alt-identifier: ra-3.1_prm_1
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - all 5 in-boundary hardware assets (brisket, haccp, smokehouse, dojo VM, regscale VM) and all open-source software stacks (Wazuh 4.14.4, ELK 8.17, DefectDojo 2.57.0, RegScale CE, Trestle 4.0.1)
+    profile-param-value-origin: organization
   ra-03.01_odp.02:
     alt-identifier: ra-3.1_prm_2
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - annually
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -67,8 +67,10 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: ra-3.1 -->
+Supply chain risk for the MSS homelab is assessed informally through hardware procurement provenance and software version-pinning practices documented in the ADR chain. All 5 in-boundary hosts are Lenovo ThinkStation P340 Tiny or QNAP commercial off-the-shelf (COTS) hardware sourced from US vendors, reducing counterfeit and malicious hardware insertion risk. Software stack versions are pinned by ADR record: Trestle 4.0.1 (ADR 0006 Deviation 9), DefectDojo 2.57.0 (ADR 0004), and RegScale CE (ADR 0003) are frozen at known-good versions with Proxmox VM snapshots providing rollback capability. The `inventory/overlay.yaml` records hardware model, asset tags, and end-of-life dates for all in-boundary hosts -- brisket 2029-04, haccp 2028-04, smokehouse 2027-12 -- providing a hardware lifecycle visibility artifact. The `wazuh-states-vulnerabilities-*` index captures the installed package set for each agent, enabling detection of unauthorized software supply chain changes on a continuous basis.
 
-#### Implementation Status: planned
+The partial status reflects genuine scope limits: no formal vendor contracts, no hardware SBOM, no third-party supply chain attestation process, and no software composition analysis (SCA) tool. These gaps are expected for a single-operator portfolio lab with no vendor relationships. The supply chain assessment is reviewed annually aligned with the hardware end-of-life review cadence in `inventory/overlay.yaml`, and when a significant change to the relevant supply chain or system environment is recorded in an ADR.
+
+#### Implementation Status: partial
 
 ______________________________________________________________________

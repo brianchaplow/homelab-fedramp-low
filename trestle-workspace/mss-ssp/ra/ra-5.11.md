@@ -42,8 +42,10 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: ra-5.11 -->
+Not applicable. The Managed SOC Service is a single-operator personal portfolio system with no public-facing attack surface. All in-boundary hosts reside on private VLAN 20 (10.10.20.0/24) and VLAN 30 (10.10.30.0/24) with no inbound internet access -- OPNsense on the perimeter firewall (10.10.10.1) blocks all unsolicited inbound connections by default, and no public IP addresses are assigned to any in-boundary MSS host. Remote access is restricted to the operator via Tailscale VPN. There is no web application, API endpoint, or service exposed to external researchers from which vulnerabilities could be discovered and reported. A public disclosure channel would have no mechanism to receive reports and no scope to authorize good-faith research against private homelab infrastructure.
 
-#### Implementation Status: planned
+The operator's GCP VM (external, Tailscale 100.125.40.97) hosts public-facing websites (brianchaplow.com, bytesbourbonbbq.com) but those are explicitly out-of-boundary assets per `inventory/overlay.yaml` (reason: "Customer asset on GCP") and are not part of the MSS system boundary. The not-applicable determination holds for the current system boundary and would be revisited if any in-boundary service were exposed to the internet in a future phase.
+
+#### Implementation Status: not-applicable
 
 ______________________________________________________________________

@@ -25,13 +25,13 @@ x-trestle-set-params:
   ra-05.02_odp.01:
     alt-identifier: ra-5.2_prm_1
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - prior to a new scan; when new vulnerabilities are identified and reported
+    profile-param-value-origin: organization
   ra-05.02_odp.02:
     alt-identifier: ra-5.2_prm_2
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - monthly (ConMon pipeline run) and continuously (Wazuh NVD feed refresh)
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -63,8 +63,8 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: ra-5.2 -->
+Wazuh's vulnerability detector automatically updates its NVD feed and vendor-specific advisories as part of the Wazuh manager's built-in feed management. When the manager identifies a new CVE relevant to an in-boundary package version, it creates a new document in `wazuh-states-vulnerabilities-*` on the next agent check-in -- no operator action required. The `VULN_INDEX_PATTERN = "wazuh-states-vulnerabilities-*"` wildcard in `pipelines/common/wazuh_indexer.py` ensures the monthly pipeline pull captures any new vulnerability documents across future index shards automatically. OpenCTI v7 on brisket augments this by syncing fresh IOCs from 6 connectors to Wazuh CDB lists every 6 hours (cron `0 */6 * * *`), continuously extending the scanner's IOC-based detection coverage without manual update. The DefectDojo engagement auto-create logic (`_engagement_name()` returns `ConMon YYYY-MM`) ensures each monthly pipeline run opens a fresh engagement rather than silently accumulating into a stale one, so new NVD entries discovered since the prior run are captured as new findings with correct detection dates. Together, the Wazuh built-in NVD refresh and the OpenCTI IOC sync implement RA-5.2 continuously and automatically for both host-based vulnerability enumeration and network-based IOC detection.
 
-#### Implementation Status: planned
+#### Implementation Status: implemented
 
 ______________________________________________________________________

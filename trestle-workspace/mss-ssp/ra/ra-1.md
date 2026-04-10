@@ -26,45 +26,45 @@ x-trestle-set-params:
     aggregates:
       - ra-01_odp.01
       - ra-01_odp.02
-    profile-param-value-origin: <REPLACE_ME>
+    profile-param-value-origin: organization
   ra-01_odp.01:
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - Brian Chaplow (system owner, sole operator)
+    profile-param-value-origin: organization
   ra-01_odp.02:
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - Brian Chaplow (system owner, sole operator)
+    profile-param-value-origin: organization
   ra-01_odp.03:
     alt-identifier: ra-1_prm_2
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - annually
+    profile-param-value-origin: organization
   ra-01_odp.04:
     alt-identifier: ra-1_prm_3
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - following a significant architecture change, phase completion, or security incident as documented in an ADR
+    profile-param-value-origin: organization
   ra-01_odp.05:
     alt-identifier: ra-1_prm_4
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - annually
+    profile-param-value-origin: organization
   ra-01_odp.06:
     alt-identifier: ra-1_prm_5
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - following a significant architecture change, phase completion, or security incident as documented in an ADR
+    profile-param-value-origin: organization
   ra-01_odp.07:
     alt-identifier: ra-1_prm_6
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - system-level
+    profile-param-value-origin: organization
   ra-01_odp.08:
     alt-identifier: ra-1_prm_7
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - Brian Chaplow (system owner, sole operator)
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -142,8 +142,10 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: ra-1 -->
+The Managed SOC Service operates under a system-level risk assessment policy embodied in the ADR chain (ADRs 0001-0008) and the Plan design specifications. ADR 0008 establishes the pre-execution policy governing SSP authoring; ADR 0006 establishes the ConMon pipeline policy, including vulnerability ingestion cadence, SLA window values, and remediation tracking conventions. Brian Chaplow serves as the sole operator and designated official responsible for policy development, documentation, and dissemination. The policy is reviewed annually and whenever a significant architecture change, phase completion, or security incident is documented in a new ADR. Risk assessment procedures are codified in `runbooks/monthly-conmon.md` and executed via the single-entry-point `./pipelines.sh conmon` orchestration script.
 
-#### Implementation Status: planned
+The partial status reflects an honest gap: no formal signed policy document exists separate from the ADR chain. This is a single-operator personal portfolio system with no HR organization or formal approval chain. The ADR pattern satisfies the spirit of RA-1 for a homelab posture -- each ADR documents a decision, rationale, and consequence in a format a GRC reviewer can follow, and the four content decisions in the Plan 3 design spec (`docs/superpowers/specs/2026-04-09-homelab-fedramp-low-plan-3-ssp-authoring-design.md`) serve as the formal authoring policy. The gap -- no standalone signed RA policy document -- is acknowledged and would be the first item addressed before a real ATO submission.
+
+#### Implementation Status: partial
 
 ______________________________________________________________________

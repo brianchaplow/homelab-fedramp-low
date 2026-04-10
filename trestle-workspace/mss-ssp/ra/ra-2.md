@@ -54,8 +54,10 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: ra-2 -->
+The Managed SOC Service is categorized as FIPS 199 Low across all three security objectives -- Confidentiality Low, Integrity Low, and Availability Low. This categorization is consistent with the system's purpose: a portfolio-demonstration ConMon environment with no PII, no production customer data, and no life-safety functions. The FedRAMP Low baseline was explicitly selected at project inception and documented in ADR 0001 (`docs/adr/0001-preflight-and-eula.md`). The FedRAMP Rev 5 Low profile (`trestle-workspace/profiles/fedramp-rev5-low/profile.json`) operationalizes the categorization by selecting exactly 156 controls appropriate for Low-impact systems, and the OSCAL SSP (`oscal/ssp.json`) carries the system identifier `managed-soc-service` throughout. The security categorization decision has been reviewed and approved by Brian Chaplow as the authorizing official and sole operator.
 
-#### Implementation Status: planned
+The IIW (`inventory/IIW-2026-04.xlsx`) records 7 in-boundary components -- brisket, haccp, smokehouse, dojo VM, regscale VM, pitcrew, and smoker -- all classified as Low-impact assets. Supporting rationale for the Low categorization: the system processes no classified or sensitive data, hosts no public-facing services on in-boundary hosts, and is not in the operational path of any mission-critical function. Loss of confidentiality, integrity, or availability of the MSS homelab would result in limited adverse effect on operator operations and no effect on any external party. The categorization is reviewed at each annual ConMon cycle and whenever a new phase adds in-boundary infrastructure.
+
+#### Implementation Status: implemented
 
 ______________________________________________________________________

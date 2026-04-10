@@ -26,25 +26,25 @@ x-trestle-set-params:
     aggregates:
       - ra-05_odp.01
       - ra-05_odp.02
-    profile-param-value-origin: <REPLACE_ME>
+    profile-param-value-origin: organization
   ra-05_odp.01:
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - continuously (Wazuh vulnerability detector runs on agent check-in) and monthly (full ConMon pipeline via ./pipelines.sh conmon)
+    profile-param-value-origin: organization
   ra-05_odp.02:
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - Wazuh syscollector collects package inventory on agent check-in; the vulnerability detector cross-references NVD; results are stored in wazuh-states-vulnerabilities-* and ingested monthly via pipelines/ingest/wazuh_vulns.py
+    profile-param-value-origin: organization
   ra-05_odp.03:
     alt-identifier: ra-5_prm_2
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - Critical 15 days; High 30 days; Medium 90 days; Low 180 days -- per FedRAMP Low ConMon SLA windows, enforced in pipelines/build/oscal_poam.py SLA_DAYS dict
+    profile-param-value-origin: organization
   ra-05_odp.04:
     alt-identifier: ra-5_prm_3
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - Brian Chaplow (system owner, sole operator)
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -113,8 +113,10 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: ra-5 -->
+Wazuh 4.14.4 on brisket provides continuous vulnerability monitoring for all 5 in-boundary agents via its built-in vulnerability detector module. The detector's syscollector component collects installed package inventories on each agent check-in and cross-references them against the National Vulnerability Database (NVD) and vendor-specific advisories, storing results in the `wazuh-states-vulnerabilities-*` index on the Wazuh OpenSearch indexer (brisket:9200). A live probe on 2026-04-09 confirmed 12,949 documents across 5 agents: brisket 2,804, haccp 1,899, regscale 1,861, dojo 1,861, smokehouse 46. Each document carries CVE identifier, CVSS base score (v2/v3/v4), Wazuh severity label (Critical/High/Medium/Low), detected_at timestamp, affected package name and version, and NVD reference URLs. This satisfies RA-5b's interoperability requirements: platforms and software flaws are enumerated via CVE, vulnerability impact is measured via CVSS, and the NVD feed provides standards-based checklist alignment. Zeek on haccp span0 and Suricata on smokehouse eth4 provide complementary network-level scanning -- detecting active exploitation attempts, lateral movement, and misconfigured services that host-based scanners miss. OpenCTI v7 on brisket syncs threat indicators from 6 connectors to Wazuh CDB lists every 6 hours (cron `0 */6 * * *`), implementing RA-5f by continuously extending the IOC-based detection surface without operator action.
 
-#### Implementation Status: planned
+The vulnerability pipeline (`pipelines/ingest/wazuh_vulns.py`) normalizes every indexer hit into a Finding schema (`pipelines/common/schemas.py`: cve, cvss_score, severity, affected_host, affected_package, related_controls) and pushes 8,471 findings to DefectDojo 2.57.0 on dojo via `pipelines/push/defectdojo.py`. DefectDojo tracks remediation state per finding (Open, In Progress, Completed, False Positive, Deviated) and enforces FedRAMP Low SLA windows via `pipelines/build/oscal_poam.py`: Critical 15 days, High 30 days, Medium 90 days, Low 180 days (corrected from wrong baseline values per ADR 0006 Amendment Task 12). The OSCAL POA&M (`poam/POAM-2026-04.xlsx`, 8,473 rows) is the vulnerability scan report artifact satisfying RA-5c (analysis of scan results) and RA-5d (remediation with response times). Vulnerability information is shared with Brian Chaplow as sole operator via the monthly ConMon pipeline run and Discord briefing (WF10, cron 0530 EST).
+
+#### Implementation Status: implemented
 
 ______________________________________________________________________

@@ -25,28 +25,28 @@ x-trestle-set-params:
   ra-03_odp.01:
     alt-identifier: ra-3_prm_1
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - risk assessment report
+    profile-param-value-origin: organization
   ra-03_odp.02:
     alt-identifier: ra-3_prm_2
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - monthly
+    profile-param-value-origin: organization
   ra-03_odp.03:
     alt-identifier: ra-3_prm_3
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - monthly
+    profile-param-value-origin: organization
   ra-03_odp.04:
     alt-identifier: ra-3_prm_4
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - when a new vulnerability is discovered with CVSS >= 7.0 (High/Critical), when a new phase adds in-boundary infrastructure, or when an ADR records a significant change to the system
+    profile-param-value-origin: organization
   ra-03_odp.05:
     alt-identifier: ra-3_prm_5
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - Brian Chaplow (system owner, sole operator)
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -110,8 +110,10 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: ra-3 -->
+The monthly ConMon cycle (`./pipelines.sh conmon`) serves as the continuous risk assessment mechanism for the Managed SOC Service. Wazuh 4.14.4 on brisket reads 12,949 vulnerability-state documents from the `wazuh-states-vulnerabilities-*` OpenSearch index, each carrying CVE identifier, CVSS base score (v2/v3/v4), severity label, affected package name and version, and NVD reference URLs. The `pipelines/ingest/wazuh_vulns.py` pipeline normalizes these documents into 8,471 Finding records and pushes them to DefectDojo 2.57.0 on dojo (10.10.30.27), where FedRAMP Low SLA windows are applied per severity: Critical 15 days, High 30 days, Medium 90 days, Low 180 days (corrected per ADR 0006 Amendment Task 12). The resulting DefectDojo finding inventory is the operational risk register; the OSCAL POA&M (`poam/POAM-2026-04.xlsx`, 8,473 rows) is the formal documented risk output and constitutes the risk assessment report. OpenCTI v7 on brisket provides threat intel context via 6 connectors, feeding the threat identification component of the assessment. Risk assessment results are disseminated to Brian Chaplow as the sole operator and reviewed monthly.
 
-#### Implementation Status: planned
+The partial status reflects an acknowledged gap: there is no formal written risk assessment report separate from the POA&M, and there is no risk assessment board or peer review process -- this is a single-operator system. The pipeline-generated POA&M and DefectDojo engagement serve as the documented risk output and satisfy the core RA-3 requirement for a homelab portfolio posture. A formal standalone risk assessment report would be the gap to close before an actual ATO submission.
+
+#### Implementation Status: partial
 
 ______________________________________________________________________
