@@ -25,53 +25,53 @@ x-trestle-set-params:
   ac-02_odp.01:
     alt-identifier: ac-2_prm_1
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - individual service accounts per application (admin, socadmin role variants); SSH key accounts on Linux hosts (bchaplow, ubuntu CI user); no group/shared/anonymous/temporary/guest accounts
+    profile-param-value-origin: organization
   ac-02_odp.02:
     alt-identifier: ac-2_prm_2
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - shared accounts, anonymous accounts, guest accounts, emergency bypass accounts
+    profile-param-value-origin: organization
   ac-02_odp.03:
     alt-identifier: ac-2_prm_3
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - single-operator system -- no group membership process; all accounts individually owned by Brian Chaplow (system owner)
+    profile-param-value-origin: organization
   ac-02_odp.04:
     alt-identifier: ac-2_prm_4
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - username, role (admin or read-only), service scope
+    profile-param-value-origin: organization
   ac-02_odp.05:
     alt-identifier: ac-2_prm_5
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - Brian Chaplow (system owner, sole approver)
+    profile-param-value-origin: organization
   ac-02_odp.06:
     alt-identifier: ac-2_prm_6
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - accounts created at service deployment; documented in service-specific deploy/ READMEs and ADRs; credentials stored in /c/Projects/.env
+    profile-param-value-origin: organization
   ac-02_odp.07:
     alt-identifier: ac-2_prm_7
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - Brian Chaplow (system owner) -- single operator, self-notification
+    profile-param-value-origin: organization
   ac-02_odp.08:
     alt-identifier: ac-2_prm_8
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - same day
+    profile-param-value-origin: organization
   ac-02_odp.09:
     alt-identifier: ac-2_prm_9
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - not-applicable -- single-operator personal system; no personnel termination process
+    profile-param-value-origin: organization
   ac-02_odp.10:
     alt-identifier: ac-2_prm_10
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - annually and at each plan phase boundary
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -193,8 +193,10 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: ac-2 -->
+All in-boundary service accounts are individually provisioned with no shared, group, anonymous, or guest credentials deployed. Wazuh (`admin`), Shuffle (`admin`), OpenCTI (`admin@opencti.local`, `socadmin@SOC`), TheHive (`admin@thehive.local`, `socadmin@thehive.local`), Cortex (`admin`, `socadmin@SOC`), Velociraptor (`admin`), DefectDojo (`admin`), and RegScale (`admin`) each use distinct application-scoped accounts with passwords stored exclusively in `/c/Projects/.env` (gitignored) -- no credentials appear in code or configuration files. SSH access on all in-boundary Linux hosts (brisket, haccp, smokehouse, dojo, regscale) is key-only; no password SSH is permitted. Account provisioning is documented at service deployment time: ADR 0003 records the RegScale `admin` account creation procedure including mandatory SQL password reset, and ADR 0004 records the DefectDojo `admin` account with initializer log capture. The `deploy/regscale/README.md` enforces a 12-character password policy (upper/lower/digit/symbol). Wazuh monitors account use across all 15 enrolled agents via `wazuh-alerts-4.x-*` indices on brisket:9200, making account activity observable for review. Accounts are reviewed for compliance annually and at each plan phase boundary.
 
-#### Implementation Status: planned
+The gap driving `partial` status is the absence of a formal HR offboarding alignment -- AC-2(l) requires account management to align with personnel termination and transfer processes, which has no equivalent in a single-operator personal system. No termination checklist, separation workflow, or notification timer is defined because the sole authorized user is also the system owner. Account review (AC-2(j)) occurs informally at plan boundaries rather than on a formally documented calendar. These gaps are acknowledged; cross-reference IA-5 for authenticator management depth.
+
+#### Implementation Status: partial
 
 ______________________________________________________________________

@@ -26,45 +26,45 @@ x-trestle-set-params:
     aggregates:
       - ac-01_odp.01
       - ac-01_odp.02
-    profile-param-value-origin: <REPLACE_ME>
+    profile-param-value-origin: organization
   ac-01_odp.01:
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - Brian Chaplow (system owner, sole operator)
+    profile-param-value-origin: organization
   ac-01_odp.02:
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - Brian Chaplow (system owner, sole operator)
+    profile-param-value-origin: organization
   ac-01_odp.03:
     alt-identifier: ac-1_prm_2
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - annually and after each plan phase completion
+    profile-param-value-origin: organization
   ac-01_odp.04:
     alt-identifier: ac-1_prm_3
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - plan phase completion, new service enrollment, security incident, or regulatory change
+    profile-param-value-origin: organization
   ac-01_odp.05:
     alt-identifier: ac-1_prm_4
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - annually and after each plan phase completion
+    profile-param-value-origin: organization
   ac-01_odp.06:
     alt-identifier: ac-1_prm_5
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - plan phase completion, new service enrollment, or deviation requiring an ADR
+    profile-param-value-origin: organization
   ac-01_odp.07:
     alt-identifier: ac-1_prm_6
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - Brian Chaplow (system owner)
+    profile-param-value-origin: organization
   ac-01_odp.08:
     alt-identifier: ac-1_prm_7
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - Brian Chaplow (system owner)
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -142,8 +142,10 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: ac-1 -->
+The Managed SOC Service access control policy is embodied across three artifact layers. The system-level VLAN segmentation rules, SSH key-only conventions, credential handling requirements, and authorized attack targets are established in `CLAUDE.md` (the canonical system policy reference) and enforced through OPNsense inter-VLAN firewall rules and MokerLink switch ACLs. Procedural artifacts are distributed across service-specific deployment READMEs (`deploy/defectdojo/README.md`, `deploy/regscale/README.md`) and TLS posture runbooks (`runbooks/cert-trust.md`). Architectural access decisions that deviate from secure defaults are recorded and approved as ADRs -- ADR 0001 (EULA and pre-flight decisions), ADR 0002 (Plan 1 deployment completion and operator action items), and ADR 0008 (Plan 3 pre-execution realignment including the implementation status rubric) collectively constitute the access control policy and procedure record for this system. Brian Chaplow, as system owner and sole operator, is the designated official for managing and updating this policy. Policy and procedures are reviewed annually and after each plan phase completion, and are updated when a plan phase concludes, a new service is enrolled, a security incident occurs, or a deviation warrants an ADR.
 
-#### Implementation Status: planned
+The gap driving `partial` status is the absence of a formal HR-style dissemination step -- in a single-operator personal system, the policy author and the sole recipient are the same individual. No external review, approval, or acknowledgment workflow exists for this policy. ADR 0008 §Pre-execution decisions item 5 documents the implementation status rubric applied throughout Plan 3, establishing that this gap is acknowledged and accepted for a single-operator homelab boundary. Cross-reference IA-1 for the same pattern applied to the identification and authentication family.
+
+#### Implementation Status: partial
 
 ______________________________________________________________________

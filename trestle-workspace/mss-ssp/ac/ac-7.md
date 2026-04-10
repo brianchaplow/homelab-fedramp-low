@@ -25,33 +25,33 @@ x-trestle-set-params:
   ac-07_odp.01:
     alt-identifier: ac-7_prm_1
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - 5
+    profile-param-value-origin: organization
   ac-07_odp.02:
     alt-identifier: ac-7_prm_2
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - 15 minutes
+    profile-param-value-origin: organization
   ac-07_odp.03:
     alt-identifier: ac-7_prm_3
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - lock the account until released by an administrator
+    profile-param-value-origin: organization
   ac-07_odp.04:
     alt-identifier: ac-7_prm_4
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - not-applicable -- administrator release selected
+    profile-param-value-origin: organization
   ac-07_odp.05:
     alt-identifier: ac-7_prm_5
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - not-applicable -- lockout selected
+    profile-param-value-origin: organization
   ac-07_odp.06:
     alt-identifier: ac-7_prm_6
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - not-applicable -- lockout selected
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -87,8 +87,10 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: ac-7 -->
+SSH key-only authentication on all in-boundary Linux hosts (brisket, haccp, smokehouse, dojo, regscale) eliminates the password-guessing attack surface at the primary administrative access layer -- there are no SSH passwords to brute-force. For web-based service UIs, application-layer lockout is available at the platform level: DefectDojo 2.57.0 (Django auth framework) includes configurable account lockout on invalid password attempts, and RegScale CE exposes `AccessFailedCount` and `LockoutEnd` columns in its ASP.NET Identity schema (visible in `deploy/regscale/reset-admin-password.sh` which resets these fields to 0 and NULL respectively during provisioning). The organization-defined policy threshold is 5 consecutive invalid attempts within a 15-minute window, after which the account is locked until released by an administrator. Wazuh monitors authentication events across all 15 enrolled agents via agent-shipped syslog and captures failed-auth events in `wazuh-alerts-4.x-*` indices on brisket:9200, providing visibility into SSH auth failures across the fleet.
 
-#### Implementation Status: planned
+The gap driving `partial` status is that web UI lockout enforcement has not been uniformly verified or documented across all six service UIs (Wazuh dashboard, Shuffle, OpenCTI, TheHive, DefectDojo, RegScale) -- no centralized failed-login dashboard or Wazuh alert rule aggregates multi-service lockout events into a single alerting path. The RegScale schema evidence confirms the lockout mechanism exists at the data layer, but no test or configuration audit has confirmed the threshold is set to the organization-defined value of 5/15 minutes on each service. Cross-reference IA-5 (authenticator management) and AU-2/AU-6 (audit of logon events) for the broader authentication monitoring posture.
+
+#### Implementation Status: partial
 
 ______________________________________________________________________

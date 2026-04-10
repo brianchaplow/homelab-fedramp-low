@@ -25,13 +25,13 @@ x-trestle-set-params:
   ac-08_odp.01:
     alt-identifier: ac-8_prm_1
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - This system is the property of Brian Chaplow and is authorized for use only in connection with the homelab Managed SOC Service portfolio program. System usage may be monitored, recorded, and subject to audit. Unauthorized use is prohibited. Use of this system constitutes consent to monitoring and recording.
+    profile-param-value-origin: organization
   ac-08_odp.02:
     alt-identifier: ac-8_prm_2
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - not-applicable -- no publicly accessible interfaces exist in the MSS authorization boundary
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -89,8 +89,10 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: ac-8 -->
+System use notification is implemented for SSH-based access -- the primary administrative access path -- by configuring the `Banner` directive in `sshd_config` on each in-boundary Linux host (brisket, haccp, smokehouse, dojo, regscale) to present the organization-defined notification text before authentication is accepted. The banner text advises that the system is the property of Brian Chaplow, is authorized only for MSS portfolio use, that usage may be monitored and recorded, and that connecting constitutes consent to monitoring. SSH is the sole interactive session entry point for all in-boundary hosts; all management actions (Docker service control, log inspection, configuration changes) pass through this banner. The notification text is defined in `ac-08_odp.01` above. No publicly accessible system interfaces exist in the MSS boundary, so AC-8(c) sub-requirements do not apply -- `ac-08_odp.02` is set to not-applicable. Cross-reference IA-8 for the rationale that only authorized personnel reach these systems, and AC-14 for the statement that no unauthenticated user actions are permitted.
 
-#### Implementation Status: planned
+The gap driving `partial` status is that web-based service UIs (Wazuh dashboard at brisket:5601, Shuffle at brisket:3443, OpenCTI at brisket:8080, TheHive at 10.10.30.22:9000, DefectDojo at dojo:8080, RegScale at regscale:80) do not present a pre-login notification banner -- each service displays its own application login screen without any system use notification message. SSH banner implementation on all five in-boundary Linux hosts has not been independently verified as deployed; no `sshd_config` Banner directive is checked into the repository as evidence of active deployment. Until web UI banners are configured and SSH banner deployment is confirmed via audit, this control remains partial.
+
+#### Implementation Status: partial
 
 ______________________________________________________________________

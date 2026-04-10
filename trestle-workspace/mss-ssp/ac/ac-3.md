@@ -42,8 +42,8 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: ac-3 -->
+Access enforcement is implemented through three complementary layers that together enforce the approved authorization model across all MSS boundary components. At the network perimeter, OPNsense inter-VLAN firewall rules block unauthorized lateral movement between VLANs 10 (management), 20 (SOC infrastructure), 30 (lab), 40 (targets -- isolated), and 50 (IoT); VLAN 40 is configured default-deny inbound from VLANs 20 and 30 so that attack targets cannot initiate connections to SOC services. At the intra-VLAN layer, MokerLink switch ACL `sear-brisket` (TE4) enforces microsegmentation between sear (10.10.20.20) and brisket (10.10.20.30) with a stateless 9-rule bidirectional ACL permitting only enumerated ports and explicitly denying all others; the full rule table with packet-flow verification results is documented in `/c/Projects/reference/network.md`. At the host layer, UFW on all in-boundary Linux hosts (brisket, haccp, smokehouse, dojo, regscale) enforces default-deny ingress with VLAN-scoped explicit allows for each service port -- dojo and regscale UFW rules are documented in ADR 0002 §Infrastructure state. SSH key-only authentication reinforces the access model at the protocol layer; no password-based SSH is permitted on any in-boundary host. Service-level RBAC adds a fourth enforcement point: Wazuh differentiates admin vs. read-only roles, OpenCTI enforces admin vs. analyst scopes, and TheHive distinguishes platform-admin from org-admin. Cross-reference SC-7 for boundary protection and AC-17 for the remote access enforcement path.
 
-#### Implementation Status: planned
+#### Implementation Status: implemented
 
 ______________________________________________________________________
