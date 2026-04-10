@@ -25,23 +25,23 @@ x-trestle-set-params:
   cp-03_odp.01:
     alt-identifier: cp-3_prm_1
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - within 30 days of assuming contingency responsibility
+    profile-param-value-origin: organization
   cp-03_odp.02:
     alt-identifier: cp-3_prm_2
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - annually
+    profile-param-value-origin: organization
   cp-03_odp.03:
     alt-identifier: cp-3_prm_3
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - annually
+    profile-param-value-origin: organization
   cp-03_odp.04:
     alt-identifier: cp-3_prm_4
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - system change affecting backup or recovery procedures, contingency activation, or audit finding
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -88,7 +88,11 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: cp-3 -->
+No formal contingency training program, curriculum, or training records exist for this system. The system is a single-operator homelab in which the system owner (Brian Chaplow) both designs and executes all contingency procedures, collapsing the typical trainer/trainee distinction. Contingency familiarity is maintained through direct authorship and hands-on operation of the recovery procedures documented in `runbooks/restore-from-pbs.md` and the backup monitoring tripwire in `runbooks/monthly-conmon.md`. These documents function as self-paced operator reference material, but they do not constitute training delivery in the CP-3 sense -- no formal acknowledgment, delivery record, or training completion artifact exists.
+
+The planned training approach treats the annual review of contingency runbooks (restore-from-pbs.md, monthly-conmon.md) and any executed restore drills (per `runbooks/restore-from-pbs.md` §"First-time restore drill") as the training event for the sole contingency role. Training content will be reviewed annually and following any system change affecting backup or recovery procedures, any contingency activation, or any audit finding. Initial training on assumption of the contingency role is defined as within 30 days.
+
+This control is rated `planned` because no training delivery record or acknowledgment artifact exists; the runbook review and restore drill are the planned mechanism to formally satisfy CP-3.
 
 #### Implementation Status: planned
 

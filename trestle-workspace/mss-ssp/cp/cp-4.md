@@ -26,20 +26,20 @@ x-trestle-set-params:
     aggregates:
       - cp-04_odp.02
       - cp-04_odp.03
-    profile-param-value-origin: <REPLACE_ME>
+    profile-param-value-origin: organization
   cp-04_odp.01:
     alt-identifier: cp-4_prm_1
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - annually
+    profile-param-value-origin: organization
   cp-04_odp.02:
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - tabletop walkthrough and restore drill (qmrestore from PBS snapshot to alternate VMID, verified by smoke check)
+    profile-param-value-origin: organization
   cp-04_odp.03:
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - System Owner (Brian Chaplow)
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -83,7 +83,11 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: cp-4 -->
+No formal contingency plan test has been conducted against documented test criteria. The nearest operational analog is documented in ADR 0005 (`docs/adr/0005-pbs-backup-gap-and-automount-fix.md`): on 2026-04-08, `vzdump` was run against dojo (VMID 201) as a chain-verification step after the NFS remount fix, producing a confirmed snapshot at `vm/201/2026-04-08T17:26:22Z` in 11m11s. This was an operational verification, not a scheduled contingency plan test with predefined success criteria, so it does not satisfy CP-4 on its own.
+
+The planned test method is a tabletop walkthrough combined with a restore drill: `qmrestore` is executed from a current PBS snapshot to an alternate VMID (to avoid disrupting production) and the restored VM is validated by the automated smoke check scripts (`./pipelines.sh smoke-dojo`, `./pipelines.sh smoke-regscale`). The first restore drill is specified in `runbooks/restore-from-pbs.md` §"First-time restore drill" and is owed within 7 days of Plan 1 completion (by 2026-04-15). Test results will be documented in a new ADR (`docs/adr/NNNN-restore-drill.md`). Tests will be repeated annually thereafter. Corrective actions will be captured as ADRs and tracked in the monthly ConMon cycle.
+
+This control is rated `planned` because no annual test record exists; the scheduled restore drill is the first planned test event.
 
 #### Implementation Status: planned
 

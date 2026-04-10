@@ -26,45 +26,45 @@ x-trestle-set-params:
     aggregates:
       - cp-01_odp.01
       - cp-01_odp.02
-    profile-param-value-origin: <REPLACE_ME>
+    profile-param-value-origin: organization
   cp-01_odp.01:
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - System Owner (Brian Chaplow)
+    profile-param-value-origin: organization
   cp-01_odp.02:
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - System Owner (Brian Chaplow)
+    profile-param-value-origin: organization
   cp-01_odp.03:
     alt-identifier: cp-1_prm_2
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - System Owner (Brian Chaplow)
+    profile-param-value-origin: organization
   cp-01_odp.04:
     alt-identifier: cp-1_prm_3
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - annually
+    profile-param-value-origin: organization
   cp-01_odp.05:
     alt-identifier: cp-1_prm_4
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - significant system change, security incident, or external audit finding
+    profile-param-value-origin: organization
   cp-01_odp.06:
     alt-identifier: cp-1_prm_5
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - annually
+    profile-param-value-origin: organization
   cp-01_odp.07:
     alt-identifier: cp-1_prm_6
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - significant system change, security incident, or external audit finding
+    profile-param-value-origin: organization
   cp-01_odp.08:
     alt-identifier: cp-1_prm_7
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - system-level
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -142,7 +142,11 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: cp-1 -->
+No formal standalone contingency planning policy document has been authored for this system. The contingency policy posture is captured at the system level through three artifacts: ADR 0005 (`docs/adr/0005-pbs-backup-gap-and-automount-fix.md`) records the reactive decision to harden the PBS NFS automount after a 5-day backup gap was discovered during the 2026-04-07 rack consolidation reboot; `runbooks/restore-from-pbs.md` establishes recovery procedures for the two in-boundary GRC VMs (dojo and regscale); and `runbooks/monthly-conmon.md` specifies the interim manual PBS backup tripwire maintained until automated Wazuh alerting is wired. The system owner (Brian Chaplow) is the sole designated official responsible for development, documentation, and dissemination of contingency planning policy and procedures.
+
+This SSP document serves as the policy artifact for CP-1 purposes, binding the system-level contingency planning requirements to the mechanisms described above. The policy will be reviewed annually and following any significant system change, security incident, or external audit finding. No organizational elements or additional personnel exist in this single-operator homelab; dissemination is self-referential to the system owner role.
+
+This control is rated `planned` because no dedicated CP policy document predates this SSP authoring cycle. The SSP narrative constitutes the policy record going forward; procedures exist in the runbook corpus.
 
 #### Implementation Status: planned
 

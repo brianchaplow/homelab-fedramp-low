@@ -26,46 +26,46 @@ x-trestle-set-params:
     aggregates:
       - cp-02_odp.01
       - cp-02_odp.02
-    profile-param-value-origin: <REPLACE_ME>
+    profile-param-value-origin: organization
   cp-2_prm_2:
     aggregates:
       - cp-02_odp.03
       - cp-02_odp.04
-    profile-param-value-origin: <REPLACE_ME>
+    profile-param-value-origin: organization
   cp-2_prm_4:
     aggregates:
       - cp-02_odp.06
       - cp-02_odp.07
-    profile-param-value-origin: <REPLACE_ME>
+    profile-param-value-origin: organization
   cp-02_odp.01:
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - System Owner (Brian Chaplow)
+    profile-param-value-origin: organization
   cp-02_odp.02:
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - System Owner (Brian Chaplow)
+    profile-param-value-origin: organization
   cp-02_odp.03:
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - System Owner (Brian Chaplow)
+    profile-param-value-origin: organization
   cp-02_odp.04:
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - N/A -- single-operator homelab; no organizational elements
+    profile-param-value-origin: organization
   cp-02_odp.05:
     alt-identifier: cp-2_prm_3
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - annually
+    profile-param-value-origin: organization
   cp-02_odp.06:
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - System Owner (Brian Chaplow)
+    profile-param-value-origin: organization
   cp-02_odp.07:
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - N/A -- single-operator homelab
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -171,8 +171,12 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: cp-2 -->
+The contingency plan for this system is captured across three artifacts rather than a single formal document. The essential system components are the five PBS-backed VMs: dojo (VMID 201 on pitcrew, DefectDojo), regscale (VMID 301 on smoker, RegScale CE), DC01 (VMID 100), WS01 (VMID 101), and TheHive (VMID 200). The RPO for all five VMs is 24 hours, derived from nightly PBS backup jobs (pitcrew job at 02:00, smoker job at 02:30). The target RTO for dojo and regscale is 4 hours from detection of disruption to a passing smoke check; the 11m11s qmrestore runtime observed during the ADR 0005 verification run on 2026-04-08 provides an empirical lower bound.
 
-#### Implementation Status: planned
+Recovery procedures are documented in `runbooks/restore-from-pbs.md`, covering snapshot verification, VM stop, config preservation, `qmrestore --force` invocation (in-place disk rewrite preserving MAC address), VM start, and smoke check validation via `./pipelines.sh smoke-dojo` and `./pipelines.sh smoke-regscale`. ADR 0005 (`docs/adr/0005-pbs-backup-gap-and-automount-fix.md`) documents the April 2026 backup gap incident (5 nights missed, root cause NFS boot-race, corrected by `x-systemd.automount` fstab hardening) -- this constitutes the lessons-learned record for the contingency plan.
+
+This control is rated `partial` because no single formal CP document covering all CP-2.a elements (RTO/RPO commitments in writing, explicit restoration priority ordering, contact list, and CP-to-IR coordination procedure) has been authored, and the planned restore drill per `runbooks/restore-from-pbs.md` has not yet been executed.
+
+#### Implementation Status: partial
 
 ______________________________________________________________________
