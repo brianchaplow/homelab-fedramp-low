@@ -25,13 +25,13 @@ x-trestle-set-params:
   sr-02_odp.01:
     alt-identifier: sr-2_prm_1
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - All in-boundary hardware components (brisket -- Lenovo ThinkStation P3 Tiny Gen 2; haccp, pitcrew, smoker -- Lenovo ThinkStation P340 Tiny; OPNsense -- Protectli VP2420; MokerLink 10G08410GSM) and all in-boundary software services documented in inventory/overlay.yaml
+    profile-param-value-origin: organization
   sr-02_odp.02:
     alt-identifier: sr-2_prm_2
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - annually or after a significant hardware acquisition or change event
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -86,8 +86,14 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: sr-2 -->
+The MSS informal SCRM plan is embedded in this SSP and supported by the hardware inventory at `inventory/overlay.yaml`. All hardware was acquired new from established US primary vendors -- Lenovo ThinkStation units purchased directly from Lenovo, the Protectli VP2420 from protectli.com (manufacturer direct), and the MokerLink 10G08410GSM through Amazon Business. No gray-market or refurbished hardware was used. This direct-from-vendor posture is the primary acquisition-phase risk control.
 
-#### Implementation Status: planned
+Integration and operations risk is managed through the COTS-only software policy: all services (Wazuh, ELK, DefectDojo, RegScale, Shuffle, TheHive, Velociraptor, Caldera, OpenCTI, Arkime) are installed from official distribution channels (vendor-signed apt repositories or official Docker Hub images). Wazuh syscollector continuously inventories installed packages on all in-boundary agents, providing ongoing software component tracking. The 2026-04-07 rack consolidation drive swaps (haccp 2TB Samsung 990 EVO Plus PCAP drive, pitcrew +512GB, smoker +1TB) were performed by the System Owner directly from new purchased hardware -- no third-party handling.
+
+The SCRM plan record -- comprising this SSP, `inventory/overlay.yaml`, `inventory/IIW-2026-04.xlsx`, and relevant ADRs -- is protected from unauthorized disclosure and modification by GitHub repository access controls and the git commit history. Secrets are stored in `.env` (gitignored, never committed). The plan is reviewed annually and after any significant hardware acquisition or major environmental change.
+
+The gap at this stage is the absence of a stand-alone formal SCRM plan document; the plan is distributed across this SSP and inventory artifacts rather than consolidated in a single document. This gap is acknowledged and accepted at the partial rating.
+
+#### Implementation Status: partial
 
 ______________________________________________________________________

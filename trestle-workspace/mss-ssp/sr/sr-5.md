@@ -25,8 +25,8 @@ x-trestle-set-params:
   sr-05_odp:
     alt-identifier: sr-5_prm_1
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - (1) COTS-only software preference with open-source bias for auditability; (2) direct-from-vendor hardware purchasing from primary US distributors; (3) official-channel software installation via vendor-signed apt repos and official Docker Hub images; (4) Wazuh syscollector continuous package inventory as operational SBOM analog; (5) pinned software versions in deploy README files and pyproject.toml
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -62,8 +62,18 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: sr-5 -->
+The MSS acquisition strategy employs five layered methods to protect against, identify, and mitigate supply chain risks.
 
-#### Implementation Status: planned
+First, the entire software stack is open-source COTS: Wazuh (Apache 2.0), ELK (Elastic License 2.0), DefectDojo (BSD 3-Clause), RegScale CE (proprietary CE license reviewed in ADR 0001), Shuffle (Apache 2.0), TheHive + Cortex (AGPL), Velociraptor (AGPLv3), Caldera (Apache 2.0), OpenCTI (Apache 2.0), and Arkime (Apache 2.0). Open-source preference reduces counterfeit software risk because source code is publicly auditable. Hardware is commodity x86 compute (Lenovo ThinkStation Tiny line) and network appliances (Protectli VP2420, MokerLink 10G08410GSM) -- widely deployed COTS platforms with established supply chains.
+
+Second, software is installed exclusively from official distribution channels: vendor-signed apt repositories (`packages.wazuh.com` for Wazuh, `artifacts.elastic.co` for ELK) with apt GPG key verification at install time, and official Docker Hub images (e.g., `defectdojo/defectdojo-django`, `wazuh/wazuh-manager`). No unofficial builds, pirated software, or unverified images are used.
+
+Third, all hardware was purchased new from primary US vendors -- Lenovo units directly from Lenovo, Protectli VP2420 from protectli.com, MokerLink through Amazon Business -- with no gray-market or third-party refurbisher involvement.
+
+Fourth, Wazuh syscollector provides continuous installed-package inventory on all in-boundary agents. This is the operational SBOM analog, ingestible via `pipelines/ingest/inventory.py` and reflected in `inventory/IIW-2026-04.xlsx`.
+
+Fifth, software versions are pinned: DefectDojo 2.57.0 (`deploy/defectdojo/README.md`), Trestle 4.0.1 (`pyproject.toml`). Remaining gaps are Docker image digest pinning (images pulled by tag, not digest) and a formal SPDX/CycloneDX SBOM. These gaps are acknowledged and accepted at the partial rating.
+
+#### Implementation Status: partial
 
 ______________________________________________________________________

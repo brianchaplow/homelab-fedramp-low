@@ -26,45 +26,45 @@ x-trestle-set-params:
     aggregates:
       - sr-01_odp.01
       - sr-01_odp.02
-    profile-param-value-origin: <REPLACE_ME>
+    profile-param-value-origin: organization
   sr-01_odp.01:
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - System Owner (Brian Chaplow)
+    profile-param-value-origin: organization
   sr-01_odp.02:
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - System Owner (Brian Chaplow)
+    profile-param-value-origin: organization
   sr-01_odp.03:
     alt-identifier: sr-1_prm_2
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - System Owner (Brian Chaplow)
+    profile-param-value-origin: organization
   sr-01_odp.04:
     alt-identifier: sr-1_prm_3
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - annually
+    profile-param-value-origin: organization
   sr-01_odp.05:
     alt-identifier: sr-1_prm_4
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - significant hardware acquisition, vendor compromise notification, or major system change
+    profile-param-value-origin: organization
   sr-01_odp.06:
     alt-identifier: sr-1_prm_5
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - annually
+    profile-param-value-origin: organization
   sr-01_odp.07:
     alt-identifier: sr-1_prm_6
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - significant hardware acquisition, vendor compromise notification, or major system change
+    profile-param-value-origin: organization
   sr-01_odp.08:
     alt-identifier: sr-1_prm_7
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - system-level
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -142,7 +142,9 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: sr-1 -->
+The MSS supply chain risk management policy is documented at the system level within this SSP. The System Owner (Brian Chaplow) holds all SCRM roles for this single-operator homelab -- purchaser, integrator, operator, and disposer -- and serves as the sole designated official responsible for developing, maintaining, and disseminating the policy and procedures. This single-operator structure collapses the multi-person SCRM team concept into one accountable role.
+
+The policy scope covers all in-boundary hardware and software components: the Lenovo ThinkStation P3 Tiny Gen 2 (brisket), three Lenovo ThinkStation P340 Tiny units (haccp, pitcrew, smoker), the Protectli VP2420 (OPNsense firewall), the MokerLink 10G08410GSM switch, and all in-boundary software services listed in `inventory/overlay.yaml`. The policy is consistent with NIST SP 800-161r1 (supply chain risk management practices) and the FedRAMP Rev 5 Low baseline. The policy and supporting procedures are embedded in this SSP and reviewed annually and following any significant hardware acquisition, vendor compromise notification, or major system change.
 
 #### Implementation Status: planned
 

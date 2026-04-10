@@ -3,7 +3,7 @@
     "uuid": "ff2c49ad-b919-47e0-a79a-2a9bf1705f51",
     "metadata": {
       "title": "REPLACE_ME",
-      "last-modified": "2026-04-10T16:55:08.036266-04:00",
+      "last-modified": "2026-04-10T18:05:18.161511-04:00",
       "version": "REPLACE_ME",
       "oscal-version": "1.2.1"
     },
@@ -1442,9 +1442,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "6a3b55fb-b7db-45fd-bd18-9981874dab0e",
-              "description": "",
+              "description": "The MSS personnel security policy is documented at the system level. The CLAUDE.md policy document (`/c/Projects/CLAUDE.md`) establishes the single-operator access model, credential conventions, SSH key-only authentication requirements, and the attack-boundary rule (all attacks must target VLAN 40 only). This SSP -- together with ADR 0001 (preflight/EULA analysis), ADR 0002 (Plan 1 deployment completion), and ADR 0008 (Plan 3 pre-execution realignment) -- collectively constitutes the personnel security policy and procedure record for the MSS boundary. Brian Chaplow serves as the sole designated official for policy development, documentation, and dissemination. Policy is reviewed annually and following each plan phase completion or security incident; procedures are reviewed on the same cadence and whenever a deviation requires an ADR.\n\nThe gap relative to a multi-person organization is acknowledged: no formal HR-style policy publication process exists and no designated separate policy official is possible for a single-operator system. Brian Chaplow performs all policy, management, and compliance roles simultaneously. Dissemination is therefore internal to a single role, and the review cycle is event-driven via ADR authoring rather than calendar-driven via a policy committee. This constitutes a partial implementation -- policy artifacts exist and are actively maintained, but the formal multi-role dissemination model presupposed by PS-1 does not apply.",
               "implementation-status": {
-                "state": "planned"
+                "state": "partial"
               }
             }
           ]
@@ -1456,9 +1456,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "a1cfee3d-3e4a-4182-a69b-b4ed0b5248aa",
-              "description": "",
+              "description": "Not applicable. MSS is a single-operator personal system; there are no organizational positions to designate, no OPM Position Designation System model to apply, and no screening criteria to establish, because Brian Chaplow is the sole operator holding all roles simultaneously with no employer-employee relationship in scope.",
               "implementation-status": {
-                "state": "planned"
+                "state": "not-applicable"
               }
             }
           ]
@@ -1470,9 +1470,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "cef2c7f7-a734-4b6d-acef-b2a6170c9246",
-              "description": "",
+              "description": "Not applicable. MSS is a single-operator personal system; there is only one individual with access -- Brian Chaplow -- and no organizational hiring process through which a pre-access screening requirement or rescreening schedule could be triggered. Access to in-boundary systems is technically enforced via SSH key-only authentication with no external accounts provisioned, which means the control's intent (limiting access to vetted individuals) is achieved architecturally rather than through a personnel screening process.",
               "implementation-status": {
-                "state": "planned"
+                "state": "not-applicable"
               }
             }
           ]
@@ -1484,9 +1484,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "2cc0e532-f177-4eeb-93f3-cd2e9ef72b76",
-              "description": "",
+              "description": "Not applicable. MSS is a single-operator personal system; there are no employees, no employer-employee relationships, and no termination events possible. The sole operator, Brian Chaplow, owns all system access, and termination of the operator's access would be equivalent to decommissioning the system itself rather than executing a personnel security action.",
               "implementation-status": {
-                "state": "planned"
+                "state": "not-applicable"
               }
             }
           ]
@@ -1498,9 +1498,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "0fac389d-54a4-4547-b03f-d85f33f74a6a",
-              "description": "",
+              "description": "Not applicable. MSS is a single-operator personal system; there are no personnel transfers or reassignments possible because there is only one operator and no organizational hierarchy into which a position change could occur. Access authorizations are static, provisioned to Brian Chaplow at deployment and documented in deploy/ READMEs, with no position-change trigger that would invoke a review or access modification.",
               "implementation-status": {
-                "state": "planned"
+                "state": "not-applicable"
               }
             }
           ]
@@ -1512,9 +1512,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "93ce5d76-a477-49ea-911f-0ba6e1093909",
-              "description": "",
+              "description": "The repo LICENSE (MIT License, copyright 2026 Brian Chaplow) serves as the system-level access agreement artifact, establishing ownership and usage terms for the MSS boundary. The CLAUDE.md policy document (`/c/Projects/CLAUDE.md`) documents the behavioral rules the operator commits to: the VLAN 40 attack-only boundary, credential handling conventions, the no-hardcoded-secrets policy, and SSH key-only authentication requirements. ADR 0001 (preflight and EULA analysis) constitutes the pre-access review analog, documenting the decisions made before system deployment began. These collectively address PS-6(a): an access agreement artifact exists and is documented. Review cadence is set at annually and after each plan phase completion or boundary change.\n\nThe gap is at PS-6(c): no external individual has ever been granted access to in-boundary systems, so the pre-signing and re-signing workflow has never been exercised and there is no second signatory. The access agreement artifact exists and the operator-owner implicitly agrees to all terms as the system's author; the external-individual signing workflow has no current applicability because MSS is a single-operator system with no contributors, contractors, or external accounts.",
               "implementation-status": {
-                "state": "planned"
+                "state": "partial"
               }
             }
           ]
@@ -1526,9 +1526,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "02a08eb7-82a2-42f2-be43-279a43f81b0a",
-              "description": "",
+              "description": "Not applicable. MSS is a single-operator personal system; there are no external providers with system privileges, credentials, or badges. All in-boundary system administration is performed exclusively by Brian Chaplow, with SSH access enforced via key-only authentication and no external SSH keys authorized on any in-boundary host.",
               "implementation-status": {
-                "state": "planned"
+                "state": "not-applicable"
               }
             }
           ]
@@ -1540,9 +1540,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "c8784794-0ff6-43d4-a9d3-29ca2431115e",
-              "description": "",
+              "description": "Not applicable. MSS is a single-operator personal system; there is only one individual with system access -- Brian Chaplow -- and no employer-employee or supervisor-subordinate relationship through which a formal sanctions process could be imposed or a notification sent. Self-sanction is not a coherent security control. Wazuh monitors all 15 in-boundary agents and provides an independent audit trail for behavioral compliance, but anomaly detection is not a sanctions process.",
               "implementation-status": {
-                "state": "planned"
+                "state": "not-applicable"
               }
             }
           ]
@@ -1554,9 +1554,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "ca0a5a0f-bd12-4c74-9bc8-0e3683585a39",
-              "description": "",
+              "description": "Not applicable. MSS is a single-operator personal system; there are no formal organizational position descriptions to incorporate security and privacy roles into. Brian Chaplow holds all roles simultaneously (system owner, administrator, security officer, and sole operator), and the CLAUDE.md policy document serves as the informal role definition by convention rather than as a position description in any HR or organizational sense.",
               "implementation-status": {
-                "state": "planned"
+                "state": "not-applicable"
               }
             }
           ]
@@ -1680,9 +1680,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "db6269a1-7125-4113-9b19-ed2e41322e56",
-              "description": "",
+              "description": "The Managed SOC Service acquisition policy is documented across this SSP, ADR 0001 (EULA/pre-flight review, serving as the acquisition policy record for RegScale CE), ADR 0008 (Plan 3 pre-execution realignment, codifying authoring policy and implementation-status rubric), and the parent `C:\\Projects\\CLAUDE.md` (acquisition conventions: open-source stack preference, COTS vendor list, no hardcoded secrets, attack-scope boundaries). The designated policy official is Brian Chaplow (system owner, sole operator). Procedures are documented in per-service deploy READMEs (`deploy/defectdojo/README.md`, `deploy/regscale/README.md`) and in `runbooks/cert-trust.md` for TLS posture decisions. Policy and procedures are reviewed annually and after each plan phase completion; events triggering an off-cycle review include new service enrollment, vendor support-end announcements, or any deviation requiring an ADR.\n\nThis control is partial because no formal dissemination process exists beyond the single operator who both produces and consumes the policy -- a structural limitation of a single-operator system. All policy artifacts are accessible to the sole operator at all times; the gap is the absence of a multi-party dissemination record. Cross-reference SA-3 (the ADR/plan workflow is the closest analog to a formal SDLC incorporating acquisition policy decisions).",
               "implementation-status": {
-                "state": "planned"
+                "state": "partial"
               }
             }
           ]
@@ -1694,9 +1694,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "720d80d4-bbe4-4c23-96dd-0edd6e727377",
-              "description": "",
+              "description": "Security and privacy resource requirements for the Managed SOC Service are determined at the hardware level and documented in `inventory/overlay.yaml` (each in-boundary host's hardware model, function, and EOL date) and in `oscal/component-definition.json` (OSCAL-native resource inventory for all 7 in-boundary components). The MSS platform runs on personally-owned hardware: Lenovo ThinkStation P3 Tiny Gen 2 (brisket -- Ultra 9 285 / 64 GB, primary SOC platform), Lenovo ThinkStation P340 Tiny (haccp -- i7-10700T / 32 GB, ELK + Arkime; pitcrew -- i7-10700T / 32 GB, Proxmox host), and QNAP TVS-871 (smokehouse -- i7-4790S / 16 GB, sensors + NFS backup). The GRC tooling tier (dojo, regscale) is allocated 4 vCPU / 6 GB RAM / 40 GB disk per VM as documented in `deploy/proxmox/dojo-vm-config.yaml` and `deploy/proxmox/regscale-vm-config.yaml` and in ADR 0002. The `inventory/IIW-2026-04.xlsx` (FedRAMP IIW, April 2026) enumerates all 7 in-boundary assets as the capital allocation reference.\n\nThis control is partial because formal capital planning and investment control (CPIC) processes do not exist for a single-operator homelab -- there is no organizational budget cycle, investment board, or discrete security line item in programming documents. Hardware was procured and resource allocation is documented post-hoc in overlay.yaml and the OSCAL component-definition rather than through a pre-acquisition CPIC review. EOL dates in overlay.yaml serve as the lifecycle planning anchor for future replacement decisions.",
               "implementation-status": {
-                "state": "planned"
+                "state": "partial"
               }
             }
           ]
@@ -1708,9 +1708,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "f1f46006-e866-4fb9-9875-9274d02946aa",
-              "description": "",
+              "description": "The MSS tracks component support status via EOL dates in `inventory/overlay.yaml` for all 7 in-boundary assets. Current EOL landscape: smokehouse (QNAP TVS-871, i7-4790S) EOL 2027-12 -- the oldest hardware in the boundary; haccp and pitcrew (ThinkStation P340 Tiny) EOL 2028-04; brisket (ThinkStation P3 Tiny Gen 2, Ultra 9 285) EOL 2029-04. No in-boundary component is currently past its vendor-declared EOL date. Wazuh vulnerability detection continuously ingests the `wazuh-states-vulnerabilities-*` index (via `pipelines/ingest/wazuh_vulns.py`) to identify installed packages with known CVEs -- the automated detection signal for components where upstream vendor support is lagging or absent. As of the April 2026 ConMon cycle, 8,471 findings across 5 agents were ingested (ADR 0007 §Done criteria). These findings are pushed to DefectDojo 2.57.0 via `pipelines/push/defectdojo.py`, where the FedRAMP Low ConMon SLA clock (15 days Critical, 30 days High, 90 days Medium, 180 days Low) runs against each finding. The monthly ConMon cycle (`./pipelines.sh conmon`) re-ingests findings, re-evaluates SLA status, and regenerates `poam/POAM-YYYY-MM.xlsx` -- the primary mechanism for identifying package-level unsupported-component CVEs and tracking remediation over time. The monthly review also checks overlay.yaml EOL dates against the current date and flags any component within 12 months of EOL for replacement planning. In-house support for any component approaching EOL is provided through Ubuntu unattended-upgrades, the monthly manual patch cycle (`reference/fleet_update_2026-03-31.md` documents the March 2026 full-fleet kernel and Wazuh patch run as the pattern), and open-source community LTS release monitoring via project GitHub releases.\n\nThis control is partial because no formal approved replacement-timeline document exists beyond EOL tracking in overlay.yaml, and the monthly ConMon POA&M review is the only structured process for acting on unsupported-component signals -- automated alerting on SLA breach is not yet wired to Discord or Wazuh. The detection and tracking pipeline (Wazuh vulnerability indexer to DefectDojo SLA to monthly ConMon POA&M) is live and substantive, and no component is currently past EOL. Cross-reference RA-5 (vulnerability scanning -- the source of unsupported-component signals) and SI-2 (flaw remediation -- the downstream control acting on DefectDojo findings).",
               "implementation-status": {
-                "state": "planned"
+                "state": "partial"
               }
             }
           ]
@@ -1722,9 +1722,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "f9fa338c-c9a3-49b3-9e0d-c359391bebdf",
-              "description": "",
+              "description": "The MSS is acquired, developed, and managed using the GSD (Get Stuff Done) phased lifecycle framework: Plan 1 (infrastructure deployment, ADR 0002), Plan 2 (OSCAL pipelines, ADR 0007), Plan 3 (SSP authoring, ADR 0008/0009), and Plan 4+ (ConMon cycles). Each Plan has a design spec (e.g., `/c/Projects/docs/superpowers/specs/2026-04-09-homelab-fedramp-low-plan-3-ssp-authoring-design.md` §4, Gates 1-5) and an implementation plan that incorporates security and privacy considerations explicitly. Pre-execution realignment ADRs (ADR 0006 for Plan 2, ADR 0008 for Plan 3) document risk identification and mitigation decisions made before each phase executes -- the formal security gate record. Brian Chaplow is the single individual identified as holding all information security and privacy roles (system owner, operator, developer, assessor) as documented in `C:\\Projects\\CLAUDE.md`. Each phase begins with a Gate 1 regression check (`./pipelines.sh smoke` + pytest suite) that confirms security-relevant infrastructure is healthy before new work starts.\n\nThis control is partial because the GSD framework is informal -- no NIST SP 800-64 process was explicitly adopted, role separation beyond the single operator does not exist, and no formal privacy impact assessment process has been documented. The phase/plan/gate structure integrates security at every stage and is the nearest operational equivalent of a formal SDLC for a single-operator system. Cross-reference SA-8 (engineering principles applied during design) and SA-5 (system documentation as SDLC output).",
               "implementation-status": {
-                "state": "planned"
+                "state": "partial"
               }
             }
           ]
@@ -1736,9 +1736,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "739b9f6e-4a2e-4107-bce3-9d336554d739",
-              "description": "",
+              "description": "This control is not applicable to the Managed SOC Service. The MSS is a single-operator homelab pilot that does not implement Personal Identity Verification (PIV) capability, issue PIV credentials, or process PIV card authentication in any service workflow. No PIV-capable hardware is deployed within the authorization boundary. Authentication is via SSH key pairs on all Linux hosts, individual service account passwords stored in a gitignored `.env` file, and Tailscale node certificates for remote access. The FIPS 201 Approved Products List is not applicable to this deployment.",
               "implementation-status": {
-                "state": "planned"
+                "state": "not-applicable"
               }
             }
           ]
@@ -1750,9 +1750,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "5e46f59a-d03f-48b5-bbf6-6c7d96f342cb",
-              "description": "",
+              "description": "The MSS is built primarily on open-source software (Wazuh, ELK, Shuffle, OpenCTI, Velociraptor, TheHive, Cortex, Arkime, Suricata, Zeek, Ollama, Proxmox, DefectDojo, Trestle) and COTS hardware from three primary vendors: Lenovo ThinkStation (four machines), Protectli VP2420 (OPNsense firewall), and MokerLink 10G08410GSM (managed switch). Security functional requirements are incorporated at selection time: open-source projects are selected for active community support and CVE responsiveness; hardware EOL dates are tracked in `inventory/overlay.yaml`; RegScale CE was selected only after an explicit EULA review (ADR 0001) confirming acceptable terms. For the two CE tools (RegScale CE and DefectDojo 2.57.0), acquisition requirements include: no default hardcoded passwords (ADR 0003, ADR 0004), official Docker Compose images from vendor-maintained registries, and HTTP-only posture acknowledged as a deliberate trade-off documented in ADR 0004 §TLS. Wazuh agent SCA runs CIS Ubuntu 24.04 benchmarks on dojo and regscale hosts post-acquisition.\n\nThis control is partial because the homelab has no formal acquisition contracts -- the control's primary mechanism (contract language) is not applicable for a no-cost open-source plus COTS-EULA environment. Security requirements are incorporated through EULA review and deviation ADRs that document security acceptance criteria resolved at deployment time. Cross-reference SA-22 (unsupported components -- tracked via overlay.yaml EOL dates) and SA-5 (security documentation requirements satisfied through deploy READMEs and ADRs).",
               "implementation-status": {
-                "state": "planned"
+                "state": "partial"
               }
             }
           ]
@@ -1764,9 +1764,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "ac429653-1af7-47af-91a0-6cede5e35a84",
-              "description": "",
+              "description": "Administrator and user documentation for the MSS is maintained across four artifact types: (1) `C:\\Projects\\CLAUDE.md` -- the authoritative operator reference covering service inventory, SSH quick reference, credentials table, VLAN topology, and conventions (secure configuration and operation guidance for all in-boundary services); (2) per-service deploy READMEs under `deploy/defectdojo/README.md` and `deploy/regscale/README.md` (secure installation and configuration documentation including pinned versions, TLS posture, UFW rules, and password policy); (3) operational runbooks in `runbooks/` covering specific procedures (`monthly-conmon.md`, `cert-trust.md`, `restore-from-pbs.md`, `regscale-manual-import.md`); and (4) ADRs 0001-0008 in `docs/adr/` documenting known vulnerabilities, configuration decisions, and deviations from intended configuration -- ADR 0003 (RegScale CE port 80, wrapper exit behavior, no default password) and ADR 0004 (DefectDojo HTTP-on-8080, Valkey substitution) directly satisfy the SA-5a.3 known-vulnerabilities-regarding-configuration requirement. This SSP and the OSCAL artifacts in `oscal/` constitute the security and privacy documentation required by SA-5b. Documentation is distributed to Brian Chaplow (system owner, sole operator) who produces and consumes it.",
               "implementation-status": {
-                "state": "planned"
+                "state": "implemented"
               }
             }
           ]
@@ -1778,9 +1778,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "1e8480b6-0929-4900-9fdf-c715897b5209",
-              "description": "",
+              "description": "Security and privacy engineering principles are applied throughout the MSS specification, design, and implementation. The most concrete evidence is the three-layer defense-in-depth network architecture: OPNsense handles inter-VLAN firewall policy (VLAN 40 isolated targets, VLAN 30 lab hosts, VLAN 20 SOC infrastructure); MokerLink L3 ACL enforces switch-level east-west segmentation; UFW default-deny on each host with explicit allows for required service ports only. Least privilege is applied at every layer: SSH key-only authentication on all Linux hosts, service accounts provisioned with minimum required permissions, and no shared credentials between services (all secrets in a gitignored `.env`). The separation-of-concerns principle is expressed structurally: the GRC tooling tier (dojo on pitcrew, regscale on smoker) is isolated from the SOC operational tier (brisket, haccp, smokehouse) across separate Proxmox hypervisors. The security-first design principle is operationalized by the Wazuh SCA module running the CIS Ubuntu 24.04 benchmark on every new VM at first run, as specified in the whole-project design spec (`docs/superpowers/specs/2026-04-07-homelab-fedramp-low-design.md` §7.9). The open-design principle is enforced by the git-tracked configuration-as-code posture: all security configurations are committed, ADR-documented, and auditable.\n\nThis control is partial because no formal systems security engineering methodology (e.g., NIST SP 800-160) was explicitly adopted, and formal privacy engineering methodology beyond OSCAL-as-source-of-truth and the no-PII-processed scope is not documented. The principles above are applied in practice through the whole-project design spec and the ADR record, but not under a named framework. Cross-reference SA-3 (SDLC -- engineering principles applied throughout the lifecycle) and SC-7 (boundary protection -- the primary engineering artifact).",
               "implementation-status": {
-                "state": "planned"
+                "state": "partial"
               }
             }
           ]
@@ -1792,9 +1792,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "66315a87-46f3-48f5-894c-b88ff9ba22e0",
-              "description": "",
+              "description": "The MSS consumes three external system services, each documented and monitored. (1) Tailscale provides encrypted mesh VPN for remote administrative access from PITBOSS to all in-boundary hosts (brisket TS: 100.124.139.56, haccp TS: 100.74.16.82, smokehouse TS: 100.110.112.98); Tailscale nodes authenticate via device certificates and WireGuard encryption in transit. (2) PBS NFS -- Proxmox Backup Server LXC 300 (smoker, 10.10.30.24) mounts a NFS export from smokehouse (10.10.20.10, 17 TB) as the backup data store; this external dependency for CP-9 backup services is documented in ADR 0005, which also records the 5-day backup gap caused by a mount failure during the 2026-04-07 rack consolidation reboot and the automount hardening fix (`x-systemd.automount,x-systemd.idle-timeout=600,x-systemd.mount-timeout=30`). (3) GCP VM (Wazuh agent 009) -- an externally hosted VM ships logs to the brisket Wazuh Manager; it is explicitly out-of-boundary but the MSS monitoring depends on it for telemetry. Oversight roles: Brian Chaplow (system owner, sole operator) holds all external service oversight responsibility. Compliance monitoring runs on the monthly ConMon cycle via `runbooks/monthly-conmon.md` (PBS backup tripwire, Wazuh agent keepalive check, Tailscale node expiry review).\n\nThis control is partial because no formal service-level agreements exist with any external provider (Tailscale is free tier, PBS NFS is self-hosted, GCP VM is personal) and compliance monitoring is informal -- manual tripwire rather than automated alerting for Tailscale or GCP disconnects. ADR 0005 is the definitive external service governance record: it documents a real external-service failure caught, analyzed, and remediated. Cross-reference CP-9 (backup service -- PBS external dependency) and CA-3 (internal connections including the PBS NFS link).",
               "implementation-status": {
-                "state": "planned"
+                "state": "partial"
               }
             }
           ]
@@ -2086,7 +2086,7 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "94878222-3cb7-4f68-8939-55ed84c08ec2",
-              "description": "",
+              "description": "The MSS supply chain risk management policy is documented at the system level within this SSP. The System Owner (Brian Chaplow) holds all SCRM roles for this single-operator homelab -- purchaser, integrator, operator, and disposer -- and serves as the sole designated official responsible for developing, maintaining, and disseminating the policy and procedures. This single-operator structure collapses the multi-person SCRM team concept into one accountable role.\n\nThe policy scope covers all in-boundary hardware and software components: the Lenovo ThinkStation P3 Tiny Gen 2 (brisket), three Lenovo ThinkStation P340 Tiny units (haccp, pitcrew, smoker), the Protectli VP2420 (OPNsense firewall), the MokerLink 10G08410GSM switch, and all in-boundary software services listed in `inventory/overlay.yaml`. The policy is consistent with NIST SP 800-161r1 (supply chain risk management practices) and the FedRAMP Rev 5 Low baseline. The policy and supporting procedures are embedded in this SSP and reviewed annually and following any significant hardware acquisition, vendor compromise notification, or major system change.",
               "implementation-status": {
                 "state": "planned"
               }
@@ -2100,9 +2100,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "21124076-ede9-4168-9b62-d477bd75a64e",
-              "description": "",
+              "description": "All in-boundary hardware components are inspected upon indications of need -- specifically at time of initial deployment, during hardware change events (drive swaps, NIC additions, rack moves), and annually. The 2026-04-07 rack consolidation is the primary documented inspection event: all four compute nodes (brisket, haccp, pitcrew, smoker), the Protectli VP2420 firewall, and the MokerLink 10G08410GSM switch were physically inspected by the System Owner during disassembly, cabling, and rack installation. Three drive swaps were performed (haccp 2TB Samsung 990 EVO Plus PCAP drive, pitcrew +512GB, smoker +1TB); each drive was visually inspected for physical damage or tampering indicators before installation. No tampering indicators were observed.\n\nOngoing logical inspection is provided by Wazuh syscollector, which continuously inventories hardware state (CPU model, RAM, NIC MAC addresses) on all in-boundary agents. Unexpected hardware changes -- NIC MAC drift, memory reduction -- would surface in syscollector deltas and are queryable at `https://10.10.20.30:55000/syscollector/{agent_id}/hardware`. Wazuh syscheck (file integrity monitoring) provides complementary detection of software-level tampering on all hosts.\n\nThe gap is the absence of a formal inspection schedule, written checklist, or results record. The 2026-04-07 rack build inspection was not formally documented in a structured artifact; it is referenced in CLAUDE.md notes and the rack build design spec. No Wazuh alert rule is currently configured to specifically alert on unexpected hardware changes. These gaps are acknowledged and accepted at the partial rating.",
               "implementation-status": {
-                "state": "planned"
+                "state": "partial"
               }
             }
           ]
@@ -2114,9 +2114,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "11e802c1-7cce-4f21-8f73-e6429a2108bb",
-              "description": "",
+              "description": "Not applicable. MSS is a single-operator personal homelab system. The System Owner (Brian Chaplow) is the only personnel role associated with this system. Formal anti-counterfeit training delivery -- requiring a curriculum, training records, and distinct trainer/trainee roles -- is not applicable to a one-person system.\n\nAnti-counterfeit awareness is embedded in the operator's procurement and installation practices: direct-from-vendor hardware purchasing (no gray-market), official-channel software installation, and apt GPG key verification at install time. The System Owner's professional background (27 years military service, active cybersecurity ConMon program development) provides the awareness of supply chain risk and counterfeit indicators that a formal training program would otherwise deliver.",
               "implementation-status": {
-                "state": "planned"
+                "state": "not-applicable"
               }
             }
           ]
@@ -2128,9 +2128,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "52a95243-4c4e-48a8-ab20-456995cea109",
-              "description": "",
+              "description": "Configuration control over components awaiting or returning from service is maintained through the hardware inventory baseline in `inventory/overlay.yaml` (model, function, asset tag for all in-boundary hosts) and the Wazuh syscollector continuous hardware inventory (CPU, RAM, NIC MACs on all in-boundary agents). The syscollector data at `https://10.10.20.30:55000/syscollector/{agent_id}/hardware` provides the pre-service and post-service hardware state comparison baseline -- unexpected changes (MAC drift, RAM reduction) would surface in delta queries.\n\nFor in-boundary VMs (dojo VMID 201, regscale VMID 301), the known-good VM configurations are committed to the repository at `deploy/proxmox/dojo-vm-config.yaml` and `deploy/proxmox/regscale-vm-config.yaml`. Any service, repair, or restore of these VMs is validated against these configuration files post-operation, as documented in ADR 0002.\n\nThe 2026-04-07 rack consolidation drive swaps are documented in CLAUDE.md rack consolidation notes (haccp 2TB Samsung 990 EVO Plus PCAP drive, pitcrew +512GB, smoker +1TB). The post-swap configuration state is reflected in `inventory/overlay.yaml`. However, no formal pre-swap to post-swap configuration comparison document or maintenance sign-off record was created. This gap -- no formal tagging of components as \"awaiting service\" and no written return-to-service verification step -- is acknowledged and accepted at the partial rating.",
               "implementation-status": {
-                "state": "planned"
+                "state": "partial"
               }
             }
           ]
@@ -2142,9 +2142,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "d23e491a-4870-40e1-8750-89f1c9b99a9d",
-              "description": "",
+              "description": "The MSS anti-counterfeit posture relies on direct-from-vendor purchasing as the primary control to prevent counterfeit hardware from entering the system. All Lenovo ThinkStation units were purchased directly from Lenovo; the Protectli VP2420 was purchased from protectli.com (manufacturer direct); the MokerLink 10G08410GSM was purchased through Amazon Business. Drives added during the 2026-04-07 rack consolidation (Samsung 990 EVO Plus, others) were purchased new in sealed manufacturer packaging. No gray-market, refurbished, or third-party reseller hardware was used. Asset tags (HOMELAB-001 through HOMELAB-005, HOMELAB-FW-001, HOMELAB-SW-001) are tracked in `inventory/overlay.yaml` as component identity anchors.\n\nFor software, all services are installed from vendor-signed repositories (Wazuh apt repo at `packages.wazuh.com`, Elastic apt repo at `artifacts.elastic.co`) with apt GPG key verification at install time. Docker images are pulled from official Docker Hub repositories. RegScale CE is installed from the MIT-licensed installer at `github.com/RegScale/community` (reviewed in ADR 0001). These installation channels provide software authenticity verification through cryptographic signing.\n\nIf a counterfeit component were identified, it would be reported to the original hardware vendor (Lenovo, Protectli, or MokerLink as applicable) and to CISA as the FedRAMP-relevant external reporting organization. The System Owner (Brian Chaplow) is the sole internal reporting role.\n\nThe gap is the absence of a formal anti-counterfeit policy document and the lack of Docker image digest pinning (images pulled by tag, not digest). No counterfeit components have been identified to date.",
               "implementation-status": {
-                "state": "planned"
+                "state": "partial"
               }
             }
           ]
@@ -2156,9 +2156,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "3298bba5-bd7d-4881-a824-691e5c8b4525",
-              "description": "",
+              "description": "The MSS disposal process covers three categories of components. For storage media, the System Owner's standing practice is NVMe `nvme format --ses=1` secure erase for NVMe/SSD drives and `shred -n 7` (DoD 7-pass) for spinning media before disposal or reuse. Physical destruction is used when secure erase is not feasible. Drives replaced during the 2026-04-07 rack consolidation (prior haccp boot drive, prior pitcrew drive, prior smoker drive) are subject to this practice; the disposition of these specific drives is noted in CLAUDE.md rack consolidation notes.\n\nFor VM disk images, decommissioned VMs are destroyed via `qm destroy {vmid}` (Proxmox bare-metal VMs) or `pct destroy {ctid}` (LXC containers), which deallocates the disk image from the Proxmox datastore. The PBS (Proxmox Backup Server on smoker LXC 300) chunk store retains backup data until the next garbage collection run. OpenCTI LXC 202 was decommissioned on 2026-03-18 via this process (documented in CLAUDE.md: \"autostart off,\" migrated to brisket Docker).\n\nFor secret data and documentation, all secrets are stored in `.env` (gitignored, never committed to the repository). When a service is decommissioned, its `.env` entries are removed and credentials are rotated. The `deploy/regscale/reset-admin-password.sh` script provides a credential-wipe step as a disposal-adjacent control before any reconstitution.\n\nThe gap is the absence of a formal drive disposal log for the 2026-04-07 drive swap disposals and no formal disposal technique policy document. The disposition record is informal (CLAUDE.md notes). PBS chunk retention after VM destruction is not formally tracked. These gaps are acknowledged and accepted at the partial rating.",
               "implementation-status": {
-                "state": "planned"
+                "state": "partial"
               }
             }
           ]
@@ -2170,9 +2170,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "1e4a50df-a1a0-4532-95cb-1a44d6bde83e",
-              "description": "",
+              "description": "Not applicable. MSS is a single-operator personal homelab system. Brian Chaplow (System Owner) is the only person associated with this system in any supply chain capacity -- purchaser, integrator, operator, and disposer. There are no personnel resources to constitute a dedicated multi-person SCRM team; all SCRM roles are consolidated under the System Owner. A formal SCRM team with role differentiation across acquisition, legal, logistics, information security, and business continuity functions is not feasible or appropriate at this scale.\n\nThe System Owner maintains awareness of supply chain risks through professional background (27 years military service, cybersecurity program context, FedRAMP ConMon portfolio development) and applies informal single-operator SCRM mitigations: direct-from-vendor hardware purchasing, official-channel software installation, and apt GPG key verification. These practices implement the anti-counterfeit and provenance intent of the control without a formal team structure.",
               "implementation-status": {
-                "state": "planned"
+                "state": "not-applicable"
               }
             }
           ]
@@ -2184,9 +2184,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "0c8819b2-4e87-4f8d-9272-938efb4cb2da",
-              "description": "",
+              "description": "The MSS informal SCRM plan is embedded in this SSP and supported by the hardware inventory at `inventory/overlay.yaml`. All hardware was acquired new from established US primary vendors -- Lenovo ThinkStation units purchased directly from Lenovo, the Protectli VP2420 from protectli.com (manufacturer direct), and the MokerLink 10G08410GSM through Amazon Business. No gray-market or refurbished hardware was used. This direct-from-vendor posture is the primary acquisition-phase risk control.\n\nIntegration and operations risk is managed through the COTS-only software policy: all services (Wazuh, ELK, DefectDojo, RegScale, Shuffle, TheHive, Velociraptor, Caldera, OpenCTI, Arkime) are installed from official distribution channels (vendor-signed apt repositories or official Docker Hub images). Wazuh syscollector continuously inventories installed packages on all in-boundary agents, providing ongoing software component tracking. The 2026-04-07 rack consolidation drive swaps (haccp 2TB Samsung 990 EVO Plus PCAP drive, pitcrew +512GB, smoker +1TB) were performed by the System Owner directly from new purchased hardware -- no third-party handling.\n\nThe SCRM plan record -- comprising this SSP, `inventory/overlay.yaml`, `inventory/IIW-2026-04.xlsx`, and relevant ADRs -- is protected from unauthorized disclosure and modification by GitHub repository access controls and the git commit history. Secrets are stored in `.env` (gitignored, never committed). The plan is reviewed annually and after any significant hardware acquisition or major environmental change.\n\nThe gap at this stage is the absence of a stand-alone formal SCRM plan document; the plan is distributed across this SSP and inventory artifacts rather than consolidated in a single document. This gap is acknowledged and accepted at the partial rating.",
               "implementation-status": {
-                "state": "planned"
+                "state": "partial"
               }
             }
           ]
@@ -2198,9 +2198,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "d061952b-c097-49d4-a8d7-f9fe1ccbf89f",
-              "description": "",
+              "description": "The System Owner (Brian Chaplow) serves as the sole supply chain coordination point for all in-boundary hardware and software components. Supply chain weaknesses are identified through two primary channels: (1) Wazuh vulnerability scanning via the `wazuh-states-vulnerabilities-*` index, which surfaces CVE-level component risk for all in-boundary agents and feeds the monthly POA&M cycle (`poam/POAM-2026-04.xlsx`, 8,473 findings); and (2) ad-hoc monitoring of vendor security advisories through public channels. Identified weaknesses are addressed through the ConMon remediation workflow (`runbooks/monthly-conmon.md`).\n\nThe primary supply chain controls employed are: (a) direct-from-vendor hardware purchasing -- all Lenovo ThinkStation units purchased directly from Lenovo, Protectli VP2420 from protectli.com, MokerLink switch through Amazon Business, with no gray-market or refurbished hardware; (b) official-channel-only software installation -- all services installed from vendor-signed apt repositories (`packages.wazuh.com`, `artifacts.elastic.co`) or official Docker Hub images; (c) Wazuh syscollector continuous package inventory on all in-boundary agents, providing the operational SBOM analog (queryable at `https://10.10.20.30:55000/syscollector/{agent_id}/packages` and normalized via `pipelines/ingest/inventory.py`); (d) software version pinning -- DefectDojo 2.57.0 (`deploy/defectdojo/README.md`), Trestle 4.0.1 (`pyproject.toml`), Wazuh 4.14.4 per Service Inventory; and (e) physical inspection of hardware at receipt and during rack builds (see SR-10).\n\nThe gap is the absence of a formal written weakness-identification procedure and a structured SBOM in SPDX or CycloneDX format. Wazuh syscollector is the operational substitute for the SBOM gap. The selected controls are documented in this SSP (`inventory/overlay.yaml`, `inventory/IIW-2026-04.xlsx`).",
               "implementation-status": {
-                "state": "planned"
+                "state": "partial"
               }
             }
           ]
@@ -2212,9 +2212,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "0e550cb4-95e4-4dc5-8743-f0a16a7439e5",
-              "description": "",
+              "description": "The MSS acquisition strategy employs five layered methods to protect against, identify, and mitigate supply chain risks.\n\nFirst, the entire software stack is open-source COTS: Wazuh (Apache 2.0), ELK (Elastic License 2.0), DefectDojo (BSD 3-Clause), RegScale CE (proprietary CE license reviewed in ADR 0001), Shuffle (Apache 2.0), TheHive + Cortex (AGPL), Velociraptor (AGPLv3), Caldera (Apache 2.0), OpenCTI (Apache 2.0), and Arkime (Apache 2.0). Open-source preference reduces counterfeit software risk because source code is publicly auditable. Hardware is commodity x86 compute (Lenovo ThinkStation Tiny line) and network appliances (Protectli VP2420, MokerLink 10G08410GSM) -- widely deployed COTS platforms with established supply chains.\n\nSecond, software is installed exclusively from official distribution channels: vendor-signed apt repositories (`packages.wazuh.com` for Wazuh, `artifacts.elastic.co` for ELK) with apt GPG key verification at install time, and official Docker Hub images (e.g., `defectdojo/defectdojo-django`, `wazuh/wazuh-manager`). No unofficial builds, pirated software, or unverified images are used.\n\nThird, all hardware was purchased new from primary US vendors -- Lenovo units directly from Lenovo, Protectli VP2420 from protectli.com, MokerLink through Amazon Business -- with no gray-market or third-party refurbisher involvement.\n\nFourth, Wazuh syscollector provides continuous installed-package inventory on all in-boundary agents. This is the operational SBOM analog, ingestible via `pipelines/ingest/inventory.py` and reflected in `inventory/IIW-2026-04.xlsx`.\n\nFifth, software versions are pinned: DefectDojo 2.57.0 (`deploy/defectdojo/README.md`), Trestle 4.0.1 (`pyproject.toml`). Remaining gaps are Docker image digest pinning (images pulled by tag, not digest) and a formal SPDX/CycloneDX SBOM. These gaps are acknowledged and accepted at the partial rating.",
               "implementation-status": {
-                "state": "planned"
+                "state": "partial"
               }
             }
           ]
@@ -2226,9 +2226,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "24b7ef1d-072a-4121-be35-172e411d59d5",
-              "description": "",
+              "description": "Not applicable. MSS is a single-operator homelab with no external supply chain partners with whom formal bilateral notification agreements can be established. The system's hardware vendors (Lenovo, Protectli, MokerLink) and software vendors (Wazuh, Elastic, et al.) are commercial entities that do not enter into individualized notification agreements with end-user homelab operators.\n\nSupply chain compromise notifications from these vendors are received through public channels: vendor security advisories, CVE feeds monitored via Wazuh's `wazuh-states-vulnerabilities-*` index (ingestible via `pipelines/ingest/wazuh_vulns.py`), and public mailing lists. The April 2026 POA&M (`poam/POAM-2026-04.xlsx`, 8,473 findings across 5 agents) is the evidence that supply chain vulnerability data is being actively consumed and tracked. This public-channel monitoring is the operational substitute for bilateral notification agreements, but it does not constitute a formal agreement in the control's sense.",
               "implementation-status": {
-                "state": "planned"
+                "state": "not-applicable"
               }
             }
           ]

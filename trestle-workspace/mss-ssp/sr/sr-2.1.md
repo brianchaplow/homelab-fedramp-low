@@ -25,13 +25,13 @@ x-trestle-set-params:
   sr-02.01_odp.01:
     alt-identifier: sr-2.1_prm_1
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - not-applicable - single-operator personal system
+    profile-param-value-origin: organization
   sr-02.01_odp.02:
     alt-identifier: sr-2.1_prm_2
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - not-applicable - single-operator personal system
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -63,8 +63,10 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: sr-2.1 -->
+Not applicable. MSS is a single-operator personal homelab system. Brian Chaplow (System Owner) is the only person associated with this system in any supply chain capacity -- purchaser, integrator, operator, and disposer. There are no personnel resources to constitute a dedicated multi-person SCRM team; all SCRM roles are consolidated under the System Owner. A formal SCRM team with role differentiation across acquisition, legal, logistics, information security, and business continuity functions is not feasible or appropriate at this scale.
 
-#### Implementation Status: planned
+The System Owner maintains awareness of supply chain risks through professional background (27 years military service, cybersecurity program context, FedRAMP ConMon portfolio development) and applies informal single-operator SCRM mitigations: direct-from-vendor hardware purchasing, official-channel software installation, and apt GPG key verification. These practices implement the anti-counterfeit and provenance intent of the control without a formal team structure.
+
+#### Implementation Status: not-applicable
 
 ______________________________________________________________________

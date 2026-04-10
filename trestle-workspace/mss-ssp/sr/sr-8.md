@@ -25,13 +25,13 @@ x-trestle-set-params:
   sr-08_odp.01:
     alt-identifier: sr-8_prm_1
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - not-applicable - single-operator personal system
+    profile-param-value-origin: organization
   sr-08_odp.02:
     alt-identifier: sr-8_prm_2
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - not-applicable - single-operator personal system
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -63,8 +63,10 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: sr-8 -->
+Not applicable. MSS is a single-operator homelab with no external supply chain partners with whom formal bilateral notification agreements can be established. The system's hardware vendors (Lenovo, Protectli, MokerLink) and software vendors (Wazuh, Elastic, et al.) are commercial entities that do not enter into individualized notification agreements with end-user homelab operators.
 
-#### Implementation Status: planned
+Supply chain compromise notifications from these vendors are received through public channels: vendor security advisories, CVE feeds monitored via Wazuh's `wazuh-states-vulnerabilities-*` index (ingestible via `pipelines/ingest/wazuh_vulns.py`), and public mailing lists. The April 2026 POA&M (`poam/POAM-2026-04.xlsx`, 8,473 findings across 5 agents) is the evidence that supply chain vulnerability data is being actively consumed and tracked. This public-channel monitoring is the operational substitute for bilateral notification agreements, but it does not constitute a formal agreement in the control's sense.
+
+#### Implementation Status: not-applicable
 
 ______________________________________________________________________

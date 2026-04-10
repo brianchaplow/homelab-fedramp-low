@@ -25,28 +25,28 @@ x-trestle-set-params:
   sr-03_odp.01:
     alt-identifier: sr-3_prm_1
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - All in-boundary hardware and software components inventoried in inventory/overlay.yaml and inventory/IIW-2026-04.xlsx
+    profile-param-value-origin: organization
   sr-03_odp.02:
     alt-identifier: sr-3_prm_2
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - System Owner (Brian Chaplow) -- sole supply chain personnel
+    profile-param-value-origin: organization
   sr-03_odp.03:
     alt-identifier: sr-3_prm_3
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - direct-from-vendor hardware purchasing; official-channel-only software installation; Wazuh syscollector continuous package inventory; pinned software versions in pyproject.toml and deploy README files
+    profile-param-value-origin: organization
   sr-03_odp.04:
     alt-identifier: sr-3_prm_4
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - security and privacy plans
+    profile-param-value-origin: organization
   sr-03_odp.05:
     alt-identifier: sr-3_prm_5
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - physical inspection of hardware components at receipt and during rack builds
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -89,8 +89,12 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: sr-3 -->
+The System Owner (Brian Chaplow) serves as the sole supply chain coordination point for all in-boundary hardware and software components. Supply chain weaknesses are identified through two primary channels: (1) Wazuh vulnerability scanning via the `wazuh-states-vulnerabilities-*` index, which surfaces CVE-level component risk for all in-boundary agents and feeds the monthly POA&M cycle (`poam/POAM-2026-04.xlsx`, 8,473 findings); and (2) ad-hoc monitoring of vendor security advisories through public channels. Identified weaknesses are addressed through the ConMon remediation workflow (`runbooks/monthly-conmon.md`).
 
-#### Implementation Status: planned
+The primary supply chain controls employed are: (a) direct-from-vendor hardware purchasing -- all Lenovo ThinkStation units purchased directly from Lenovo, Protectli VP2420 from protectli.com, MokerLink switch through Amazon Business, with no gray-market or refurbished hardware; (b) official-channel-only software installation -- all services installed from vendor-signed apt repositories (`packages.wazuh.com`, `artifacts.elastic.co`) or official Docker Hub images; (c) Wazuh syscollector continuous package inventory on all in-boundary agents, providing the operational SBOM analog (queryable at `https://10.10.20.30:55000/syscollector/{agent_id}/packages` and normalized via `pipelines/ingest/inventory.py`); (d) software version pinning -- DefectDojo 2.57.0 (`deploy/defectdojo/README.md`), Trestle 4.0.1 (`pyproject.toml`), Wazuh 4.14.4 per Service Inventory; and (e) physical inspection of hardware at receipt and during rack builds (see SR-10).
+
+The gap is the absence of a formal written weakness-identification procedure and a structured SBOM in SPDX or CycloneDX format. Wazuh syscollector is the operational substitute for the SBOM gap. The selected controls are documented in this SSP (`inventory/overlay.yaml`, `inventory/IIW-2026-04.xlsx`).
+
+#### Implementation Status: partial
 
 ______________________________________________________________________
