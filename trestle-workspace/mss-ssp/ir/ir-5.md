@@ -44,8 +44,8 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: ir-5 -->
+The Managed SOC Service tracks and documents incidents through two complementary mechanisms. Automated tracking via TheHive 4 (pitcrew LXC 200, 10.10.30.22:9000): Shuffle WF1 v2 automatically creates a TheHive case for every Wazuh alert that passes the dedup filter, capturing alert timestamp, source IP (AbuseIPDB-enriched), Cloudflare block status, Wazuh rule ID and description, and severity. Cortex 3 (5 analyzers) runs automated indicator analysis and records results as case observables; the TheHive case lifecycle (New --> In Progress --> Resolved) provides the audit trail. Documented incident records via the ADR series: significant incidents affecting operational posture, configuration, or procedures are captured as Architecture Decision Records in `docs/adr/`. ADR 0005 (PBS backup gap, 2026-04-08) demonstrates the full documentation chain -- the incident was detected during Plan 1 Task 12 when the operator noticed the PBS NFS mount to smokehouse had not re-established after the 2026-04-07 rack consolidation reboot, covering a 5-day backup gap (2026-04-03 through 2026-04-07) for the daily critical job (DC01, WS01, TheHive). The ADR records root cause (boot-race: PBS LXC 300 came up before smokehouse finished exporting NFS; `_netdev` mount unit failed once and was never retried), remediation (manual remount, service restart, fstab hardened with `x-systemd.automount` options), and follow-up (Plan 1 Task 20: PBS backup alerting). ELK/Zeek logs on haccp ES (`logs-zeek.haccp-default-*`) and Arkime PCAP archive on `/opt/arkime/raw/` (daily SSH/rsync to smokehouse at 03:00) provide the tamper-evident network event record for forensic correlation.
 
-#### Implementation Status: planned
+#### Implementation Status: implemented
 
 ______________________________________________________________________

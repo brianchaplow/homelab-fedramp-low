@@ -27,39 +27,39 @@ x-trestle-set-params:
       - ir-08_odp.06
       - ir-08_odp.05
       - ir-08_odp.07
-    profile-param-value-origin: <REPLACE_ME>
+    profile-param-value-origin: organization
   ir-08_odp.01:
     alt-identifier: ir-8_prm_1
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - system owner (Brian Chaplow)
+    profile-param-value-origin: organization
   ir-08_odp.02:
     alt-identifier: ir-8_prm_2
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - annually
+    profile-param-value-origin: organization
   ir-08_odp.03:
     alt-identifier: ir-8_prm_3
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - system owner; SOC operator
+    profile-param-value-origin: organization
   ir-08_odp.04:
     alt-identifier: ir-8_prm_4
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - homelab-fedramp-low GitHub repository
+    profile-param-value-origin: organization
   ir-08_odp.05:
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - system owner; SOC operator
+    profile-param-value-origin: organization
   ir-08_odp.06:
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - homelab-fedramp-low GitHub repository (git commit notification)
+    profile-param-value-origin: organization
   ir-08_odp.07:
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - Discord #soc-alerts channel
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -138,8 +138,8 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: ir-8 -->
+The Managed SOC Service's incident response plan is distributed across this SSP's IR family prose and the operational runbooks committed to the homelab-fedramp-low repository, collectively satisfying all IR-8 sub-elements. Roadmap and structure: the Wazuh --> Shuffle WF1 --> TheHive 4 --> Cortex 3 --> Velociraptor pipeline defines the operational IR structure; this SSP's IR-1 through IR-8 prose constitutes the written roadmap. Reportable incidents: any Wazuh alert passing the Shuffle WF1 dedup filter is a reportable event; operational incidents requiring an ADR include availability, confidentiality, or integrity failures, backup gaps, and service disruptions -- thresholds are CVSS >= 7.0 for POA&M entries and CVSS >= 9.0 for immediate TheHive case creation. ADR 0005 (PBS backup gap, 2026-04-08) is the reference example: a 5-day backup gap for DC01, WS01, and TheHive was detected during Plan 1 Task 12, documented in `docs/adr/0005-pbs-backup-gap-and-automount-fix.md`, remediated via fstab automount hardening, and communicated via Discord #soc-alerts within the 1-hour reporting window. Metrics: MTTD (Wazuh event timestamp to alert) and MTTR (TheHive case creation to resolution) are the primary IR KPIs; open POA&M findings by severity are tracked in `poam/POAM-2026-04.xlsx`. Resources: brisket (ThinkStation, Ultra 9 285, 64GB, RTX A1000) hosts Wazuh, Shuffle, Velociraptor, ML Scorer, and Ollama; pitcrew LXC 200 hosts TheHive + Cortex; haccp hosts ELK 8.17 + Arkime + Zeek span0; PBS LXC 300 on smoker provides recovery backstop. The IRP is reviewed and approved by the system owner annually and following any incident resulting in an ADR. IRP artifacts are distributed to the system owner and SOC operator via the homelab-fedramp-low GitHub repository. Plan changes are communicated via git commit notification and Discord #soc-alerts. Protection: the repository is version-controlled with an immutable git history; `.env` files containing credentials are gitignored. A gap exists: no standalone titled IRP document has been produced outside this SSP; the distributed artifact set is the accepted portfolio approach.
 
-#### Implementation Status: planned
+#### Implementation Status: partial
 
 ______________________________________________________________________

@@ -25,13 +25,13 @@ x-trestle-set-params:
   ir-06_odp.01:
     alt-identifier: ir-6_prm_1
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - 1 hour
+    profile-param-value-origin: organization
   ir-06_odp.02:
     alt-identifier: ir-6_prm_2
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - system owner (Brian Chaplow); US-CERT/CISA for production-scope incidents
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -67,8 +67,8 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: ir-6 -->
+The Managed SOC Service is a single-operator system; the system owner (Brian Chaplow) is simultaneously the personnel required to report suspected incidents and the organizational IR capability receiving the report. Reporting is operationalized through automated notification: Wazuh forwards alerts to Shuffle WF1 v2 via webhook within seconds of detection; WF1 posts an enriched summary to Discord #soc-alerts via `$discord_webhook` and creates a TheHive case within minutes -- satisfying the "report to organizational IR capability within 1 hour" requirement for this system. Infrastructure-layer incidents (e.g., GPU thermal events on brisket, service availability failures) route to Discord #infrastructure-alerts via the Grafana alerting integration using `$discord_webhook_infra`. Nightly briefing WF10 (cron 0530 via `$discord_webhook_briefing`) posts a daily review to #morning-briefing, ensuring the operator is notified even when no real-time alert fires. ADR 0005 (PBS backup gap, 2026-04-08) demonstrates the reporting mechanism for incidents discovered outside the automated alerting path: the operator detected the 5-day backup gap during manual verification (Plan 1 Task 12), self-reported via the ADR record, and notified the IR capability by opening a TheHive case and committing the ADR to the repository within 1 hour of discovery. External reporting to US-CERT/CISA is not operationally applicable at the homelab portfolio scope; this system is not a federal information system subject to FISMA mandatory reporting. If elevated to production FedRAMP scope, significant incident reporting to US-CERT within 1 hour of discovery would be required per FedRAMP ConMon guidance.
 
-#### Implementation Status: planned
+#### Implementation Status: implemented
 
 ______________________________________________________________________

@@ -25,23 +25,23 @@ x-trestle-set-params:
   ir-02_odp.01:
     alt-identifier: ir-2_prm_1
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - 30 days
+    profile-param-value-origin: organization
   ir-02_odp.02:
     alt-identifier: ir-2_prm_2
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - annually
+    profile-param-value-origin: organization
   ir-02_odp.03:
     alt-identifier: ir-2_prm_3
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - annually
+    profile-param-value-origin: organization
   ir-02_odp.04:
     alt-identifier: ir-2_prm_4
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - security incident; red-team exercise revealing a detection gap
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -88,8 +88,8 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: ir-2 -->
+The Managed SOC Service is a single-operator homelab; the system owner and sole SOC operator is Brian Chaplow. IR competency is maintained through continuous hands-on construction and operation of the Wazuh --> Shuffle --> TheHive --> Velociraptor incident pipeline across Phases 1--15 of the v3 migration. Specific training-equivalent activities include: Phase 6 Velociraptor DFIR deployment and 7-client enrollment; Phase 7 Caldera v5.3.0 red-team exercises (4 Sandcat agents on smoker, adversary simulations against VLAN 40 targets with Wazuh detection validated); and real incident handling documented in ADR 0005 (PBS backup gap, 2026-04-08 -- detection during Plan 1 Task 12, root-cause analysis of the boot-race NFS mount failure, containment via manual remount, eradication via fstab hardening with `x-systemd.automount` options, and verification confirmed the 02:00 backup ran clean). New IR training is triggered within 30 days of assuming an IR role and annually thereafter. Training content is reviewed annually and following any incident that reveals a response procedure gap or any Caldera exercise that shows a detection failure. A gap exists: no structured training curriculum document or signed training completion records have been produced; the operator's work product constitutes the training evidence for this portfolio system.
 
-#### Implementation Status: planned
+#### Implementation Status: partial
 
 ______________________________________________________________________

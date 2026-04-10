@@ -26,45 +26,45 @@ x-trestle-set-params:
     aggregates:
       - ir-01_odp.01
       - ir-01_odp.02
-    profile-param-value-origin: <REPLACE_ME>
+    profile-param-value-origin: organization
   ir-01_odp.01:
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - system owner; SOC operator
+    profile-param-value-origin: organization
   ir-01_odp.02:
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - system owner; SOC operator
+    profile-param-value-origin: organization
   ir-01_odp.03:
     alt-identifier: ir-1_prm_2
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - annually
+    profile-param-value-origin: organization
   ir-01_odp.04:
     alt-identifier: ir-1_prm_3
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - security incident resulting in an ADR; significant regulatory change
+    profile-param-value-origin: organization
   ir-01_odp.05:
     alt-identifier: ir-1_prm_4
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - annually
+    profile-param-value-origin: organization
   ir-01_odp.06:
     alt-identifier: ir-1_prm_5
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - security incident; runbook gap discovery
+    profile-param-value-origin: organization
   ir-01_odp.07:
     alt-identifier: ir-1_prm_6
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - system owner (Brian Chaplow)
+    profile-param-value-origin: organization
   ir-01_odp.08:
     alt-identifier: ir-1_prm_7
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - system-level
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -142,8 +142,8 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: ir-1 -->
+The Managed SOC Service maintains a system-level incident response policy embedded in this SSP and in the operational runbooks committed to the homelab-fedramp-low repository. The system owner (Brian Chaplow) serves as the designated official for IR policy development, documentation, and dissemination. The policy covers purpose (detect, contain, eradicate, and recover from incidents affecting in-boundary assets: dojo VMID 201 on pitcrew and regscale VMID 301 on smoker), scope (all 15 Wazuh-enrolled hosts plus Wazuh SIEM on brisket, Shuffle SOAR, TheHive 4 + Cortex 3 on pitcrew LXC 200, Velociraptor DFIR on brisket, and ELK/Arkime on haccp), roles (system owner as policy authority; SOC operator for detection and triage; DFIR operator for endpoint forensics), and compliance with NIST SP 800-53 Rev 5 FedRAMP Low baseline. Policy and procedures are disseminated to the system owner and SOC operator via this SSP, which is version-controlled in the homelab-fedramp-low GitHub repository. The policy is reviewed annually and following any security incident that produces an ADR -- for example, ADR 0005 (PBS backup gap, 2026-04-08) triggered both a procedure update (fstab automount hardening) and a runbook amendment in `runbooks/monthly-conmon.md`. The ADR series (0001 through current) constitutes the living procedure amendment record. A gap exists: no standalone IR policy PDF has been produced outside the SSP; this is an accepted portfolio trade-off documented here.
 
-#### Implementation Status: planned
+#### Implementation Status: partial
 
 ______________________________________________________________________

@@ -44,8 +44,8 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: ir-7 -->
+The Managed SOC Service provides an integrated set of IR support resources that collectively serve as the organizational incident response assistance capability. TheHive 4 (pitcrew LXC 200, 10.10.30.22:9000) functions as the primary ticketing and case management platform: every Shuffle WF1 alert becomes a structured case with observable tracking, task assignment, and a full investigation timeline. Cortex 3 (co-located on pitcrew LXC 200, 5 analyzers) provides on-demand automated indicator analysis -- IP reputation, file hash lookup, and domain intelligence -- directly from within any open case, giving the operator immediate analytical assistance without leaving the case management interface. Shuffle SOAR WF1 v2 (brisket:3443/5001) delivers pre-analysis advice with each alert: AbuseIPDB confidence score, Cloudflare block decision, and Wazuh rule classification are posted to Discord #soc-alerts before the operator opens TheHive, reducing investigation bootstrap time. Velociraptor v0.75.3 (brisket:8889, 7 enrolled clients) provides endpoint forensics assistance -- process lists, network connections, file system timelines, and memory artifacts -- for rapid artifact collection across in-boundary and supporting hosts. Ollama qwen3:8b (brisket:11434) augments IR assistance in two ways: the Logstash `zeek-enrichment.conf` Stage 5 calls the LLM (rate-limited to 10/min shared bucket, power-capped at 40W per ADR 0005 thermal hardening) to classify novel network events; WF10 (cron 0530) generates a nightly narrative briefing via `$discord_webhook_briefing` summarizing the previous 24 hours of alerts for morning review. All resources are available on-network at all times; there is no external-facing IR assistance interface, consistent with the single-operator homelab model.
 
-#### Implementation Status: planned
+#### Implementation Status: implemented
 
 ______________________________________________________________________
