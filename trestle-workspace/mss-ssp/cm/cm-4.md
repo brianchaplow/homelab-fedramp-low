@@ -44,8 +44,10 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: cm-4 -->
+Security and privacy impact analysis for system changes is performed ad hoc by the system owner through the ADR process. Every architecturally significant change that affects the security posture -- VLAN topology, service port configuration, agent enrollment, backup topology, Phase 14 data pipeline additions -- produces an ADR that explicitly documents security consequences before the change is committed to the baseline. ADR 0003 analyzed the RegScale HTTP-on-80 deviation; ADR 0004 analyzed the DefectDojo HTTP-on-8080 deviation; ADR 0005 identified the security risk of silent backup failure, performed root-cause analysis, and remediated the fstab configuration with `x-systemd.automount` hardening. ADR 0008 contains a pre-execution risk table for all Plan 3 changes. These ADRs provide the pre-implementation impact record that CM-4 requires.
 
-#### Implementation Status: planned
+Supporting data points for impact analysis are drawn from Wazuh SCA (Security Configuration Assessment) scans running on all enrolled agents, which surface OS-level hardening gaps from any configuration or package change. The monthly ConMon pipeline (`./pipelines.sh conmon`, ADR 0007) produces a POA&M from Wazuh vulnerability findings (`poam/POAM-2026-04.xlsx`, 8,473 findings) that feeds risk context into change-impact decisions. The Grafana fleet dashboard (`brisket-setup/monitoring/build-infrastructure-fleet.py`) surfaces configuration drift signals -- disk, memory, and service health -- that can trigger manual impact review. The primary gap driving `partial` status is the absence of a formal, documented pre-change impact analysis procedure with defined criteria; the current mechanism is effective but ad hoc.
+
+#### Implementation Status: partial
 
 ______________________________________________________________________

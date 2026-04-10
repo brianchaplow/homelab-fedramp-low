@@ -25,18 +25,18 @@ x-trestle-set-params:
   cm-06_odp.01:
     alt-identifier: cm-6_prm_1
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - Ubuntu 24.04 LTS vendor defaults with unattended-upgrades, UFW default-deny, SSH PasswordAuthentication disabled, Docker least-privilege port publication
+    profile-param-value-origin: organization
   cm-06_odp.02:
     alt-identifier: cm-6_prm_2
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - DefectDojo 2.57.0 on dojo (HTTP-on-8080 per ADR 0004); RegScale CE on regscale (HTTP-on-80 per ADR 0003)
+    profile-param-value-origin: organization
   cm-06_odp.03:
     alt-identifier: cm-6_prm_3
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - no publicly trusted TLS certificate available for LAN-only services; reverse-proxy upgrade path documented in runbooks/cert-trust.md for future Plan 4
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -90,8 +90,10 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: cm-6 -->
+Configuration settings for in-boundary components reflect the most restrictive mode consistent with SOC operational requirements. All Ubuntu 24.04 VMs (dojo, regscale) are deployed with `unattended-upgrades` active for automated security patching, UFW default-deny with explicit service allowances, and SSH `PasswordAuthentication no` -- establishing a hardened OS baseline without requiring a named CIS Benchmark profile. Docker on brisket uses explicit port publications only (`brisket-setup/monitoring/docker-compose.yml`); no containers expose host-network mode or wildcard bindings. The Zeek configuration (`reference/phase14/zeek/local.zeek`) explicitly names every loaded package -- no default Zeek plugins are active beyond the pinned baseline. Prometheus scrape targets (`brisket-setup/monitoring/prometheus.yml`) are enumerated explicitly with no wildcard service discovery.
 
-#### Implementation Status: planned
+Deviations from secure-by-default settings are documented and approved via ADRs: DefectDojo 2.57.0 on dojo runs HTTP-on-8080 rather than HTTPS (ADR 0004), and RegScale CE on regscale runs HTTP-on-80 (ADR 0003). Both deviations are justified by the absence of a publicly trusted TLS certificate for LAN-only services; a reverse-proxy upgrade path is documented in `runbooks/cert-trust.md` for Plan 4. Wazuh SCA checks on all enrolled agents continuously validate OS hardening settings and surface deviations in the Wazuh Dashboard (brisket:5601); findings feed the monthly POA&M via `pipelines/ingest/wazuh_vulns.py`. The primary gap driving `partial` status is the absence of a named configuration standard (CIS Benchmark or STIG) formally adopted and mapped to the system.
+
+#### Implementation Status: partial
 
 ______________________________________________________________________

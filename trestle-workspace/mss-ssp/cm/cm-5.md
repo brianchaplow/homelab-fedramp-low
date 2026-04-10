@@ -52,8 +52,10 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: cm-5 -->
+Logical access restrictions for system changes are enforced by SSH key-only authentication to all in-boundary hosts: brisket (primary SOC platform, 10.10.20.30), haccp (ELK + Arkime, 10.10.30.25), and the Proxmox hypervisors pitcrew and smoker. Password-based SSH is disabled on all production hosts via `PasswordAuthentication no` in `/etc/ssh/sshd_config`. All configuration changes flow through git commits from the operator workstation PITBOSS (10.10.10.100), and the GitHub repository (brianchaplow) serves as the access-controlled change approval record -- only the repository owner can push to `main`, providing a logical change authorization gate with commit-level attribution for every change. UFW default-deny is active on GRC VMs dojo (10.10.30.27) and regscale (10.10.30.28), restricting change paths to explicitly permitted SSH and service ports (ADR 0002 §Infrastructure state). Wazuh RBAC restricts who can push SIEM rules, SCA checks, or agent configuration to the Wazuh Dashboard (brisket:5601).
 
-#### Implementation Status: planned
+Physical access restrictions are enforced by VLAN microsegmentation on MokerLink: VLAN 40 (targets) is isolated and cannot initiate connections to VLAN 20 (SOC) or VLAN 30 (lab), so only the operator on VLAN 10 (PITBOSS) can reach all segments requiring configuration changes. OPNsense (10.10.10.1) enforces perimeter access control preventing external entities from initiating changes to in-boundary services. Physical access to the 12U rack is restricted to the system owner. The primary gap driving `partial` status is that physical access restrictions are informal -- no documented key-custody procedure or visitor log exists for the home lab rack.
+
+#### Implementation Status: partial
 
 ______________________________________________________________________

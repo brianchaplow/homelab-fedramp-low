@@ -26,45 +26,45 @@ x-trestle-set-params:
     aggregates:
       - cm-01_odp.01
       - cm-01_odp.02
-    profile-param-value-origin: <REPLACE_ME>
+    profile-param-value-origin: organization
   cm-01_odp.01:
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - system owner (Brian Chaplow)
+    profile-param-value-origin: organization
   cm-01_odp.02:
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - system owner (Brian Chaplow)
+    profile-param-value-origin: organization
   cm-01_odp.03:
     alt-identifier: cm-1_prm_2
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - annually or following a significant change event
+    profile-param-value-origin: organization
   cm-01_odp.04:
     alt-identifier: cm-1_prm_3
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - a new ConMon phase, a security incident, a significant infrastructure change, or an ADR that invalidates existing policy
+    profile-param-value-origin: organization
   cm-01_odp.05:
     alt-identifier: cm-1_prm_4
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - annually or following a significant change event
+    profile-param-value-origin: organization
   cm-01_odp.06:
     alt-identifier: cm-1_prm_5
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - a new ConMon phase, a security incident, a significant infrastructure change, or an ADR that invalidates existing policy
+    profile-param-value-origin: organization
   cm-01_odp.07:
     alt-identifier: cm-1_prm_6
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - system owner (Brian Chaplow)
+    profile-param-value-origin: organization
   cm-01_odp.08:
     alt-identifier: cm-1_prm_7
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - system owner (Brian Chaplow)
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -142,8 +142,10 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: cm-1 -->
+The homelab SOC treats its git repository and ADR discipline as the operational backbone for configuration management policy and procedures. The system owner (Brian Chaplow) is the sole designated official responsible for developing, documenting, and disseminating CM policy and procedures. CLAUDE.md serves as the living system reference, addressing scope, roles, responsibilities, and update cadence -- it is the primary dissemination artifact for CM policy within this single-operator system. The ADR series (0001 through 0008, located in `docs/adr/`) constitutes a running policy-equivalent record of CM decisions, deviations, approvals, and post-change reviews. Every configuration-significant change produces a git commit (traceable, datable, attributed to Brian Chaplow/tubachap), and every architecturally significant change produces an ADR that documents the security consequence analysis. The Plan 3 SSP authoring phase (ADR 0008 §Pre-execution decisions) represents the first formal effort to anchor CM procedures in OSCAL prose.
 
-#### Implementation Status: planned
+CM policy and procedures are reviewed annually or following a significant change event -- operationally defined as a new ConMon phase, a security incident, a significant infrastructure change, or an ADR that invalidates existing policy. The `runbooks/monthly-conmon.md` procedure and the `pipelines.sh conmon` subcommand (ADR 0007) codify the monthly review cadence. A dedicated standalone CM policy document has not yet been extracted from CLAUDE.md and the ADR corpus; this gap drives the `partial` status for this control. A future enhancement will produce a formal CM-policy.md referenced in the SSP.
+
+#### Implementation Status: partial
 
 ______________________________________________________________________

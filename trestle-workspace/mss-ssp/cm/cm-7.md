@@ -29,32 +29,32 @@ x-trestle-set-params:
       - cm-07_odp.04
       - cm-07_odp.05
       - cm-07_odp.06
-    profile-param-value-origin: <REPLACE_ME>
+    profile-param-value-origin: organization
   cm-07_odp.01:
     alt-identifier: cm-7_prm_1
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - SOC monitoring (Wazuh SIEM, Zeek, Suricata, Arkime PCAP, ELK analytics), SOAR automation (Shuffle), DFIR (Velociraptor), threat intelligence (OpenCTI), GRC/ConMon (DefectDojo, RegScale), ML-based scoring (ml-scorer), LLM enrichment (Ollama)
+    profile-param-value-origin: organization
   cm-07_odp.02:
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - all functions not listed in CLAUDE.md §Service Inventory; VLAN 40 target traffic to VLAN 20/30 (MokerLink ACL)
+    profile-param-value-origin: organization
   cm-07_odp.03:
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - all ports not explicitly published in docker-compose.yml or opened by UFW on in-boundary hosts
+    profile-param-value-origin: organization
   cm-07_odp.04:
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - Telnet; unencrypted FTP to/from SOC infrastructure hosts; peer-to-peer file sharing protocols
+    profile-param-value-origin: organization
   cm-07_odp.05:
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - all software not documented in CLAUDE.md §Service Inventory or homelab-soc-portfolio git repository
+    profile-param-value-origin: organization
   cm-07_odp.06:
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - remote desktop protocols on SOC infrastructure hosts; unauthenticated management services
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -96,8 +96,10 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: cm-7 -->
+The system is configured to provide only mission-essential SOC capabilities. Each in-boundary host runs only the services required for its designated role: brisket (10.10.20.30) runs Wazuh Manager/Indexer/Dashboard, Prometheus, Grafana, Shuffle SOAR, Velociraptor, ML Scorer, Ollama, and OpenCTI -- no unrelated services. haccp (10.10.30.25) runs ELK, Arkime, and Logstash exclusively. dojo (10.10.30.27) runs DefectDojo and its Valkey dependency; regscale (10.10.30.28) runs RegScale CE and its MSSQL dependency. The canonical mission-essential service list per host is defined in CLAUDE.md §Service Inventory, which serves as the operational baseline definition -- any service not listed is not approved. Docker container isolation ensures that each service is confined to its own namespace with no host-network exposure beyond explicitly published ports (`brisket-setup/monitoring/docker-compose.yml`).
 
-#### Implementation Status: planned
+Prohibited functions and traffic paths are enforced at multiple layers. OPNsense (10.10.10.1) enforces perimeter restrictions blocking all non-essential inbound access. MokerLink L3 ACL isolates VLAN 40 (targets, 10.10.40.0/24) from VLAN 20 (SOC) and VLAN 30 (lab), preventing target-originated traffic from reaching SOC infrastructure. UFW default-deny on dojo and regscale blocks all ports not explicitly opened. Prometheus scrape targets (`brisket-setup/monitoring/prometheus.yml`) and Zeek loaded-scripts (`reference/phase14/zeek/local.zeek`) are explicitly enumerated -- no wildcard discovery or default plugin activation. Wazuh SCA checks validate that enrolled agents do not expose unnecessary running services or open ports. The primary gap driving `partial` status is the absence of a committed prohibited-ports/protocols list as a formal configuration document separate from CLAUDE.md prose.
+
+#### Implementation Status: partial
 
 ______________________________________________________________________

@@ -3,7 +3,7 @@
     "uuid": "ff2c49ad-b919-47e0-a79a-2a9bf1705f51",
     "metadata": {
       "title": "REPLACE_ME",
-      "last-modified": "2026-04-10T09:03:28.601366-04:00",
+      "last-modified": "2026-04-10T15:34:31.924788-04:00",
       "version": "REPLACE_ME",
       "oscal-version": "1.2.1"
     },
@@ -560,9 +560,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "aa74d3d0-68de-4451-b132-a612738b5a17",
-              "description": "",
+              "description": "The homelab SOC treats its git repository and ADR discipline as the operational backbone for configuration management policy and procedures. The system owner (Brian Chaplow) is the sole designated official responsible for developing, documenting, and disseminating CM policy and procedures. CLAUDE.md serves as the living system reference, addressing scope, roles, responsibilities, and update cadence -- it is the primary dissemination artifact for CM policy within this single-operator system. The ADR series (0001 through 0008, located in `docs/adr/`) constitutes a running policy-equivalent record of CM decisions, deviations, approvals, and post-change reviews. Every configuration-significant change produces a git commit (traceable, datable, attributed to Brian Chaplow/tubachap), and every architecturally significant change produces an ADR that documents the security consequence analysis. The Plan 3 SSP authoring phase (ADR 0008 §Pre-execution decisions) represents the first formal effort to anchor CM procedures in OSCAL prose.\n\nCM policy and procedures are reviewed annually or following a significant change event -- operationally defined as a new ConMon phase, a security incident, a significant infrastructure change, or an ADR that invalidates existing policy. The `runbooks/monthly-conmon.md` procedure and the `pipelines.sh conmon` subcommand (ADR 0007) codify the monthly review cadence. A dedicated standalone CM policy document has not yet been extracted from CLAUDE.md and the ADR corpus; this gap drives the `partial` status for this control. A future enhancement will produce a formal CM-policy.md referenced in the SSP.",
               "implementation-status": {
-                "state": "planned"
+                "state": "partial"
               }
             }
           ]
@@ -574,9 +574,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "269ba25e-7576-4848-bd79-ff7123ad22eb",
-              "description": "",
+              "description": "The homelab SOC uses only open-source software under documented licenses, with one proprietary exception reviewed before deployment. The deployed software stack and associated licenses are: Wazuh (GPL v2), OpenSearch (Apache 2.0), ELK -- Elasticsearch, Kibana, Logstash, Filebeat (Elastic License 2.0; SSPL restrictions on offering ELK as a managed service to others do not apply as this is a private homelab, not a commercial MSS offering), Shuffle (GPL), Velociraptor (AGPL), Arkime (Apache 2.0), Zeek (BSD), Suricata (GPL), OpenCTI (Apache 2.0; Enterprise Edition tier not used), TheHive (AGPL), Cortex (AGPL), DefectDojo (BSD 3-Clause), and RegScale CE (proprietary; CE license explicitly reviewed and accepted during deployment per ADR 0001 EULA analysis). No quantity-licensed commercial software requiring seat-count tracking is deployed -- all software is either open-source or single-instance free-tier. No peer-to-peer file sharing technology is present on any in-boundary host.\n\nThe Elastic ML trial license (activated 2026-03-17, 30-day) is a time-limited evaluation feature whose expiration reduces ML functionality to read-only without affecting core ELK operation; this licensing event is tracked in CLAUDE.md. ADR 0001 documents the formal EULA analysis conducted for RegScale CE prior to deployment -- the only proprietary software requiring explicit license acceptance. CLAUDE.md §Service Inventory provides the canonical software list per host. The primary gap driving `partial` status is the absence of a formal software usage policy document; the licensing posture is sound and documented in ADRs, but no dedicated policy file has been committed.",
               "implementation-status": {
-                "state": "planned"
+                "state": "partial"
               }
             }
           ]
@@ -588,9 +588,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "b7745875-39d2-4537-8178-a98dd73deba2",
-              "description": "",
+              "description": "The system is a single-operator homelab SOC with no general-purpose user accounts on in-boundary hosts beyond the operator (Brian Chaplow). The operative software installation policy is operator-authored: all new software installations must be documented in CLAUDE.md §Service Inventory and committed to the homelab-fedramp-low or homelab-soc-portfolio git repository before the service is considered part of the approved baseline. Docker is the required deployment mechanism for new services on brisket and GRC VMs, providing container namespace isolation and explicit port binding as a technical enforcement layer. Ubuntu 24.04 VMs (dojo, regscale) use `unattended-upgrades` for security patches only -- no user-initiated package installation outside operator SSH sessions is expected or authorized (ADR 0002 §Infrastructure state). SSH key-only authentication to all in-boundary hosts is the primary logical access control that restricts software installation to the authorized operator.\n\nUFW default-deny on dojo and regscale prevents inbound lateral software installation attempts. Wazuh syscollector captures the installed package set on all enrolled agents at enrollment and on a polling cadence, providing change detection if unauthorized packages appear on any in-boundary host; these snapshots feed the monthly ConMon pipeline (`pipelines/ingest/inventory.py`). Wazuh SCA checks validate OS-level hardening against unauthorized software indicators. The single-operator model significantly reduces the risk profile of user-installed software -- there is no general user population to govern, only the operator themselves. The primary gaps driving `partial` status are: (1) the policy is informal (CLAUDE.md convention, not a standalone policy document); and (2) Wazuh syscollector detects unauthorized software changes but does not block them at installation time.",
               "implementation-status": {
-                "state": "planned"
+                "state": "partial"
               }
             }
           ]
@@ -616,9 +616,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "ada28368-b548-424a-b082-d8c5405af482",
-              "description": "",
+              "description": "Security and privacy impact analysis for system changes is performed ad hoc by the system owner through the ADR process. Every architecturally significant change that affects the security posture -- VLAN topology, service port configuration, agent enrollment, backup topology, Phase 14 data pipeline additions -- produces an ADR that explicitly documents security consequences before the change is committed to the baseline. ADR 0003 analyzed the RegScale HTTP-on-80 deviation; ADR 0004 analyzed the DefectDojo HTTP-on-8080 deviation; ADR 0005 identified the security risk of silent backup failure, performed root-cause analysis, and remediated the fstab configuration with `x-systemd.automount` hardening. ADR 0008 contains a pre-execution risk table for all Plan 3 changes. These ADRs provide the pre-implementation impact record that CM-4 requires.\n\nSupporting data points for impact analysis are drawn from Wazuh SCA (Security Configuration Assessment) scans running on all enrolled agents, which surface OS-level hardening gaps from any configuration or package change. The monthly ConMon pipeline (`./pipelines.sh conmon`, ADR 0007) produces a POA&M from Wazuh vulnerability findings (`poam/POAM-2026-04.xlsx`, 8,473 findings) that feeds risk context into change-impact decisions. The Grafana fleet dashboard (`brisket-setup/monitoring/build-infrastructure-fleet.py`) surfaces configuration drift signals -- disk, memory, and service health -- that can trigger manual impact review. The primary gap driving `partial` status is the absence of a formal, documented pre-change impact analysis procedure with defined criteria; the current mechanism is effective but ad hoc.",
               "implementation-status": {
-                "state": "planned"
+                "state": "partial"
               }
             }
           ]
@@ -630,9 +630,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "4435a0c2-c4dc-4553-b1c1-eefa9eaa2965",
-              "description": "",
+              "description": "Logical access restrictions for system changes are enforced by SSH key-only authentication to all in-boundary hosts: brisket (primary SOC platform, 10.10.20.30), haccp (ELK + Arkime, 10.10.30.25), and the Proxmox hypervisors pitcrew and smoker. Password-based SSH is disabled on all production hosts via `PasswordAuthentication no` in `/etc/ssh/sshd_config`. All configuration changes flow through git commits from the operator workstation PITBOSS (10.10.10.100), and the GitHub repository (brianchaplow) serves as the access-controlled change approval record -- only the repository owner can push to `main`, providing a logical change authorization gate with commit-level attribution for every change. UFW default-deny is active on GRC VMs dojo (10.10.30.27) and regscale (10.10.30.28), restricting change paths to explicitly permitted SSH and service ports (ADR 0002 §Infrastructure state). Wazuh RBAC restricts who can push SIEM rules, SCA checks, or agent configuration to the Wazuh Dashboard (brisket:5601).\n\nPhysical access restrictions are enforced by VLAN microsegmentation on MokerLink: VLAN 40 (targets) is isolated and cannot initiate connections to VLAN 20 (SOC) or VLAN 30 (lab), so only the operator on VLAN 10 (PITBOSS) can reach all segments requiring configuration changes. OPNsense (10.10.10.1) enforces perimeter access control preventing external entities from initiating changes to in-boundary services. Physical access to the 12U rack is restricted to the system owner. The primary gap driving `partial` status is that physical access restrictions are informal -- no documented key-custody procedure or visitor log exists for the home lab rack.",
               "implementation-status": {
-                "state": "planned"
+                "state": "partial"
               }
             }
           ]
@@ -644,9 +644,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "1371afcd-8b7a-4705-84e1-e8f61c13e8c9",
-              "description": "",
+              "description": "Configuration settings for in-boundary components reflect the most restrictive mode consistent with SOC operational requirements. All Ubuntu 24.04 VMs (dojo, regscale) are deployed with `unattended-upgrades` active for automated security patching, UFW default-deny with explicit service allowances, and SSH `PasswordAuthentication no` -- establishing a hardened OS baseline without requiring a named CIS Benchmark profile. Docker on brisket uses explicit port publications only (`brisket-setup/monitoring/docker-compose.yml`); no containers expose host-network mode or wildcard bindings. The Zeek configuration (`reference/phase14/zeek/local.zeek`) explicitly names every loaded package -- no default Zeek plugins are active beyond the pinned baseline. Prometheus scrape targets (`brisket-setup/monitoring/prometheus.yml`) are enumerated explicitly with no wildcard service discovery.\n\nDeviations from secure-by-default settings are documented and approved via ADRs: DefectDojo 2.57.0 on dojo runs HTTP-on-8080 rather than HTTPS (ADR 0004), and RegScale CE on regscale runs HTTP-on-80 (ADR 0003). Both deviations are justified by the absence of a publicly trusted TLS certificate for LAN-only services; a reverse-proxy upgrade path is documented in `runbooks/cert-trust.md` for Plan 4. Wazuh SCA checks on all enrolled agents continuously validate OS hardening settings and surface deviations in the Wazuh Dashboard (brisket:5601); findings feed the monthly POA&M via `pipelines/ingest/wazuh_vulns.py`. The primary gap driving `partial` status is the absence of a named configuration standard (CIS Benchmark or STIG) formally adopted and mapped to the system.",
               "implementation-status": {
-                "state": "planned"
+                "state": "partial"
               }
             }
           ]
@@ -658,9 +658,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "eb09c1c5-694f-4ead-abb2-a71505567bbd",
-              "description": "",
+              "description": "The system is configured to provide only mission-essential SOC capabilities. Each in-boundary host runs only the services required for its designated role: brisket (10.10.20.30) runs Wazuh Manager/Indexer/Dashboard, Prometheus, Grafana, Shuffle SOAR, Velociraptor, ML Scorer, Ollama, and OpenCTI -- no unrelated services. haccp (10.10.30.25) runs ELK, Arkime, and Logstash exclusively. dojo (10.10.30.27) runs DefectDojo and its Valkey dependency; regscale (10.10.30.28) runs RegScale CE and its MSSQL dependency. The canonical mission-essential service list per host is defined in CLAUDE.md §Service Inventory, which serves as the operational baseline definition -- any service not listed is not approved. Docker container isolation ensures that each service is confined to its own namespace with no host-network exposure beyond explicitly published ports (`brisket-setup/monitoring/docker-compose.yml`).\n\nProhibited functions and traffic paths are enforced at multiple layers. OPNsense (10.10.10.1) enforces perimeter restrictions blocking all non-essential inbound access. MokerLink L3 ACL isolates VLAN 40 (targets, 10.10.40.0/24) from VLAN 20 (SOC) and VLAN 30 (lab), preventing target-originated traffic from reaching SOC infrastructure. UFW default-deny on dojo and regscale blocks all ports not explicitly opened. Prometheus scrape targets (`brisket-setup/monitoring/prometheus.yml`) and Zeek loaded-scripts (`reference/phase14/zeek/local.zeek`) are explicitly enumerated -- no wildcard discovery or default plugin activation. Wazuh SCA checks validate that enrolled agents do not expose unnecessary running services or open ports. The primary gap driving `partial` status is the absence of a committed prohibited-ports/protocols list as a formal configuration document separate from CLAUDE.md prose.",
               "implementation-status": {
-                "state": "planned"
+                "state": "partial"
               }
             }
           ]
@@ -672,9 +672,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "83fdb303-e99b-4e25-a32c-2e52061cf07f",
-              "description": "",
+              "description": "The system component inventory is maintained through three complementary mechanisms. First, `inventory/overlay.yaml` is the authoritative static inventory overlay, keyed by Wazuh agent name, documenting asset tag, function, diagram label, boundary classification, hardware model, and EOL date for all 7 in-boundary Wazuh-managed hosts (brisket, haccp, dojo, regscale, DC01, WS01, and one additional) plus 2 non-agent assets (OPNsense, MokerLink). Second, `inventory/IIW-2026-04.xlsx` is the April 2026 Integrated Inventory Workbook (IIW) generated by `pipelines/ingest/inventory.py` and `pipelines/render/iiw.py` from live Wazuh syscollector data merged with the overlay, producing 7 in-boundary IIW rows with OS, CPU, RAM, IP, and MAC fields (ADR 0007 §done criteria Task 9). Third, Wazuh syscollector continuously captures hardware, OS, and network interface data for all 15 enrolled agents and indexes them in `wazuh-*` indices on brisket:9200.\n\nThe `pipelines/build/oscal_component.py` builder emits every `InventoryComponent` as a validated OSCAL component with UUID, name, type, and all overlay props, producing `oscal/component-definition.json` (16 KB, 7 components). VM-level inventory records for dojo and regscale are maintained in `deploy/proxmox/dojo-vm-config.yaml` and `deploy/proxmox/regscale-vm-config.yaml`, capturing VMID, memory, cores, disk size, MAC, VLAN, and IP. The IIW and OSCAL component-definition cover only the 7 in-boundary MSS components; the 8 out-of-boundary assets (DC01, WS01, GCP VM, sear, etc.) are listed in `overlay.yaml` under separate classification for auditor transparency. The inventory is regenerated monthly via `./pipelines.sh conmon`.",
               "implementation-status": {
-                "state": "planned"
+                "state": "implemented"
               }
             }
           ]
