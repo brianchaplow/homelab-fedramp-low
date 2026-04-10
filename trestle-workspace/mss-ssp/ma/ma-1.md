@@ -26,45 +26,45 @@ x-trestle-set-params:
     aggregates:
       - ma-01_odp.01
       - ma-01_odp.02
-    profile-param-value-origin: <REPLACE_ME>
+    profile-param-value-origin: organization
   ma-01_odp.01:
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - Brian Chaplow (system owner, sole operator)
+    profile-param-value-origin: organization
   ma-01_odp.02:
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - Brian Chaplow (system owner, sole operator)
+    profile-param-value-origin: organization
   ma-01_odp.03:
     alt-identifier: ma-1_prm_2
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - annually and after any significant maintenance event
+    profile-param-value-origin: organization
   ma-01_odp.04:
     alt-identifier: ma-1_prm_3
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - rack build, host reimage, new phase deployment, or any ADR-documented incident
+    profile-param-value-origin: organization
   ma-01_odp.05:
     alt-identifier: ma-1_prm_4
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - annually and after any significant maintenance event
+    profile-param-value-origin: organization
   ma-01_odp.06:
     alt-identifier: ma-1_prm_5
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - rack build, host reimage, new phase deployment, or any ADR-documented incident
+    profile-param-value-origin: organization
   ma-01_odp.07:
     alt-identifier: ma-1_prm_6
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - Brian Chaplow (system owner, sole operator)
+    profile-param-value-origin: organization
   ma-01_odp.08:
     alt-identifier: ma-1_prm_7
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - Brian Chaplow (system owner, sole operator)
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -142,8 +142,8 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: ma-1 -->
+The Managed SOC Service system-level maintenance policy is documented in CLAUDE.md (v3 Migration Status table and Conventions section), which the sole operator Brian Chaplow reviews and updates on the annual ConMon cycle or following any significant maintenance event. ADRs serve as maintenance event records -- ADR 0005 (PBS NFS mount failure 2026-04-08) and the 2026-03-31 fleet update (all kernels and Wazuh 4.14.4) are the primary policy-execution artifacts demonstrating the full incident-to-fix-to-document loop.
 
-#### Implementation Status: planned
+#### Implementation Status: implemented
 
 ______________________________________________________________________

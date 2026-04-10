@@ -25,18 +25,18 @@ x-trestle-set-params:
   ma-02_odp.01:
     alt-identifier: ma-2_prm_1
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - ad hoc, performed by the sole operator; all unplanned maintenance is documented in an ADR within 48 hours of completion
+    profile-param-value-origin: organization
   ma-02_odp.02:
     alt-identifier: ma-2_prm_2
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - not applicable -- no equipment leaves organizational facilities for off-site maintenance; all hardware remains in the operator home lab rack
+    profile-param-value-origin: organization
   ma-02_odp.03:
     alt-identifier: ma-2_prm_3
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - date and time, description of maintenance performed, components serviced or replaced, verification steps performed, and post-maintenance control check results
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -95,8 +95,8 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: ma-2 -->
+All maintenance on MSS hardware and software is performed by the sole operator (Brian Chaplow) and documented via ADRs or CLAUDE.md entries. The 2026-04-07 rack consolidation -- 12U rack build, three drive swaps (haccp 2TB PCAP, pitcrew +512 GB, smoker +1 TB) -- was planned, executed, and post-maintenance verified (ES green, MokerLink mirror sessions TE10/TE11, Arkime PCAP resuming on span0). ADR 0005 records the PBS NFS mount failure discovered and corrected during that same maintenance window. No equipment leaves the home lab rack, making off-site sanitization not applicable.
 
-#### Implementation Status: planned
+#### Implementation Status: implemented
 
 ______________________________________________________________________

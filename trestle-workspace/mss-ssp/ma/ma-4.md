@@ -67,8 +67,8 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: ma-4 -->
+All remote maintenance sessions to in-boundary hosts use Tailscale VPN (WireGuard device-key authentication) before any SSH connection is established, satisfying the strong authentication requirement. Remote sessions to brisket (100.124.139.56), haccp (100.74.16.82), smoker (100.77.138.24), and sear (100.86.67.91) all traverse the Tailscale mesh. Wazuh on brisket logs all SSH authentication events from each agent host, providing the session audit trail. Sessions terminate when the SSH connection closes -- no persistent tunnels remain open after maintenance completes. ADR 0005 documents a concrete nonlocal maintenance session record.
 
-#### Implementation Status: planned
+#### Implementation Status: implemented
 
 ______________________________________________________________________

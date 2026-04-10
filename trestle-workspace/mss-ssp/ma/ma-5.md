@@ -53,8 +53,8 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: ma-5 -->
+The Managed SOC Service has a single authorized maintenance person: Brian Chaplow (system owner and sole operator). No external maintenance organizations, vendors, or contractors are authorized or hold credentials to any in-boundary component. SSH keys and Tailscale device credentials are held exclusively by the operator. Wazuh agent enrollment (15 active agents as of 2026-04-08) requires operator authentication to the Wazuh manager API on brisket, serving as the access authorization gate. The MA-5c supervision requirement is satisfied trivially -- the operator is both maintainer and supervisor.
 
-#### Implementation Status: planned
+#### Implementation Status: implemented
 
 ______________________________________________________________________
