@@ -26,45 +26,45 @@ x-trestle-set-params:
     aggregates:
       - ia-01_odp.01
       - ia-01_odp.02
-    profile-param-value-origin: <REPLACE_ME>
+    profile-param-value-origin: organization
   ia-01_odp.01:
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - System owner (Brian Chaplow); all personnel with access to in-boundary systems
+    profile-param-value-origin: organization
   ia-01_odp.02:
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - System owner (Brian Chaplow)
+    profile-param-value-origin: organization
   ia-01_odp.03:
     alt-identifier: ia-1_prm_2
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - Annually and following a security incident or significant architectural change
+    profile-param-value-origin: organization
   ia-01_odp.04:
     alt-identifier: ia-1_prm_3
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - Security incident, significant architecture change, or personnel change
+    profile-param-value-origin: organization
   ia-01_odp.05:
     alt-identifier: ia-1_prm_4
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - Annually
+    profile-param-value-origin: organization
   ia-01_odp.06:
     alt-identifier: ia-1_prm_5
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - Security incident, significant architecture change
+    profile-param-value-origin: organization
   ia-01_odp.07:
     alt-identifier: ia-1_prm_6
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - System owner (Brian Chaplow)
+    profile-param-value-origin: organization
   ia-01_odp.08:
     alt-identifier: ia-1_prm_7
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - Single-operator system; no multi-entity coordination required
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -142,8 +142,10 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: ia-1 -->
+The Managed SOC Service (MSS) identification and authentication policy is documented across two sources that together constitute the system-level IA policy: the root `CLAUDE.md` workspace reference (SSH key-only auth model, per-service account inventory, `.env`-based secret management) and this `homelab-fedramp-low` repository, including ADR 0003 (RegScale auth deviation), ADR 0006 Deviation 7 (RegScale JWT re-auth policy), and `runbooks/cert-trust.md` (TLS posture per service). These documents establish purpose (ensure only authorized users access in-boundary systems), scope (all hosts and services within the FedRAMP Low boundary), roles (system owner as sole operator and policy manager), and compliance posture against NIST SP 800-63B and FedRAMP Rev 5 Low IA controls.
 
-#### Implementation Status: planned
+The policy owner is the system owner (Brian Chaplow), who is responsible for developing, documenting, and maintaining the IA policy. Policy dissemination occurs through the git repository, which is accessible to all parties with access to in-boundary systems. The policy and associated procedures are reviewed annually and whenever a security incident, significant architecture change, or personnel change occurs. Procedures review follows the same cadence. No standalone IA policy document exists separate from the operational references above -- a gap acknowledged under the partial status. A formal consolidated policy document is a planned remediation item for future ConMon cycles.
+
+#### Implementation Status: partial
 
 ______________________________________________________________________

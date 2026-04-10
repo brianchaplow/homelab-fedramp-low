@@ -42,8 +42,10 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: ia-6 -->
+All in-boundary service authentication interfaces in the Managed SOC Service obscure password and credential feedback during the authentication process.
 
-#### Implementation Status: planned
+For SSH terminal access to all hosts (brisket, haccp, smokehouse, smoker, pitcrew, sear, dojo, regscale), the OpenSSH client provides no visual feedback for passphrase or key-based challenge inputs; echo is suppressed during authentication. For web-based service consoles, every login form masks the password field: Wazuh Dashboard (`https://10.10.20.30:5601`) and Shuffle SOAR (`https://10.10.20.30:3443`) use HTTPS-served login forms with `type="password"` HTML input fields displaying asterisks. OpenCTI (`http://10.10.20.30:8080`), TheHive (`http://10.10.30.22:9000`), Cortex (`http://10.10.30.22:9001`), DefectDojo (`http://10.10.30.27:8080`), and RegScale CE (`http://10.10.30.28`) each use their respective platform login forms with masked password fields. Velociraptor (`https://10.10.20.30:8889`) uses an HTTPS login form with password masking. For pipeline CLI execution, service passwords are sourced from environment variables in `.env`; no password value is echoed to the terminal during `pipelines.sh` execution, and `pipelines/common/config.py` reads credentials from the environment without logging them. All credential masking relies on the browser and terminal platform's standard mechanism, which is the accepted implementation approach under NIST SP 800-53 IA-6 guidance.
+
+#### Implementation Status: implemented
 
 ______________________________________________________________________

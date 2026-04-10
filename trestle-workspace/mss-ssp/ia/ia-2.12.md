@@ -42,8 +42,8 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: ia-2.12 -->
+IA-2(12) is not applicable to the Managed SOC Service. The system is a private homelab with no federal PIV infrastructure. PIV issuance requires federal agency sponsorship; the system owner holds no PIV card and no PIV issuance authority. No PIV card readers, middleware (e.g., OpenSC), or PIV-aware identity providers are deployed in the boundary.
 
-#### Implementation Status: planned
+#### Implementation Status: not-applicable
 
 ______________________________________________________________________

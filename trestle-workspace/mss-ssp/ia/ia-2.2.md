@@ -42,8 +42,12 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: ia-2.2 -->
+Multi-factor authentication is not currently implemented for non-privileged account access to any in-boundary service in the Managed SOC Service. This is a documented gap with the same posture as IA-2(1).
 
-#### Implementation Status: planned
+SSH key authentication is used for all host access, constituting a single cryptographic factor. No second factor -- TOTP, hardware token, PIV, or biometric -- is paired with SSH keys or any service console. The `socadmin@thehive.local` and `socadmin@SOC` accounts in TheHive and Cortex represent lower-privilege operator roles and are also single-factor (named account with password). In a single-operator homelab boundary, the distinction between privileged and non-privileged accounts is largely nominal -- the operator holds admin credentials for all services -- but the non-privileged accounts equally lack a second authentication factor.
+
+MFA for non-privileged accounts is a planned remediation item, linked to the same initiative as IA-2(1). Until remediated, this control is partial -- the gap is documented, the risk is accepted under the lab posture, and a future ConMon cycle will address MFA implementation across all service tiers.
+
+#### Implementation Status: partial
 
 ______________________________________________________________________

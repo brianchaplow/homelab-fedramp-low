@@ -49,8 +49,8 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: ia-8.2 -->
+IA-8(2) is not applicable to the Managed SOC Service. The system does not accept any external authenticators from non-federal identity providers. All authentication is internal: SSH keys issued by the operator, service passwords managed in `.env`, and Tailscale device keys issued through the operator's Tailscale account. No OAuth, SAML, or federated identity provider integrations are in use within the FedRAMP Low boundary, and no external authenticators from any source are accepted.
 
-#### Implementation Status: planned
+#### Implementation Status: not-applicable
 
 ______________________________________________________________________

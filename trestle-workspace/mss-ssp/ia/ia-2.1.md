@@ -42,8 +42,12 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: ia-2.1 -->
+Multi-factor authentication is not currently implemented for privileged account access to any in-boundary service in the Managed SOC Service. This is a documented gap.
 
-#### Implementation Status: planned
+SSH access to all in-boundary hosts -- brisket, haccp, smokehouse, smoker, pitcrew, sear, dojo, and regscale -- uses private key authentication (something you have) as the sole factor. While SSH key authentication is cryptographically stronger than password-only authentication and satisfies replay resistance (see IA-2(8)), it constitutes single-factor authentication under NIST SP 800-63B. A private key replaces the password; it does not add a second factor on top of a password or biometric. Under SP 800-63B, SSH key-only access is a single-factor cryptographic authenticator at AAL2, which does not satisfy the MFA requirement for privileged accounts. Similarly, Tailscale device authentication uses WireGuard keys (device-bound cryptographic factor) without a required second factor.
+
+No TOTP, hardware token, PIV card, or push-notification MFA is wired to any privileged service console -- Wazuh Dashboard, Shuffle SOAR, OpenCTI, Velociraptor, or the Wazuh API. MFA implementation is a planned remediation item tracked in the FedRAMP Low ConMon program. Until remediated, this control is partial -- the gap is acknowledged and the risk accepted under the homelab boundary posture documented in this SSP.
+
+#### Implementation Status: partial
 
 ______________________________________________________________________

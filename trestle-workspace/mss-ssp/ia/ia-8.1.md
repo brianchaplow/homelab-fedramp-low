@@ -44,8 +44,8 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: ia-8.1 -->
+IA-8(1) is not applicable to the Managed SOC Service. The system is a private homelab with no federal agency interconnections and no PIV infrastructure. No federal users from other agencies access this system, and no PIV-compliant credential issuance or verification capability is deployed or planned.
 
-#### Implementation Status: planned
+#### Implementation Status: not-applicable
 
 ______________________________________________________________________

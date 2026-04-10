@@ -48,8 +48,10 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: ia-2 -->
+Every in-boundary host and service in the Managed SOC Service requires unique identification and authentication before granting access. For SSH access to all Linux hosts -- brisket, haccp, smokehouse, smoker, pitcrew, sear, dojo, and regscale -- the operator (Brian Chaplow) authenticates using a per-host ED25519 or RSA-4096 key pair provisioned on the PITBOSS workstation. `PasswordAuthentication no` is set in `sshd_config` on every host, preventing credential-based access. No shared SSH credentials are used.
 
-#### Implementation Status: planned
+All management service interfaces enforce named account authentication. Wazuh Dashboard (`https://10.10.20.30:5601`) authenticates via the `admin` account against the OpenSearch security plugin. The Wazuh API (`https://10.10.20.30:55000`) uses the `wazuh-wui` account with a per-invocation JWT issued by the pipeline client in `pipelines/common/wazuh.py`. Shuffle SOAR (`https://10.10.20.30:3443`) and OpenCTI (`http://10.10.20.30:8080`) each use a named admin account. TheHive (`http://10.10.30.22:9000`) maintains two distinct named accounts -- `admin@thehive.local` and `socadmin@thehive.local` -- with separate roles. Cortex (`http://10.10.30.22:9001`) likewise uses `admin` and `socadmin@SOC`. Velociraptor (`https://10.10.20.30:8889`) and DefectDojo (`http://10.10.30.27:8080`) each use a dedicated `admin` account with API token-based pipeline access. RegScale CE (`http://10.10.30.28`) authenticates via `admin` with a 24-hour JWT issued per `POST /api/authentication/login` per ADR 0003 and ADR 0006 Deviation 7. Tailscale remote access authenticates each device by its WireGuard key, tied to the operator's Tailscale account identity. All accounts are uniquely identified and non-shared.
+
+#### Implementation Status: implemented
 
 ______________________________________________________________________

@@ -25,13 +25,13 @@ x-trestle-set-params:
   ia-04_odp.01:
     alt-identifier: ia-4_prm_1
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - System owner (Brian Chaplow)
+    profile-param-value-origin: organization
   ia-04_odp.02:
     alt-identifier: ia-4_prm_2
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - Indefinite -- retired identifiers are never reassigned within this system boundary
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -77,8 +77,10 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: ia-4 -->
+Identifier management for the Managed SOC Service is governed by operator convention and documented in `CLAUDE.md` and `inventory/overlay.yaml`. The system owner (Brian Chaplow) is the sole authority for assigning identifiers to any subject within the boundary.
 
-#### Implementation Status: planned
+For host OS accounts, each in-boundary host carries a named OS account -- `bchaplow` on brisket and haccp, `butcher` on sear, `root` on smoker (key-only), and similarly named accounts on dojo and regscale. Account creation requires an explicit operator decision; the account name identifies the role and is never reassigned. Wazuh agent identifiers are assigned sequentially by the Wazuh Manager at enrollment time. IDs 001 through 017 are in use across 15 active agents plus the OPNsense syslog source. Agent IDs are never reassigned to different hosts after enrollment -- a policy documented in ADR 0006 Deviation 6, which also establishes that agent names (stable host names: `brisket`, `haccp`, `smokehouse`, `dojo`, `regscale`, etc.) are the preferred stable identifiers in pipeline code and `inventory/overlay.yaml`. Service account identifiers (Wazuh `admin` and `wazuh-wui`, Shuffle `admin`, OpenCTI `admin@opencti.local`, TheHive `admin@thehive.local` and `socadmin@thehive.local`, Cortex `admin` and `socadmin@SOC`, Velociraptor `admin`, DefectDojo `admin`, RegScale `admin`) are tied to a defined role and are retired -- not reassigned -- when the associated service is decommissioned. DefectDojo product IDs (1 through 5) were assigned at seed time and are not reused. Identifier reuse is prevented indefinitely -- no previously used identifier is assigned to a different subject within the system boundary.
+
+#### Implementation Status: implemented
 
 ______________________________________________________________________

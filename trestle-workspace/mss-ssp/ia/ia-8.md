@@ -42,8 +42,8 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: ia-8 -->
+IA-8 is not applicable to the Managed SOC Service. The system has no non-organizational users. The boundary is a private homelab accessed exclusively by the system owner (Brian Chaplow); no external parties, contractors, guest researchers, or automated processes acting on behalf of external parties have access to in-boundary systems. All service interfaces are on VLAN 20 or VLAN 30 (not externally routable) and are accessible only via Tailscale mesh (operator-enrolled devices only). No public-facing endpoints exist within the FedRAMP Low boundary.
 
-#### Implementation Status: planned
+#### Implementation Status: not-applicable
 
 ______________________________________________________________________
