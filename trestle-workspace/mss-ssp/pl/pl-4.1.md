@@ -52,8 +52,10 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: pl-4.1 -->
+No standalone Rules of Behavior document exists that explicitly enumerates the three social-media restriction categories. In practice, restriction (c) -- organizational identifiers on external accounts -- is satisfied by `/c/Projects/CLAUDE.md` §Credentials ("All credentials are in `.env` (gitignored)") and §Conventions ("NEVER hardcode credentials"), which prevent organizational secrets from being posted to external sites or used to create third-party accounts. The public GitHub repo (`github.com/brianchaplow/homelab-fedramp-low`) enforces restriction (b) by excluding all secrets via `.gitignore`. ADR 0001 §RegScale CE EULA §2(ix) ("No publishing circumvention info") constitutes an acknowledged external-site posting restriction. No organizational email identifiers (e.g., `.gov` addresses) are used in this system -- `deploy/regscale/README.md` and `deploy/defectdojo/README.md` confirm admin accounts are not linked to organizational email.
 
-#### Implementation Status: planned
+The status is partial because no formal RoB document enumerates restrictions (a) social media use, (b) posting organizational information, and (c) organizational identifiers -- the restrictions exist by convention but not in a disseminated policy artifact.
+
+#### Implementation Status: partial
 
 ______________________________________________________________________

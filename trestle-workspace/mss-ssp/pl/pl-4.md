@@ -25,18 +25,18 @@ x-trestle-set-params:
   pl-04_odp.01:
     alt-identifier: pl-4_prm_1
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - annually and after each plan phase completion
+    profile-param-value-origin: organization
   pl-04_odp.02:
     alt-identifier: pl-4_prm_2
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - plan phase completion, new service enrollment, or security incident
+    profile-param-value-origin: organization
   pl-04_odp.03:
     alt-identifier: pl-4_prm_3
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - when the rules are revised or updated (at each plan phase completion that modifies behavioral conventions)
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -83,8 +83,10 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: pl-4 -->
+No standalone Rules of Behavior (RoB) document exists in this repository. The behavioral rules governing the sole operator (Brian Chaplow) are encoded in `/c/Projects/CLAUDE.md` §Conventions (attack VLAN 40 only, no hardcoded credentials, canonical tool names, git commit conventions) and enforced by convention across all projects. ADR 0001 §RegScale CE EULA review provides the closest documented acknowledgment artifact -- Brian Chaplow read, understood, and agreed to RegScale CE license terms before system access was authorized. `runbooks/cert-trust.md` documents TLS posture decisions operators must follow when interacting with self-signed certificates. `deploy/regscale/README.md` states the password policy (length 12, upper/lower/digit/symbol) as an enforced behavioral rule.
 
-#### Implementation Status: planned
+Rules are reviewed annually and after each plan phase completion. The gap is that no single consolidated RoB document has been drafted and no formal electronic-signature acknowledgment process exists beyond the EULA acknowledgment in ADR 0001. For a single-operator system the conventions in `CLAUDE.md` are effectively self-applied and self-enforced -- the git commit history to the public repo is the observable acknowledgment trail. This makes the status partial rather than not-applicable.
+
+#### Implementation Status: partial
 
 ______________________________________________________________________

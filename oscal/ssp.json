@@ -3,7 +3,7 @@
     "uuid": "ff2c49ad-b919-47e0-a79a-2a9bf1705f51",
     "metadata": {
       "title": "REPLACE_ME",
-      "last-modified": "2026-04-10T16:37:46.702847-04:00",
+      "last-modified": "2026-04-10T16:55:08.036266-04:00",
       "version": "REPLACE_ME",
       "oscal-version": "1.2.1"
     },
@@ -210,9 +210,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "89eb6d9c-0b2f-457f-99df-63ab4a791844",
-              "description": "",
+              "description": "This SSP (`trestle-workspace/mss-ssp/`) serves as the system-level awareness and training policy for the MSS homelab. It addresses purpose, scope, roles, responsibilities, and compliance expectations for a single-operator personal system. No separate policy document is needed; the SSP combined with the `homelab-fedramp-low` git history and ADR chain (ADRs 0001--0008) constitutes the policy and procedure record. Brian Chaplow is designated as the sole person responsible for developing, documenting, and disseminating all awareness and training material.\n\nPolicy is reviewed annually and whenever a new ADR records a scope or architecture change. The `runbooks/monthly-conmon.md` defines the ConMon review cadence, and the `C:/Projects/CLAUDE.md` project ledger (last updated 2026-04-08) provides an observable last-review timestamp. The policy gap is that this document is embedded in the SSP rather than a standalone policy artifact; NIST guidance explicitly permits this consolidation, making the status partial rather than not-applicable.",
               "implementation-status": {
-                "state": "planned"
+                "state": "partial"
               }
             }
           ]
@@ -224,9 +224,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "f0680edb-0af2-4a80-8945-4dee342228db",
-              "description": "",
+              "description": "Not applicable. The MSS homelab is a single-operator personal system; insider threat as a control concept presupposes a multi-person workforce where one member could act against organizational interests without detection by others. With exactly one operator who is also the system owner, ISSO, and AO-equivalent, there is no distinct insider-versus-organization dynamic and no meaningful training program on recognizing insider-threat indicators.",
               "implementation-status": {
-                "state": "planned"
+                "state": "not-applicable"
               }
             }
           ]
@@ -238,9 +238,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "02b8cfa1-498f-4405-bd75-0c842e7b9791",
-              "description": "",
+              "description": "The operator maintains continuous security literacy through active operation of the MSS homelab SOC -- reviewing Wazuh alerts from 15 agents, enriching OpenCTI v7 indicators via 6 connectors (MITRE ATT&CK, AbuseIPDB, threat feeds), and receiving the WF10 morning briefing (Shuffle cron 0530 EST, Discord `#morning-briefing`) summarizing the prior night's Zeek network activity from the Phase 14 pipeline. The OpenCTI IOC sync cron (`0 */6 * * *`) pushes current threat indicators to Wazuh CDB lists and the haccp `opencti-threat-intel` ELK index, providing live awareness of active IOCs. ADR 0005 (PBS backup gap detection and automount fix) is a concrete example of applied security awareness: the operator independently identified, diagnosed, and resolved a security-relevant configuration failure.\n\nThe gap is the absence of a formal training completion attestation or scheduled course. Awareness is continuous and operationally driven rather than time-bounded with a recorded completion date. This makes the status partial -- the substance of awareness exists and is current, but no LMS record is generated.",
               "implementation-status": {
-                "state": "planned"
+                "state": "partial"
               }
             }
           ]
@@ -252,9 +252,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "a442baeb-b9e1-4d3d-a155-fe9e3e5f70ae",
-              "description": "",
+              "description": "All roles in the MSS homelab -- system owner, ISSO, system administrator, SOC analyst, incident responder, vulnerability manager, and assessment coordinator -- are held by a single person: Brian Chaplow. Role-based training is fulfilled through operational mastery and self-directed study specific to each role. As system administrator, the operator maintains 15 Wazuh agents, manages Proxmox VMs, and resolves infrastructure failures (ADR 0005 PBS automount fix, ADR 0003 RegScale install deviation). As SOC analyst, the operator reviews Wazuh alerts, tunes detection rules, and operates the Phase 14 Zeek + Logstash enrichment pipeline daily. As ISSO and assessment coordinator, the operator authored this SSP, built the OSCAL ConMon pipelines (Plan 2), and executed 130 tests across the FedRAMP Low ConMon program.\n\nThe gap is the absence of a formal pre-access role-based training attestation; the operator self-authorizes, so there is no distinct authorization event to tie a training record to. The ADR chain (ADRs 0001--0008) and the 14-phase homelab build history constitute the auditable record of role-specific competence acquired under real operational conditions.",
               "implementation-status": {
-                "state": "planned"
+                "state": "partial"
               }
             }
           ]
@@ -266,9 +266,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "e14495d9-e1d5-4710-a68f-fc35150d171c",
-              "description": "",
+              "description": "The `homelab-fedramp-low` git repository on GitHub (`github.com/brianchaplow/homelab-fedramp-low`) serves as the training record for this system. Every ADR filed documents a learning event: a deviation discovered, a technology evaluated, a decision made under real operational conditions. The git commit log provides immutable, timestamped evidence of when each learning event occurred and what decision followed. Eight ADRs filed between 2026-04-08 and 2026-04-09 (ADRs 0001--0008) and the `C:/Projects/CLAUDE.md` phase-completion ledger (Phases 1--14, with dates) constitute the operator's training activity record. Retention is indefinite while the repository remains active; no data-retention cutoff is imposed in a personal homelab context.\n\nThe gap is the absence of a dedicated training-monitoring mechanism that would alert on overdue training. The control requires \"document AND monitor\"; git history satisfies \"document\" but monitoring of training currency is manual and not automated.",
               "implementation-status": {
-                "state": "planned"
+                "state": "partial"
               }
             }
           ]
@@ -420,9 +420,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "58fd2484-9ca2-46b6-b149-4aa6ceaf2102",
-              "description": "",
+              "description": "This SSP (`oscal/ssp.json`, assembled from `trestle-workspace/mss-ssp/`) serves as the system-level assessment, authorization, and monitoring policy document for the Managed SOC Service (MSS) homelab boundary. It addresses purpose (FedRAMP Low ConMon portfolio demonstrating continuous monitoring capability), scope (7 in-boundary components per `oscal/component-definition.json`: brisket, haccp, smokehouse, dojo, regscale, OPNsense, MokerLink), roles (system owner = Brian Chaplow), responsibilities (sole operator), and compliance (FedRAMP Rev 5 Low baseline, NIST SP 800-53 Rev 5). The SSP is disseminated to the system owner and is the authoritative policy artifact for the portfolio.\n\nThe ConMon procedures are documented in `runbooks/monthly-conmon.md`, which describes the monthly `./pipelines.sh conmon` cycle: ingest-findings from Wazuh, build OSCAL POA&M, render IIW and POA&M xlsx, and report results. Plan 3 SSP authoring constitutes the initial documentation event; annual review cadence starts from Plan 3 completion.\n\nThe ADR series (`docs/adr/0001` through `docs/adr/0008`) provides the change-event record: each ADR is filed at a significant system change or deviation discovery event, which serves as the \"following events\" trigger for policy and procedure review. `docs/adr/0008-plan-3-pre-execution-realignment.md` documents the pre-execution critical read (2026-04-09) as the first formal policy review event. Annual review is the established cadence going forward; the next review will occur no later than 2027-04-09 or following the next significant system change, whichever comes first.\n\nCA-1 is partially implemented: SSP prose and runbook are authored during Plan 3; formal calendar-scheduled annual review has not yet been established for future cycles. The policy content is complete; the scheduling mechanism for future reviews is the named gap.",
               "implementation-status": {
-                "state": "planned"
+                "state": "partial"
               }
             }
           ]
@@ -434,9 +434,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "0bccdcf0-6cf6-4b4e-bd82-f9507644c661",
-              "description": "",
+              "description": "This is a single-person portfolio system owned and operated by Brian Chaplow. Full assessor independence -- a separate organizational entity with no stake in the system -- is not feasible at homelab scale. The control is implemented at a commensurate level through three structural independence mechanisms.\n\nFirst, `pipelines/ingest/wazuh_vulns.py` ingests vulnerability findings directly from the Wazuh Indexer (OpenSearch at `https://10.10.20.30:9200`) without manual filtering. The scanner result is authoritative: the operator cannot alter the finding data before it enters DefectDojo. Second, `pipelines/push/defectdojo.py` writes findings to DefectDojo (10.10.30.27:8080) as a separate system with a separate credential (`$DD_API_KEY` in `.env`); findings cannot be deleted or modified without explicit DefectDojo API access, creating an audit trail that is independent of the pipeline authoring workflow. Third, the test suite in `tests/` (136 tests after Plan 3 Task 3) provides automated, deterministic verification of every pipeline module -- test failures are objective and not subject to operator override without a code change.\n\nThe Gate 3 spot-check documented in `docs/adr/0008-plan-3-pre-execution-realignment.md` applies a 144-point self-review of evidence citations against repo artifacts before SSP publication, reducing the risk of undetected hallucinated citations. This is the closest analog to a third-party review available in a single-operator scope.\n\nThe accepted limitation is that true third-party independence is not implemented and no contracted 3PAO assessment exists. This is the honest state for a homelab portfolio; the automated pipeline provides the nearest feasible independence substitute and is identified as such.",
               "implementation-status": {
-                "state": "planned"
+                "state": "partial"
               }
             }
           ]
@@ -448,9 +448,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "c9d1c923-d4c6-43cf-b9ff-b2392a9a6fef",
-              "description": "",
+              "description": "The assessor for this homelab system is Brian Chaplow (system owner and sole operator). The assessment plan is embedded in the SSP and `runbooks/monthly-conmon.md`: scope is the FedRAMP Rev 5 Low baseline applied to 7 in-boundary components (brisket, haccp, smokehouse, dojo, regscale, OPNsense, MokerLink); assessment procedures are the `./pipelines.sh conmon` pipeline subcommands; assessment environment is the Wazuh SIEM (brisket, 10.10.20.30) and DefectDojo (dojo, 10.10.30.27:8080).\n\nThe primary assessment mechanism is automated: `pipelines/ingest/wazuh_vulns.py` ingests all open vulnerability findings from the `wazuh-states-vulnerabilities-*` index via the Wazuh Indexer (OpenSearch at `https://10.10.20.30:9200`), using `search_after` pagination to capture the full finding set. The live April 2026 run produced 8,471 findings across 5 in-boundary agents (brisket 2,804; haccp 1,899; regscale 1,861; dojo 1,861; smokehouse 46) per ADR 0007 Task 10.\n\nThe assessment report is `poam/POAM-2026-04.xlsx` (4.9 MB, 8,473 rows in FedRAMP Rev 5 POA&M template format), produced by `pipelines/render/poam.py` and rendered from `oscal/poam.json` (16.8 MB OSCAL 1.1.2 POA&M). DefectDojo (`http://10.10.30.27:8080`) hosts findings across 5 products -- MSS Core (brisket), MSS Log Analytics (haccp), MSS Network Sensors (smokehouse), MSS GRC Tooling (dojo + regscale) -- with engagement \"ConMon 2026-04\" serving as the assessment scope record. The assessment report and DefectDojo findings are provided to the system owner (Brian Chaplow). Assessment frequency is annual for full SSP review; monthly for vulnerability scan ingestion via `./pipelines.sh conmon`.\n\nCA-2 is partially implemented: the assessment artifact (POA&M) and pipeline are operational and live-verified per ADR 0007. A formal written assessment plan as a standalone document distinct from the SSP has not been produced; the SSP and `runbooks/monthly-conmon.md` together serve this function for the homelab scope.",
               "implementation-status": {
-                "state": "planned"
+                "state": "partial"
               }
             }
           ]
@@ -462,9 +462,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "28444ccc-e124-45d7-bd80-a056e112441f",
-              "description": "",
+              "description": "The MSS homelab boundary has four categories of external information exchange, all documented in `CLAUDE.md` (the authoritative whole-project design reference) and this SSP. Agreement type for all external exchanges is information exchange security agreement, documented in prose in this SSP and in `CLAUDE.md` §\"Network Quick Reference\" and `reference/network.md`.\n\nThe first category is the Tailscale overlay network (outbound/bidirectional). Hosts with Tailscale connectivity: brisket (TS 100.124.139.56), smokehouse (TS 100.110.112.98), sear (TS 100.86.67.91), haccp (TS 100.74.16.82), smoker (TS 100.77.138.24), PITBOSS (TS 100.126.10.19), GCP VM (TS 100.125.40.97). Protocol: WireGuard-based mesh VPN. Traffic is encrypted in transit. Information communicated: SSH management sessions and pipeline invocations from PITBOSS. Impact: low (management traffic only). Responsibility: Tailscale, Inc. operates the coordination plane; each node is owned by Brian Chaplow.\n\nThe second category is the GCP VM Wazuh agent (agent 009) reporting from an external IP to brisket Wazuh Manager (10.10.20.30:1514/1515). Interface: OSSEC protocol over Tailscale WireGuard tunnel. Information communicated: security events and syslog. Impact: low.\n\nThe third category is the PBS LXC 300 (10.10.30.24) NFS mount to smokehouse (10.10.20.10) over the VLAN 30 to VLAN 20 routed path. Interface: NFSv3/v4 over TCP. Information: VM backup data including ConMon artifacts. Impact: moderate (backup loss creates recovery gap). Hardened per ADR 0005: fstab uses `x-systemd.automount,x-systemd.idle-timeout=600,x-systemd.mount-timeout=30` to prevent boot-race failures.\n\nThe fourth category is the OPNsense syslog feed (514/UDP) to Wazuh Manager (in-boundary, VLAN 10 to VLAN 20). Interface: syslog UDP. Information: firewall events. Impact: low.\n\nAgreements are reviewed annually and following significant network or component changes. HTTP-only posture for DefectDojo and RegScale is a known gap acknowledged in ADR 0002 and ADR 0003; SC-8 addresses the mitigations. Formal written ISAs do not exist; this SSP prose serves as the agreement documentation for the homelab scope.",
               "implementation-status": {
-                "state": "planned"
+                "state": "partial"
               }
             }
           ]
@@ -476,9 +476,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "dc97de64-0ad0-4c87-ba01-384c025bfa07",
-              "description": "",
+              "description": "The POA&M pipeline is implemented and live-verified as of the April 2026 ConMon cycle. `pipelines/build/oscal_poam.py` is the OSCAL POA&M builder: it reads DefectDojo findings via `DefectDojoClient.list_findings()`, maps each finding to an OSCAL 1.1.2 POA&M item, and assigns a FedRAMP Low SLA-based scheduled completion date. SLA windows are Critical=15 days, High=30 days, Medium/Moderate=90 days, Low=180 days -- values corrected from the original plan text (30/90/180/365) to the actual FedRAMP ConMon Strategy Guide values per ADR 0006 Amendment Task 12.\n\nThe April 2026 POA&M output is `poam/POAM-2026-04.xlsx` (4.9 MB, 8,473 rows in FedRAMP Rev 5 POA&M template format using `templates/FedRAMP-POAM-Template-Rev5.xlsx`). Data populates the \"Open POA&M Items\" sheet starting at row 8. Internal DefectDojo `Medium` severity is mapped to `Moderate` for the FedRAMP template dropdown. `False Positive` findings set the FP column to Yes. The OSCAL source is `oscal/poam.json` (16.8 MB), gitignored and regenerated on each ConMon run.\n\nThe full monthly cycle is orchestrated by `./pipelines.sh conmon` (`pipelines/cli.py` `conmon` command): ingest-findings (Wazuh vulnerability scan data) -- push to DefectDojo -- build OSCAL POA&M -- render IIW xlsx -- render POA&M xlsx. DefectDojo SLA enforcement (`http://10.10.30.27:8080`) provides early warning for findings approaching or past SLA across all 5 MSS products, seeded via `deploy/defectdojo/post-install.sh`. The live April 2026 run is documented in ADR 0007 §\"Done criteria.\" Update frequency is monthly, aligned with the FedRAMP ConMon Strategy Guide requirement; `./pipelines.sh conmon` is the update mechanism.",
               "implementation-status": {
-                "state": "planned"
+                "state": "implemented"
               }
             }
           ]
@@ -490,7 +490,7 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "e32c024a-a697-45f0-9cbc-bf3e34a960be",
-              "description": "",
+              "description": "Brian Chaplow (system owner and sole operator) is assigned as the authorizing official (AO) for the MSS homelab system. This is the maximum level of independence feasible for a single-person portfolio system; the AO role and system owner role are held by the same individual, which is the honest state for this scope.\n\nThis SSP (`oscal/ssp.json`, assembled from `trestle-workspace/mss-ssp/`) constitutes the authorization package. It documents the system boundary (7 in-boundary components per `oscal/component-definition.json`), the complete FedRAMP Rev 5 Low control implementation, and the POA&M (`poam/POAM-2026-04.xlsx`, 8,473 items). Plan 3 SSP authoring is the authorization event -- a completed SSP with realistic Tier-1-grade implementation prose, live-verified CA-7 ConMon pipeline, and passing test suite (136 tests) represents the ATO artifact for portfolio purposes.\n\nADR 0009 (planned, to be filed at Plan 3 Gate 5) will serve as the formal self-authorization decision record. ADR 0008 §\"Authoritative Plan 3 artifacts\" explicitly identifies ADR 0009 as the \"Plan 3 completion\" ADR filed at Gate 5; that ADR will capture the AO's acceptance of risk and authorization to operate. No common controls are inherited from a shared services provider; this system is standalone and all controls are system-specific. Authorization updates are performed annually and following any significant security change, leveraging the monthly ConMon cycle results as the evidentiary basis.\n\nA real FedRAMP authorization requires a federally-delegated AO and a FedRAMP-authorized 3PAO. This homelab treats the system owner as AO and the automated test suite plus SSP as the equivalent of a 3PAO assessment package, per the explicit portfolio scope documented in `README.md`. ADR 0009 has not been filed (pending Plan 3 Gate 5); the authorization event has not yet formally occurred.",
               "implementation-status": {
                 "state": "planned"
               }
@@ -504,9 +504,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "2c994e0e-b1bf-4a25-9d30-604304e9175c",
-              "description": "",
+              "description": "Risk monitoring is integral to the ConMon strategy implemented in CA-7, operating across all three required dimensions.\n\n**Effectiveness monitoring.** Wazuh (brisket, 15 agents) provides continuous real-time telemetry; agent connectivity gaps surface in the Wazuh Dashboard (brisket:5601) within minutes of failure. `./pipelines.sh conmon` re-ingests all open findings each cycle and recomputes SLA due dates in `pipelines/build/oscal_poam.py` -- findings that have passed their SLA window are automatically flagged in `poam/POAM-2026-04.xlsx` as overdue, providing a direct measure of remediation effectiveness. The test suite (136 tests in `tests/`) provides automated assertion of pipeline effectiveness on every invocation; a regression in any pipeline module causes test failure before the POA&M is published. Grafana (brisket:3000) monitors GPU thermal headroom, agent health, and service-level indicators, with the \"GPU Thermal Critical -- Brisket Above 90C\" alert (uid=dfihoiidr7k00c) as a live example of infrastructure effectiveness monitoring producing a response action (power cap applied 2026-04-08, GPU temperature reduced from 87C to 63C).\n\n**Compliance monitoring.** DefectDojo SLA enforcement (10.10.30.27:8080) applies FedRAMP Low ConMon SLA windows (Critical=15, High=30, Medium=90, Low=180 days per `pipelines/build/oscal_poam.py` `SLA_DAYS`) to all findings across 5 MSS products, seeded via `deploy/defectdojo/post-install.sh`. The FedRAMP Rev 5 Low profile (`trestle-workspace/profiles/fedramp-rev5-low/profile.json`, 156 `<with-id>` references) defines the compliance boundary; each `./pipelines.sh ssp-assemble` run validates that all authored control prose maps to a defined FedRAMP Low control. OSCAL 1.1.2 schema validation (`trestle validate`) runs against all 5 OSCAL artifacts (catalog, profile, component-definition, SSP, POA&M) per ADR 0007, providing automated compliance verification of the artifact set.\n\n**Change monitoring.** The ADR series (`docs/adr/0001` through `docs/adr/0008`) records every significant system change: infrastructure deployment (Plan 1, ADR 0002), OSCAL pipeline build (Plan 2, ADR 0007), NFS boot-race fix (ADR 0005), SLA correction (ADR 0006), and Plan 3 pre-execution realignment (ADR 0008). Wazuh syscollector captures installed package sets and hardware configuration for all 15 agents in `wazuh-states-*` indices; changes in OS version or packages surface on next agent check-in. The `wazuh-states-vulnerabilities-*` index tracks per-CVE state per agent -- new CVEs appearing since the last ingest run represent change events. Git commit log in `github.com/brianchaplow/homelab-fedramp-low` tracks every pipeline code change. PBS daily backups (smoker LXC 300 to smokehouse NFS) provide change indicator for VM availability; the ADR 0005 boot-race event is a documented example of change monitoring detecting a backup gap and driving a compensating control change.",
               "implementation-status": {
-                "state": "planned"
+                "state": "implemented"
               }
             }
           ]
@@ -518,9 +518,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "b2f7a4d8-ac4d-4808-aa51-50fbdbd18f12",
-              "description": "",
+              "description": "CA-7 is the hero control for the MSS CA family. The entire Plan 2 ConMon pipeline -- designed, built, and live-verified in `homelab-fedramp-low` -- is the CA-7 implementation. This control is implemented end-to-end.\n\n**ConMon orchestration.** `./pipelines.sh conmon` (`pipelines/cli.py` `conmon` command) executes the complete monthly cycle in a single command: ingest-findings (Wazuh vulnerability data) -- push to DefectDojo -- build OSCAL POA&M -- render IIW xlsx -- render POA&M xlsx. The live April 2026 run produced `poam/POAM-2026-04.xlsx` (4.9 MB, 8,473 rows) and `inventory/IIW-2026-04.xlsx` (178 KB, 7 rows) verified against live infrastructure per ADR 0007. The ConMon procedure is documented in `runbooks/monthly-conmon.md`.\n\n**Real-time monitoring.** Wazuh SIEM (brisket, 10.10.20.30) is the primary real-time monitoring platform with 15 enrolled agents: brisket, haccp, smokehouse, sear, PITBOSS, DC01, WS01, DVWA/Juice Shop, Metasploitable 3 Linux and Win, WordPress, crAPI, vsftpd, dojo (016), and regscale (017), plus OPNsense syslog (514/UDP). The Zeek pipeline ships 7 indices (`zeek-*`) to the Wazuh Indexer (OpenSearch at `https://10.10.20.30:9200`). ELK Stack (haccp, 10.10.30.25) runs Elasticsearch 8.17 plus Kibana plus Fleet plus Logstash in Docker (`/opt/elk/docker-compose.yml`); 4 Fleet agents; 214 detection rules; `logs-zeek.haccp-default-*` data stream from the Phase 14 Zeek enrichment pipeline.\n\n**Threat intelligence enrichment.** OpenCTI v7 (brisket:8080) provides threat intelligence with 6 active connectors. IOC sync to Wazuh CDB lists runs every 6 hours (`0 */6 * * *`); sync to haccp `opencti-threat-intel` index runs every 6 hours (`15 */6 * * *`). The Phase 14 Logstash enrichment pipeline on haccp is a 5-stage pipeline: de-dot -- OpenCTI TI lookups -- novel-entity tracking in `haccp-entities-seen` -- tier routing -- Ollama LLM classification on brisket qwen3:8b via token-bucket rate limiter (10 requests/min cap after thermal hardening on 2026-04-08, preventing brisket RTX A1000 from exceeding 63C sustained). Output to `logs-zeek.haccp-default-*`. PCAP archival to smokehouse via daily SSH/rsync cron at 0300. Nightly briefing generator at 0515 feeds Shuffle WF10.\n\n**SOAR and alerting.** Shuffle SOAR (brisket:3443) runs 10 active workflows: WF1 v2 (webhook-triggered enrichment + OPNsense block + dedup via Cloudflare and AbuseIPDB), WF2 (digest cron 0600/1800), WF3 (Caldera webhook), WF5 (cron Mon-Sat 1200), WF6 (cron 0900), WF8 (cron 1500), WF9 (5-min polling for stalker alerts), WF10 (0530 EST nightly briefing from Phase 14 pipeline output), and WF11 (1730 EST). All workflow credentials are Shuffle workflow variables (`$discord_webhook`, `$abuseipdb_key`, `$cf_api_token`, `$elk_url`, etc.) -- no hardcoded secrets. Grafana (brisket:3000) provides SOC v3 Overview dashboards plus the \"GPU Thermal Critical -- Brisket Above 90C\" alert (uid=dfihoiidr7k00c, 2-minute window) routing to Discord #infrastructure-alerts.\n\n**Vulnerability assessment.** `pipelines/ingest/wazuh_vulns.py` ingests all open findings from `wazuh-states-vulnerabilities-*` using `search_after` pagination (8,471 findings across 5 agents in April 2026 cycle). `pipelines/push/defectdojo.py` normalizes and pushes to DefectDojo monthly engagement \"ConMon YYYY-MM\" per product. `pipelines/build/oscal_poam.py` maps each finding to an OSCAL POA&M item with FedRAMP Low SLA dates (Critical=15, High=30, Medium/Moderate=90, Low=180 days). DefectDojo SLA enforcement flags findings approaching or past SLA across all 5 MSS products.\n\n**Status reporting.** Security status is reported to the system owner (Brian Chaplow) via two channels: daily through Discord (#morning-briefing via Shuffle WF10 nightly briefing, #soc-alerts via Wazuh/Shuffle real-time routing) and monthly through `poam/POAM-2026-04.xlsx` (updated on each `./pipelines.sh conmon` run). The test suite (136 tests after Plan 3 Task 3 in `tests/`) provides automated regression-safety assertion of pipeline correctness on every run. Elastic ML trial license on haccp analyzes DC01/WS01 Windows Security events for anomalies, extending correlation into behavioral analytics.",
               "implementation-status": {
-                "state": "planned"
+                "state": "implemented"
               }
             }
           ]
@@ -532,9 +532,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "2e5c3eaf-2394-4bb3-b6ce-5755b0addc0e",
-              "description": "",
+              "description": "The MSS homelab has a dedicated penetration testing capability targeting the VLAN 40 isolated segment (10.10.40.0/24). All attacks are constrained to VLAN 40 per `CLAUDE.md` §\"Conventions\"; the `./run_attack.sh` wrapper provides ground-truth logging for each session.\n\nThe attack platform is sear (10.10.20.20, Kali Linux, 32GB RAM, GTX 1650 Ti), the dedicated red-team box. The Kali toolset was updated per the fleet patch of 2026-03-31. SSH access is `butcher@10.10.20.20` (Tailscale: `butcher@100.86.67.91`). Caldera v5.3.0 (smoker:8888, 10.10.30.21) serves as the adversary emulation platform with 4 Sandcat agents enrolled. Red team (Caldera `red` account) and Blue team (Caldera `blue` account) are configured; Shuffle WF3 integrates Caldera via `$caldera_url` and `$caldera_api_key` workflow variables.\n\nTarget systems are the full VLAN 40 segment: DVWA + Juice Shop (10.10.40.10, web application), Metasploitable 3 Linux (10.10.40.20, multi-service), Metasploitable 3 Win (10.10.40.21, multi-service), WordPress (10.10.40.30, WPScan target), crAPI (10.10.40.31, REST API), vsftpd (10.10.40.32, FTP), SMTP relay (10.10.40.42), and SNMPd (10.10.40.43). MokerLink L3 switch ACL (10.10.10.2) and OPNsense firewall (10.10.10.1) enforce VLAN 40 isolation -- sear (VLAN 20) cannot route to VLAN 40 except through the explicit attack path, preventing lateral movement to production infrastructure.\n\nWazuh detection validation was completed in Phase 7 (documented in `CLAUDE.md` §v3 Migration Status): Caldera red-team exercises validated Wazuh detection rules across the target set. This detection-validation feedback loop is the primary output of each penetration test cycle.\n\nCA-8 is partially implemented: the penetration testing capability is fully operational and detection validation has been performed. The named gap is that no formal penetration test report artifact currently exists in the repo -- `./run_attack.sh` session logs exist on sear but are not committed. A formal pen-test report artifact is a Plan 4 writeup item.",
               "implementation-status": {
-                "state": "planned"
+                "state": "partial"
               }
             }
           ]
@@ -546,9 +546,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "a09f8575-cfcc-48fd-a894-fd1f88794702",
-              "description": "",
+              "description": "Internal connections are authorized and documented through three mechanisms: `CLAUDE.md` §\"All Hosts\" (authoritative inventory with IP, VLAN, and role for each component), `oscal/component-definition.json` (OSCAL-format inventory of 7 in-boundary components: brisket, haccp, smokehouse, dojo, regscale, OPNsense, MokerLink), and `reference/network.md` (detailed topology, OPNsense interface configuration, firewall rules, and MokerLink ACL table).\n\nKey internal connections, authorized and documented: Wazuh agents (15 total) to Manager (brisket:1514/1515) via OSSEC encrypted protocol carrying security events and syscollector data across VLAN 20/30/10; Filebeat (smokehouse) to Logstash (brisket:5044) carrying Zeek logs via Beat protocol on VLAN 20; Fleet agents (haccp) to Elasticsearch (haccp:9200) via HTTPS on VLAN 30 local; Logstash (haccp) to OpenCTI (brisket:8080) via HTTP/REST for TI lookups across VLAN 30 to VLAN 20; Logstash (haccp) to Ollama (brisket:11434) via HTTP for LLM classification with token-bucket rate limit (10 req/min) across VLAN 30 to VLAN 20; PBS LXC 300 (10.10.30.24) to smokehouse NFS (10.10.20.10) via NFSv3/v4 TCP carrying VM backup data, hardened per ADR 0005 with `x-systemd.automount,x-systemd.idle-timeout=600,x-systemd.mount-timeout=30`; dojo (10.10.30.27) and regscale (10.10.30.28) Wazuh agents 016/017 to brisket Manager across VLAN 30 to VLAN 20, authorized per Plan 1 ADR 0002; PITBOSS (10.10.10.100) to pipeline endpoints via SSH/Git Bash for pipeline invocations on management VLAN 10 to VLAN 20. MokerLink mirror sessions 1+2 (TE1-TE9 to TE10/TE11) feed haccp `span0` and smokehouse `eth4` as authorized read-only SPAN -- not routable connections.\n\nEnforcement is by MokerLink L3 switch ACL (10.10.10.2) for inter-VLAN routing authorization, and OPNsense firewall (10.10.10.1) for inter-VLAN policy. VLAN 40 targets are isolated with no routing path to production VLANs except through explicit OPNsense rules for the Caldera C2 path.\n\nTermination conditions are implemented: OpenCTI LXC 202 (10.10.30.26) is a documented decommission example -- connection terminated after Phase 12 migration to brisket Docker, autostart disabled. Shuffle WF1 v2 provides an immediate connection termination path via OPNsense block through `$cf_api_token` and `$cf_account_id` workflow variables. Connection need is reviewed annually and following significant network or component changes.",
               "implementation-status": {
-                "state": "planned"
+                "state": "implemented"
               }
             }
           ]
@@ -686,7 +686,7 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "a48d9689-aa7e-45b3-8ab5-cd677ebf9b9e",
-              "description": "",
+              "description": "No formal standalone contingency planning policy document has been authored for this system. The contingency policy posture is captured at the system level through three artifacts: ADR 0005 (`docs/adr/0005-pbs-backup-gap-and-automount-fix.md`) records the reactive decision to harden the PBS NFS automount after a 5-day backup gap was discovered during the 2026-04-07 rack consolidation reboot; `runbooks/restore-from-pbs.md` establishes recovery procedures for the two in-boundary GRC VMs (dojo and regscale); and `runbooks/monthly-conmon.md` specifies the interim manual PBS backup tripwire maintained until automated Wazuh alerting is wired. The system owner (Brian Chaplow) is the sole designated official responsible for development, documentation, and dissemination of contingency planning policy and procedures.\n\nThis SSP document serves as the policy artifact for CP-1 purposes, binding the system-level contingency planning requirements to the mechanisms described above. The policy will be reviewed annually and following any significant system change, security incident, or external audit finding. No organizational elements or additional personnel exist in this single-operator homelab; dissemination is self-referential to the system owner role.\n\nThis control is rated `planned` because no dedicated CP policy document predates this SSP authoring cycle. The SSP narrative constitutes the policy record going forward; procedures exist in the runbook corpus.",
               "implementation-status": {
                 "state": "planned"
               }
@@ -700,9 +700,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "fba334a5-d4ba-41fb-b170-4629f4e82a53",
-              "description": "",
+              "description": "The technical capability to recover both in-boundary GRC VMs to a known state from PBS snapshots is implemented and documented. The recovery procedure is specified in `runbooks/restore-from-pbs.md`: the operator stops the broken VM, preserves the config file, runs `qmrestore pbs-smokehouse:backup/vm/<VMID>/<ISO-timestamp> <VMID> --storage local-lvm --force` (in-place disk rewrite that preserves the MAC address pinning), starts the VM, and validates recovery with the automated smoke check scripts (`./pipelines.sh smoke-dojo`, `./pipelines.sh smoke-regscale`). MAC address pinning (dojo `BC:24:11:DE:F0:01`, regscale `BC:24:11:DE:F0:02`) is documented in `deploy/proxmox/README.md` to ensure cloud-init state and UFW rules survive restore without NIC identity churn.\n\nThe RTO target is 4 hours from detection of disruption to a passing smoke check. This is empirically supported by the 11m11s qmrestore runtime recorded in ADR 0005 (`docs/adr/0005-pbs-backup-gap-and-automount-fix.md`) during the 2026-04-08 operational verification. The RPO is 24 hours, bounded by the nightly PBS backup jobs (02:00 pitcrew, 02:30 smoker). Reconstitution steps specific to each service are documented: `deploy/regscale/reset-admin-password.sh` handles admin credential re-seeding for RegScale, and `deploy/defectdojo/post-install.sh` is an idempotent seed script for DefectDojo SLA and product definitions.\n\nThis control is rated `partial` because the RTO and RPO commitments have not been formally captured in a policy artifact predating this SSP, the planned restore drill per `runbooks/restore-from-pbs.md` has not yet been executed to empirically validate end-to-end recovery readiness, and brisket and haccp (bare-metal hosts) have no VM-level recovery procedure.",
               "implementation-status": {
-                "state": "planned"
+                "state": "partial"
               }
             }
           ]
@@ -714,9 +714,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "e201b66a-74a5-4792-a726-5d8a8959d1c7",
-              "description": "",
+              "description": "The contingency plan for this system is captured across three artifacts rather than a single formal document. The essential system components are the five PBS-backed VMs: dojo (VMID 201 on pitcrew, DefectDojo), regscale (VMID 301 on smoker, RegScale CE), DC01 (VMID 100), WS01 (VMID 101), and TheHive (VMID 200). The RPO for all five VMs is 24 hours, derived from nightly PBS backup jobs (pitcrew job at 02:00, smoker job at 02:30). The target RTO for dojo and regscale is 4 hours from detection of disruption to a passing smoke check; the 11m11s qmrestore runtime observed during the ADR 0005 verification run on 2026-04-08 provides an empirical lower bound.\n\nRecovery procedures are documented in `runbooks/restore-from-pbs.md`, covering snapshot verification, VM stop, config preservation, `qmrestore --force` invocation (in-place disk rewrite preserving MAC address), VM start, and smoke check validation via `./pipelines.sh smoke-dojo` and `./pipelines.sh smoke-regscale`. ADR 0005 (`docs/adr/0005-pbs-backup-gap-and-automount-fix.md`) documents the April 2026 backup gap incident (5 nights missed, root cause NFS boot-race, corrected by `x-systemd.automount` fstab hardening) -- this constitutes the lessons-learned record for the contingency plan.\n\nThis control is rated `partial` because no single formal CP document covering all CP-2.a elements (RTO/RPO commitments in writing, explicit restoration priority ordering, contact list, and CP-to-IR coordination procedure) has been authored, and the planned restore drill per `runbooks/restore-from-pbs.md` has not yet been executed.",
               "implementation-status": {
-                "state": "planned"
+                "state": "partial"
               }
             }
           ]
@@ -728,7 +728,7 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "148e24bf-bc98-4040-8dfc-94b004d286d4",
-              "description": "",
+              "description": "No formal contingency training program, curriculum, or training records exist for this system. The system is a single-operator homelab in which the system owner (Brian Chaplow) both designs and executes all contingency procedures, collapsing the typical trainer/trainee distinction. Contingency familiarity is maintained through direct authorship and hands-on operation of the recovery procedures documented in `runbooks/restore-from-pbs.md` and the backup monitoring tripwire in `runbooks/monthly-conmon.md`. These documents function as self-paced operator reference material, but they do not constitute training delivery in the CP-3 sense -- no formal acknowledgment, delivery record, or training completion artifact exists.\n\nThe planned training approach treats the annual review of contingency runbooks (restore-from-pbs.md, monthly-conmon.md) and any executed restore drills (per `runbooks/restore-from-pbs.md` §\"First-time restore drill\") as the training event for the sole contingency role. Training content will be reviewed annually and following any system change affecting backup or recovery procedures, any contingency activation, or any audit finding. Initial training on assumption of the contingency role is defined as within 30 days.\n\nThis control is rated `planned` because no training delivery record or acknowledgment artifact exists; the runbook review and restore drill are the planned mechanism to formally satisfy CP-3.",
               "implementation-status": {
                 "state": "planned"
               }
@@ -742,7 +742,7 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "e46c8691-6d9b-4f86-a74f-aa4340192906",
-              "description": "",
+              "description": "No formal contingency plan test has been conducted against documented test criteria. The nearest operational analog is documented in ADR 0005 (`docs/adr/0005-pbs-backup-gap-and-automount-fix.md`): on 2026-04-08, `vzdump` was run against dojo (VMID 201) as a chain-verification step after the NFS remount fix, producing a confirmed snapshot at `vm/201/2026-04-08T17:26:22Z` in 11m11s. This was an operational verification, not a scheduled contingency plan test with predefined success criteria, so it does not satisfy CP-4 on its own.\n\nThe planned test method is a tabletop walkthrough combined with a restore drill: `qmrestore` is executed from a current PBS snapshot to an alternate VMID (to avoid disrupting production) and the restored VM is validated by the automated smoke check scripts (`./pipelines.sh smoke-dojo`, `./pipelines.sh smoke-regscale`). The first restore drill is specified in `runbooks/restore-from-pbs.md` §\"First-time restore drill\" and is owed within 7 days of Plan 1 completion (by 2026-04-15). Test results will be documented in a new ADR (`docs/adr/NNNN-restore-drill.md`). Tests will be repeated annually thereafter. Corrective actions will be captured as ADRs and tracked in the monthly ConMon cycle.\n\nThis control is rated `planned` because no annual test record exists; the scheduled restore drill is the first planned test event.",
               "implementation-status": {
                 "state": "planned"
               }
@@ -756,9 +756,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "1ed7be11-63ee-46ac-b08e-49aed732d2fe",
-              "description": "",
+              "description": "The backup infrastructure for this system is implemented and operational. Proxmox Backup Server (PBS) runs as LXC 300 on smoker (10.10.30.21) with NFS-backed storage to smokehouse (`10.10.20.10:/pbs-datastore`, 17TB available). Two daily vzdump snapshot jobs cover all five in-scope VMs: the pitcrew job (UUID `1da17d50-2183-4592-946b-47e956174e0a`) runs at 02:00 and covers DC01 (VMID 100), WS01 (VMID 101), TheHive (VMID 200), and dojo (VMID 201); the smoker job (UUID `851dfd63-cbf4-464a-b394-0cc985de3810`) runs at 02:30 and covers regscale (VMID 301). A supplemental weekly job runs Sundays at 03:00 covering target VMs. vzdump captures crash-consistent qemu image chunks across all layers (OS, middleware, application data), satisfying both user-level and system-level backup requirements at the same daily frequency.\n\nSystem documentation backup is provided by the Git repository (`github.com/brianchaplow/homelab-fedramp-low`) with per-commit pushes to `origin/main`. All in-repo documentation, OSCAL artifacts, and runbooks are version-controlled; the `plan-2-complete` tag confirms the repository state at Plan 2 close.\n\nThe auditable backup failure record is ADR 0005 (`docs/adr/0005-pbs-backup-gap-and-automount-fix.md`): during the 2026-04-07 rack consolidation reboot, a boot-race caused the PBS NFS mount to fail silently, creating a 5-day gap (2026-04-03 through 2026-04-07) for DC01, WS01, and TheHive. The fix -- fstab hardening to `x-systemd.automount,x-systemd.idle-timeout=600,x-systemd.mount-timeout=30` -- eliminates the boot-order race class. The gap was closed by the 02:00 run on 2026-04-09.\n\nThis control is rated `partial` due to three open gaps: NFS backup transport is unencrypted (CP-9.d.01 confidentiality gap, documented as a portfolio trade-off in `runbooks/cert-trust.md`); no automated PBS failure alert is wired to Wazuh/Discord (the ADR 0005 gap went undetected for 5 nights; interim manual tripwire active per `runbooks/monthly-conmon.md`); and brisket (bare metal) and haccp (bare metal) have no VM-level PBS backup job.",
               "implementation-status": {
-                "state": "planned"
+                "state": "partial"
               }
             }
           ]
@@ -994,9 +994,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "3d2d3c78-4f37-4788-8b15-3fc04fbb8367",
-              "description": "",
+              "description": "The Managed SOC Service maintains a system-level incident response policy embedded in this SSP and in the operational runbooks committed to the homelab-fedramp-low repository. The system owner (Brian Chaplow) serves as the designated official for IR policy development, documentation, and dissemination. The policy covers purpose (detect, contain, eradicate, and recover from incidents affecting in-boundary assets: dojo VMID 201 on pitcrew and regscale VMID 301 on smoker), scope (all 15 Wazuh-enrolled hosts plus Wazuh SIEM on brisket, Shuffle SOAR, TheHive 4 + Cortex 3 on pitcrew LXC 200, Velociraptor DFIR on brisket, and ELK/Arkime on haccp), roles (system owner as policy authority; SOC operator for detection and triage; DFIR operator for endpoint forensics), and compliance with NIST SP 800-53 Rev 5 FedRAMP Low baseline. Policy and procedures are disseminated to the system owner and SOC operator via this SSP, which is version-controlled in the homelab-fedramp-low GitHub repository. The policy is reviewed annually and following any security incident that produces an ADR -- for example, ADR 0005 (PBS backup gap, 2026-04-08) triggered both a procedure update (fstab automount hardening) and a runbook amendment in `runbooks/monthly-conmon.md`. The ADR series (0001 through current) constitutes the living procedure amendment record. A gap exists: no standalone IR policy PDF has been produced outside the SSP; this is an accepted portfolio trade-off documented here.",
               "implementation-status": {
-                "state": "planned"
+                "state": "partial"
               }
             }
           ]
@@ -1008,9 +1008,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "ad5f9ebf-cee1-4d08-b2ec-314612b7e00a",
-              "description": "",
+              "description": "The Managed SOC Service is a single-operator homelab; the system owner and sole SOC operator is Brian Chaplow. IR competency is maintained through continuous hands-on construction and operation of the Wazuh --> Shuffle --> TheHive --> Velociraptor incident pipeline across Phases 1--15 of the v3 migration. Specific training-equivalent activities include: Phase 6 Velociraptor DFIR deployment and 7-client enrollment; Phase 7 Caldera v5.3.0 red-team exercises (4 Sandcat agents on smoker, adversary simulations against VLAN 40 targets with Wazuh detection validated); and real incident handling documented in ADR 0005 (PBS backup gap, 2026-04-08 -- detection during Plan 1 Task 12, root-cause analysis of the boot-race NFS mount failure, containment via manual remount, eradication via fstab hardening with `x-systemd.automount` options, and verification confirmed the 02:00 backup ran clean). New IR training is triggered within 30 days of assuming an IR role and annually thereafter. Training content is reviewed annually and following any incident that reveals a response procedure gap or any Caldera exercise that shows a detection failure. A gap exists: no structured training curriculum document or signed training completion records have been produced; the operator's work product constitutes the training evidence for this portfolio system.",
               "implementation-status": {
-                "state": "planned"
+                "state": "partial"
               }
             }
           ]
@@ -1022,9 +1022,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "bf5a8767-507b-4d89-9453-b13a02fe3cf2",
-              "description": "",
+              "description": "The Managed SOC Service implements all five NIST incident handling phases through an integrated toolchain. Preparation: Wazuh SIEM on brisket (15 enrolled agents covering all in-boundary and supporting hosts) provides continuous monitoring; Shuffle SOAR WF1 v2 receives Wazuh alerts via webhook, performs AbuseIPDB enrichment, executes Cloudflare IP blocks, creates TheHive 4 cases on pitcrew LXC 200, and posts to Discord #soc-alerts via the `$discord_webhook` variable; Velociraptor v0.75.3 on brisket (7 enrolled DFIR clients) provides pre-staged endpoint forensics; PBS LXC 300 on smoker delivers daily snapshots of in-boundary VMs (dojo, regscale, DC01, WS01, TheHive) to smokehouse 17TB NFS. Detection and analysis: Zeek on haccp span0 (USB 2.5GbE, promiscuous, JA3/JA4/community-id enrichment) ships logs via Filebeat --> Logstash 5-stage pipeline to ELK (haccp ES 8.17); XGBoost ML Scorer on brisket:5002 (PR-AUC 0.9998) scores network flows; TheHive 4 + Cortex 3 (5 analyzers) structures case management and automated indicator analysis. Containment: Shuffle WF1 blocks offending IPs via Cloudflare API; OPNsense and MokerLink ACL enforce VLAN 40 isolation of target systems. Eradication: Velociraptor hunts across 7 enrolled clients enable process termination, file removal, and persistence mechanism identification; Wazuh active response executes remediation scripts on agents. Recovery: PBS same-day rollback (daily job at 02:00); restore procedure documented in `runbooks/restore-from-pbs.md`. ADR 0005 (PBS backup gap, 2026-04-08) is the canonical real end-to-end incident: detected during Plan 1 Task 12, root-cause analyzed, contained via manual remount, eradicated via fstab automount hardening, and recovered with confirmed backup on 2026-04-09. Lessons learned are captured as ADRs and reflected in `runbooks/monthly-conmon.md`. Known gaps: PBS backup-failure alerting (Wazuh --> Discord) is pending (Plan 1 Task 20); Shuffle WF4 (automated Velociraptor triage) is not yet deployed.",
               "implementation-status": {
-                "state": "planned"
+                "state": "implemented"
               }
             }
           ]
@@ -1036,9 +1036,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "b6762a40-b28b-433d-9f2c-9fb64d5271b5",
-              "description": "",
+              "description": "The Managed SOC Service tracks and documents incidents through two complementary mechanisms. Automated tracking via TheHive 4 (pitcrew LXC 200, 10.10.30.22:9000): Shuffle WF1 v2 automatically creates a TheHive case for every Wazuh alert that passes the dedup filter, capturing alert timestamp, source IP (AbuseIPDB-enriched), Cloudflare block status, Wazuh rule ID and description, and severity. Cortex 3 (5 analyzers) runs automated indicator analysis and records results as case observables; the TheHive case lifecycle (New --> In Progress --> Resolved) provides the audit trail. Documented incident records via the ADR series: significant incidents affecting operational posture, configuration, or procedures are captured as Architecture Decision Records in `docs/adr/`. ADR 0005 (PBS backup gap, 2026-04-08) demonstrates the full documentation chain -- the incident was detected during Plan 1 Task 12 when the operator noticed the PBS NFS mount to smokehouse had not re-established after the 2026-04-07 rack consolidation reboot, covering a 5-day backup gap (2026-04-03 through 2026-04-07) for the daily critical job (DC01, WS01, TheHive). The ADR records root cause (boot-race: PBS LXC 300 came up before smokehouse finished exporting NFS; `_netdev` mount unit failed once and was never retried), remediation (manual remount, service restart, fstab hardened with `x-systemd.automount` options), and follow-up (Plan 1 Task 20: PBS backup alerting). ELK/Zeek logs on haccp ES (`logs-zeek.haccp-default-*`) and Arkime PCAP archive on `/opt/arkime/raw/` (daily SSH/rsync to smokehouse at 03:00) provide the tamper-evident network event record for forensic correlation.",
               "implementation-status": {
-                "state": "planned"
+                "state": "implemented"
               }
             }
           ]
@@ -1050,9 +1050,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "c9155a38-496c-4d27-909c-b2afbb6b5295",
-              "description": "",
+              "description": "The Managed SOC Service is a single-operator system; the system owner (Brian Chaplow) is simultaneously the personnel required to report suspected incidents and the organizational IR capability receiving the report. Reporting is operationalized through automated notification: Wazuh forwards alerts to Shuffle WF1 v2 via webhook within seconds of detection; WF1 posts an enriched summary to Discord #soc-alerts via `$discord_webhook` and creates a TheHive case within minutes -- satisfying the \"report to organizational IR capability within 1 hour\" requirement for this system. Infrastructure-layer incidents (e.g., GPU thermal events on brisket, service availability failures) route to Discord #infrastructure-alerts via the Grafana alerting integration using `$discord_webhook_infra`. Nightly briefing WF10 (cron 0530 via `$discord_webhook_briefing`) posts a daily review to #morning-briefing, ensuring the operator is notified even when no real-time alert fires. ADR 0005 (PBS backup gap, 2026-04-08) demonstrates the reporting mechanism for incidents discovered outside the automated alerting path: the operator detected the 5-day backup gap during manual verification (Plan 1 Task 12), self-reported via the ADR record, and notified the IR capability by opening a TheHive case and committing the ADR to the repository within 1 hour of discovery. External reporting to US-CERT/CISA is not operationally applicable at the homelab portfolio scope; this system is not a federal information system subject to FISMA mandatory reporting. If elevated to production FedRAMP scope, significant incident reporting to US-CERT within 1 hour of discovery would be required per FedRAMP ConMon guidance.",
               "implementation-status": {
-                "state": "planned"
+                "state": "implemented"
               }
             }
           ]
@@ -1064,9 +1064,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "377d547f-19a9-456b-adff-3b5f26377771",
-              "description": "",
+              "description": "The Managed SOC Service provides an integrated set of IR support resources that collectively serve as the organizational incident response assistance capability. TheHive 4 (pitcrew LXC 200, 10.10.30.22:9000) functions as the primary ticketing and case management platform: every Shuffle WF1 alert becomes a structured case with observable tracking, task assignment, and a full investigation timeline. Cortex 3 (co-located on pitcrew LXC 200, 5 analyzers) provides on-demand automated indicator analysis -- IP reputation, file hash lookup, and domain intelligence -- directly from within any open case, giving the operator immediate analytical assistance without leaving the case management interface. Shuffle SOAR WF1 v2 (brisket:3443/5001) delivers pre-analysis advice with each alert: AbuseIPDB confidence score, Cloudflare block decision, and Wazuh rule classification are posted to Discord #soc-alerts before the operator opens TheHive, reducing investigation bootstrap time. Velociraptor v0.75.3 (brisket:8889, 7 enrolled clients) provides endpoint forensics assistance -- process lists, network connections, file system timelines, and memory artifacts -- for rapid artifact collection across in-boundary and supporting hosts. Ollama qwen3:8b (brisket:11434) augments IR assistance in two ways: the Logstash `zeek-enrichment.conf` Stage 5 calls the LLM (rate-limited to 10/min shared bucket, power-capped at 40W per ADR 0005 thermal hardening) to classify novel network events; WF10 (cron 0530) generates a nightly narrative briefing via `$discord_webhook_briefing` summarizing the previous 24 hours of alerts for morning review. All resources are available on-network at all times; there is no external-facing IR assistance interface, consistent with the single-operator homelab model.",
               "implementation-status": {
-                "state": "planned"
+                "state": "implemented"
               }
             }
           ]
@@ -1078,9 +1078,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "70db80c3-5e87-450e-b4da-b01452b2ad7e",
-              "description": "",
+              "description": "The Managed SOC Service's incident response plan is distributed across this SSP's IR family prose and the operational runbooks committed to the homelab-fedramp-low repository, collectively satisfying all IR-8 sub-elements. Roadmap and structure: the Wazuh --> Shuffle WF1 --> TheHive 4 --> Cortex 3 --> Velociraptor pipeline defines the operational IR structure; this SSP's IR-1 through IR-8 prose constitutes the written roadmap. Reportable incidents: any Wazuh alert passing the Shuffle WF1 dedup filter is a reportable event; operational incidents requiring an ADR include availability, confidentiality, or integrity failures, backup gaps, and service disruptions -- thresholds are CVSS >= 7.0 for POA&M entries and CVSS >= 9.0 for immediate TheHive case creation. ADR 0005 (PBS backup gap, 2026-04-08) is the reference example: a 5-day backup gap for DC01, WS01, and TheHive was detected during Plan 1 Task 12, documented in `docs/adr/0005-pbs-backup-gap-and-automount-fix.md`, remediated via fstab automount hardening, and communicated via Discord #soc-alerts within the 1-hour reporting window. Metrics: MTTD (Wazuh event timestamp to alert) and MTTR (TheHive case creation to resolution) are the primary IR KPIs; open POA&M findings by severity are tracked in `poam/POAM-2026-04.xlsx`. Resources: brisket (ThinkStation, Ultra 9 285, 64GB, RTX A1000) hosts Wazuh, Shuffle, Velociraptor, ML Scorer, and Ollama; pitcrew LXC 200 hosts TheHive + Cortex; haccp hosts ELK 8.17 + Arkime + Zeek span0; PBS LXC 300 on smoker provides recovery backstop. The IRP is reviewed and approved by the system owner annually and following any incident resulting in an ADR. IRP artifacts are distributed to the system owner and SOC operator via the homelab-fedramp-low GitHub repository. Plan changes are communicated via git commit notification and Discord #soc-alerts. Protection: the repository is version-controlled with an immutable git history; `.env` files containing credentials are gitignored. A gap exists: no standalone titled IRP document has been produced outside this SSP; the distributed artifact set is the accepted portfolio approach.",
               "implementation-status": {
-                "state": "planned"
+                "state": "partial"
               }
             }
           ]
@@ -1092,9 +1092,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "971b5d5b-baa3-4533-98e5-ee5ed2770416",
-              "description": "",
+              "description": "The Managed SOC Service system-level maintenance policy is documented in CLAUDE.md (v3 Migration Status table and Conventions section), which the sole operator Brian Chaplow reviews and updates on the annual ConMon cycle or following any significant maintenance event. ADRs serve as maintenance event records -- ADR 0005 (PBS NFS mount failure 2026-04-08) and the 2026-03-31 fleet update (all kernels and Wazuh 4.14.4) are the primary policy-execution artifacts demonstrating the full incident-to-fix-to-document loop.",
               "implementation-status": {
-                "state": "planned"
+                "state": "implemented"
               }
             }
           ]
@@ -1106,9 +1106,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "35e1e2eb-b9a2-4007-b21c-ac48886b6b73",
-              "description": "",
+              "description": "All maintenance on MSS hardware and software is performed by the sole operator (Brian Chaplow) and documented via ADRs or CLAUDE.md entries. The 2026-04-07 rack consolidation -- 12U rack build, three drive swaps (haccp 2TB PCAP, pitcrew +512 GB, smoker +1 TB) -- was planned, executed, and post-maintenance verified (ES green, MokerLink mirror sessions TE10/TE11, Arkime PCAP resuming on span0). ADR 0005 records the PBS NFS mount failure discovered and corrected during that same maintenance window. No equipment leaves the home lab rack, making off-site sanitization not applicable.",
               "implementation-status": {
-                "state": "planned"
+                "state": "implemented"
               }
             }
           ]
@@ -1120,9 +1120,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "ec3eab64-95f1-42ab-88f0-4c3e19dcc031",
-              "description": "",
+              "description": "All remote maintenance sessions to in-boundary hosts use Tailscale VPN (WireGuard device-key authentication) before any SSH connection is established, satisfying the strong authentication requirement. Remote sessions to brisket (100.124.139.56), haccp (100.74.16.82), smoker (100.77.138.24), and sear (100.86.67.91) all traverse the Tailscale mesh. Wazuh on brisket logs all SSH authentication events from each agent host, providing the session audit trail. Sessions terminate when the SSH connection closes -- no persistent tunnels remain open after maintenance completes. ADR 0005 documents a concrete nonlocal maintenance session record.",
               "implementation-status": {
-                "state": "planned"
+                "state": "implemented"
               }
             }
           ]
@@ -1134,9 +1134,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "48b96789-1f59-4940-9270-83c249e79e65",
-              "description": "",
+              "description": "The Managed SOC Service has a single authorized maintenance person: Brian Chaplow (system owner and sole operator). No external maintenance organizations, vendors, or contractors are authorized or hold credentials to any in-boundary component. SSH keys and Tailscale device credentials are held exclusively by the operator. Wazuh agent enrollment (15 active agents as of 2026-04-08) requires operator authentication to the Wazuh manager API on brisket, serving as the access authorization gate. The MA-5c supervision requirement is satisfied trivially -- the operator is both maintainer and supervisor.",
               "implementation-status": {
-                "state": "planned"
+                "state": "implemented"
               }
             }
           ]
@@ -1148,9 +1148,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "7528eeec-d8bd-4855-86a6-f31cd3e7ecef",
-              "description": "",
+              "description": "This CLAUDE.md serves as the system-level media protection policy for the Managed SOC Service. The MSS boundary contains no removable storage media in any data flow -- all transmission between in-boundary components is network-based (Wazuh agent to brisket OpenSearch, Filebeat to Logstash to ELK, Arkime PCAP written to local NVMe, PBS backup via NFS to smokehouse). Brian Chaplow (sole operator) is the designated official responsible for all media protection policy development, documentation, and review. ADRs capture every infrastructure event that touches physical storage -- ADR 0005 (PBS NFS mount failure discovered and fixed 2026-04-08) is the closest analog to a media-handling incident. The monthly ConMon cycle and any rack build, drive swap, host reimage, new phase deployment, or ADR-documented storage incident each trigger an out-of-cycle policy review.",
               "implementation-status": {
-                "state": "planned"
+                "state": "implemented"
               }
             }
           ]
@@ -1162,9 +1162,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "b3dd3e1f-51ea-415e-9cda-58d268307aef",
-              "description": "",
+              "description": "MP-2 is not applicable to the MSS. The boundary contains no removable digital media (no USB flash drives, external hard drives, optical discs, or diskettes) and no non-digital media (no paper records or microfilm) participating in any in-boundary data flow. All storage is permanently installed: brisket and haccp use internally mounted NVMe drives (haccp boot drive WD SN720 2TB on nvme1n1; PCAP drive Samsung 990 EVO Plus 2TB on nvme0n1); smokehouse uses internal SATA drives as the NFS backup target. The 2026-04-07 rack consolidation involved three drive swaps performed by the sole operator as one-time hardware installations -- after installation all drives became permanent internal storage. Because no removable or non-digital media exists in the boundary, the access restriction requirement of MP-2 has no subjects to apply to.",
               "implementation-status": {
-                "state": "planned"
+                "state": "not-applicable"
               }
             }
           ]
@@ -1176,9 +1176,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "623e0e10-c64e-48e2-b12a-e0aec4562625",
-              "description": "",
+              "description": "All permanently installed drives in the MSS boundary are sanitized before disposal or reuse using full-disk overwrite (via `shred` or `dd if=/dev/zero`) for functional drives, or physical destruction for failed media, per NIST SP 800-88 Rev 1 Clear. The 2026-04-07 rack consolidation involved three drive swaps (haccp 2TB Samsung 990 EVO Plus PCAP drive, pitcrew +512GB, smoker +1TB) -- the most recent concrete event where this policy applied to replaced drives. PBS daily snapshots (smoker LXC 300 to smokehouse NFS) ensure data is preserved at the logical layer before any physical media swap. Proxmox VM disk images (dojo VMID 201, regscale VMID 301) are retired by deleting the disk image via the hypervisor, not by sanitizing physical media. Because the MSS uses no removable media, MP-6 applies exclusively to permanently installed drives at end of service life or during hardware replacement.",
               "implementation-status": {
-                "state": "planned"
+                "state": "implemented"
               }
             }
           ]
@@ -1190,9 +1190,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "f6dfdc70-81f8-4e5a-b2bf-1da0d98bf280",
-              "description": "",
+              "description": "The MSS enforces an absolute prohibition on removable storage device use at all in-boundary hosts. No USB flash drives, external hard drives, optical discs, or other portable storage devices participate in any in-boundary data flow or administrative workflow. The only USB device attached to any in-boundary host is the span0 adapter on haccp (Realtek RTL8156B, MAC `6c:1f:f7:5f:6a:88`) -- a network interface used exclusively for SPAN traffic capture carrying no storage function. All administrative data flows use SSH over Tailscale, NFS, or Logstash/Filebeat pipelines. The prohibition is enforced through operator policy (sole operator, no external personnel authorized) and physical access control (home lab rack, Virginia). Because every USB device attached to in-boundary hardware is explicitly documented in CLAUDE.md with owner identity and function, the MP-7b identifiable-owner requirement is fully satisfied.",
               "implementation-status": {
-                "state": "planned"
+                "state": "implemented"
               }
             }
           ]
@@ -1204,9 +1204,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "22411d84-b23c-47be-ab5a-3d4522986416",
-              "description": "",
+              "description": "The Managed SOC Service operates in a private residence with Brian Chaplow (system owner and sole operator) as the designated official responsible for physical and environmental protection policy. The policy exists as a distributed set of artifacts: this SSP document, ADR 0001 (pre-flight and EULA), ADR 0002 (Plan 1 deployment completion), ADR 0005 (PBS backup gap and automount fix -- documenting a physical rack reboot event and its downstream impact), and ADR 0008 (Plan 3 pre-execution realignment). The whole-project design document explicitly acknowledges the PE family as partial (residential homelab substitutes homeowner access control for enterprise physical security) and the rack build design spec records the physical environment specification including equipment placement, power architecture, airflow, and cable management. Policy review is event-driven: at each plan phase boundary and after any physical infrastructure change. The sole dissemination audience is the system owner.\n\nThis implementation is partial rather than not-applicable because policy artifacts genuinely exist across the ADR corpus and design documents, but no standalone formal enterprise-grade PE policy document has been produced for a single-operator residential system. The gap is formality of document structure, not absence of policy intent. The whole-project design §PE honest-gaps row documents this limitation as intentional: \"Partial -- homelab rack locks + camera.\" This SSP and its associated ADRs collectively constitute the PE policy record for the Managed SOC Service; they address purpose, scope, roles, responsibilities, and compliance consistent with the FedRAMP Rev 5 Low baseline for a private-residence homelab context.",
               "implementation-status": {
-                "state": "planned"
+                "state": "partial"
               }
             }
           ]
@@ -1218,9 +1218,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "f98e0519-33e1-4be3-81f0-a776eb84f68f",
-              "description": "",
+              "description": "The primary emergency power mechanism for the Managed SOC Service is the Goldenmate 1000VA/800W LiFePO4 UPS installed at U1-2 of the 12U rack (rack consolidation 2026-04-07). All seven rack-mounted devices -- brisket, haccp, pitcrew, smoker, OPNsense, MokerLink, and the TP-Link switch -- are connected to the UPS. The UPS activates automatically on power outage, providing battery-backed operation for controlled shutdown if grid power does not restore. This satisfies the operational intent of PE-12 for the system: in the event of a power disruption, the SOC infrastructure remains energized and in a controlled state rather than experiencing an abrupt power loss.\n\nAutomatic emergency lighting for evacuation routes is a residential standard and does not apply in the same way as for a commercial data center. The private residence has standard residential lighting circuits; no dedicated illuminated exit signs or automatic emergency lighting fixtures are installed beyond residential code requirements. The facility is a private home office with standard residential egress (exterior doors) that do not require marked emergency exit signage. This implementation is partial: the UPS provides the critical emergency power continuation function for the system, but dedicated automatic emergency lighting for evacuation routes is not deployed beyond residential standards. The rack build design document records the UPS specification (§Power: 200-340W draw, 8 outlets, 7 rack devices on battery) as the primary PE-12 evidence artifact.",
               "implementation-status": {
-                "state": "planned"
+                "state": "partial"
               }
             }
           ]
@@ -1232,9 +1232,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "c752c562-8237-4c04-928c-ad4d92b38572",
-              "description": "",
+              "description": "The facility (private residence) is equipped with residential smoke detectors throughout, including in proximity to the home office/equipment room where the 12U rack is located. Residential smoke detectors operate on independent energy sources -- 9V batteries or sealed 10-year lithium batteries -- and function independently of facility electrical power, satisfying the independent energy source requirement for fire detection. The open-frame 12U rack design (passive convection cooling, no enclosed cabinet) reduces heat concentration compared to an enclosed equipment cabinet and improves smoke detector response time by allowing free air circulation through the rack. The Goldenmate UPS uses LiFePO4 battery chemistry, which has significantly lower thermal runaway and combustion risk compared to standard lithium-ion chemistry.\n\nThis implementation is partial: fire detection via battery-backed residential smoke detectors satisfies the detection and independent energy source requirements. The gap is fire suppression -- no automated suppression system (sprinkler, CO2, or halon) is installed beyond standard residential fire extinguisher availability. Additionally, the thermal management controls deployed for brisket reduce the fire risk profile: the RTX A1000 GPU is power-capped to 40W via `nvidia-power-cap.service` (persistent across reboot, ExecStop restores 50W), and the Grafana alert \"GPU Thermal Critical -- Brisket Above 90C\" (uid=dfihoiidr7k00c) routes to `#infrastructure-alerts` when the GPU temperature exceeds the critical threshold. The Phase 14 thermal hardening incident (2026-04-08) demonstrated this operational: GPU temperature was reduced from 87C to 63C through automated detection and operator remediation. This thermal monitoring architecture serves as an active fire-risk-reduction mechanism complementing the residential smoke detectors. Cross-reference PE-14 (environmental controls) for the full thermal monitoring implementation.",
               "implementation-status": {
-                "state": "planned"
+                "state": "partial"
               }
             }
           ]
@@ -1246,9 +1246,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "d665aa8d-de12-485c-93f8-ecacbfb01d86",
-              "description": "",
+              "description": "Temperature is the environmental control actively monitored for this system. GPU temperature on brisket is monitored continuously via Prometheus scraping NVIDIA SMI metrics (`nvidia_smi_temperature_gpu{job=\"brisket-nvidia\"}`) every 15 seconds, with Grafana evaluating the alert \"GPU Thermal Critical -- Brisket Above 90C\" (uid=dfihoiidr7k00c, soc-infrastructure group) on a 2-minute window and routing to `#infrastructure-alerts` via the `discord-infrastructure` Discord policy. The operational target is GPU temperature below 85C; the Grafana critical threshold is 90C. Brisket's RTX A1000 GPU is power-capped to 40W via `nvidia-power-cap.service` (persistent across reboot, ExecStop restores 50W) to maintain acceptable thermal levels under sustained Ollama inference load. The Phase 14 thermal hardening incident (2026-04-08) demonstrated this architecture is operational: an unbounded Ollama workload drove the GPU to 87C sustained; the Grafana alert triggered, the root cause (unbounded tier-1 Ollama calls) was corrected and the power cap applied, reducing temperature to 63C and fan speed from 66% to 39%. Ambient room temperature is maintained by the residential HVAC system at approximately 68-76 degrees F (20-24 degrees C). The 12U open-frame rack (passive convection, no enclosed cabinet) dissipates rack heat naturally and keeps rack component temperatures within acceptable ranges at the observed 200-340W total draw.\n\nThis implementation is partial because only GPU temperature is formally monitored with automated alerting. Ambient room temperature relies on residential HVAC without dedicated sensors or Prometheus-integrated alerting. Humidity, pressure, and radiation are not monitored -- the residential HVAC maintains acceptable humidity as a side effect of its operation, but no humidity sensor or alert exists. These monitoring gaps are an intentional residential-context scoping decision: the GPU thermal alert addresses the highest-risk thermal component in the system, and the residential HVAC addresses ambient conditions without requiring dedicated infrastructure monitoring. Cross-reference PE-13 (fire protection) for the relationship between GPU thermal management and fire-risk reduction.",
               "implementation-status": {
-                "state": "planned"
+                "state": "partial"
               }
             }
           ]
@@ -1260,9 +1260,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "fe017ffb-613b-4516-ac72-8c71e34f8d6a",
-              "description": "",
+              "description": "The facility (private residence) has a residential main water shutoff valve that is accessible, working, and known to the homeowner/operator (Brian Chaplow) as standard homeowner knowledge. The 12U rack is located under PITBOSS's desk in a dedicated home office -- above ground floor level, away from plumbing fixtures, HVAC drain pans, and basement areas that carry higher water intrusion risk. This placement reduces the probability of water leakage reaching the equipment. The open-frame rack design (no enclosed cabinet) means that any overhead water leak would be visible immediately rather than pooling inside a sealed enclosure, enabling faster operator response before equipment is damaged.\n\nThis implementation is partial: the main water shutoff valve satisfies the control's stated protection mechanism (accessible, working, known to key personnel -- the homeowner is the sole key person). The gap is dedicated water detection: no leak detection sensors or automated isolation valves are deployed near the equipment room. No project-repository documentation of the main water shutoff valve location exists because this is residential standard knowledge for a homeowner, not a formal organizational procedure. Enterprise-grade water protection (raised floor containment, leak detection mats, room-level isolation valves) is not applicable in a residential homelab context. The placement of equipment away from plumbing fixtures and in an above-grade office room constitutes the primary risk-reduction measure complementing the main shutoff valve.",
               "implementation-status": {
-                "state": "planned"
+                "state": "partial"
               }
             }
           ]
@@ -1274,9 +1274,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "bfe38c60-26c9-4d1c-b5bd-acc1ceb63ddd",
-              "description": "",
+              "description": "System component delivery and removal is authorized and controlled by Brian Chaplow (homeowner/operator) as the sole individual with facility access and purchasing authority. No unauthorized hardware enters or exits the facility. The 2026-04-07 rack consolidation constitutes the primary delivery/removal record for this system: 3 drive swaps (haccp 2TB PCAP Samsung 990 EVO Plus, pitcrew +512GB, smoker +1TB) and the installation of all rack-mounted equipment are documented in CLAUDE.md (rack consolidation paragraph) and in the rack build design spec (§BOM/shopping list, rack layout, and equipment inventory). ADR 0002 documents the dojo and regscale VM deployments as authorized component additions during Plan 1. The IIW asset inventory (`inventory/IIW-2026-04.xlsx`, generated by `./pipelines.sh conmon`) provides a monthly hardware snapshot with 7 in-boundary rows that serves as the formal component record. The Wazuh `syscollector` module captures each in-boundary host's hardware state (CPU, RAM, drives) and detects post-delivery component changes, providing automated inventory verification.\n\nThis implementation is partial: delivery and removal is actively authorized and controlled (sole-authority homeowner, no unauthorized hardware), and the major component change events are documented in CLAUDE.md and the rack build design spec. The gap is formality: no dedicated shipping/receiving log, no custody chain documentation, and no isolated receiving area exist. The IIW monthly snapshot is the closest formal component record. These gaps are an intentional residential-context scoping decision -- a private-residence homelab does not have a loading dock, a receiving area, or a hardware chain-of-custody process. CLAUDE.md narrative documentation and the IIW spreadsheet together provide a sufficient audit trail for the residential homelab system boundary.",
               "implementation-status": {
-                "state": "planned"
+                "state": "partial"
               }
             }
           ]
@@ -1288,9 +1288,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "9cd26a98-a675-47db-bea2-f7d67ef37fbf",
-              "description": "",
+              "description": "The Managed SOC Service resides in a private residence accessible only to the homeowner/operator, Brian Chaplow. The authorized-access list is a single entry -- the system owner -- enforced by residential security mechanisms: keyed deadbolt exterior doors, a home alarm system, and a dedicated home office/equipment room. Physical access authorization credentials are residential door keys held by the homeowner. No external personnel, contractors, or maintenance staff have authorized access to the facility. Unauthorized physical access would be observable as unexpected service disruptions detected by Wazuh agent monitoring or Grafana alerts on brisket infrastructure health. The access list is implicitly reviewed on a continuous basis: as the sole occupant and keyholder, the operator is the list, and no removal procedure is needed unless circumstances change.\n\nThis implementation is partial rather than not-applicable because a genuine authorized-access list exists (one entry: system owner), physical access credentials are issued (residential keys), and access control is actively enforced by residential mechanisms. The gaps are formality: no badge or ID-card system, no documented review schedule with a separate record, and no formal removal procedure -- all inapplicable for a single-operator residential system. These gaps are acknowledged in the whole-project design §PE honest-gaps row and represent an intentional residential-context scoping decision.",
               "implementation-status": {
-                "state": "planned"
+                "state": "partial"
               }
             }
           ]
@@ -1302,9 +1302,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "a798066f-7dc2-4591-afa7-27f7012c32a8",
-              "description": "",
+              "description": "Physical access to the facility is controlled by residential mechanisms: keyed deadbolt exterior doors and a home alarm system enforce entry and exit control at the two access points (exterior door and home office/equipment room door). Entry requires the homeowner's physical key; the alarm system provides a secondary deterrent and detection layer. The 12U open-frame rack (consolidated 2026-04-07) is located under PITBOSS's desk inside the dedicated office space. No publicly accessible areas exist within the facility. No visitors are admitted to the equipment room. Residential door keys (2 copies) are secured by the homeowner and inventoried annually; key changes occur when keys are lost or when individuals with key access are no longer authorized. The MokerLink managed switch provides complementary logical-layer access control (ACL `sear-brisket`, mirror port isolation), and Wazuh monitors all 15 in-boundary agents for unexpected activity that could indicate unauthorized physical access to a host.\n\nThis implementation is partial because, while physical access is actively controlled by residential mechanisms, no formal digital physical access audit log is maintained for entry/exit events, there is no electronic access control system, and no formal visitor escort procedure exists (there are no visitors). These gaps are a direct consequence of the residential-context scoping: a private residence does not generate badge-reader logs or surveillance footage comparable to a commercial data center. The rack build design document records the physical configuration (equipment placement, layout, power) as the closest analog to a physical access control system specification. ADR 0005 demonstrates that physical events (the 2026-04-07 rack consolidation reboot) are recorded and analyzed, providing informal physical-event tracking even absent a formal audit log system.",
               "implementation-status": {
-                "state": "planned"
+                "state": "partial"
               }
             }
           ]
@@ -1316,9 +1316,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "18b1286b-791b-4b4b-8160-fa02b0e2bb4e",
-              "description": "",
+              "description": "Physical access monitoring relies on the Wazuh SIEM and Grafana environmental alerting as the primary detection mechanisms for physical security events. The Grafana alert \"GPU Thermal Critical -- Brisket Above 90C\" (uid=dfihoiidr7k00c, `brisket-setup/monitoring/build-grafana-alerts.py`) evaluates the `nvidia_smi_temperature_gpu{job=\"brisket-nvidia\"}` metric on a 2-minute window and routes critical alerts to the `#infrastructure-alerts` Discord channel via the `discord-infrastructure` policy. This alert proved operational during the Phase 14 thermal hardening incident (2026-04-08): the brisket RTX A1000 reached 87C under unbounded Ollama load, triggering detection and remediation (power-capped to 40W, temperature reduced to 63C). Wazuh monitors all 15 in-boundary agents continuously; unexpected agent disconnects or service disruptions serve as indirect indicators of physical access events (power loss, accidental cable pull, or equipment tampering). The WF2 watch digest (cron 0600/1800) reviews agent health and outstanding alerts twice daily. Any detected physical security incident is routed to the homeowner/operator for response, who coordinates consequences through the Wazuh/Shuffle/TheHive incident response pipeline for digital impacts.\n\nThis implementation is partial because no dedicated physical access monitoring system is deployed -- no video surveillance cameras, badge readers, or motion sensors exist in the facility. Physical access \"log review\" is organic: the sole occupant of the equipment room is the homeowner, so anomalous access events would be directly observed rather than reviewed from a log. The Grafana thermal alert and Wazuh agent monitoring provide meaningful physical-access-consequence visibility (equipment tampering or power disruption would manifest as service anomalies) but do not substitute for enterprise-grade physical monitoring controls. This gap is an intentional residential-context scoping decision documented in the whole-project design §PE honest-gaps row.",
               "implementation-status": {
-                "state": "planned"
+                "state": "partial"
               }
             }
           ]
@@ -1330,9 +1330,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "17b8be52-825f-4983-817d-c8b677fd1640",
-              "description": "",
+              "description": "This control is not applicable. The Managed SOC Service operates in a private residence with Brian Chaplow as the sole operator and sole occupant of the equipment room. No visitors are admitted to the facility where the system resides. Because no visitor access occurs, visitor access records are not generated, not maintained, and not reviewed -- there is no gap to document, only an absence of applicability. This N/A determination is consistent with PE-2 (access authorizations: single-entry list) and PE-3 (physical access control: no visitor escort procedure because no visitors are admitted). The whole-project design §PE honest-gaps row acknowledges the residential single-operator context that underlies all PE N/A determinations.",
               "implementation-status": {
-                "state": "planned"
+                "state": "not-applicable"
               }
             }
           ]
@@ -1344,9 +1344,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "449801d9-1454-4ddf-a568-64005c69aef9",
-              "description": "",
+              "description": "The planning policy and procedures record for the Managed SOC Service is maintained as the ADR chain (ADRs 0001--0008) combined with this SSP and the `runbooks/` directory. ADR 0001 establishes the EULA compliance posture and pre-flight decisions (earliest policy artifact). ADR 0008 §Pre-execution decisions encodes authoring conventions, implementation-status rubric, set-params fill policy, and branch strategy -- the nearest equivalent to formal planning procedures for a single-operator system. The Plan 3 design spec at `/c/Projects/docs/superpowers/specs/2026-04-09-homelab-fedramp-low-plan-3-ssp-authoring-design.md` provides purpose, scope, roles, and compliance alignment for this SSP authoring effort. Brian Chaplow is designated as the sole official responsible for developing, documenting, and disseminating the planning policy and procedures.\n\nPolicy is reviewed annually and after each plan phase completion (at ADR filing). The gap is that no single standalone \"PL Policy\" document has been published and formally disseminated outside the git repository; for a single-operator homelab, the ADR chain committed to a public GitHub repo (`github.com/brianchaplow/homelab-fedramp-low`) is the effective dissemination mechanism. `runbooks/monthly-conmon.md` defines the ConMon review cadence (currently stub, pending Plan 3 completion). NIST guidance permits this consolidated approach, making the status partial rather than not-applicable.",
               "implementation-status": {
-                "state": "planned"
+                "state": "partial"
               }
             }
           ]
@@ -1358,9 +1358,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "a21b304b-20d2-4091-8bfb-9a3fd68a8ec4",
-              "description": "",
+              "description": "The FedRAMP Rev 5 Low baseline (156 controls) is selected and encoded as an OSCAL profile at `trestle-workspace/profiles/fedramp-rev5-low/profile.json` (UUID 512149a6-7f04-4c01-bb1b-78eafd6a950d, version 5.1.1+fedramp-20240111-0). The rationale for Low selection is documented in the whole-project design spec §2.1: FIPS 199 Low categorization (C: Low, I: Low, A: Low) because the Managed SOC Service processes only operational telemetry -- alert metadata, network flows, and vulnerability scan data -- with no PII, PHI, CUI, or financial data; the 99% monthly availability target is advisory rather than safety-critical. The selected baseline is implemented as an OSCAL profile that imports the NIST SP 800-53 Rev 5 catalog (`trestle-workspace/catalogs/nist-800-53-rev5/catalog.json`, 10.7 MB). The resolved catalog at `trestle-workspace/catalogs/fedramp-rev5-low-resolved/catalog.json` contains exactly 156 controls (verified by `trestle validate` per ADR 0007 done criteria). The derivation story for the profile -- including the GSA/fedramp-automation repo deletion and the compliance-trestle-fedramp plugin sourcing path -- is documented in ADR 0006 Deviation 11 and `oscal/profile/SOURCE.md`.",
               "implementation-status": {
-                "state": "planned"
+                "state": "implemented"
               }
             }
           ]
@@ -1372,9 +1372,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "34a4f742-cc05-4132-9c71-dd6417434772",
-              "description": "",
+              "description": "The FedRAMP Rev 5 Low baseline was tailored from the NIST SP 800-53 Rev 5 catalog by applying a 156-control `with-id` inclusion filter documented in the OSCAL profile at `trestle-workspace/profiles/fedramp-rev5-low/profile.json`. The tailoring actions are: (1) inclusion filter -- only 156 specific control IDs from the NIST catalog are included per the FedRAMP Low selection; (2) merge/combine method `keep` with `as-is: true` -- no further structural alteration beyond the inclusion filter; (3) no additional organization-specific overlays applied beyond the FedRAMP Low selection itself. The resolved catalog at `trestle-workspace/catalogs/fedramp-rev5-low-resolved/catalog.json` is the post-tailoring artifact (exactly 156 controls, zero missing, zero extra -- verified per ADR 0007 done criteria). ADR 0006 Deviation 11 documents the full derivation story: the original GSA XML contained `<alter>`, `<set-parameter>`, party definitions, and back-matter resources that were intentionally excluded from the bootstrapped profile because they do not affect control coverage; `oscal/profile/SOURCE.md` records the omission scope and future re-fetch path. The second layer of tailoring -- organization-defined parameter (ODP) values -- is applied in the `x-trestle-set-params` blocks throughout `trestle-workspace/mss-ssp/` as Plan 3 fills all 156 controls with homelab-specific values.",
               "implementation-status": {
-                "state": "planned"
+                "state": "implemented"
               }
             }
           ]
@@ -1386,9 +1386,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "74c43ffc-27a8-4a93-9f48-91c844e8a2d2",
-              "description": "",
+              "description": "The system security plan for the Managed SOC Service is being assembled at `oscal/ssp.json` via `./pipelines.sh ssp-assemble` (Trestle 4.0.1 `ssp-assemble` wrapper). The markdown authoring surface is `trestle-workspace/mss-ssp/` (156 control files across 18 families). This document -- the SSP itself -- is the primary security plan artifact; the plan is linked to the FedRAMP Rev 5 Low profile (`trestle-workspace/profiles/fedramp-rev5-low/profile.json`, UUID 512149a6, 156 controls) via the `import-profile` href in the assembled JSON. Authorization boundary, in-boundary components, operational context, mission, roles, information types, security categorization, threats, and external dependencies are documented in the whole-project design spec §2 (`/c/Projects/docs/superpowers/specs/2026-04-07-homelab-fedramp-low-design.md` §2.1--§2.6). Brian Chaplow is the system owner and authorizing official for this single-operator portfolio system.\n\nThe plan is partial because control prose authoring is in progress (Plan 3 fills all 156 controls). Privacy risk assessment (PL-02a.08) is not-applicable -- MSS processes only operational telemetry (alert metadata, network flows, vulnerability scan data) with no PII, PHI, or CUI. Supporting OSCAL artifacts include `oscal/component-definition.json` (7 in-boundary components) and `inventory/IIW-2026-04.xlsx` (April 2026 IIW, 7 rows). The plan is protected from unauthorized modification by git history and from unauthorized disclosure by maintaining secrets in `.env` (gitignored). The SSP is reviewed annually and after each plan phase completion.",
               "implementation-status": {
-                "state": "planned"
+                "state": "partial"
               }
             }
           ]
@@ -1400,9 +1400,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "6adb57bc-f24c-4e04-bc92-ca218f6b23ba",
-              "description": "",
+              "description": "No standalone Rules of Behavior document exists that explicitly enumerates the three social-media restriction categories. In practice, restriction (c) -- organizational identifiers on external accounts -- is satisfied by `/c/Projects/CLAUDE.md` §Credentials (\"All credentials are in `.env` (gitignored)\") and §Conventions (\"NEVER hardcode credentials\"), which prevent organizational secrets from being posted to external sites or used to create third-party accounts. The public GitHub repo (`github.com/brianchaplow/homelab-fedramp-low`) enforces restriction (b) by excluding all secrets via `.gitignore`. ADR 0001 §RegScale CE EULA §2(ix) (\"No publishing circumvention info\") constitutes an acknowledged external-site posting restriction. No organizational email identifiers (e.g., `.gov` addresses) are used in this system -- `deploy/regscale/README.md` and `deploy/defectdojo/README.md` confirm admin accounts are not linked to organizational email.\n\nThe status is partial because no formal RoB document enumerates restrictions (a) social media use, (b) posting organizational information, and (c) organizational identifiers -- the restrictions exist by convention but not in a disseminated policy artifact.",
               "implementation-status": {
-                "state": "planned"
+                "state": "partial"
               }
             }
           ]
@@ -1414,9 +1414,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "10214a82-47f0-4756-993d-5e4c90154daa",
-              "description": "",
+              "description": "No standalone Rules of Behavior (RoB) document exists in this repository. The behavioral rules governing the sole operator (Brian Chaplow) are encoded in `/c/Projects/CLAUDE.md` §Conventions (attack VLAN 40 only, no hardcoded credentials, canonical tool names, git commit conventions) and enforced by convention across all projects. ADR 0001 §RegScale CE EULA review provides the closest documented acknowledgment artifact -- Brian Chaplow read, understood, and agreed to RegScale CE license terms before system access was authorized. `runbooks/cert-trust.md` documents TLS posture decisions operators must follow when interacting with self-signed certificates. `deploy/regscale/README.md` states the password policy (length 12, upper/lower/digit/symbol) as an enforced behavioral rule.\n\nRules are reviewed annually and after each plan phase completion. The gap is that no single consolidated RoB document has been drafted and no formal electronic-signature acknowledgment process exists beyond the EULA acknowledgment in ADR 0001. For a single-operator system the conventions in `CLAUDE.md` are effectively self-applied and self-enforced -- the git commit history to the public repo is the observable acknowledgment trail. This makes the status partial rather than not-applicable.",
               "implementation-status": {
-                "state": "planned"
+                "state": "partial"
               }
             }
           ]
@@ -1428,9 +1428,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "0ec09cad-f1f7-4031-bddf-58015c949128",
-              "description": "",
+              "description": "The security architecture for the Managed SOC Service is documented in the whole-project design spec §2 (`/c/Projects/docs/superpowers/specs/2026-04-07-homelab-fedramp-low-design.md`). Section §2.1 provides the CIA categorization rationale (FIPS 199 Low: C-Low, I-Low, A-Low -- operational telemetry only, no PII/PHI/CUI) and FedRAMP baseline selection. Section §2.2 enumerates the 14 in-boundary components (3 bare-metal hosts, 2 GRC VMs, 1 firewall, 1 managed switch, plus internal services). Section §2.4 documents external connection points and dependencies (Wazuh agent TLS enrollment, Tailscale mesh, admin SSH path, PBS NFS backup). The machine-readable architecture artifact is `oscal/component-definition.json` (7 OSCAL in-boundary components per Plan 2 Task 8). The broader SOC data-flow architecture (Zeek on haccp `span0`, Logstash enrichment pipeline, ELK, Wazuh 4.14.4 SIEM, OpenCTI v7, Shuffle SOAR WF1--WF11) is documented in the parent workspace `/c/Projects/CLAUDE.md` Phase 14 section.\n\nPrivacy architecture is not-applicable -- the design spec §1.5 states \"No PII/CUI processing scenarios\" for this system. The architecture is reviewed annually and after each infrastructure phase completion. The status is partial because the boundary diagram (`docs/diagrams/boundary.mmd`, `docs/diagrams/rendered/boundary.png`) referenced in design spec §2.7 does not yet exist in the repo -- it is a pending Plan 3 deliverable. Architecture changes are reflected in this SSP via the Plan 3 authoring cycle and recorded in ADRs when architecturally significant.",
               "implementation-status": {
-                "state": "planned"
+                "state": "partial"
               }
             }
           ]
@@ -1568,9 +1568,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "4475518b-3e92-4e2f-9dcf-c74f6d3edc07",
-              "description": "",
+              "description": "The Managed SOC Service operates under a system-level risk assessment policy embodied in the ADR chain (ADRs 0001-0008) and the Plan design specifications. ADR 0008 establishes the pre-execution policy governing SSP authoring; ADR 0006 establishes the ConMon pipeline policy, including vulnerability ingestion cadence, SLA window values, and remediation tracking conventions. Brian Chaplow serves as the sole operator and designated official responsible for policy development, documentation, and dissemination. The policy is reviewed annually and whenever a significant architecture change, phase completion, or security incident is documented in a new ADR. Risk assessment procedures are codified in `runbooks/monthly-conmon.md` and executed via the single-entry-point `./pipelines.sh conmon` orchestration script.\n\nThe partial status reflects an honest gap: no formal signed policy document exists separate from the ADR chain. This is a single-operator personal portfolio system with no HR organization or formal approval chain. The ADR pattern satisfies the spirit of RA-1 for a homelab posture -- each ADR documents a decision, rationale, and consequence in a format a GRC reviewer can follow, and the four content decisions in the Plan 3 design spec (`docs/superpowers/specs/2026-04-09-homelab-fedramp-low-plan-3-ssp-authoring-design.md`) serve as the formal authoring policy. The gap -- no standalone signed RA policy document -- is acknowledged and would be the first item addressed before a real ATO submission.",
               "implementation-status": {
-                "state": "planned"
+                "state": "partial"
               }
             }
           ]
@@ -1582,9 +1582,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "55f498c4-7878-46a0-a2df-7746e4c61823",
-              "description": "",
+              "description": "The Managed SOC Service is categorized as FIPS 199 Low across all three security objectives -- Confidentiality Low, Integrity Low, and Availability Low. This categorization is consistent with the system's purpose: a portfolio-demonstration ConMon environment with no PII, no production customer data, and no life-safety functions. The FedRAMP Low baseline was explicitly selected at project inception and documented in ADR 0001 (`docs/adr/0001-preflight-and-eula.md`). The FedRAMP Rev 5 Low profile (`trestle-workspace/profiles/fedramp-rev5-low/profile.json`) operationalizes the categorization by selecting exactly 156 controls appropriate for Low-impact systems, and the OSCAL SSP (`oscal/ssp.json`) carries the system identifier `managed-soc-service` throughout. The security categorization decision has been reviewed and approved by Brian Chaplow as the authorizing official and sole operator.\n\nThe IIW (`inventory/IIW-2026-04.xlsx`) records 7 in-boundary components -- brisket, haccp, smokehouse, dojo VM, regscale VM, pitcrew, and smoker -- all classified as Low-impact assets. Supporting rationale for the Low categorization: the system processes no classified or sensitive data, hosts no public-facing services on in-boundary hosts, and is not in the operational path of any mission-critical function. Loss of confidentiality, integrity, or availability of the MSS homelab would result in limited adverse effect on operator operations and no effect on any external party. The categorization is reviewed at each annual ConMon cycle and whenever a new phase adds in-boundary infrastructure.",
               "implementation-status": {
-                "state": "planned"
+                "state": "implemented"
               }
             }
           ]
@@ -1596,9 +1596,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "d09c58c9-d870-4a61-ba2c-9518ae61ffee",
-              "description": "",
+              "description": "Supply chain risk for the MSS homelab is assessed informally through hardware procurement provenance and software version-pinning practices documented in the ADR chain. All 5 in-boundary hosts are Lenovo ThinkStation P340 Tiny or QNAP commercial off-the-shelf (COTS) hardware sourced from US vendors, reducing counterfeit and malicious hardware insertion risk. Software stack versions are pinned by ADR record: Trestle 4.0.1 (ADR 0006 Deviation 9), DefectDojo 2.57.0 (ADR 0004), and RegScale CE (ADR 0003) are frozen at known-good versions with Proxmox VM snapshots providing rollback capability. The `inventory/overlay.yaml` records hardware model, asset tags, and end-of-life dates for all in-boundary hosts -- brisket 2029-04, haccp 2028-04, smokehouse 2027-12 -- providing a hardware lifecycle visibility artifact. The `wazuh-states-vulnerabilities-*` index captures the installed package set for each agent, enabling detection of unauthorized software supply chain changes on a continuous basis.\n\nThe partial status reflects genuine scope limits: no formal vendor contracts, no hardware SBOM, no third-party supply chain attestation process, and no software composition analysis (SCA) tool. These gaps are expected for a single-operator portfolio lab with no vendor relationships. The supply chain assessment is reviewed annually aligned with the hardware end-of-life review cadence in `inventory/overlay.yaml`, and when a significant change to the relevant supply chain or system environment is recorded in an ADR.",
               "implementation-status": {
-                "state": "planned"
+                "state": "partial"
               }
             }
           ]
@@ -1610,9 +1610,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "83a7c529-13df-4d4a-a4dc-31586ca5f6ed",
-              "description": "",
+              "description": "The monthly ConMon cycle (`./pipelines.sh conmon`) serves as the continuous risk assessment mechanism for the Managed SOC Service. Wazuh 4.14.4 on brisket reads 12,949 vulnerability-state documents from the `wazuh-states-vulnerabilities-*` OpenSearch index, each carrying CVE identifier, CVSS base score (v2/v3/v4), severity label, affected package name and version, and NVD reference URLs. The `pipelines/ingest/wazuh_vulns.py` pipeline normalizes these documents into 8,471 Finding records and pushes them to DefectDojo 2.57.0 on dojo (10.10.30.27), where FedRAMP Low SLA windows are applied per severity: Critical 15 days, High 30 days, Medium 90 days, Low 180 days (corrected per ADR 0006 Amendment Task 12). The resulting DefectDojo finding inventory is the operational risk register; the OSCAL POA&M (`poam/POAM-2026-04.xlsx`, 8,473 rows) is the formal documented risk output and constitutes the risk assessment report. OpenCTI v7 on brisket provides threat intel context via 6 connectors, feeding the threat identification component of the assessment. Risk assessment results are disseminated to Brian Chaplow as the sole operator and reviewed monthly.\n\nThe partial status reflects an acknowledged gap: there is no formal written risk assessment report separate from the POA&M, and there is no risk assessment board or peer review process -- this is a single-operator system. The pipeline-generated POA&M and DefectDojo engagement serve as the documented risk output and satisfy the core RA-3 requirement for a homelab portfolio posture. A formal standalone risk assessment report would be the gap to close before an actual ATO submission.",
               "implementation-status": {
-                "state": "planned"
+                "state": "partial"
               }
             }
           ]
@@ -1624,9 +1624,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "4affb6c8-1cb4-4135-82e4-c0b1b4e987b0",
-              "description": "",
+              "description": "Not applicable. The Managed SOC Service is a single-operator personal portfolio system with no public-facing attack surface. All in-boundary hosts reside on private VLAN 20 (10.10.20.0/24) and VLAN 30 (10.10.30.0/24) with no inbound internet access -- OPNsense on the perimeter firewall (10.10.10.1) blocks all unsolicited inbound connections by default, and no public IP addresses are assigned to any in-boundary MSS host. Remote access is restricted to the operator via Tailscale VPN. There is no web application, API endpoint, or service exposed to external researchers from which vulnerabilities could be discovered and reported. A public disclosure channel would have no mechanism to receive reports and no scope to authorize good-faith research against private homelab infrastructure.\n\nThe operator's GCP VM (external, Tailscale 100.125.40.97) hosts public-facing websites (brianchaplow.com, bytesbourbonbbq.com) but those are explicitly out-of-boundary assets per `inventory/overlay.yaml` (reason: \"Customer asset on GCP\") and are not part of the MSS system boundary. The not-applicable determination holds for the current system boundary and would be revisited if any in-boundary service were exposed to the internet in a future phase.",
               "implementation-status": {
-                "state": "planned"
+                "state": "not-applicable"
               }
             }
           ]
@@ -1638,9 +1638,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "881e8f75-4d58-4edd-ac36-12aa6da4de8f",
-              "description": "",
+              "description": "Wazuh's vulnerability detector automatically updates its NVD feed and vendor-specific advisories as part of the Wazuh manager's built-in feed management. When the manager identifies a new CVE relevant to an in-boundary package version, it creates a new document in `wazuh-states-vulnerabilities-*` on the next agent check-in -- no operator action required. The `VULN_INDEX_PATTERN = \"wazuh-states-vulnerabilities-*\"` wildcard in `pipelines/common/wazuh_indexer.py` ensures the monthly pipeline pull captures any new vulnerability documents across future index shards automatically. OpenCTI v7 on brisket augments this by syncing fresh IOCs from 6 connectors to Wazuh CDB lists every 6 hours (cron `0 */6 * * *`), continuously extending the scanner's IOC-based detection coverage without manual update. The DefectDojo engagement auto-create logic (`_engagement_name()` returns `ConMon YYYY-MM`) ensures each monthly pipeline run opens a fresh engagement rather than silently accumulating into a stale one, so new NVD entries discovered since the prior run are captured as new findings with correct detection dates. Together, the Wazuh built-in NVD refresh and the OpenCTI IOC sync implement RA-5.2 continuously and automatically for both host-based vulnerability enumeration and network-based IOC detection.",
               "implementation-status": {
-                "state": "planned"
+                "state": "implemented"
               }
             }
           ]
@@ -1652,9 +1652,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "70bcd779-5398-4f5a-87d9-e76883dfea6e",
-              "description": "",
+              "description": "Wazuh 4.14.4 on brisket provides continuous vulnerability monitoring for all 5 in-boundary agents via its built-in vulnerability detector module. The detector's syscollector component collects installed package inventories on each agent check-in and cross-references them against the National Vulnerability Database (NVD) and vendor-specific advisories, storing results in the `wazuh-states-vulnerabilities-*` index on the Wazuh OpenSearch indexer (brisket:9200). A live probe on 2026-04-09 confirmed 12,949 documents across 5 agents: brisket 2,804, haccp 1,899, regscale 1,861, dojo 1,861, smokehouse 46. Each document carries CVE identifier, CVSS base score (v2/v3/v4), Wazuh severity label (Critical/High/Medium/Low), detected_at timestamp, affected package name and version, and NVD reference URLs. This satisfies RA-5b's interoperability requirements: platforms and software flaws are enumerated via CVE, vulnerability impact is measured via CVSS, and the NVD feed provides standards-based checklist alignment. Zeek on haccp span0 and Suricata on smokehouse eth4 provide complementary network-level scanning -- detecting active exploitation attempts, lateral movement, and misconfigured services that host-based scanners miss. OpenCTI v7 on brisket syncs threat indicators from 6 connectors to Wazuh CDB lists every 6 hours (cron `0 */6 * * *`), implementing RA-5f by continuously extending the IOC-based detection surface without operator action.\n\nThe vulnerability pipeline (`pipelines/ingest/wazuh_vulns.py`) normalizes every indexer hit into a Finding schema (`pipelines/common/schemas.py`: cve, cvss_score, severity, affected_host, affected_package, related_controls) and pushes 8,471 findings to DefectDojo 2.57.0 on dojo via `pipelines/push/defectdojo.py`. DefectDojo tracks remediation state per finding (Open, In Progress, Completed, False Positive, Deviated) and enforces FedRAMP Low SLA windows via `pipelines/build/oscal_poam.py`: Critical 15 days, High 30 days, Medium 90 days, Low 180 days (corrected from wrong baseline values per ADR 0006 Amendment Task 12). The OSCAL POA&M (`poam/POAM-2026-04.xlsx`, 8,473 rows) is the vulnerability scan report artifact satisfying RA-5c (analysis of scan results) and RA-5d (remediation with response times). Vulnerability information is shared with Brian Chaplow as sole operator via the monthly ConMon pipeline run and Discord briefing (WF10, cron 0530 EST).",
               "implementation-status": {
-                "state": "planned"
+                "state": "implemented"
               }
             }
           ]
@@ -1666,9 +1666,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "126f0212-8c7b-47e4-882a-37d001046f88",
-              "description": "",
+              "description": "Risk findings are responded to through a structured pipeline that closes the loop between identification and documented response. Wazuh 4.14.4 identifies vulnerabilities and stores them in `wazuh-states-vulnerabilities-*`; `pipelines/ingest/wazuh_vulns.py` normalizes them into Finding records with FedRAMP SLA due-dates; DefectDojo 2.57.0 on dojo tracks remediation state (Open, In Progress, Completed, False Positive, Deviated) per finding; `pipelines/build/oscal_poam.py` builds the OSCAL POA&M with SLA-driven scheduled-completion dates using the `_finding_state()` state mapping (priority: false-positive > risk-accepted > mitigated > active > closed). Each DefectDojo state change constitutes a documented risk response decision in accordance with organizational risk tolerance. The OSCAL POA&M (`poam/POAM-2026-04.xlsx`, 8,473 rows) is the formal risk response record, and the monthly `./pipelines.sh conmon` run is the recurring mechanism that processes new findings and updates existing response records.\n\nADR 0005 is the archetypal RA-7 example: a PBS backup gap (2026-04-03 to 2026-04-07) was identified via monitoring during Plan 1 Task 12, assessed as limited-impact (5-day gap, no data loss, acceptable for the ConMon cycle), remediated (NFS automount hardening with `x-systemd.automount,x-systemd.idle-timeout=600,x-systemd.mount-timeout=30`), and a follow-up TODO was captured in Plan 1 Task 20 (PBS Wazuh/Discord alert). ADR 0006 Amendment Task 12 is a second example: SLA window values in `oscal_poam.py` were wrong (30/90/180/365 days), the risk was assessed as incorrect due-dates propagating to the POA&M, and the response was immediate correction to FedRAMP-correct values (Critical 15d, High 30d, Medium 90d, Low 180d). Both examples demonstrate the full RA-7 cycle: finding -- assessment -- response -- documentation.",
               "implementation-status": {
-                "state": "planned"
+                "state": "implemented"
               }
             }
           ]
@@ -2002,9 +2002,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "d442f907-ecb0-4a5c-8d47-121d60617f99",
-              "description": "",
+              "description": "The Managed SOC Service maintains a system-level SI policy in `C:\\Projects\\CLAUDE.md` -- the living document that defines the authorization boundary, monitoring tool inventory, detection rule counts, and operational cadence for Wazuh, Suricata, Zeek, ELK, OpenCTI, Velociraptor, and the XGBoost ML scorer. The file is git-tracked in the parent workspace and is reviewed and updated at each phase milestone boundary. Brian Chaplow, as system owner and sole operator, is designated to manage the development, documentation, and dissemination of SI policy and procedures. The policy is reviewed annually and following any significant system change, new phase deployment, or ADR-recorded deviation. The monitoring stack described in the Service Inventory section of `CLAUDE.md` serves as the authoritative SI procedure reference, with `runbooks/monthly-conmon.md` defining the procedural cadence for ongoing SI-related activities.\n\nThe ADR chain in `homelab-fedramp-low/docs/adr/` functions as the authoritative policy-change log for all SI-significant decisions: ADR 0001 confirmed scope and pre-flight policy before Plan 1 deployment; ADR 0008 recorded the Plan 3 pre-execution realignment of authoring cadence and review decisions. SI procedures are reviewed following any ConMon finding, security incident, or phase deployment that changes monitoring tooling. The `runbooks/monthly-conmon.md` document prescribes the monthly SI procedure cycle, including vulnerability scanning, POA&M update, and OSCAL artifact generation.",
               "implementation-status": {
-                "state": "planned"
+                "state": "implemented"
               }
             }
           ]
@@ -2016,9 +2016,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "940c86b4-05b9-408d-bd06-97143bfdaa62",
-              "description": "",
+              "description": "Information and monitoring data retention is enforced at the index and storage level across the SOC stack. Wazuh Indexer on brisket retains `wazuh-alerts-*` indices for 90 days, aligned with the ConMon cycle window and sufficient to support both audit review and incident investigation. ELK on haccp retains `logs-zeek.haccp-default-*` Zeek enrichment events and Kibana detection output continuously until local disk capacity is approached. Arkime full PCAP is stored on the 2TB Samsung 990 EVO Plus at `/opt/arkime/raw`; the nightly cron at 0300 SSH/rsyncs completed capture files to smokehouse 17TB NAS via `reference/phase14/cron/archive-pcap.sh`, providing long-term packet retention that survives local disk failures on haccp. PBS on smoker LXC 300 runs daily and weekly backup jobs of critical VMs (DC01, WS01, TheHive) and LXC containers to smokehouse NFS (17TB), providing a system-state retention backstop for control implementation artifacts. ADR 0005 documents the auditable retention-gap incident: PBS lost its NFS mount during the 2026-04-07 rack consolidation reboot, creating a backup gap from 2026-04-03 to 2026-04-07 for the daily critical job. The fix -- fstab `x-systemd.automount` hardening -- was applied and the 02:00 nightly run on 2026-04-09 closed the gap, demonstrating that retention monitoring and recovery procedures are in place.\n\nThe ConMon pipeline produces versioned OSCAL and compliance artifacts on a monthly cycle: `oscal/ssp.json` (assembled and retained in git), `poam/POAM-2026-04.xlsx` (committed), and `inventory/IIW-2026-04.xlsx` (committed). These files constitute the FedRAMP-required information management outputs. Git commit history on the `main` branch provides an immutable audit trail of all policy and configuration changes. OSCAL artifacts are tagged per milestone (`plan-2-complete`, `plan-3-complete`) for point-in-time retrieval by assessors. DefectDojo finding history on dojo (10.10.30.27) provides vulnerability lifecycle retention across ConMon cycles. All retention periods and disposal procedures are consistent with applicable operational requirements for this single-operator homelab authorization boundary.",
               "implementation-status": {
-                "state": "planned"
+                "state": "implemented"
               }
             }
           ]
@@ -2030,9 +2030,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "e1da4f50-2c7d-417a-b3f3-7da721deb2e6",
-              "description": "",
+              "description": "System flaws are identified and tracked using the Wazuh vulnerability detection pipeline. The `pipelines/ingest/wazuh_vulns.py` module pages through the `wazuh-states-vulnerabilities-*` OpenSearch index on brisket (10.10.20.30:9200) across all 15 in-boundary agents, producing normalized Finding records. The April 2026 ConMon cycle ingested 8,471 vulnerability findings across 5 agents. DefectDojo 2.57.0 on dojo (10.10.30.27) receives all findings via the ConMon pipeline and tracks each CVE against FedRAMP Low SLA windows: Critical and High CVEs within 30 days, Moderate within 90 days, Low within 180 days. Security-relevant updates are tested for effectiveness and side effects in the lab environment before rollout to production SOC infrastructure -- the 2026-03-31 fleet patch (kernels, Wazuh 4.14.4, Proxmox alignment) was validated on sear before applying across the fleet. Wazuh SCA performs automated configuration-flaw scanning on all enrolled agents, with results surfaced in the Wazuh Dashboard on brisket.\n\nThe monthly ConMon pipeline (`./pipelines.sh conmon`) closes the flaw-remediation loop automatically: ingest from Wazuh Indexer, push to DefectDojo, generate the OSCAL POA&M via `pipelines/build/oscal_poam.py`, and render `poam/POAM-2026-04.xlsx`. ADR 0007 documents the live end-to-end validation of this cycle, confirming 8,471 findings ingested with zero skipped. ADR 0006 Deviation 5 records the pivot from the deprecated Wazuh 4.8 REST vulnerability endpoint to indexer-based ingest -- an example of flaw-remediation procedure incorporated into the configuration management process. Flaw remediation activities are incorporated into the git-tracked configuration baseline, with ADRs serving as the approval mechanism for any deviation from the established remediation cadence.",
               "implementation-status": {
-                "state": "planned"
+                "state": "implemented"
               }
             }
           ]
@@ -2044,9 +2044,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "8ffca19a-d0ac-4265-ae60-9efa3626c8dc",
-              "description": "",
+              "description": "Malicious code protection is implemented at network entry and exit points using both signature-based and non-signature-based mechanisms. Suricata on smokehouse (10.10.20.10, eth4 SPAN) provides continuous signature-based detection, with rule sets maintained under `HomeLab-SOC-v2/configs/suricata/` and updated via `suricata-update`. Wazuh on brisket ingests Suricata `eve.json` alerts via the Wazuh agent on smokehouse, correlating malicious traffic signatures against the `wazuh-alerts-*` index. Zeek on haccp span0 (`reference/phase14/zeek/local.zeek`) and smokehouse eth4 provides complementary non-signature protocol-behavior detection -- JA3/JA4 TLS fingerprinting and anomalous connection pattern analysis that catches threats for which signatures do not yet exist. OpenCTI v7 on brisket aggregates IOC feeds from 6 connectors; the sync cron (`0 */6 * * *`) pushes current malicious indicators to Wazuh CDB lists, creating an IOC-driven detection layer updated every 6 hours. On detection, Shuffle WF1 routes high-confidence alerts to OPNsense and Cloudflare for blocking and sends an immediate Discord #soc-alerts notification to Brian Chaplow. Wazuh FIM provides endpoint real-time file monitoring on all 15 agents, detecting unauthorized file modifications as a non-signature behavioral signal.\n\nThe XGBoost ML scorer on brisket (`brisket:5002`, PR-AUC 0.9998) applies behavioral anomaly scoring as a non-signature layer on top of rule-based detection. False positives are addressed through Wazuh deduplication logic in Shuffle WF1 v2, which suppresses repeated low-confidence alerts before they reach the operator. The primary gap for this control is the absence of an endpoint antivirus agent on Linux SOC infrastructure hosts (brisket, haccp, smokehouse) -- malicious code protection on those hosts is network-only (Suricata, Zeek, Wazuh IDS rules) with no host-based AV scanning. OPNsense at the VLAN boundary provides the outer network entry-point blocking layer.",
               "implementation-status": {
-                "state": "planned"
+                "state": "partial"
               }
             }
           ]
@@ -2058,9 +2058,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "bd4fe865-2973-4d00-871d-f4f78e7f087d",
-              "description": "",
+              "description": "The Managed SOC Service operates a five-layer detection stack covering all in-boundary hosts across VLANs 10, 20, 30, and 40. Layer 1 -- Wazuh on brisket (10.10.20.30) aggregates security events from all 15 enrolled agents (including brisket host, OPNsense syslog, dojo, and regscale) and applies 214 MITRE ATT&CK-mapped detection rules, shipping alerts to `wazuh-alerts-*` in the Wazuh Indexer on brisket:9200. Layer 2 -- Suricata on smokehouse (10.10.20.10, eth4 SPAN) provides signature-based IDS at the network boundary, with rule sets maintained under `HomeLab-SOC-v2/configs/suricata/`. Layer 3 -- Zeek on haccp span0 (`reference/phase14/zeek/local.zeek`) generates JSON protocol-metadata logs (conn, dns, http, ssl, x509) with JA3/JA4 TLS fingerprints and community-id field correlation, shipped via Filebeat to Logstash on haccp and indexed as `logs-zeek.haccp-default-*` in ELK. The Phase 14 Logstash enrichment pipeline (`reference/phase14/logstash/zeek-enrichment.conf`) applies 5 stages: de-dot → OpenCTI TI lookups (Stage 2, live IOC match against all 6 connector feeds) → novel-entity tracking via `novel_entity.rb` (Stage 3, `haccp-entities-seen` index) → tier routing → Ollama LLM classification on brisket qwen3:8b (Stage 5). A shared token-bucket rate limiter (`reference/phase14/logstash/ruby/tier2_rate_limit.rb`, cap 10/min) gates both tier-1 TI-matched and tier-2 novel-entity events to protect the RTX A1000 GPU, which is power-capped to 40W. Layer 4 -- Arkime on haccp records full PCAP to the 2TB Samsung 990 EVO Plus at `/opt/arkime/raw`, with nightly SSH/rsync archival to smokehouse 17TB NAS at 0300 via `reference/phase14/cron/archive-pcap.sh`, enabling post-incident packet replay for any connection observed on span0. Layer 5 -- ELK on haccp (10.10.30.25) runs 214 Kibana detection rules and an Elastic ML trial-license auth-anomalies job analyzing DC01/WS01 Windows Security events for behavioral anomalies. The XGBoost ML scorer on brisket (`brisket:5002`, PR-AUC 0.9998) applies a sixth independent behavioral scoring pass on individual Wazuh alerts. Velociraptor DFIR on brisket (8889/HTTPS) provides ad-hoc endpoint forensic collection across 7 enrolled clients for targeted investigation when monitoring detects a high-confidence indicator.\n\nMonitoring information is disseminated in real time and on a daily schedule. Shuffle WF1 (webhook) receives high-confidence Wazuh alerts, enriches them via AbuseIPDB, routes blocking actions to OPNsense and Cloudflare, creates TheHive cases, and posts to Discord #soc-alerts. WF10 (cron 0530 EST) generates a nightly briefing from the Zeek enrichment pipeline output -- including Ollama classification summaries for tier-1 and tier-2 events -- and posts to Discord #morning-briefing. Grafana on brisket (:3000) displays the SOC v3 Overview dashboard and issues the `GPU Thermal Critical -- Brisket Above 90C` alert (uid=dfihoiidr7k00c) to Discord #infrastructure-alerts when the RTX A1000 exceeds 90C. The auditable proof that the monitoring stack was exercised under real load is ADR 0008: during Phase 14 go-live, the Ollama rate limiter had a defect that allowed tier-1 TI events to bypass the bucket, driving GPU temperature to 87C sustained. The stack detected the thermal event, the Grafana alert fired to #infrastructure-alerts, and the fix -- Stage 3b conditional + shared bucket + 40W power cap -- was implemented and validated, returning temperature to 63C and fan duty to 39%. Monitoring coverage and risk level are reviewed at each ConMon cycle; the level of monitoring activity is adjusted when new attack campaigns, CISA advisories, or POA&M findings increase risk to operations. Monitoring is conducted on infrastructure owned and operated solely by Brian Chaplow -- no external user privacy interests apply.",
               "implementation-status": {
-                "state": "planned"
+                "state": "implemented"
               }
             }
           ]
@@ -2072,9 +2072,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "be80b310-d6f9-4e56-aae8-c6bf97f7e553",
-              "description": "",
+              "description": "Security alerts, advisories, and directives are received on an ongoing basis through OpenCTI v7 on brisket (10.10.20.30:8080), which aggregates threat intelligence from 6 active connectors -- including AlienVault OTX, abuse.ch URLhaus, and MISPFeed -- operating on continuous polling schedules. The IOC sync cron (`0 */6 * * *`) pushes current malicious indicators to Wazuh CDB lists on brisket, making external threat advisories directly actionable as detection rule inputs within 6 hours of IOC ingestion. A complementary cron (`15 */6 * * *`) syncs indicators to the `opencti-threat-intel` index in ELK on haccp (10.10.30.25:9200) for Kibana correlation. CISA US-CERT advisories and NVD CVE feeds are monitored manually by Brian Chaplow on an ongoing basis; CISA Known Exploited Vulnerability (KEV) entries are treated as Critical/High priority and actioned within 30 days aligned with the FedRAMP Low High SLA window tracked in DefectDojo.\n\nThe Phase 14 Zeek enrichment pipeline performs live OpenCTI TI lookups in Stage 2 of `reference/phase14/logstash/zeek-enrichment.conf`, matching every observed network connection against the current IOC set in real time and routing matches to tier-1 processing with immediate Ollama qwen3:8b classification. This transforms external threat intelligence into in-line detection within the monitoring pipeline. Internal security alerts are generated by Shuffle WF10 (cron 0530 EST), which produces a nightly briefing incorporating threat intelligence context from the Zeek enrichment output and posts it to Discord #morning-briefing. Shuffle WF8 (cron 1500 EST) monitors watch-list entities. Security directives are implemented within established time frames; relevant findings are tracked as DefectDojo tickets linked to the monthly POA&M cycle via `pipelines/build/oscal_poam.py`.",
               "implementation-status": {
-                "state": "planned"
+                "state": "implemented"
               }
             }
           ]

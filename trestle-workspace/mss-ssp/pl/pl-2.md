@@ -25,18 +25,18 @@ x-trestle-set-params:
   pl-02_odp.01:
     alt-identifier: pl-2_prm_1
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - Brian Chaplow (system owner, sole operator -- self-coordination)
+    profile-param-value-origin: organization
   pl-02_odp.02:
     alt-identifier: pl-2_prm_2
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - Brian Chaplow (system owner); public GitHub repo (github.com/brianchaplow/homelab-fedramp-low) for portfolio reviewers
+    profile-param-value-origin: organization
   pl-02_odp.03:
     alt-identifier: pl-2_prm_3
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - annually and after each plan phase completion
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -191,8 +191,10 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: pl-2 -->
+The system security plan for the Managed SOC Service is being assembled at `oscal/ssp.json` via `./pipelines.sh ssp-assemble` (Trestle 4.0.1 `ssp-assemble` wrapper). The markdown authoring surface is `trestle-workspace/mss-ssp/` (156 control files across 18 families). This document -- the SSP itself -- is the primary security plan artifact; the plan is linked to the FedRAMP Rev 5 Low profile (`trestle-workspace/profiles/fedramp-rev5-low/profile.json`, UUID 512149a6, 156 controls) via the `import-profile` href in the assembled JSON. Authorization boundary, in-boundary components, operational context, mission, roles, information types, security categorization, threats, and external dependencies are documented in the whole-project design spec §2 (`/c/Projects/docs/superpowers/specs/2026-04-07-homelab-fedramp-low-design.md` §2.1--§2.6). Brian Chaplow is the system owner and authorizing official for this single-operator portfolio system.
 
-#### Implementation Status: planned
+The plan is partial because control prose authoring is in progress (Plan 3 fills all 156 controls). Privacy risk assessment (PL-02a.08) is not-applicable -- MSS processes only operational telemetry (alert metadata, network flows, vulnerability scan data) with no PII, PHI, or CUI. Supporting OSCAL artifacts include `oscal/component-definition.json` (7 in-boundary components) and `inventory/IIW-2026-04.xlsx` (April 2026 IIW, 7 rows). The plan is protected from unauthorized modification by git history and from unauthorized disclosure by maintaining secrets in `.env` (gitignored). The SSP is reviewed annually and after each plan phase completion.
+
+#### Implementation Status: partial
 
 ______________________________________________________________________

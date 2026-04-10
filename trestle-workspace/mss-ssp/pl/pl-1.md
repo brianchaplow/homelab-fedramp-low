@@ -26,45 +26,45 @@ x-trestle-set-params:
     aggregates:
       - pl-01_odp.01
       - pl-01_odp.02
-    profile-param-value-origin: <REPLACE_ME>
+    profile-param-value-origin: organization
   pl-01_odp.01:
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - Brian Chaplow (system owner, sole operator)
+    profile-param-value-origin: organization
   pl-01_odp.02:
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - Brian Chaplow (system owner, sole operator)
+    profile-param-value-origin: organization
   pl-01_odp.03:
     alt-identifier: pl-1_prm_2
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - annually and after each plan phase completion (at ADR filing)
+    profile-param-value-origin: organization
   pl-01_odp.04:
     alt-identifier: pl-1_prm_3
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - plan phase completion, significant infrastructure change, security incident, or external regulatory change
+    profile-param-value-origin: organization
   pl-01_odp.05:
     alt-identifier: pl-1_prm_4
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - annually and after each plan phase completion
+    profile-param-value-origin: organization
   pl-01_odp.06:
     alt-identifier: pl-1_prm_5
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - plan phase completion, deviation requiring an ADR, or new service enrollment
+    profile-param-value-origin: organization
   pl-01_odp.07:
     alt-identifier: pl-1_prm_6
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - Brian Chaplow (system owner)
+    profile-param-value-origin: organization
   pl-01_odp.08:
     alt-identifier: pl-1_prm_7
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - Brian Chaplow (system owner)
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -142,8 +142,10 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: pl-1 -->
+The planning policy and procedures record for the Managed SOC Service is maintained as the ADR chain (ADRs 0001--0008) combined with this SSP and the `runbooks/` directory. ADR 0001 establishes the EULA compliance posture and pre-flight decisions (earliest policy artifact). ADR 0008 §Pre-execution decisions encodes authoring conventions, implementation-status rubric, set-params fill policy, and branch strategy -- the nearest equivalent to formal planning procedures for a single-operator system. The Plan 3 design spec at `/c/Projects/docs/superpowers/specs/2026-04-09-homelab-fedramp-low-plan-3-ssp-authoring-design.md` provides purpose, scope, roles, and compliance alignment for this SSP authoring effort. Brian Chaplow is designated as the sole official responsible for developing, documenting, and disseminating the planning policy and procedures.
 
-#### Implementation Status: planned
+Policy is reviewed annually and after each plan phase completion (at ADR filing). The gap is that no single standalone "PL Policy" document has been published and formally disseminated outside the git repository; for a single-operator homelab, the ADR chain committed to a public GitHub repo (`github.com/brianchaplow/homelab-fedramp-low`) is the effective dissemination mechanism. `runbooks/monthly-conmon.md` defines the ConMon review cadence (currently stub, pending Plan 3 completion). NIST guidance permits this consolidated approach, making the status partial rather than not-applicable.
+
+#### Implementation Status: partial
 
 ______________________________________________________________________

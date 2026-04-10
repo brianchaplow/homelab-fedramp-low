@@ -25,8 +25,8 @@ x-trestle-set-params:
   pl-08_odp:
     alt-identifier: pl-8_prm_1
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - annually and after each infrastructure phase completion (rack build, major migration, or new service enrollment)
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -96,8 +96,10 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: pl-8 -->
+The security architecture for the Managed SOC Service is documented in the whole-project design spec §2 (`/c/Projects/docs/superpowers/specs/2026-04-07-homelab-fedramp-low-design.md`). Section §2.1 provides the CIA categorization rationale (FIPS 199 Low: C-Low, I-Low, A-Low -- operational telemetry only, no PII/PHI/CUI) and FedRAMP baseline selection. Section §2.2 enumerates the 14 in-boundary components (3 bare-metal hosts, 2 GRC VMs, 1 firewall, 1 managed switch, plus internal services). Section §2.4 documents external connection points and dependencies (Wazuh agent TLS enrollment, Tailscale mesh, admin SSH path, PBS NFS backup). The machine-readable architecture artifact is `oscal/component-definition.json` (7 OSCAL in-boundary components per Plan 2 Task 8). The broader SOC data-flow architecture (Zeek on haccp `span0`, Logstash enrichment pipeline, ELK, Wazuh 4.14.4 SIEM, OpenCTI v7, Shuffle SOAR WF1--WF11) is documented in the parent workspace `/c/Projects/CLAUDE.md` Phase 14 section.
 
-#### Implementation Status: planned
+Privacy architecture is not-applicable -- the design spec §1.5 states "No PII/CUI processing scenarios" for this system. The architecture is reviewed annually and after each infrastructure phase completion. The status is partial because the boundary diagram (`docs/diagrams/boundary.mmd`, `docs/diagrams/rendered/boundary.png`) referenced in design spec §2.7 does not yet exist in the repo -- it is a pending Plan 3 deliverable. Architecture changes are reflected in this SSP via the Plan 3 authoring cycle and recorded in ADRs when architecturally significant.
+
+#### Implementation Status: partial
 
 ______________________________________________________________________
