@@ -25,23 +25,23 @@ x-trestle-set-params:
   mp-07_odp.01:
     alt-identifier: mp-7_prm_2
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - all removable portable storage devices (USB flash drives, external hard drives, optical discs, SD cards, magnetic tapes)
+    profile-param-value-origin: organization
   mp-07_odp.02:
     alt-identifier: mp-7_prm_1
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - prohibit
+    profile-param-value-origin: organization
   mp-07_odp.03:
     alt-identifier: mp-7_prm_3
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - all in-boundary bare-metal hosts: brisket (10.10.20.30), haccp (10.10.30.25), smokehouse (10.10.20.10); Proxmox VMs dojo (10.10.30.27) and regscale (10.10.30.28)
+    profile-param-value-origin: organization
   mp-07_odp.04:
     alt-identifier: mp-7_prm_4
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - operator policy (sole operator, no external personnel); physical access control (home lab rack, Virginia); explicit documentation of all USB devices attached to in-boundary hosts in CLAUDE.md
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -77,8 +77,8 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: mp-7 -->
+The MSS enforces an absolute prohibition on removable storage device use at all in-boundary hosts. No USB flash drives, external hard drives, optical discs, or other portable storage devices participate in any in-boundary data flow or administrative workflow. The only USB device attached to any in-boundary host is the span0 adapter on haccp (Realtek RTL8156B, MAC `6c:1f:f7:5f:6a:88`) -- a network interface used exclusively for SPAN traffic capture carrying no storage function. All administrative data flows use SSH over Tailscale, NFS, or Logstash/Filebeat pipelines. The prohibition is enforced through operator policy (sole operator, no external personnel authorized) and physical access control (home lab rack, Virginia). Because every USB device attached to in-boundary hardware is explicitly documented in CLAUDE.md with owner identity and function, the MP-7b identifiable-owner requirement is fully satisfied.
 
-#### Implementation Status: planned
+#### Implementation Status: implemented
 
 ______________________________________________________________________

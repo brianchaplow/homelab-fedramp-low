@@ -26,45 +26,45 @@ x-trestle-set-params:
     aggregates:
       - mp-01_odp.01
       - mp-01_odp.02
-    profile-param-value-origin: <REPLACE_ME>
+    profile-param-value-origin: organization
   mp-01_odp.01:
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - Brian Chaplow (system owner, sole operator)
+    profile-param-value-origin: organization
   mp-01_odp.02:
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - Brian Chaplow (system owner, sole operator)
+    profile-param-value-origin: organization
   mp-01_odp.03:
     alt-identifier: mp-1_prm_2
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - annually or following any significant media-handling event or infrastructure change
+    profile-param-value-origin: organization
   mp-01_odp.04:
     alt-identifier: mp-1_prm_3
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - rack build, drive swap, host reimage, new phase deployment, or any ADR-documented storage incident
+    profile-param-value-origin: organization
   mp-01_odp.05:
     alt-identifier: mp-1_prm_4
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - annually or following any significant media-handling event or infrastructure change
+    profile-param-value-origin: organization
   mp-01_odp.06:
     alt-identifier: mp-1_prm_5
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - rack build, drive swap, host reimage, new phase deployment, or any ADR-documented storage incident
+    profile-param-value-origin: organization
   mp-01_odp.07:
     alt-identifier: mp-1_prm_6
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - Brian Chaplow (system owner, sole operator)
+    profile-param-value-origin: organization
   mp-01_odp.08:
     alt-identifier: mp-1_prm_7
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - Brian Chaplow (system owner, sole operator)
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -142,8 +142,8 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: mp-1 -->
+This CLAUDE.md serves as the system-level media protection policy for the Managed SOC Service. The MSS boundary contains no removable storage media in any data flow -- all transmission between in-boundary components is network-based (Wazuh agent to brisket OpenSearch, Filebeat to Logstash to ELK, Arkime PCAP written to local NVMe, PBS backup via NFS to smokehouse). Brian Chaplow (sole operator) is the designated official responsible for all media protection policy development, documentation, and review. ADRs capture every infrastructure event that touches physical storage -- ADR 0005 (PBS NFS mount failure discovered and fixed 2026-04-08) is the closest analog to a media-handling incident. The monthly ConMon cycle and any rack build, drive swap, host reimage, new phase deployment, or ADR-documented storage incident each trigger an out-of-cycle policy review.
 
-#### Implementation Status: planned
+#### Implementation Status: implemented
 
 ______________________________________________________________________

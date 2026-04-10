@@ -26,28 +26,28 @@ x-trestle-set-params:
     aggregates:
       - mp-02_odp.01
       - mp-02_odp.03
-    profile-param-value-origin: <REPLACE_ME>
+    profile-param-value-origin: organization
   mp-2_prm_2:
     aggregates:
       - mp-02_odp.02
       - mp-02_odp.04
-    profile-param-value-origin: <REPLACE_ME>
+    profile-param-value-origin: organization
   mp-02_odp.01:
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - not-applicable - single-operator personal system
+    profile-param-value-origin: organization
   mp-02_odp.02:
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - not-applicable - single-operator personal system
+    profile-param-value-origin: organization
   mp-02_odp.03:
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - not-applicable - single-operator personal system
+    profile-param-value-origin: organization
   mp-02_odp.04:
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - not-applicable - single-operator personal system
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -81,8 +81,8 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: mp-2 -->
+MP-2 is not applicable to the MSS. The boundary contains no removable digital media (no USB flash drives, external hard drives, optical discs, or diskettes) and no non-digital media (no paper records or microfilm) participating in any in-boundary data flow. All storage is permanently installed: brisket and haccp use internally mounted NVMe drives (haccp boot drive WD SN720 2TB on nvme1n1; PCAP drive Samsung 990 EVO Plus 2TB on nvme0n1); smokehouse uses internal SATA drives as the NFS backup target. The 2026-04-07 rack consolidation involved three drive swaps performed by the sole operator as one-time hardware installations -- after installation all drives became permanent internal storage. Because no removable or non-digital media exists in the boundary, the access restriction requirement of MP-2 has no subjects to apply to.
 
-#### Implementation Status: planned
+#### Implementation Status: not-applicable
 
 ______________________________________________________________________
