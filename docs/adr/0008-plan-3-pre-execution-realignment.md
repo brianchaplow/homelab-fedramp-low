@@ -64,8 +64,32 @@ The 2026-04-07 Plan 3 plan file is kept in the parent workspace as historical co
 
 *(Further deviations discovered during Plan 3 execution that fit this ADR's scope rather than warranting a separate ADR are appended here with date + task reference.)*
 
-(none yet)
+### 2026-04-09 (Task 2) -- Gate 2 shape-check discoveries
+
+The two-control shape-check (CM-2 base + IA-5(1) enhancement) retired Plan 3 Risk #1 but surfaced three structural findings that the Plan 3 plan and verify-family.py design did not anticipate:
+
+**Finding 1: Assembled SSP uses `by-components[].description`, not `statements[].description`.**
+
+The Plan 3 plan designed verify-family.py to check `statements[].description` for `REPLACE_ME`. In reality, Trestle 4.0.1's `ssp-assemble` places authored prose under `implemented-requirements[].by-components[0].description`. Un-authored controls have an empty `description` (length 0), not a `REPLACE_ME` string. There is no `statements` array in any assembled ir entry.
+
+**Realignment:** verify-family.py (Task 3) checks `by-components[].description` emptiness instead of `statements[].description` REPLACE_ME. The correctness metric is `desc_len > 0`, not `REPLACE_ME not in desc`.
+
+**Finding 2: `x-trestle-set-params` values do not appear as `set-parameters` in the assembled JSON.**
+
+The Plan 3 plan designed verify-family.py to also check `set-parameters[].values` for `REPLACE_ME`. In reality, `x-trestle-set-params` filled values are consumed at profile-resolution time and do not surface as OSCAL `set-parameters` entries in the assembled SSP. The assembled ir entry has only `uuid`, `control-id`, and `by-components`.
+
+**Realignment:** verify-family.py drops the `set-parameters` check entirely. Set-param fill verification runs directly against the markdown source (grep for `<REPLACE_ME>` in `trestle-workspace/mss-ssp/`), not against the assembled JSON.
+
+**Finding 3: 9 `REPLACE_ME` strings exist in the assembled SSP metadata, not in control-implementation entries.**
+
+`grep -c REPLACE_ME oscal/ssp.json` returns 9, but all 9 are in SSP-level metadata (title, version, system-name, description, party-id, authorization-boundary, etc.) -- not in any `implemented-requirements` entry. These are scaffold placeholders from Trestle `ssp-generate` that were never in Plan 3's scope (which is control-prose authoring).
+
+**Realignment:** Plan 3 adds a small metadata-fill step (inserted before Gate 5) to populate the 9 SSP-level metadata fields with real values. The Design spec `§2.1` goal "`grep -c REPLACE_ME oscal/ssp.json` returns 0" is retained -- all 9 will be addressed. The verify-family.py script does NOT attempt to verify SSP metadata; a separate Gate 5 grep handles it.
+
+**Finding 4: Enhancement files are structurally identical to base controls.**
+
+IA-5(1) has the same `x-trestle-add-props` / `x-trestle-set-params` / `x-trestle-global` YAML shape and the same `### This System` prose marker pattern as CM-2. The Risk #7 "different frontmatter shapes" concern is retired -- no authoring template adjustment needed.
 
 ---
 
-**Next:** Plan 3 Task 2 (Gate 2 two-control shape-check on CM-2 + IA-5(1)).
+**Next:** Plan 3 Task 3 (verify-family.py helper, TDD, adjusted per Findings 1-2).
