@@ -25,8 +25,8 @@ x-trestle-set-params:
   sc-08.01_odp:
     alt-identifier: sc-8.1_prm_1
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - prevent unauthorized disclosure of information and detect changes to information
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -58,8 +58,10 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: sc-8.1 -->
+Cryptographic mechanisms protect transmitted information across all in-boundary core service paths. TLS (via OpenSSL) secures Wazuh Manager API (brisket:55000, HTTPS), Wazuh Indexer/OpenSearch (brisket:9200, HTTPS), ELK Elasticsearch (haccp:9200, HTTPS), and Fleet server (haccp:8220, HTTPS) -- providing both confidentiality (ECDHE key exchange + AES-GCM bulk encryption) and integrity (HMAC or AEAD authentication tags) per the TLS record protocol. Wazuh agent-to-manager telemetry (brisket:1514) uses TLS with enrollment-key authentication. PCAP archival sync from haccp to smokehouse uses SSH (AES-based session encryption via OpenSSH). Tailscale remote administration uses WireGuard's ChaCha20-Poly1305 authenticated encryption, which provides both unauthorized-disclosure prevention and change detection for all management traffic crossing the administrative boundary.
 
-#### Implementation Status: planned
+Gap: DefectDojo (10.10.30.27:8080), RegScale CE (10.10.30.28:80), and Kibana (haccp:5601) do not implement cryptographic protection of transmitted information -- these paths use plain HTTP. This gap is documented in ADRs 0003 and 0004 as a POA&M item; the upgrade path to TLS for these services is captured in `runbooks/cert-trust.md`. All three are VLAN-scoped with no external exposure and handle synthetic lab data only. Status matches SC-8 at partial -- cryptographic mechanisms protect core Wazuh and ELK transmission paths; the GRC tools and Kibana are unprotected.
+
+#### Implementation Status: partial
 
 ______________________________________________________________________

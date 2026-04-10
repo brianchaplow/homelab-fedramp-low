@@ -26,45 +26,45 @@ x-trestle-set-params:
     aggregates:
       - sc-01_odp.01
       - sc-01_odp.02
-    profile-param-value-origin: <REPLACE_ME>
+    profile-param-value-origin: organization
   sc-01_odp.01:
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - Brian Chaplow (system owner, sole operator)
+    profile-param-value-origin: organization
   sc-01_odp.02:
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - Brian Chaplow (system owner, sole operator)
+    profile-param-value-origin: organization
   sc-01_odp.03:
     alt-identifier: sc-1_prm_2
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - Brian Chaplow (system owner, sole operator)
+    profile-param-value-origin: organization
   sc-01_odp.04:
     alt-identifier: sc-1_prm_3
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - annually
+    profile-param-value-origin: organization
   sc-01_odp.05:
     alt-identifier: sc-1_prm_4
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - when a new phase adds infrastructure components or when a security incident reveals a gap
+    profile-param-value-origin: organization
   sc-01_odp.06:
     alt-identifier: sc-1_prm_5
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - annually
+    profile-param-value-origin: organization
   sc-01_odp.07:
     alt-identifier: sc-1_prm_6
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - when a new phase adds infrastructure components or when a security incident reveals a gap
+    profile-param-value-origin: organization
   sc-01_odp.08:
     alt-identifier: sc-1_prm_7
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - system-level
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -142,8 +142,10 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: sc-1 -->
+System and communications protection policy is documented at the system level across several artifacts that collectively define the MSS SC posture. CLAUDE.md §Network Quick Reference codifies the VLAN architecture, the attack-target-only-on-VLAN-40 mandate, and inter-VLAN isolation conventions that serve as the de facto SC policy for all operators. OPNsense firewall rules and MokerLink L3 ACLs translate those conventions into enforced controls. The ADR series (0001-0008) provides an auditable policy-evolution trail -- each ADR captures the decision rationale when a configuration trade-off or gap is accepted. `runbooks/cert-trust.md` documents the TLS posture rationale and the upgrade path. Brian Chaplow (system owner, sole operator) is the designated official for SC policy management, review, and dissemination. Policy and procedures are reviewed annually and whenever a new phase adds infrastructure components or a security incident reveals a gap.
 
-#### Implementation Status: planned
+Gap: no formal standalone SC policy document exists -- policy lives in CLAUDE.md conventions, OPNsense rule comments, and ADR artifacts rather than a dedicated policy document. This is a recognized gap for a single-operator homelab environment; a consolidated SC policy document is a future hardening item. All procedures for implementing SC controls (firewall management, key enrollment, TLS configuration) are captured inline in CLAUDE.md, `reference/network.md`, and per-service runbooks rather than a unified procedures document.
+
+#### Implementation Status: partial
 
 ______________________________________________________________________

@@ -25,18 +25,18 @@ x-trestle-set-params:
   sc-05_odp.01:
     alt-identifier: sc-5_prm_2
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - volumetric network floods, connection exhaustion, intra-VLAN lateral flooding from compromised VMs
+    profile-param-value-origin: organization
   sc-05_odp.02:
     alt-identifier: sc-5_prm_1
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - limit
+    profile-param-value-origin: organization
   sc-05_odp.03:
     alt-identifier: sc-5_prm_3
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - OPNsense stateful packet filtering for external volumetric events; MokerLink port ACL for intra-VLAN flooding; Suricata IDS for signature detection
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -72,8 +72,10 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: sc-5 -->
+OPNsense on the Protectli VP2420 (10.10.10.1) provides the primary DoS mitigation layer for the MSS boundary. Stateful packet inspection limits connection flooding from external sources; inter-VLAN rules deny inbound traffic from VLAN 40 (targets), preventing compromised lab VMs from flooding SOC infrastructure; and VLAN 50 (IoT) is restricted to internet-only egress with no lateral movement permitted. MokerLink port-bound ACLs (TE4 `sear-brisket`) limit intra-VLAN flooding between SOC components on VLAN 20 without routing through OPNsense. Suricata IDS running on smokehouse eth4 (SPAN of TE1-TE9) detects volumetric signatures and ships eve.json alerts to `wazuh-alerts-*` for correlation. The combined effect is that the MSS can limit the impact of volumetric and lateral flooding events from in-boundary sources.
 
-#### Implementation Status: planned
+Gap: no cloud-based DoS scrubbing service or dedicated anti-DDoS appliance is deployed. A sustained high-volume external flood would rely on Verizon upstream throttling as the only upstream mitigation; the MSS itself has no BGP-based blackholing or scrubbing capability. This is an accepted trade-off for a homelab environment with no public-facing services in boundary. Status is partial -- the deployed controls limit the effects of the enumerated DoS event types but do not fully protect against sustained external volumetric attacks.
+
+#### Implementation Status: partial
 
 ______________________________________________________________________

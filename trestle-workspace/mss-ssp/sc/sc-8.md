@@ -25,8 +25,8 @@ x-trestle-set-params:
   sc-08_odp:
     alt-identifier: sc-8_prm_1
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - confidentiality and integrity
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -60,8 +60,10 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: sc-8 -->
+Transmission confidentiality and integrity is enforced for all core MSS service-to-service paths using TLS. Wazuh Manager API (brisket:55000) and Wazuh Indexer/OpenSearch (brisket:9200) are HTTPS with self-signed certificates per `runbooks/cert-trust.md`. ELK Elasticsearch on haccp (10.10.30.25:9200) is HTTPS. Wazuh agent-to-manager telemetry on brisket:1514 uses TLS with enrollment-key authentication; agent enrollment on brisket:1515 is TLS-protected. Fluent Bit shipping Zeek logs from smokehouse to brisket:9200 transits over HTTPS. PCAP archival from haccp to smokehouse uses SSH/rsync (encrypted channel). Fleet agent communications to haccp:8220 use HTTPS. Tailscale encrypted mesh (WireGuard-based) protects all administrative remote access paths -- PITBOSS to brisket, sear, smokehouse, and haccp -- providing both confidentiality and integrity for management plane traffic.
 
-#### Implementation Status: planned
+Gap: DefectDojo on dojo (10.10.30.27:8080) and RegScale CE on regscale (10.10.30.28:80) are HTTP-only per ADRs 0003 and 0004 respectively. Kibana on haccp (:5601) is also HTTP. These services handle synthetic lab data only, are scoped to VLAN 30 with no external exposure, and are subject to a POA&M item documented in ADR 0003 §Consequences. The upgrade path to HTTPS for these services is documented in `runbooks/cert-trust.md`. Status is partial -- the Wazuh and ELK core paths protect transmission confidentiality and integrity; the two GRC tools and Kibana do not.
+
+#### Implementation Status: partial
 
 ______________________________________________________________________

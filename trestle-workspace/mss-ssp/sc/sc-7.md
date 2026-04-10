@@ -25,8 +25,8 @@ x-trestle-set-params:
   sc-07_odp:
     alt-identifier: sc-7_prm_1
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - OPNsense inter-VLAN firewall on VP2420 (10.10.10.1); MokerLink L3 port ACLs on TE4 for intra-VLAN microsegmentation; Tailscale mesh for authorized remote administrative access
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -71,8 +71,10 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: sc-7 -->
+OPNsense on the Protectli VP2420 (10.10.10.1) is the boundary enforcement point for all five VLANs -- VLAN 10 (management), VLAN 20 (SOC infrastructure), VLAN 30 (lab/Proxmox/AD), VLAN 40 (targets -- ISOLATED), and VLAN 50 (IoT) -- via 802.1Q trunk on igc0 to the MokerLink 10G switch. Inter-VLAN firewall rules implement a default-deny posture between security domains: VLAN 40 (targets) carries an explicit DENY outbound rule allowing only established-session return traffic, which enforces full isolation of attack-target workloads from SOC services. VLAN 50 (IoT) is restricted to internet-only egress with no lateral movement to VLANs 10, 20, or 30. All external connectivity traverses OPNsense -- the three documented external connection types are Wazuh agent telemetry inbound on brisket:1514 (TLS), administrative SSH access (key-only), and PBS backup NFS egress to smokehouse -- each constituting a managed interface per the whole-project design §2.4. OPNsense syslog ships firewall events to the Wazuh Manager (brisket) for monitoring and correlation via `wazuh-alerts-*`.
 
-#### Implementation Status: planned
+MokerLink L3 port ACL `sear-brisket` (TE4) extends boundary enforcement intra-VLAN on VLAN 20, limiting sear (10.10.20.20) to enumerated Wazuh agent ports (1514, 1515) and OpenSearch (9200) inbound to brisket (10.10.20.30), and explicitly denying all other same-subnet traffic -- this prevents intra-VLAN lateral movement without routing through OPNsense. Tailscale encrypted mesh overlay (WireGuard-based) provides the sole authorized remote management path for administrative access from PITBOSS to in-boundary hosts; all remote management traffic traverses this cryptographic boundary crossing. Suricata IDS on smokehouse monitors the MokerLink SPAN (TE1-TE9 mirrored to TE10/TE11) and ships signatures to Wazuh for boundary event correlation.
+
+#### Implementation Status: implemented
 
 ______________________________________________________________________

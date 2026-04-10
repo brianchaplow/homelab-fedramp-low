@@ -3,7 +3,7 @@
     "uuid": "ff2c49ad-b919-47e0-a79a-2a9bf1705f51",
     "metadata": {
       "title": "REPLACE_ME",
-      "last-modified": "2026-04-10T16:26:59.297225-04:00",
+      "last-modified": "2026-04-10T16:37:46.702847-04:00",
       "version": "REPLACE_ME",
       "oscal-version": "1.2.1"
     },
@@ -280,9 +280,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "9b345f31-40ea-4bc9-b3c4-589e26765c5c",
-              "description": "",
+              "description": "The Managed SOC Service audit and accountability policy is documented at the system level within this SSP and its supporting ADR chain (`docs/adr/`). This SSP constitutes the AU policy artifact, covering purpose (detection and accountability for all in-boundary system events), scope (all components enumerated in Section 2 of this SSP), roles (Brian Chaplow as system owner and sole operator), responsibilities (operator bears all AU implementation and ConMon duties), management commitment (ADR 0001 pre-flight signoff), and compliance with NIST SP 800-53 Rev 5 FedRAMP Low baseline. `CLAUDE.md` captures operating conventions and service-inventory context that informs daily AU decisions. The gap inherent in this approach is the absence of a standalone formal policy document -- appropriate for a single-operator system but acknowledged here for assessor transparency.\n\nProcedures for audit and accountability are captured in `runbooks/monthly-conmon.md`, which documents the recurring ConMon cycle including audit log review cadence, alert triage, and evidence collection. ADR 0007 (Plan 2 completion) establishes the OSCAL pipeline as the authority for SSP assembly and ongoing policy maintenance. ADR 0008 (Plan 3 pre-execution) documents set-params conventions and implementation-status rubric applied across this SSP. Policy review is scheduled at least every 3 years and following significant changes (infrastructure additions, ADR-recorded drift events, or security incidents); procedures are reviewed at least annually. Brian Chaplow is designated as the responsible official for the development, documentation, and dissemination of this policy and its associated procedures.",
               "implementation-status": {
-                "state": "planned"
+                "state": "partial"
               }
             }
           ]
@@ -294,9 +294,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "76bbb036-bb98-472c-afcf-2cee7b7090d0",
-              "description": "",
+              "description": "Audit record retention is implemented across three log categories. For PCAP, Arkime captures full packets to haccp's dedicated Samsung 990 EVO Plus 2TB NVMe at `/opt/arkime/raw`. The nightly rsync cron (0300) archives completed PCAP files to smokehouse 17TB NFS (`~bchaplow/pcap-archive/haccp/`), and a `find ... -mtime +90 -delete` sweep enforces the 90-day off-line retention window required by M-21-31 and the FedRAMP AU-11 baseline. The local Arkime `freeSpaceG=100` policy maintains available PCAP online capacity and auto-purges oldest local PCAP -- the smokehouse archive ensures those purged files remain retrievable for 90 days. For Prometheus metrics, retention is explicitly configured at 90 days via `--storage.tsdb.retention.time=90d` in `brisket-setup/monitoring/docker-compose.yml`. PBS on smoker LXC 300 retains daily VM snapshots (DC01, WS01, TheHive) and weekly snapshots to smokehouse 17TB NFS under the backup job policies documented in CLAUDE.md.\n\nThe honest gap for this control is in Wazuh alert and ELK Zeek log retention. `wazuh-alerts-4.x-*` indices are retained on brisket OpenSearch until disk is full -- no ILM policy, no rollover policy, and no explicit minimum-retention assertion. The current disk fill rate means records are retained for months to years in practice, satisfying 90+ days by default, but this is not a policy-backed guarantee. Similarly, `logs-zeek.haccp-default-*` on haccp has no explicit ILM lifecycle policy. Neither index type has a formally documented NARA-mapped off-line archive path for endpoint event records. These gaps are acknowledged; the practical retention is adequate but the policy formalization is pending ConMon roadmap work. Status is partial.",
               "implementation-status": {
-                "state": "planned"
+                "state": "partial"
               }
             }
           ]
@@ -308,9 +308,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "e10ae932-bc2e-440b-85e5-1458c390d2a1",
-              "description": "",
+              "description": "Audit record generation is implemented through a dual-stack architecture. The primary stack runs on brisket: Wazuh Manager 4.14.4 generates audit records for all 15 in-boundary agents (FIM via syscheck, process monitoring via syscollector, log analysis rules, SCA policy checks, and vulnerability detection) and ships them to `wazuh-alerts-4.x-*` on the Wazuh Indexer. Suricata on smokehouse eth4 generates IDS alert records (eve.json) shipped via the smokehouse Wazuh agent into the same index family. OPNsense firewall ships syslog (UDP 514) directly to Wazuh Manager, generating audit records for firewall allow/deny events. The secondary stack runs on haccp: Zeek 8.1.1 on span0 generates protocol metadata records across all monitored log types (conn, dns, http, ssl, ssh, files, x509, notice); Filebeat ships them to Logstash:5044 where the 5-stage zeek-enrichment pipeline generates enriched records with OpenCTI TI fields, novel-entity classification, and Ollama LLM verdict into `logs-zeek.haccp-default-*` on ELK Elasticsearch. Arkime on haccp generates PCAP index records in its own database, keyed to community-id for cross-stack correlation.\n\nAU-12(b) selection authority: Brian Chaplow as sole operator selects event types to be logged by specific components through three interfaces -- Wazuh Dashboard (brisket:5601) for rule group enable/disable and agent-level policy overrides, Wazuh Manager ossec.conf and rules XML for persistent changes, and the Logstash `zeek-enrichment.conf` pipeline configuration on haccp for Zeek-tier event routing and enrichment selection. The `oscal/component-definition.json` enumerates all 7 in-boundary components with audit capability mapped, providing the OSCAL-native artifact confirming that AU-12(a) coverage spans all components where audit capability is deployed. MokerLink (the L3 switch) does not currently ship logs to any collection point -- OPNsense firewall logs substitute for boundary traffic events at the VLAN gateway layer.",
               "implementation-status": {
-                "state": "planned"
+                "state": "implemented"
               }
             }
           ]
@@ -322,9 +322,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "7bbd15a4-e145-4acb-8848-a800149e8ba7",
-              "description": "",
+              "description": "The MSS event logging capability is anchored by Wazuh 4.14.4 on brisket, which manages 15 in-boundary agents across every monitored host and ships all alert records to `wazuh-alerts-4.x-*` indices on the Wazuh Indexer (OpenSearch, brisket:9200). The 214 active detection rules cover the complete FedRAMP-mandated event set: account logon success/failure (Wazuh rule groups `authentication_success`, `authentication_failed`), account management events (group `account_changed`), object access and privilege function usage via Wazuh FIM and syscheck, policy changes, process tracking via syscollector, and system events from syslog and OPNsense firewall syslog (UDP 514). Suricata on smokehouse eth4 runs the ET Open ruleset (47,487+ signatures) plus 10 custom HOMELAB rules (SIDs 9000001-9000021) covering SQL injection, XSS, command injection, SQLmap, and directory traversal -- IDS alert records ship via the smokehouse Wazuh agent into the same `wazuh-alerts-*` index.\n\nThe second logging stack operates on haccp: Zeek 8.1.1 on span0 produces JSON protocol logs for conn, dns, http, ssl, ssh, files, x509, and notice log types, enriched with JA3/JA4 TLS fingerprints and community-id for cross-source correlation. Filebeat ships Zeek JSON to Logstash:5044 where the 5-stage zeek-enrichment pipeline (de-dot, OpenCTI TI lookup, novel-entity tracking, tier routing, Ollama LLM classification) produces `logs-zeek.haccp-default-*` records in ELK Elasticsearch (haccp:9200). Arkime on haccp span0 captures full PCAP indexed against the same community-id namespace, providing forensic-completeness for any event surfaced by either stack. The `generate-attack-layer.py` script queries both `wazuh-alerts-*` and `logs-zeek.*` to produce a unified MITRE ATT&CK Navigator coverage layer, confirming coordinated event-type selection across the dual-stack architecture. Event types selected for logging are reviewed annually and whenever the threat environment changes.",
               "implementation-status": {
-                "state": "planned"
+                "state": "implemented"
               }
             }
           ]
@@ -336,9 +336,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "b8f5a497-bf98-4b93-a959-126ddab525ce",
-              "description": "",
+              "description": "Wazuh alert records in `wazuh-alerts-4.x-*` satisfy all six AU-3 content elements. (a) Event type: the `rule.description` field identifies what occurred (e.g., \"Multiple authentication failures,\" \"File integrity monitoring -- file modified\"). (b) Timestamp: `@timestamp` in ISO 8601 UTC with millisecond precision. (c) Where: `agent.name` and `agent.ip` identify the host where the event was generated; `manager.name` identifies the Wazuh node. (d) Source: `data.srcip`, `data.win.eventdata.ipAddress`, or equivalent source-address fields capture the originating entity; for FIM events, the path field identifies the object. (e) Outcome: `rule.level` (0-15 severity scale) and `rule.groups` encode success/failure; for authentication events, `data.win.system.keywords` carries Success/Failure explicitly. (f) Identity: `data.win.eventdata.targetUserName`, `data.srcuser`, or `agent.name` identify the subject or object associated with the event -- covering both human accounts and process identities.\n\nAt the network layer, Zeek records in `logs-zeek.haccp-default-*` carry the same six elements: `_path` (event type), `ts` (Unix epoch microseconds, UTC), `id_orig_h`/`id_resp_h` (source/destination addresses satisfying where and source), connection state field (outcome -- S0, SF, REJ, RSTO), and community-id enabling correlation back to the originating Wazuh alert or Arkime PCAP session for identity resolution. The Logstash zeek-enrichment pipeline appends `llm.verdict` (Ollama classification) and OpenCTI TI match fields, enriching the base content without replacing the required six elements. Arkime PCAP provides packet-level source/destination/payload as a forensic backstop for any event where field-level identity resolution is incomplete.",
               "implementation-status": {
-                "state": "planned"
+                "state": "implemented"
               }
             }
           ]
@@ -350,9 +350,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "5010f8cc-a54a-46e9-847d-30f8916ff170",
-              "description": "",
+              "description": "Audit log storage is allocated across three purpose-sized tiers. On brisket, the Wazuh Indexer (OpenSearch) stores `wazuh-alerts-4.x-*` on the host NVMe -- the Grafana Unified Alerting rule \"Disk Critical -- Usage Above 90%\" (`build-grafana-alerts.py`) evaluates every 5 minutes and routes a Discord notification to `#infrastructure-alerts` before the brisket data volume reaches saturation. On haccp, ELK Elasticsearch stores `logs-zeek.haccp-default-*` on a dedicated 2TB WD SN720 NVMe (boot/root) that is separate from the PCAP drive, preventing Zeek log growth from starving PCAP capacity. Arkime PCAP is stored on a dedicated Samsung 990 EVO Plus 2TB NVMe at `/opt/arkime/raw` (~1.8TB usable); Arkime's `freeSpaceG=100` configuration triggers automatic oldest-PCAP deletion before the volume reaches full, preventing capture interruption due to disk exhaustion.\n\nOverflow protection for PCAP is handled by the nightly rsync cron (0300) that archives completed pcap files from haccp `/opt/arkime/raw` to smokehouse's 17TB NFS volume (`~bchaplow/pcap-archive/haccp/`), after which a `find ... -mtime +90 -delete` sweep enforces the 90-day off-line retention window required by AU-11 and M-21-31. Prometheus metrics are retained for 90 days via `--storage.tsdb.retention.time=90d`. The current gap in this tier is the absence of an explicit Elasticsearch ILM lifecycle policy governing rollover of `wazuh-alerts-*` and `logs-zeek.haccp-default-*` indices -- both are retained by default (disk not full) but retention is not enforced by a documented policy object. This gap is tracked in the ConMon roadmap.",
               "implementation-status": {
-                "state": "planned"
+                "state": "implemented"
               }
             }
           ]
@@ -364,9 +364,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "c976b65b-71c7-4580-bb0a-9e860b366ba9",
-              "description": "",
+              "description": "Grafana Unified Alerting on brisket provides the primary failure-notification mechanism for audit log storage exhaustion. Four alert rules defined in `build-grafana-alerts.py` route to Discord `#infrastructure-alerts` via the `$discord_webhook_infra` Shuffle variable: \"Disk Critical -- Usage Above 90%\" fires when any monitored host's primary volume exceeds 90% utilization; \"Service Down\" fires when a Blackbox HTTP probe detects a monitored service unreachable; \"Host Unreachable\" fires when an ICMP probe fails; and \"GPU Thermal Critical -- Brisket Above 90C\" (uid=dfihoiidr7k00c) fires when GPU temperature threatens the Logstash/Ollama enrichment pipeline. All four alert evaluation windows are 2-5 minutes, delivering Discord notification to the operator within 15 minutes of detection. When disk capacity approaches saturation, the FedRAMP-mandated additional action is overwrite-oldest-record -- for Arkime PCAP this is enforced automatically by the `freeSpaceG=100` config parameter; for OpenSearch indices no automated overwrite is configured (gap: operator must manually manage index deletion or implement ILM).\n\nThe gap with respect to AU-5 is that Wazuh indexer health, Filebeat pipeline status, and Logstash pipeline errors are not currently subjects of dedicated alerting. This gap became visible during homelab-fedramp-low ADR 0005, which documents that a 5-day PBS backup failure went undetected because no targeted alert existed for that subsystem -- the same failure mode applies to audit pipelines. Plan 1 Task 20 captured a ConMon follow-up to wire a Wazuh/Discord alert on PBS backup status; an equivalent alert for Logstash pipeline errors and OpenSearch indexer availability is in the ConMon roadmap. Until that gap is closed, this control is assessed as partial.",
               "implementation-status": {
-                "state": "planned"
+                "state": "partial"
               }
             }
           ]
@@ -378,9 +378,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "2d53f320-e1fb-49b2-9a43-c6e9a2225d6f",
-              "description": "",
+              "description": "Audit record review and analysis is automated at twice-daily frequency via Shuffle WF2 (watch digest, cron 0600/1800 EST), which queries `wazuh-alerts-4.x-*` on OpenSearch for the preceding 12-hour window, correlates results against MITRE ATT&CK technique identifiers, requests an Ollama (qwen3:8b) threat assessment, and delivers the structured summary to Discord `#soc-alerts` via `$discord_webhook`. The FedRAMP baseline requires review \"at least weekly\" -- actual practice is twice-daily, exceeding that floor by more than 14x. Additionally, Shuffle WF10 (nightly briefing, cron 0530 EST) queries both `wazuh-alerts-*` and `logs-zeek.haccp-default-*` to produce an Ollama-generated comprehensive threat briefing delivered to Discord `#morning-briefing`. On-demand review is available at any time through Wazuh Dashboard (brisket:5601) and Kibana (haccp:5601). The `generate-attack-layer.py` script queries both stacks to produce a MITRE ATT&CK Navigator JSON layer for cross-stack technique coverage reporting, satisfying the AU-6 reporting requirement at the technique level.\n\nADR 0005 documents the most concrete real-world AU-6 example in this system's history: during homelab-fedramp-low Plan 1 Task 12, manual audit log review discovered that PBS LXC 300 had lost its NFS mount to smokehouse during the 2026-04-07 rack consolidation -- a backup gap from 2026-04-03 through 2026-04-07 that no automated alert had surfaced. The detection occurred through log analysis (reviewing Proxmox backup job output manually), triggering the fix documented in ADR 0005 and the ConMon follow-up for a dedicated PBS backup status alert. This example demonstrates that the AU-6 review process is operational and capable of detecting security-relevant failures that evade other detection paths. In this single-operator system, the provider and consumer coordination requirement resolves to the operator reviewing and acting on all findings.",
               "implementation-status": {
-                "state": "planned"
+                "state": "implemented"
               }
             }
           ]
@@ -392,9 +392,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "c1d5455c-f831-45e6-a931-c39976cdae4e",
-              "description": "",
+              "description": "All in-boundary Linux hosts -- brisket (Ubuntu 24.04), haccp (Ubuntu 24.04), smokehouse (Ubuntu 24.04 on QNAP), dojo (Ubuntu 24.04.4 LTS, Wazuh agent 016), and regscale (Ubuntu 24.04.4 LTS, Wazuh agent 017) -- run `systemd-timesyncd` synchronized to pool.ntp.org, which is active by default on the Ubuntu 24.04 kernel (6.8.0-107-generic, confirmed in ADR 0002). OPNsense synchronizes to pool.ntp.org via its built-in NTP client. All system clocks are set to UTC, providing the Coordinated Universal Time reference required by AU-8(b). The FedRAMP baseline mandates one-second granularity -- actual implementations exceed this floor: Wazuh alerts carry ISO 8601 UTC timestamps with millisecond granularity in the `@timestamp` field; Zeek logs record `ts` as Unix epoch with microsecond precision; Arkime PCAP timestamps are captured at kernel libpcap precision (microsecond). ELK Elasticsearch stores all `@timestamp` fields as UTC epoch milliseconds.\n\nThe Phase 14 Zeek community-id-propagate.zeek script instruments NTP protocol events (hook defined at lines 199-204), confirming that NTP traffic crossing the span0 mirror is itself auditable within the Zeek logging stack -- any NTP source change or stratum shift is visible in the `logs-zeek.haccp-default-*` data stream. This provides a secondary verification layer on time-sync integrity. Consistent UTC-referenced timestamps across both the Wazuh and ELK stacks are prerequisite for community-id cross-correlation between Zeek records and Arkime PCAP sessions -- any drift would break the correlation and is therefore operationally self-detecting.",
               "implementation-status": {
-                "state": "planned"
+                "state": "implemented"
               }
             }
           ]
@@ -406,9 +406,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "32a6c456-283b-4a42-8911-bd7d93edae6a",
-              "description": "",
+              "description": "Audit information protection relies on three complementary controls. First, transport security: Wazuh Indexer (OpenSearch) at brisket:9200 requires TLS and HTTP basic authentication (`admin` account, password stored only in `.env` which is gitignored per CLAUDE.md conventions and never committed to version control); ELK Elasticsearch at haccp:9200 requires TLS and `elastic` user authentication. Logstash output in `zeek-enrichment.conf` (lines 287-299) authenticates to Elasticsearch with TLS and credentials before writing any enriched records. Second, network isolation: both OpenSearch (brisket) and Elasticsearch (haccp) run in Docker networks with no host-port exposure beyond the documented service ports; Wazuh alert indices are write-only from the Wazuh Manager container -- enrolled agents cannot directly write to, read from, or delete index data. Third, host-level access controls: UFW enforces default-deny ingress on all in-boundary Linux hosts, requiring explicit port-level allows that are documented in ADR 0002 and CLAUDE.md. PCAP files on haccp at `/opt/arkime/raw` are owned by `nobody:daemon` (Arkime drops privileges after start via `dropUser=nobody`/`dropGroup=daemon`), preventing any user-context process from writing or deleting PCAP directly.\n\nThe gap in this control is the absence of write-once or WORM storage for audit records and the absence of cryptographic integrity verification (e.g., hash chaining) applied to index content. Wazuh FIM could be configured to monitor the Docker volume mount points on brisket and haccp to detect unauthorized modification or deletion of index files on disk -- this is not currently wired. Until file-integrity monitoring is applied to the audit index data paths and a WORM or integrity-verification mechanism is in place, this control is assessed as partial.",
               "implementation-status": {
-                "state": "planned"
+                "state": "partial"
               }
             }
           ]
@@ -770,9 +770,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "2abc6bb7-ee38-44b3-bc37-7198dfd7491b",
-              "description": "",
+              "description": "The Managed SOC Service (MSS) identification and authentication policy is documented across two sources that together constitute the system-level IA policy: the root `CLAUDE.md` workspace reference (SSH key-only auth model, per-service account inventory, `.env`-based secret management) and this `homelab-fedramp-low` repository, including ADR 0003 (RegScale auth deviation), ADR 0006 Deviation 7 (RegScale JWT re-auth policy), and `runbooks/cert-trust.md` (TLS posture per service). These documents establish purpose (ensure only authorized users access in-boundary systems), scope (all hosts and services within the FedRAMP Low boundary), roles (system owner as sole operator and policy manager), and compliance posture against NIST SP 800-63B and FedRAMP Rev 5 Low IA controls.\n\nThe policy owner is the system owner (Brian Chaplow), who is responsible for developing, documenting, and maintaining the IA policy. Policy dissemination occurs through the git repository, which is accessible to all parties with access to in-boundary systems. The policy and associated procedures are reviewed annually and whenever a security incident, significant architecture change, or personnel change occurs. Procedures review follows the same cadence. No standalone IA policy document exists separate from the operational references above -- a gap acknowledged under the partial status. A formal consolidated policy document is a planned remediation item for future ConMon cycles.",
               "implementation-status": {
-                "state": "planned"
+                "state": "partial"
               }
             }
           ]
@@ -784,9 +784,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "9142d7ec-6fc6-4b6c-bc7d-5080893efc9d",
-              "description": "",
+              "description": "Re-authentication in the Managed SOC Service is enforced through session TTL mechanisms, protocol-level session controls, and operator-defined triggering events.\n\nSSH sessions to all in-boundary hosts do not persist indefinitely; OS-level idle timeout settings and SSH `ClientAliveInterval` / `ClientAliveCountMax` configuration terminate inactive sessions, requiring a new SSH connection and key-based re-authentication. The Wazuh API JWT expires after the configured TTL (900-second default); the pipeline client in `pipelines/common/wazuh.py` detects 401 responses and re-authenticates automatically to obtain a fresh token. Wazuh Dashboard interactive sessions expire on browser close or inactivity timeout. RegScale CE JWTs carry a 24-hour TTL per ADR 0003 and ADR 0006 Deviation 7; every pipeline invocation calls `POST /api/authentication/login` to obtain a fresh token, meaning re-authentication occurs per invocation by design. RegScale interactive sessions expire at 1440 minutes. Shuffle SOAR, OpenCTI, TheHive, Cortex, Velociraptor, and DefectDojo each enforce session expiry through their platform defaults; browser sessions expire on close or inactivity. Tailscale device re-authentication is required when device keys expire (Tailscale default: 180 days unless disabled by the account admin).\n\nOperator-defined re-authentication triggers include: session timeout (per service platform defaults), security incident or suspected compromise, role or credential change, explicit operator logout, and Tailscale device key expiry. A known gap is that `ClientAliveInterval` and `ClientAliveCountMax` settings are not uniformly documented across all hosts, and no centralized session monitoring enforces stale-session termination.",
               "implementation-status": {
-                "state": "planned"
+                "state": "implemented"
               }
             }
           ]
@@ -798,9 +798,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "762ffbbd-1a09-4c94-ba3e-5a5d87932cad",
-              "description": "",
+              "description": "Multi-factor authentication is not currently implemented for privileged account access to any in-boundary service in the Managed SOC Service. This is a documented gap.\n\nSSH access to all in-boundary hosts -- brisket, haccp, smokehouse, smoker, pitcrew, sear, dojo, and regscale -- uses private key authentication (something you have) as the sole factor. While SSH key authentication is cryptographically stronger than password-only authentication and satisfies replay resistance (see IA-2(8)), it constitutes single-factor authentication under NIST SP 800-63B. A private key replaces the password; it does not add a second factor on top of a password or biometric. Under SP 800-63B, SSH key-only access is a single-factor cryptographic authenticator at AAL2, which does not satisfy the MFA requirement for privileged accounts. Similarly, Tailscale device authentication uses WireGuard keys (device-bound cryptographic factor) without a required second factor.\n\nNo TOTP, hardware token, PIV card, or push-notification MFA is wired to any privileged service console -- Wazuh Dashboard, Shuffle SOAR, OpenCTI, Velociraptor, or the Wazuh API. MFA implementation is a planned remediation item tracked in the FedRAMP Low ConMon program. Until remediated, this control is partial -- the gap is acknowledged and the risk accepted under the homelab boundary posture documented in this SSP.",
               "implementation-status": {
-                "state": "planned"
+                "state": "partial"
               }
             }
           ]
@@ -812,9 +812,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "c5aaa947-ce0e-4396-ab05-a6a71125b0f0",
-              "description": "",
+              "description": "IA-2(12) is not applicable to the Managed SOC Service. The system is a private homelab with no federal PIV infrastructure. PIV issuance requires federal agency sponsorship; the system owner holds no PIV card and no PIV issuance authority. No PIV card readers, middleware (e.g., OpenSC), or PIV-aware identity providers are deployed in the boundary.",
               "implementation-status": {
-                "state": "planned"
+                "state": "not-applicable"
               }
             }
           ]
@@ -826,9 +826,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "77ba3a2f-65e2-4a56-99ec-a7c08a7e8662",
-              "description": "",
+              "description": "Multi-factor authentication is not currently implemented for non-privileged account access to any in-boundary service in the Managed SOC Service. This is a documented gap with the same posture as IA-2(1).\n\nSSH key authentication is used for all host access, constituting a single cryptographic factor. No second factor -- TOTP, hardware token, PIV, or biometric -- is paired with SSH keys or any service console. The `socadmin@thehive.local` and `socadmin@SOC` accounts in TheHive and Cortex represent lower-privilege operator roles and are also single-factor (named account with password). In a single-operator homelab boundary, the distinction between privileged and non-privileged accounts is largely nominal -- the operator holds admin credentials for all services -- but the non-privileged accounts equally lack a second authentication factor.\n\nMFA for non-privileged accounts is a planned remediation item, linked to the same initiative as IA-2(1). Until remediated, this control is partial -- the gap is documented, the risk is accepted under the lab posture, and a future ConMon cycle will address MFA implementation across all service tiers.",
               "implementation-status": {
-                "state": "planned"
+                "state": "partial"
               }
             }
           ]
@@ -840,9 +840,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "c65cbd16-cd2c-4410-b758-7584d02d99d4",
-              "description": "",
+              "description": "All authentication mechanisms in use within the Managed SOC Service boundary are replay-resistant, covering both privileged and non-privileged accounts.\n\nSSH key authentication -- used for all in-boundary host access (brisket, haccp, smokehouse, smoker, pitcrew, sear, dojo, regscale) -- uses the SSH protocol's cryptographic challenge-response handshake. Each session uses a unique nonce generated by the server; capturing and replaying a previous session transcript cannot authenticate a new session. Wazuh API JWTs are short-lived (900-second default expiry); each authentication call in `pipelines/common/wazuh.py` issues a fresh token that cannot be reused after expiry. RegScale CE JWTs carry a 24-hour TTL per ADR 0003 and ADR 0006 Deviation 7; every pipeline invocation calls `POST /api/authentication/login` to obtain a fresh token, and the old token expires at its TTL. Tailscale WireGuard establishes ephemeral Diffie-Hellman key exchange per session, producing session keys that are not replayable.\n\nHTTPS service consoles (Wazuh Dashboard, Shuffle SOAR, Velociraptor) protect session tokens in transit via TLS; session cookies are bound to the TLS session. A known partial gap exists for TheHive, Cortex, DefectDojo, and RegScale, which serve on HTTP on the internal lab network -- token transmission over HTTP is technically replayable within the same network segment. This risk is accepted as a lab-posture deviation per ADR 0003 and ADR 0004, mitigated by VLAN isolation and managed-switch ACLs restricting lateral movement.",
               "implementation-status": {
-                "state": "planned"
+                "state": "implemented"
               }
             }
           ]
@@ -854,9 +854,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "de26da37-0209-42e9-bbc1-2aeb5aa8f2c4",
-              "description": "",
+              "description": "Every in-boundary host and service in the Managed SOC Service requires unique identification and authentication before granting access. For SSH access to all Linux hosts -- brisket, haccp, smokehouse, smoker, pitcrew, sear, dojo, and regscale -- the operator (Brian Chaplow) authenticates using a per-host ED25519 or RSA-4096 key pair provisioned on the PITBOSS workstation. `PasswordAuthentication no` is set in `sshd_config` on every host, preventing credential-based access. No shared SSH credentials are used.\n\nAll management service interfaces enforce named account authentication. Wazuh Dashboard (`https://10.10.20.30:5601`) authenticates via the `admin` account against the OpenSearch security plugin. The Wazuh API (`https://10.10.20.30:55000`) uses the `wazuh-wui` account with a per-invocation JWT issued by the pipeline client in `pipelines/common/wazuh.py`. Shuffle SOAR (`https://10.10.20.30:3443`) and OpenCTI (`http://10.10.20.30:8080`) each use a named admin account. TheHive (`http://10.10.30.22:9000`) maintains two distinct named accounts -- `admin@thehive.local` and `socadmin@thehive.local` -- with separate roles. Cortex (`http://10.10.30.22:9001`) likewise uses `admin` and `socadmin@SOC`. Velociraptor (`https://10.10.20.30:8889`) and DefectDojo (`http://10.10.30.27:8080`) each use a dedicated `admin` account with API token-based pipeline access. RegScale CE (`http://10.10.30.28`) authenticates via `admin` with a 24-hour JWT issued per `POST /api/authentication/login` per ADR 0003 and ADR 0006 Deviation 7. Tailscale remote access authenticates each device by its WireGuard key, tied to the operator's Tailscale account identity. All accounts are uniquely identified and non-shared.",
               "implementation-status": {
-                "state": "planned"
+                "state": "implemented"
               }
             }
           ]
@@ -868,9 +868,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "0c32d70c-557e-4efb-9e85-f0d5ed281fa2",
-              "description": "",
+              "description": "Identifier management for the Managed SOC Service is governed by operator convention and documented in `CLAUDE.md` and `inventory/overlay.yaml`. The system owner (Brian Chaplow) is the sole authority for assigning identifiers to any subject within the boundary.\n\nFor host OS accounts, each in-boundary host carries a named OS account -- `bchaplow` on brisket and haccp, `butcher` on sear, `root` on smoker (key-only), and similarly named accounts on dojo and regscale. Account creation requires an explicit operator decision; the account name identifies the role and is never reassigned. Wazuh agent identifiers are assigned sequentially by the Wazuh Manager at enrollment time. IDs 001 through 017 are in use across 15 active agents plus the OPNsense syslog source. Agent IDs are never reassigned to different hosts after enrollment -- a policy documented in ADR 0006 Deviation 6, which also establishes that agent names (stable host names: `brisket`, `haccp`, `smokehouse`, `dojo`, `regscale`, etc.) are the preferred stable identifiers in pipeline code and `inventory/overlay.yaml`. Service account identifiers (Wazuh `admin` and `wazuh-wui`, Shuffle `admin`, OpenCTI `admin@opencti.local`, TheHive `admin@thehive.local` and `socadmin@thehive.local`, Cortex `admin` and `socadmin@SOC`, Velociraptor `admin`, DefectDojo `admin`, RegScale `admin`) are tied to a defined role and are retired -- not reassigned -- when the associated service is decommissioned. DefectDojo product IDs (1 through 5) were assigned at seed time and are not reused. Identifier reuse is prevented indefinitely -- no previously used identifier is assigned to a different subject within the system boundary.",
               "implementation-status": {
-                "state": "planned"
+                "state": "implemented"
               }
             }
           ]
@@ -896,9 +896,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "049fca66-2a85-4e46-8a6f-57ab5352a929",
-              "description": "",
+              "description": "Authenticator management for the Managed SOC Service covers the full lifecycle of SSH keys and service passwords, with some documented gaps.\n\nSSH key pairs are generated by the operator on the PITBOSS workstation using ED25519 or RSA-4096, both of which provide sufficient cryptographic strength for their intended use. Initial distribution is performed by the operator directly (identity verified implicitly -- single-operator model). No shared private keys are used. Default authenticators are changed before first use on every service: RegScale CE ships with an undocumented default password hash; `deploy/regscale/reset-admin-password.sh` replaces the default with a PBKDF2-HMAC-SHA512 hash (100,000 iterations, 16-byte salt, 32-byte subkey) before the service is placed in use, per ADR 0003. DefectDojo, TheHive, Cortex, and Velociraptor either require first-run admin setup or have no usable default credential; defaults are changed at deployment per ADR 0004 and platform runbooks. All service passwords are stored exclusively in `/c/Projects/.env` (gitignored) on the operator workstation; no credential appears in committed code or documentation artifacts.\n\nAuthenticator revocation is manual -- SSH keys are removed from `authorized_keys` and service passwords are changed in the platform on operational events (suspected compromise, service rebuild, or personnel change). No calendar-based rotation schedule is enforced for SSH keys or service passwords; rotation is event-driven. No automated tool tracks authenticator age. The absence of a formal rotation schedule and automated revocation mechanism are the documented gaps that contribute to the partial status.",
               "implementation-status": {
-                "state": "planned"
+                "state": "partial"
               }
             }
           ]
@@ -910,9 +910,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "1e6e28b0-297c-4a11-8442-1c9568f7210c",
-              "description": "",
+              "description": "All in-boundary service authentication interfaces in the Managed SOC Service obscure password and credential feedback during the authentication process.\n\nFor SSH terminal access to all hosts (brisket, haccp, smokehouse, smoker, pitcrew, sear, dojo, regscale), the OpenSSH client provides no visual feedback for passphrase or key-based challenge inputs; echo is suppressed during authentication. For web-based service consoles, every login form masks the password field: Wazuh Dashboard (`https://10.10.20.30:5601`) and Shuffle SOAR (`https://10.10.20.30:3443`) use HTTPS-served login forms with `type=\"password\"` HTML input fields displaying asterisks. OpenCTI (`http://10.10.20.30:8080`), TheHive (`http://10.10.30.22:9000`), Cortex (`http://10.10.30.22:9001`), DefectDojo (`http://10.10.30.27:8080`), and RegScale CE (`http://10.10.30.28`) each use their respective platform login forms with masked password fields. Velociraptor (`https://10.10.20.30:8889`) uses an HTTPS login form with password masking. For pipeline CLI execution, service passwords are sourced from environment variables in `.env`; no password value is echoed to the terminal during `pipelines.sh` execution, and `pipelines/common/config.py` reads credentials from the environment without logging them. All credential masking relies on the browser and terminal platform's standard mechanism, which is the accepted implementation approach under NIST SP 800-53 IA-6 guidance.",
               "implementation-status": {
-                "state": "planned"
+                "state": "implemented"
               }
             }
           ]
@@ -924,9 +924,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "36b702ce-5aed-490c-9355-b421285e1f93",
-              "description": "",
+              "description": "Cryptographic module authentication in the Managed SOC Service relies on platform-provided cryptographic libraries and standard authentication mechanisms throughout.\n\nOn all in-boundary Linux hosts (brisket, haccp, dojo, regscale on Ubuntu 24.04; smokehouse, smoker, pitcrew, sear on their respective OS versions), OpenSSH authenticates access to the host operating system using the host kernel's built-in cryptographic primitives via libcrypto. Ubuntu ships OpenSSH linked against OpenSSL 3.x, which carries FIPS 140-3 CMVP validation certificates. The homelab does not operate in FIPS-enforced mode (a documented posture limitation noted below), but the underlying cryptographic library meets CMVP standards. TLS sessions for HTTPS services -- Wazuh Dashboard, Shuffle SOAR, and Velociraptor -- use OpenSSL-provided TLS 1.2 or TLS 1.3 with standard cipher suites; the cryptographic module (OpenSSL) is authenticated via APT's GPG-signed package manifests at install time. The Wazuh single-node Docker stack uses autogenerated TLS certificates for inter-component communication between the indexer, manager, and dashboard, with certificate verification handled by the OpenSearch security plugin. Tailscale WireGuard tunnels use Curve25519 and ChaCha20-Poly1305, implemented in the Linux kernel module, validated by upstream kernel maintainers. No proprietary or custom cryptographic modules are in use.\n\nA known posture limitation: FIPS 140-3 validated mode is not enforced on any in-boundary host. A production FedRAMP deployment would require FIPS-validated module operation (Ubuntu FIPS kernels or equivalent). This is an accepted risk for the homelab boundary.",
               "implementation-status": {
-                "state": "planned"
+                "state": "implemented"
               }
             }
           ]
@@ -938,9 +938,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "f9fdcb6e-797d-4a0d-ac41-a4ec2b1d3e03",
-              "description": "",
+              "description": "IA-8(1) is not applicable to the Managed SOC Service. The system is a private homelab with no federal agency interconnections and no PIV infrastructure. No federal users from other agencies access this system, and no PIV-compliant credential issuance or verification capability is deployed or planned.",
               "implementation-status": {
-                "state": "planned"
+                "state": "not-applicable"
               }
             }
           ]
@@ -952,9 +952,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "de47a5ae-f2ff-4790-a75e-d95b0f1e14f3",
-              "description": "",
+              "description": "IA-8(2) is not applicable to the Managed SOC Service. The system does not accept any external authenticators from non-federal identity providers. All authentication is internal: SSH keys issued by the operator, service passwords managed in `.env`, and Tailscale device keys issued through the operator's Tailscale account. No OAuth, SAML, or federated identity provider integrations are in use within the FedRAMP Low boundary, and no external authenticators from any source are accepted.",
               "implementation-status": {
-                "state": "planned"
+                "state": "not-applicable"
               }
             }
           ]
@@ -966,9 +966,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "e5b4f5a1-fec7-480b-bbb1-ac66a6383df9",
-              "description": "",
+              "description": "The Managed SOC Service partially conforms to defined identity management profiles through its use of standard, open protocols for authentication and identity. No formal FICAM-compliant or federated identity profile is adopted as a system-level standard -- the system uses per-service native authentication without a unified identity fabric, which is the source of the partial status.\n\nImplemented protocol conformance: SSH access to all in-boundary hosts conforms to the SSH protocol standard (RFC 4251 through 4256); accepted key types are ED25519 and RSA-4096, aligning with NIST SP 800-207 guidance on key strength. JSON Web Token (JWT) authentication for the Wazuh API and RegScale CE conforms to RFC 7519; JWTs carry role claims (`GlobalAdmin` for RegScale per ADR 0003) used for authorization decisions. HTTPS services (Wazuh Dashboard, Shuffle SOAR, Velociraptor) use TLS 1.2 and TLS 1.3 per RFC 5246 and RFC 8446. No formal identity management profile document listing accepted profiles and their conformance requirements exists, no unified IdP or federation standard has been adopted, and no SP 800-63B Authenticator Assurance Level designations have been formally assigned to each service. These are the gaps contributing to the partial status and are planned remediation items in future ConMon cycles.",
               "implementation-status": {
-                "state": "planned"
+                "state": "partial"
               }
             }
           ]
@@ -980,9 +980,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "4aa1600c-61dd-4325-8893-77c27a80cb3d",
-              "description": "",
+              "description": "IA-8 is not applicable to the Managed SOC Service. The system has no non-organizational users. The boundary is a private homelab accessed exclusively by the system owner (Brian Chaplow); no external parties, contractors, guest researchers, or automated processes acting on behalf of external parties have access to in-boundary systems. All service interfaces are on VLAN 20 or VLAN 30 (not externally routable) and are accessible only via Tailscale mesh (operator-enrolled devices only). No public-facing endpoints exist within the FedRAMP Low boundary.",
               "implementation-status": {
-                "state": "planned"
+                "state": "not-applicable"
               }
             }
           ]
@@ -1806,9 +1806,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "d70a7f60-437b-4ecf-a379-2b18ab77feb0",
-              "description": "",
+              "description": "System and communications protection policy is documented at the system level across several artifacts that collectively define the MSS SC posture. CLAUDE.md §Network Quick Reference codifies the VLAN architecture, the attack-target-only-on-VLAN-40 mandate, and inter-VLAN isolation conventions that serve as the de facto SC policy for all operators. OPNsense firewall rules and MokerLink L3 ACLs translate those conventions into enforced controls. The ADR series (0001-0008) provides an auditable policy-evolution trail -- each ADR captures the decision rationale when a configuration trade-off or gap is accepted. `runbooks/cert-trust.md` documents the TLS posture rationale and the upgrade path. Brian Chaplow (system owner, sole operator) is the designated official for SC policy management, review, and dissemination. Policy and procedures are reviewed annually and whenever a new phase adds infrastructure components or a security incident reveals a gap.\n\nGap: no formal standalone SC policy document exists -- policy lives in CLAUDE.md conventions, OPNsense rule comments, and ADR artifacts rather than a dedicated policy document. This is a recognized gap for a single-operator homelab environment; a consolidated SC policy document is a future hardening item. All procedures for implementing SC controls (firewall management, key enrollment, TLS configuration) are captured inline in CLAUDE.md, `reference/network.md`, and per-service runbooks rather than a unified procedures document.",
               "implementation-status": {
-                "state": "planned"
+                "state": "partial"
               }
             }
           ]
@@ -1820,9 +1820,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "c28dd031-51b5-4a54-b393-9da9d31fb5c3",
-              "description": "",
+              "description": "Cryptographic key management for in-boundary services relies on three mechanisms. First, Wazuh self-signed CA and agent enrollment keys are managed via the Wazuh manager CLI: keys are generated at agent enrollment using `agent-auth` on port 1515 and stored in `/var/ossec/etc/sslmanager.*` on brisket, with sole operator Brian Chaplow responsible for key lifecycle. Second, Tailscale public-key infrastructure is managed by Tailscale's coordination server: node keys are generated on device enrollment, rotated automatically per Tailscale's key expiry policy, and revocable via the Tailscale admin console without operator intervention. Third, SSH host keys on all in-boundary Linux hosts (brisket, haccp, smokehouse, sear, dojo, regscale) are generated at provision time using OpenSSH defaults (Ed25519 or RSA-4096) and rotated on host reimage. Self-signed certificates for ELK Elasticsearch (haccp:9200) are managed manually per `runbooks/cert-trust.md`.\n\nGap: no formal key management system (KMS) or hardware security module (HSM) is in scope for this homelab deployment. Self-signed certificate renewal for Wazuh and ELK is a manual operator procedure -- no documented renewal runbook or expiry monitoring exists, which is a gap. The upgrade path documented in `runbooks/cert-trust.md` identifies step-ca as a future option for automating certificate lifecycle management. Status is partial -- keys are established and in active use, but formal lifecycle procedures (rotation schedules, expiry alerting, renewal runbook) are not yet implemented.",
               "implementation-status": {
-                "state": "planned"
+                "state": "partial"
               }
             }
           ]
@@ -1834,9 +1834,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "736f45eb-32b6-4d70-a0c1-74960f706645",
-              "description": "",
+              "description": "Four cryptographic uses are identified across the MSS boundary and implemented with the following cryptographic types. HTTPS/TLS (TLS 1.2/1.3 via OpenSSL) is used for Wazuh Manager API (brisket:55000), Wazuh Indexer/OpenSearch (brisket:9200), ELK Elasticsearch (haccp:9200), and Wazuh Dashboard (brisket:5601), providing ECDHE key exchange, AES-GCM bulk encryption, and HMAC or AEAD integrity protection. WireGuard via Tailscale (ChaCha20-Poly1305 authenticated encryption) protects all remote administrative access from PITBOSS to in-boundary hosts. OpenSSH (AES-256-GCM over ECDH key exchange, or Ed25519 host keys) provides cryptographic protection for host management sessions and PCAP archival rsync from haccp to smokehouse. Wazuh enrollment key exchange (Wazuh-native symmetric key over TLS) secures agent enrollment on brisket:1515. All implementations use standard open-source primitives -- OpenSSL, the WireGuard kernel module, and OpenSSH -- running on standard Ubuntu LTS kernels.\n\nGap: no FIPS 140-2 or FIPS 140-3 validated cryptographic modules are in use. This is a homelab environment running standard Linux kernel cryptography rather than FIPS-enabled builds. All algorithms in active use (AES, SHA-256, ECDHE, ChaCha20-Poly1305, Ed25519) are NIST-approved, satisfying the algorithm coverage requirement even without formal module validation. For a production FedRAMP authorization this would require FIPS-enabled OpenSSL builds and validated kernel crypto modules -- that hardening path is deferred as a future phase item. Status is partial for FIPS validation gap; all identified cryptographic uses have appropriate algorithm implementations deployed.",
               "implementation-status": {
-                "state": "planned"
+                "state": "partial"
               }
             }
           ]
@@ -1848,9 +1848,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "6122a52c-f11f-469d-9586-4150f71644ad",
-              "description": "",
+              "description": "SC-15 is not applicable to the MSS boundary. No collaborative computing devices or applications -- including video conferencing endpoints, network-connected cameras, microphones, or interactive whiteboards -- are present within the authorization boundary. All in-boundary hosts are bare-metal servers (brisket, haccp, smokehouse), a Proxmox hypervisor (pitcrew), and network appliances (OPNsense, MokerLink), none of which have collaborative computing hardware. PITBOSS (the admin workstation) is out-of-boundary and any audio/video peripherals on it are not in scope.",
               "implementation-status": {
-                "state": "planned"
+                "state": "not-applicable"
               }
             }
           ]
@@ -1862,9 +1862,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "4b06326e-b6ab-4d31-b73d-77c852bd642a",
-              "description": "",
+              "description": "SC-20 is not applicable to the MSS boundary. The MSS does not operate an authoritative DNS server serving external name/address resolution queries. Internal name resolution is handled by OPNsense Unbound acting as a caching/recursive resolver for in-boundary hosts -- not as an authoritative source. External authoritative DNS for public zones (brianchaplow.com, bytesbourbonbbq.com) is delegated to Cloudflare and those assets are out-of-boundary. No DNSSEC signing is performed by any in-boundary component.",
               "implementation-status": {
-                "state": "planned"
+                "state": "not-applicable"
               }
             }
           ]
@@ -1876,9 +1876,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "b918807d-cf1a-4ebc-98cf-540ca9cedc2a",
-              "description": "",
+              "description": "OPNsense Unbound (running on the Protectli VP2420 at 10.10.10.1) provides recursive DNS resolution for all in-boundary hosts across VLANs 10, 20, 30, and 40. Unbound receives DNS queries from in-boundary clients via DHCP-assigned resolver assignment, forwards them to upstream resolvers, and caches responses. The recursive resolver is deployed and functional for all in-boundary hosts.\n\nGap: DNSSEC validation is not confirmed as enabled in the Unbound configuration. Without DNSSEC validation enabled (`harden-dnssec-stripped: yes`, `val-permissive-mode: no`), Unbound does not request or perform data origin authentication and integrity verification on DNS responses from authoritative sources. This means the cryptographic assurance required by SC-21 is not in place -- the resolver operates as a caching forwarder but not a validating resolver. The planned remediation is to enable DNSSEC validation in the OPNsense Unbound configuration. Status is partial -- the recursive resolver infrastructure is deployed; cryptographic DNS validation is not.",
               "implementation-status": {
-                "state": "planned"
+                "state": "partial"
               }
             }
           ]
@@ -1890,9 +1890,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "6ef2eb23-c98a-49f8-97ab-ebe7575113a5",
-              "description": "",
+              "description": "OPNsense Unbound on the Protectli VP2420 (10.10.10.1) is the sole in-boundary DNS resolver, serving all VLANs (10/20/30/40/50) as both the caching recursive resolver and the forwarder to upstream resolvers. In-boundary hosts receive OPNsense as their primary DNS resolver via DHCP assignment. External authoritative DNS for public zones is delegated to Cloudflare (out-of-boundary), providing natural role separation between the internal recursive resolver and the external authoritative service. This means the internal and external DNS roles are handled by separate systems, satisfying role separation intent.\n\nGap: no secondary DNS resolver is deployed for fault tolerance. If OPNsense is unavailable, all in-boundary hosts lose DNS resolution and must use direct IP addressing for continued operations. A single-operator homelab environment cannot economically justify geographically separated primary and secondary resolvers. The MSS accepts this as a known single-point-of-failure; OPNsense failure can be mitigated by direct-IP SSH access for all in-boundary hosts. Status is partial -- role separation between internal and external DNS is achieved via OPNsense (internal) and Cloudflare (external); fault tolerance and internal role separation are not implemented.",
               "implementation-status": {
-                "state": "planned"
+                "state": "partial"
               }
             }
           ]
@@ -1904,7 +1904,7 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "b284d25f-058b-4479-9a55-4a17022b3981",
-              "description": "",
+              "description": "Cryptographic protection of information at rest is not currently implemented for the MSS boundary. No full-disk encryption (FDE) is applied to any in-boundary host's boot or data drives -- the haccp Samsung 990 EVO Plus 2TB PCAP drive (`/dev/nvme0n1`, mounted at `/opt/arkime/raw`) holds the highest-sensitivity data (full-PCAP archives) and is unencrypted. PBS backup snapshots on smokehouse NFS are stored without PBS datastore-level encryption. Docker volumes holding Wazuh alert indices, OpenCTI threat intelligence data, and ELK log indices are filesystem-protected but not cryptographically encrypted. Physical security of the home rack is the sole compensating control at this time.\n\nThe planned remediation for this control follows a three-step path: (1) enable PBS datastore encryption for backup jobs at the Proxmox Backup Server CE datastore level, which supports AES-256 encryption with a passphrase or key file; (2) deploy LUKS full-disk encryption on haccp's PCAP drive (`/dev/nvme0n1`) given the sensitivity of 2TB of full-PCAP data -- this would require a one-time reformat and restore from Arkime re-capture; (3) evaluate Wazuh Indexer and OpenCTI Docker volume encryption options. These remediations are deferred to a future hardening phase. The upgrade path does not overlap with `runbooks/cert-trust.md`, which covers transmission TLS only and does not address at-rest encryption.",
               "implementation-status": {
                 "state": "planned"
               }
@@ -1918,9 +1918,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "edcc62b3-15db-4536-9961-bccf2a5e45a7",
-              "description": "",
+              "description": "Information at rest protection relies on OS-level access controls and filesystem permissions across all in-boundary hosts. Wazuh configuration and indexer data on brisket are protected by Linux DAC (root-owned `/var/ossec/`, Docker volume permissions). ELK indices on haccp are protected by filesystem permissions on `/opt/elk/` Docker volumes, with the Elasticsearch data directory accessible only to the `elasticsearch` service account. PBS backup snapshots on smoker LXC 300 are stored on the smokehouse NFS share at `10.10.20.10:/mnt/pbs-store/` with NFS export restrictions limiting access to the PBS LXC client IP. OpenCTI threat intelligence data and Wazuh Indexer data on brisket are stored in Docker volumes with root-owned filesystem permissions. DefectDojo and RegScale application data on dojo and regscale VMs are protected by OS-level DAC under their respective service accounts. Sensitive credentials are stored in `.env` files with restricted filesystem permissions (not a secrets manager) and are excluded from version control via `.gitignore`.\n\nGap: no full-disk encryption (FDE) is applied to any in-boundary host's boot or data drives. The WD SN720 2TB boot drive and Samsung 990 EVO Plus 2TB PCAP drive on haccp, all brisket drives, and all Proxmox VM disks are unencrypted at rest. PBS backup snapshots are stored without datastore-level encryption. This is a deliberate homelab trade-off -- the compensating factor is physical security of a home rack with no untrusted colocated users. The failure mode that catches backup integrity drift was demonstrated by ADR 0005, where a backup gap was detected, fixed, and the automount configuration hardened. Status is partial -- OS-level access controls protect information at rest; cryptographic protection (FDE or datastore encryption) is not implemented. See SC-28(1) for the planned remediation path.",
               "implementation-status": {
-                "state": "planned"
+                "state": "partial"
               }
             }
           ]
@@ -1932,9 +1932,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "9e5bbdc0-e333-4cbd-9ebe-5db9e5be805b",
-              "description": "",
+              "description": "All in-boundary Linux hosts (brisket, haccp, smokehouse, sear, dojo, regscale) run Ubuntu 22.04 or 24.04 LTS kernels with standard Linux process isolation: each process operates in a separate virtual address space enforced by the kernel's memory management unit (MMU), preventing any process from reading or modifying another process's address space without explicit IPC mechanisms. This provides the baseline separate execution domain for all system processes. Docker containers on brisket (Wazuh Manager/Indexer/Dashboard, Shuffle SOAR, OpenCTI, Prometheus, Grafana, Velociraptor, ML Scorer, Logstash) and haccp (ELK stack -- Elasticsearch, Kibana, Logstash, Fleet Server) each run in separate Linux namespaces (PID, network, mount, UTS, IPC), providing process and filesystem isolation between service stacks beyond the MMU-level guarantee. The shared-tenancy situation on brisket -- where MSS services (Wazuh, Shuffle, OpenCTI) co-reside with out-of-boundary workloads (AlgoTrader, Capitol Signals) -- is mitigated by separate Docker network namespaces; MSS service containers are on the `wazuh` and `opencti_default` networks while out-of-boundary containers are on separate named networks with no cross-network routing.\n\nProxmox LXC containers on pitcrew (TheHive LXC 200) and smoker (PBS LXC 300) use kernel namespaces and cgroups for process isolation between containers and the Proxmox hypervisor, providing hardware-assisted virtual machine boundaries for lab VMs (DC01, WS01, DVWA, Metasploitable targets) on VLAN 40. The combination of MMU-enforced virtual address spaces at the OS level and Linux namespace isolation at the container and hypervisor level maintains separate execution domains for all MSS processes.",
               "implementation-status": {
-                "state": "planned"
+                "state": "implemented"
               }
             }
           ]
@@ -1946,9 +1946,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "a6ff7993-4024-4c2f-90a9-d13ab69e396c",
-              "description": "",
+              "description": "OPNsense on the Protectli VP2420 (10.10.10.1) provides the primary DoS mitigation layer for the MSS boundary. Stateful packet inspection limits connection flooding from external sources; inter-VLAN rules deny inbound traffic from VLAN 40 (targets), preventing compromised lab VMs from flooding SOC infrastructure; and VLAN 50 (IoT) is restricted to internet-only egress with no lateral movement permitted. MokerLink port-bound ACLs (TE4 `sear-brisket`) limit intra-VLAN flooding between SOC components on VLAN 20 without routing through OPNsense. Suricata IDS running on smokehouse eth4 (SPAN of TE1-TE9) detects volumetric signatures and ships eve.json alerts to `wazuh-alerts-*` for correlation. The combined effect is that the MSS can limit the impact of volumetric and lateral flooding events from in-boundary sources.\n\nGap: no cloud-based DoS scrubbing service or dedicated anti-DDoS appliance is deployed. A sustained high-volume external flood would rely on Verizon upstream throttling as the only upstream mitigation; the MSS itself has no BGP-based blackholing or scrubbing capability. This is an accepted trade-off for a homelab environment with no public-facing services in boundary. Status is partial -- the deployed controls limit the effects of the enumerated DoS event types but do not fully protect against sustained external volumetric attacks.",
               "implementation-status": {
-                "state": "planned"
+                "state": "partial"
               }
             }
           ]
@@ -1960,9 +1960,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "56a1ce3c-7250-4f3e-818d-52b8a044ce57",
-              "description": "",
+              "description": "OPNsense on the Protectli VP2420 (10.10.10.1) is the boundary enforcement point for all five VLANs -- VLAN 10 (management), VLAN 20 (SOC infrastructure), VLAN 30 (lab/Proxmox/AD), VLAN 40 (targets -- ISOLATED), and VLAN 50 (IoT) -- via 802.1Q trunk on igc0 to the MokerLink 10G switch. Inter-VLAN firewall rules implement a default-deny posture between security domains: VLAN 40 (targets) carries an explicit DENY outbound rule allowing only established-session return traffic, which enforces full isolation of attack-target workloads from SOC services. VLAN 50 (IoT) is restricted to internet-only egress with no lateral movement to VLANs 10, 20, or 30. All external connectivity traverses OPNsense -- the three documented external connection types are Wazuh agent telemetry inbound on brisket:1514 (TLS), administrative SSH access (key-only), and PBS backup NFS egress to smokehouse -- each constituting a managed interface per the whole-project design §2.4. OPNsense syslog ships firewall events to the Wazuh Manager (brisket) for monitoring and correlation via `wazuh-alerts-*`.\n\nMokerLink L3 port ACL `sear-brisket` (TE4) extends boundary enforcement intra-VLAN on VLAN 20, limiting sear (10.10.20.20) to enumerated Wazuh agent ports (1514, 1515) and OpenSearch (9200) inbound to brisket (10.10.20.30), and explicitly denying all other same-subnet traffic -- this prevents intra-VLAN lateral movement without routing through OPNsense. Tailscale encrypted mesh overlay (WireGuard-based) provides the sole authorized remote management path for administrative access from PITBOSS to in-boundary hosts; all remote management traffic traverses this cryptographic boundary crossing. Suricata IDS on smokehouse monitors the MokerLink SPAN (TE1-TE9 mirrored to TE10/TE11) and ships signatures to Wazuh for boundary event correlation.",
               "implementation-status": {
-                "state": "planned"
+                "state": "implemented"
               }
             }
           ]
@@ -1974,9 +1974,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "92be5347-f824-4b3c-9732-48066ef203f6",
-              "description": "",
+              "description": "Cryptographic mechanisms protect transmitted information across all in-boundary core service paths. TLS (via OpenSSL) secures Wazuh Manager API (brisket:55000, HTTPS), Wazuh Indexer/OpenSearch (brisket:9200, HTTPS), ELK Elasticsearch (haccp:9200, HTTPS), and Fleet server (haccp:8220, HTTPS) -- providing both confidentiality (ECDHE key exchange + AES-GCM bulk encryption) and integrity (HMAC or AEAD authentication tags) per the TLS record protocol. Wazuh agent-to-manager telemetry (brisket:1514) uses TLS with enrollment-key authentication. PCAP archival sync from haccp to smokehouse uses SSH (AES-based session encryption via OpenSSH). Tailscale remote administration uses WireGuard's ChaCha20-Poly1305 authenticated encryption, which provides both unauthorized-disclosure prevention and change detection for all management traffic crossing the administrative boundary.\n\nGap: DefectDojo (10.10.30.27:8080), RegScale CE (10.10.30.28:80), and Kibana (haccp:5601) do not implement cryptographic protection of transmitted information -- these paths use plain HTTP. This gap is documented in ADRs 0003 and 0004 as a POA&M item; the upgrade path to TLS for these services is captured in `runbooks/cert-trust.md`. All three are VLAN-scoped with no external exposure and handle synthetic lab data only. Status matches SC-8 at partial -- cryptographic mechanisms protect core Wazuh and ELK transmission paths; the GRC tools and Kibana are unprotected.",
               "implementation-status": {
-                "state": "planned"
+                "state": "partial"
               }
             }
           ]
@@ -1988,9 +1988,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "a8461f84-5abd-46e2-ae5c-c019c9b0c52e",
-              "description": "",
+              "description": "Transmission confidentiality and integrity is enforced for all core MSS service-to-service paths using TLS. Wazuh Manager API (brisket:55000) and Wazuh Indexer/OpenSearch (brisket:9200) are HTTPS with self-signed certificates per `runbooks/cert-trust.md`. ELK Elasticsearch on haccp (10.10.30.25:9200) is HTTPS. Wazuh agent-to-manager telemetry on brisket:1514 uses TLS with enrollment-key authentication; agent enrollment on brisket:1515 is TLS-protected. Fluent Bit shipping Zeek logs from smokehouse to brisket:9200 transits over HTTPS. PCAP archival from haccp to smokehouse uses SSH/rsync (encrypted channel). Fleet agent communications to haccp:8220 use HTTPS. Tailscale encrypted mesh (WireGuard-based) protects all administrative remote access paths -- PITBOSS to brisket, sear, smokehouse, and haccp -- providing both confidentiality and integrity for management plane traffic.\n\nGap: DefectDojo on dojo (10.10.30.27:8080) and RegScale CE on regscale (10.10.30.28:80) are HTTP-only per ADRs 0003 and 0004 respectively. Kibana on haccp (:5601) is also HTTP. These services handle synthetic lab data only, are scoped to VLAN 30 with no external exposure, and are subject to a POA&M item documented in ADR 0003 §Consequences. The upgrade path to HTTPS for these services is documented in `runbooks/cert-trust.md`. Status is partial -- the Wazuh and ELK core paths protect transmission confidentiality and integrity; the two GRC tools and Kibana do not.",
               "implementation-status": {
-                "state": "planned"
+                "state": "partial"
               }
             }
           ]
