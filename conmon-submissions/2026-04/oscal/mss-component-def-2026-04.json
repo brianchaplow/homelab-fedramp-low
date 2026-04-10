@@ -1,0 +1,600 @@
+{
+  "component-definition": {
+    "uuid": "3f77d453-e270-4ba3-9e8c-dc28e9b22187",
+    "metadata": {
+      "title": "Managed SOC Service",
+      "last-modified": "2026-04-10T23:28:17.658233+00:00",
+      "version": "0.1.0",
+      "oscal-version": "1.1.2"
+    },
+    "components": [
+      {
+        "uuid": "41d564aa-7c33-4c54-8bf0-7c80dd867a67",
+        "type": "hardware",
+        "title": "smokehouse",
+        "description": "Network IDS Sensors (Suricata + Zeek on VLAN 20)",
+        "purpose": "Network IDS Sensors (Suricata + Zeek on VLAN 20)",
+        "props": [
+          {
+            "name": "asset-id",
+            "value": "MSS-HOST-SMOKEHOUSE"
+          },
+          {
+            "name": "ipv4-address",
+            "value": "10.10.20.10"
+          },
+          {
+            "name": "netbios-name",
+            "value": "smokehouse"
+          },
+          {
+            "name": "asset-type",
+            "value": "Server"
+          },
+          {
+            "name": "boundary",
+            "value": "in"
+          },
+          {
+            "name": "is-virtual",
+            "value": "false"
+          },
+          {
+            "name": "is-public",
+            "value": "false"
+          },
+          {
+            "name": "authenticated-scan",
+            "value": "true"
+          },
+          {
+            "name": "in-latest-scan",
+            "value": "true"
+          },
+          {
+            "name": "os-name",
+            "value": "Amazon Linux"
+          },
+          {
+            "name": "os-version",
+            "value": "2023"
+          },
+          {
+            "name": "patch-level",
+            "value": "5.10.60-qnap"
+          },
+          {
+            "name": "hardware-model",
+            "value": "QNAP TVS-871 (i7-4790S, 16GB, 17TB NFS backup target)"
+          },
+          {
+            "name": "software-vendor",
+            "value": "Amazon"
+          },
+          {
+            "name": "software-name",
+            "value": "Amazon Linux 2023"
+          },
+          {
+            "name": "location",
+            "value": "On-prem homelab rack, Virginia"
+          },
+          {
+            "name": "function",
+            "value": "Network IDS Sensors (Suricata + Zeek on VLAN 20)"
+          },
+          {
+            "name": "diagram-label",
+            "value": "S3"
+          },
+          {
+            "name": "asset-tag",
+            "value": "HOMELAB-003"
+          },
+          {
+            "name": "end-of-life",
+            "value": "2027-12"
+          },
+          {
+            "name": "comments",
+            "value": "Sensor host \u2014 eth4 SPAN; PBS NFS backup target"
+          }
+        ]
+      },
+      {
+        "uuid": "cb2f4d1c-fe35-43e4-821a-8e4abd6fa73b",
+        "type": "hardware",
+        "title": "haccp",
+        "description": "Log Analytics + PCAP (ELK 8.17 + Arkime + Zeek span0)",
+        "purpose": "Log Analytics + PCAP (ELK 8.17 + Arkime + Zeek span0)",
+        "props": [
+          {
+            "name": "asset-id",
+            "value": "MSS-HOST-HACCP"
+          },
+          {
+            "name": "ipv4-address",
+            "value": "10.10.30.25"
+          },
+          {
+            "name": "netbios-name",
+            "value": "haccp"
+          },
+          {
+            "name": "asset-type",
+            "value": "Server"
+          },
+          {
+            "name": "boundary",
+            "value": "in"
+          },
+          {
+            "name": "is-virtual",
+            "value": "false"
+          },
+          {
+            "name": "is-public",
+            "value": "false"
+          },
+          {
+            "name": "authenticated-scan",
+            "value": "true"
+          },
+          {
+            "name": "in-latest-scan",
+            "value": "true"
+          },
+          {
+            "name": "os-name",
+            "value": "Ubuntu"
+          },
+          {
+            "name": "os-version",
+            "value": "24.04.4 LTS (Noble Numbat)"
+          },
+          {
+            "name": "patch-level",
+            "value": "6.8.0-107-generic"
+          },
+          {
+            "name": "hardware-model",
+            "value": "Lenovo ThinkStation P340 Tiny (i7-10700T, 32GB)"
+          },
+          {
+            "name": "software-vendor",
+            "value": "Ubuntu"
+          },
+          {
+            "name": "software-name",
+            "value": "Ubuntu 24.04.4 LTS (Noble Numbat)"
+          },
+          {
+            "name": "location",
+            "value": "On-prem homelab rack, Virginia"
+          },
+          {
+            "name": "function",
+            "value": "Log Analytics + PCAP (ELK 8.17 + Arkime + Zeek span0)"
+          },
+          {
+            "name": "diagram-label",
+            "value": "S2"
+          },
+          {
+            "name": "asset-tag",
+            "value": "HOMELAB-002"
+          },
+          {
+            "name": "end-of-life",
+            "value": "2028-04"
+          },
+          {
+            "name": "comments",
+            "value": "ELK + Arkime bare metal, Phase 14 haccp data foundation"
+          }
+        ]
+      },
+      {
+        "uuid": "5bf6a219-fef9-47f6-815e-2d4af6f7954e",
+        "type": "hardware",
+        "title": "brisket",
+        "description": "SIEM Manager (Wazuh + SOAR + DFIR + OpenCTI + ml-scorer)",
+        "purpose": "SIEM Manager (Wazuh + SOAR + DFIR + OpenCTI + ml-scorer)",
+        "props": [
+          {
+            "name": "asset-id",
+            "value": "MSS-HOST-BRISKET"
+          },
+          {
+            "name": "ipv4-address",
+            "value": "10.10.20.30"
+          },
+          {
+            "name": "netbios-name",
+            "value": "brisket"
+          },
+          {
+            "name": "asset-type",
+            "value": "Server"
+          },
+          {
+            "name": "boundary",
+            "value": "in"
+          },
+          {
+            "name": "is-virtual",
+            "value": "false"
+          },
+          {
+            "name": "is-public",
+            "value": "false"
+          },
+          {
+            "name": "authenticated-scan",
+            "value": "true"
+          },
+          {
+            "name": "in-latest-scan",
+            "value": "true"
+          },
+          {
+            "name": "os-name",
+            "value": "Ubuntu"
+          },
+          {
+            "name": "os-version",
+            "value": "24.04.4 LTS (Noble Numbat)"
+          },
+          {
+            "name": "patch-level",
+            "value": "6.17.0-19-generic"
+          },
+          {
+            "name": "hardware-model",
+            "value": "Lenovo ThinkStation P3 Tiny Gen 2 (Ultra 9 285, 64GB)"
+          },
+          {
+            "name": "software-vendor",
+            "value": "Ubuntu"
+          },
+          {
+            "name": "software-name",
+            "value": "Ubuntu 24.04.4 LTS (Noble Numbat)"
+          },
+          {
+            "name": "location",
+            "value": "On-prem homelab rack, Virginia"
+          },
+          {
+            "name": "function",
+            "value": "SIEM Manager (Wazuh + SOAR + DFIR + OpenCTI + ml-scorer)"
+          },
+          {
+            "name": "diagram-label",
+            "value": "S1"
+          },
+          {
+            "name": "asset-tag",
+            "value": "HOMELAB-001"
+          },
+          {
+            "name": "end-of-life",
+            "value": "2029-04"
+          },
+          {
+            "name": "comments",
+            "value": "Core SIEM host \u2014 v3 platform per HomeLab-SOC-v3 phases 1-13"
+          }
+        ]
+      },
+      {
+        "uuid": "a55d9dd8-3cff-4478-9eb6-c1b41abcfa4e",
+        "type": "software",
+        "title": "dojo",
+        "description": "Vulnerability Management (DefectDojo 2.57.0)",
+        "purpose": "Vulnerability Management (DefectDojo 2.57.0)",
+        "props": [
+          {
+            "name": "asset-id",
+            "value": "MSS-HOST-DOJO"
+          },
+          {
+            "name": "ipv4-address",
+            "value": "10.10.30.27"
+          },
+          {
+            "name": "netbios-name",
+            "value": "dojo"
+          },
+          {
+            "name": "asset-type",
+            "value": "Server"
+          },
+          {
+            "name": "boundary",
+            "value": "in"
+          },
+          {
+            "name": "is-virtual",
+            "value": "true"
+          },
+          {
+            "name": "is-public",
+            "value": "false"
+          },
+          {
+            "name": "authenticated-scan",
+            "value": "true"
+          },
+          {
+            "name": "in-latest-scan",
+            "value": "true"
+          },
+          {
+            "name": "os-name",
+            "value": "Ubuntu"
+          },
+          {
+            "name": "os-version",
+            "value": "24.04.4 LTS (Noble Numbat)"
+          },
+          {
+            "name": "patch-level",
+            "value": "6.8.0-107-generic"
+          },
+          {
+            "name": "hardware-model",
+            "value": "Proxmox VM on pitcrew (VMID 201, 4C/6GB/40GB)"
+          },
+          {
+            "name": "software-vendor",
+            "value": "Ubuntu"
+          },
+          {
+            "name": "software-name",
+            "value": "Ubuntu 24.04.4 LTS (Noble Numbat)"
+          },
+          {
+            "name": "location",
+            "value": "On-prem homelab rack, Virginia"
+          },
+          {
+            "name": "function",
+            "value": "Vulnerability Management (DefectDojo 2.57.0)"
+          },
+          {
+            "name": "diagram-label",
+            "value": "S4"
+          },
+          {
+            "name": "asset-tag",
+            "value": "HOMELAB-004"
+          },
+          {
+            "name": "comments",
+            "value": "GRC tooling \u2014 DefectDojo. Plan 1 deployment, ADR 0004"
+          }
+        ]
+      },
+      {
+        "uuid": "fa86aaf1-8afa-4f70-a17a-85accef453cd",
+        "type": "software",
+        "title": "regscale",
+        "description": "GRC Workflow + OSCAL Ingest (RegScale CE)",
+        "purpose": "GRC Workflow + OSCAL Ingest (RegScale CE)",
+        "props": [
+          {
+            "name": "asset-id",
+            "value": "MSS-HOST-REGSCALE"
+          },
+          {
+            "name": "ipv4-address",
+            "value": "10.10.30.28"
+          },
+          {
+            "name": "netbios-name",
+            "value": "regscale"
+          },
+          {
+            "name": "asset-type",
+            "value": "Server"
+          },
+          {
+            "name": "boundary",
+            "value": "in"
+          },
+          {
+            "name": "is-virtual",
+            "value": "true"
+          },
+          {
+            "name": "is-public",
+            "value": "false"
+          },
+          {
+            "name": "authenticated-scan",
+            "value": "true"
+          },
+          {
+            "name": "in-latest-scan",
+            "value": "true"
+          },
+          {
+            "name": "os-name",
+            "value": "Ubuntu"
+          },
+          {
+            "name": "os-version",
+            "value": "24.04.4 LTS (Noble Numbat)"
+          },
+          {
+            "name": "patch-level",
+            "value": "6.8.0-107-generic"
+          },
+          {
+            "name": "hardware-model",
+            "value": "Proxmox VM on smoker (VMID 301, 4C/6GB/40GB)"
+          },
+          {
+            "name": "software-vendor",
+            "value": "Ubuntu"
+          },
+          {
+            "name": "software-name",
+            "value": "Ubuntu 24.04.4 LTS (Noble Numbat)"
+          },
+          {
+            "name": "location",
+            "value": "On-prem homelab rack, Virginia"
+          },
+          {
+            "name": "function",
+            "value": "GRC Workflow + OSCAL Ingest (RegScale CE)"
+          },
+          {
+            "name": "diagram-label",
+            "value": "S5"
+          },
+          {
+            "name": "asset-tag",
+            "value": "HOMELAB-005"
+          },
+          {
+            "name": "comments",
+            "value": "GRC tooling \u2014 RegScale CE. Plan 1 deployment, ADR 0003"
+          }
+        ]
+      },
+      {
+        "uuid": "3a4ad86b-900e-4440-9cd3-591410ac6bf5",
+        "type": "hardware",
+        "title": "opnsense",
+        "description": "Boundary firewall (Protectli VP2420, OPNsense 24.x)",
+        "purpose": "Boundary firewall (Protectli VP2420, OPNsense 24.x)",
+        "props": [
+          {
+            "name": "asset-id",
+            "value": "MSS-NON-OPNSENSE"
+          },
+          {
+            "name": "ipv4-address",
+            "value": "10.10.10.1"
+          },
+          {
+            "name": "asset-type",
+            "value": "Appliance"
+          },
+          {
+            "name": "boundary",
+            "value": "in"
+          },
+          {
+            "name": "is-virtual",
+            "value": "false"
+          },
+          {
+            "name": "is-public",
+            "value": "false"
+          },
+          {
+            "name": "authenticated-scan",
+            "value": "false"
+          },
+          {
+            "name": "in-latest-scan",
+            "value": "true"
+          },
+          {
+            "name": "hardware-model",
+            "value": "Protectli VP2420"
+          },
+          {
+            "name": "location",
+            "value": "On-prem homelab rack, Virginia"
+          },
+          {
+            "name": "function",
+            "value": "Boundary firewall (Protectli VP2420, OPNsense 24.x)"
+          },
+          {
+            "name": "diagram-label",
+            "value": "F1"
+          },
+          {
+            "name": "asset-tag",
+            "value": "HOMELAB-FW-001"
+          },
+          {
+            "name": "comments",
+            "value": "OPNsense \u2014 boundary protection enforcer; logs shipped via syslog to Wazuh"
+          }
+        ]
+      },
+      {
+        "uuid": "8c50fb21-aa18-41d1-9c9a-8f3923e4c2d1",
+        "type": "network",
+        "title": "mokerlink",
+        "description": "L2/L3 microsegmentation (10G managed switch)",
+        "purpose": "L2/L3 microsegmentation (10G managed switch)",
+        "props": [
+          {
+            "name": "asset-id",
+            "value": "MSS-NON-MOKERLINK"
+          },
+          {
+            "name": "ipv4-address",
+            "value": "10.10.10.2"
+          },
+          {
+            "name": "asset-type",
+            "value": "Network"
+          },
+          {
+            "name": "boundary",
+            "value": "in"
+          },
+          {
+            "name": "is-virtual",
+            "value": "false"
+          },
+          {
+            "name": "is-public",
+            "value": "false"
+          },
+          {
+            "name": "authenticated-scan",
+            "value": "false"
+          },
+          {
+            "name": "in-latest-scan",
+            "value": "true"
+          },
+          {
+            "name": "hardware-model",
+            "value": "MokerLink 10G08410GSM"
+          },
+          {
+            "name": "location",
+            "value": "On-prem homelab rack, Virginia"
+          },
+          {
+            "name": "function",
+            "value": "L2/L3 microsegmentation (10G managed switch)"
+          },
+          {
+            "name": "diagram-label",
+            "value": "N1"
+          },
+          {
+            "name": "asset-tag",
+            "value": "HOMELAB-SW-001"
+          },
+          {
+            "name": "comments",
+            "value": "Switch ACLs enforce VLAN 20/30 microsegmentation; mirror sessions for Arkime/Zeek"
+          }
+        ]
+      }
+    ]
+  }
+}
