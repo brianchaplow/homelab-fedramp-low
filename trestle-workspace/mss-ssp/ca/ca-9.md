@@ -25,18 +25,18 @@ x-trestle-set-params:
   ca-09_odp.01:
     alt-identifier: ca-9_prm_1
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - all VLAN 20 and VLAN 30 components listed in CLAUDE.md All Hosts table
+    profile-param-value-origin: organization
   ca-09_odp.02:
     alt-identifier: ca-9_prm_2
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - component decommission; security incident requiring isolation; unauthorized connection detected
+    profile-param-value-origin: organization
   ca-09_odp.03:
     alt-identifier: ca-9_prm_3
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - annually; following significant network or component change
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -85,8 +85,14 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: ca-9 -->
+Internal connections are authorized and documented through three mechanisms: `CLAUDE.md` §"All Hosts" (authoritative inventory with IP, VLAN, and role for each component), `oscal/component-definition.json` (OSCAL-format inventory of 7 in-boundary components: brisket, haccp, smokehouse, dojo, regscale, OPNsense, MokerLink), and `reference/network.md` (detailed topology, OPNsense interface configuration, firewall rules, and MokerLink ACL table).
 
-#### Implementation Status: planned
+Key internal connections, authorized and documented: Wazuh agents (15 total) to Manager (brisket:1514/1515) via OSSEC encrypted protocol carrying security events and syscollector data across VLAN 20/30/10; Filebeat (smokehouse) to Logstash (brisket:5044) carrying Zeek logs via Beat protocol on VLAN 20; Fleet agents (haccp) to Elasticsearch (haccp:9200) via HTTPS on VLAN 30 local; Logstash (haccp) to OpenCTI (brisket:8080) via HTTP/REST for TI lookups across VLAN 30 to VLAN 20; Logstash (haccp) to Ollama (brisket:11434) via HTTP for LLM classification with token-bucket rate limit (10 req/min) across VLAN 30 to VLAN 20; PBS LXC 300 (10.10.30.24) to smokehouse NFS (10.10.20.10) via NFSv3/v4 TCP carrying VM backup data, hardened per ADR 0005 with `x-systemd.automount,x-systemd.idle-timeout=600,x-systemd.mount-timeout=30`; dojo (10.10.30.27) and regscale (10.10.30.28) Wazuh agents 016/017 to brisket Manager across VLAN 30 to VLAN 20, authorized per Plan 1 ADR 0002; PITBOSS (10.10.10.100) to pipeline endpoints via SSH/Git Bash for pipeline invocations on management VLAN 10 to VLAN 20. MokerLink mirror sessions 1+2 (TE1-TE9 to TE10/TE11) feed haccp `span0` and smokehouse `eth4` as authorized read-only SPAN -- not routable connections.
+
+Enforcement is by MokerLink L3 switch ACL (10.10.10.2) for inter-VLAN routing authorization, and OPNsense firewall (10.10.10.1) for inter-VLAN policy. VLAN 40 targets are isolated with no routing path to production VLANs except through explicit OPNsense rules for the Caldera C2 path.
+
+Termination conditions are implemented: OpenCTI LXC 202 (10.10.30.26) is a documented decommission example -- connection terminated after Phase 12 migration to brisket Docker, autostart disabled. Shuffle WF1 v2 provides an immediate connection termination path via OPNsense block through `$cf_api_token` and `$cf_account_id` workflow variables. Connection need is reviewed annually and following significant network or component changes.
+
+#### Implementation Status: implemented
 
 ______________________________________________________________________

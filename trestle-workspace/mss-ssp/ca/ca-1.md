@@ -26,45 +26,45 @@ x-trestle-set-params:
     aggregates:
       - ca-01_odp.01
       - ca-01_odp.02
-    profile-param-value-origin: <REPLACE_ME>
+    profile-param-value-origin: organization
   ca-01_odp.01:
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - system owner (Brian Chaplow)
+    profile-param-value-origin: organization
   ca-01_odp.02:
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - system owner (Brian Chaplow)
+    profile-param-value-origin: organization
   ca-01_odp.03:
     alt-identifier: ca-1_prm_2
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - system owner (Brian Chaplow)
+    profile-param-value-origin: organization
   ca-01_odp.04:
     alt-identifier: ca-1_prm_3
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - annually
+    profile-param-value-origin: organization
   ca-01_odp.05:
     alt-identifier: ca-1_prm_4
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - significant system change; security incident; regulatory update
+    profile-param-value-origin: organization
   ca-01_odp.06:
     alt-identifier: ca-1_prm_5
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - annually
+    profile-param-value-origin: organization
   ca-01_odp.07:
     alt-identifier: ca-1_prm_6
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - significant system change; security incident
+    profile-param-value-origin: organization
   ca-01_odp.08:
     alt-identifier: ca-1_prm_7
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - significant system change; security incident
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -142,8 +142,14 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: ca-1 -->
+This SSP (`oscal/ssp.json`, assembled from `trestle-workspace/mss-ssp/`) serves as the system-level assessment, authorization, and monitoring policy document for the Managed SOC Service (MSS) homelab boundary. It addresses purpose (FedRAMP Low ConMon portfolio demonstrating continuous monitoring capability), scope (7 in-boundary components per `oscal/component-definition.json`: brisket, haccp, smokehouse, dojo, regscale, OPNsense, MokerLink), roles (system owner = Brian Chaplow), responsibilities (sole operator), and compliance (FedRAMP Rev 5 Low baseline, NIST SP 800-53 Rev 5). The SSP is disseminated to the system owner and is the authoritative policy artifact for the portfolio.
 
-#### Implementation Status: planned
+The ConMon procedures are documented in `runbooks/monthly-conmon.md`, which describes the monthly `./pipelines.sh conmon` cycle: ingest-findings from Wazuh, build OSCAL POA&M, render IIW and POA&M xlsx, and report results. Plan 3 SSP authoring constitutes the initial documentation event; annual review cadence starts from Plan 3 completion.
+
+The ADR series (`docs/adr/0001` through `docs/adr/0008`) provides the change-event record: each ADR is filed at a significant system change or deviation discovery event, which serves as the "following events" trigger for policy and procedure review. `docs/adr/0008-plan-3-pre-execution-realignment.md` documents the pre-execution critical read (2026-04-09) as the first formal policy review event. Annual review is the established cadence going forward; the next review will occur no later than 2027-04-09 or following the next significant system change, whichever comes first.
+
+CA-1 is partially implemented: SSP prose and runbook are authored during Plan 3; formal calendar-scheduled annual review has not yet been established for future cycles. The policy content is complete; the scheduling mechanism for future reviews is the named gap.
+
+#### Implementation Status: partial
 
 ______________________________________________________________________

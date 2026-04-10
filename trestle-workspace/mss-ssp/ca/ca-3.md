@@ -25,18 +25,18 @@ x-trestle-set-params:
   ca-03_odp.01:
     alt-identifier: ca-3_prm_1
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - information exchange security agreements (documented in SSP and CLAUDE.md)
+    profile-param-value-origin: organization
   ca-03_odp.02:
     alt-identifier: ca-3_prm_2
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - this SSP (external connections section); CLAUDE.md Network Quick Reference
+    profile-param-value-origin: organization
   ca-03_odp.03:
     alt-identifier: ca-3_prm_3
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - annually; following significant system or network change
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -85,8 +85,18 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: ca-3 -->
+The MSS homelab boundary has four categories of external information exchange, all documented in `CLAUDE.md` (the authoritative whole-project design reference) and this SSP. Agreement type for all external exchanges is information exchange security agreement, documented in prose in this SSP and in `CLAUDE.md` §"Network Quick Reference" and `reference/network.md`.
 
-#### Implementation Status: planned
+The first category is the Tailscale overlay network (outbound/bidirectional). Hosts with Tailscale connectivity: brisket (TS 100.124.139.56), smokehouse (TS 100.110.112.98), sear (TS 100.86.67.91), haccp (TS 100.74.16.82), smoker (TS 100.77.138.24), PITBOSS (TS 100.126.10.19), GCP VM (TS 100.125.40.97). Protocol: WireGuard-based mesh VPN. Traffic is encrypted in transit. Information communicated: SSH management sessions and pipeline invocations from PITBOSS. Impact: low (management traffic only). Responsibility: Tailscale, Inc. operates the coordination plane; each node is owned by Brian Chaplow.
+
+The second category is the GCP VM Wazuh agent (agent 009) reporting from an external IP to brisket Wazuh Manager (10.10.20.30:1514/1515). Interface: OSSEC protocol over Tailscale WireGuard tunnel. Information communicated: security events and syslog. Impact: low.
+
+The third category is the PBS LXC 300 (10.10.30.24) NFS mount to smokehouse (10.10.20.10) over the VLAN 30 to VLAN 20 routed path. Interface: NFSv3/v4 over TCP. Information: VM backup data including ConMon artifacts. Impact: moderate (backup loss creates recovery gap). Hardened per ADR 0005: fstab uses `x-systemd.automount,x-systemd.idle-timeout=600,x-systemd.mount-timeout=30` to prevent boot-race failures.
+
+The fourth category is the OPNsense syslog feed (514/UDP) to Wazuh Manager (in-boundary, VLAN 10 to VLAN 20). Interface: syslog UDP. Information: firewall events. Impact: low.
+
+Agreements are reviewed annually and following significant network or component changes. HTTP-only posture for DefectDojo and RegScale is a known gap acknowledged in ADR 0002 and ADR 0003; SC-8 addresses the mitigations. Formal written ISAs do not exist; this SSP prose serves as the agreement documentation for the homelab scope.
+
+#### Implementation Status: partial
 
 ______________________________________________________________________

@@ -25,13 +25,13 @@ x-trestle-set-params:
   ca-02_odp.01:
     alt-identifier: ca-2_prm_1
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - annually (aligned with FedRAMP ConMon annual assessment)
+    profile-param-value-origin: organization
   ca-02_odp.02:
     alt-identifier: ca-2_prm_2
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - system owner (Brian Chaplow)
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -106,8 +106,14 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: ca-2 -->
+The assessor for this homelab system is Brian Chaplow (system owner and sole operator). The assessment plan is embedded in the SSP and `runbooks/monthly-conmon.md`: scope is the FedRAMP Rev 5 Low baseline applied to 7 in-boundary components (brisket, haccp, smokehouse, dojo, regscale, OPNsense, MokerLink); assessment procedures are the `./pipelines.sh conmon` pipeline subcommands; assessment environment is the Wazuh SIEM (brisket, 10.10.20.30) and DefectDojo (dojo, 10.10.30.27:8080).
 
-#### Implementation Status: planned
+The primary assessment mechanism is automated: `pipelines/ingest/wazuh_vulns.py` ingests all open vulnerability findings from the `wazuh-states-vulnerabilities-*` index via the Wazuh Indexer (OpenSearch at `https://10.10.20.30:9200`), using `search_after` pagination to capture the full finding set. The live April 2026 run produced 8,471 findings across 5 in-boundary agents (brisket 2,804; haccp 1,899; regscale 1,861; dojo 1,861; smokehouse 46) per ADR 0007 Task 10.
+
+The assessment report is `poam/POAM-2026-04.xlsx` (4.9 MB, 8,473 rows in FedRAMP Rev 5 POA&M template format), produced by `pipelines/render/poam.py` and rendered from `oscal/poam.json` (16.8 MB OSCAL 1.1.2 POA&M). DefectDojo (`http://10.10.30.27:8080`) hosts findings across 5 products -- MSS Core (brisket), MSS Log Analytics (haccp), MSS Network Sensors (smokehouse), MSS GRC Tooling (dojo + regscale) -- with engagement "ConMon 2026-04" serving as the assessment scope record. The assessment report and DefectDojo findings are provided to the system owner (Brian Chaplow). Assessment frequency is annual for full SSP review; monthly for vulnerability scan ingestion via `./pipelines.sh conmon`.
+
+CA-2 is partially implemented: the assessment artifact (POA&M) and pipeline are operational and live-verified per ADR 0007. A formal written assessment plan as a standalone document distinct from the SSP has not been produced; the SSP and `runbooks/monthly-conmon.md` together serve this function for the homelab scope.
+
+#### Implementation Status: partial
 
 ______________________________________________________________________

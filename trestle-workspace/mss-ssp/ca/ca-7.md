@@ -26,43 +26,43 @@ x-trestle-set-params:
     aggregates:
       - ca-07_odp.04
       - ca-07_odp.06
-    profile-param-value-origin: <REPLACE_ME>
+    profile-param-value-origin: organization
   ca-7_prm_5:
     aggregates:
       - ca-07_odp.05
       - ca-07_odp.07
-    profile-param-value-origin: <REPLACE_ME>
+    profile-param-value-origin: organization
   ca-07_odp.01:
     alt-identifier: ca-7_prm_1
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - vulnerability counts by severity (per Wazuh/DefectDojo); POA&M SLA adherence rate; Wazuh agent connectivity (15 agents); PBS backup job success (daily); GPU thermal headroom (brisket RTX A1000)
+    profile-param-value-origin: organization
   ca-07_odp.02:
     alt-identifier: ca-7_prm_2
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - continuous (Wazuh real-time); every 5 minutes (Shuffle WF9); daily (PBS backup tripwire); monthly (ConMon cycle)
+    profile-param-value-origin: organization
   ca-07_odp.03:
     alt-identifier: ca-7_prm_3
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - monthly (each ./pipelines.sh conmon run); annually (full SSP review)
+    profile-param-value-origin: organization
   ca-07_odp.04:
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - system owner (Brian Chaplow)
+    profile-param-value-origin: organization
   ca-07_odp.05:
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - monthly (ConMon cycle output); daily (Wazuh/Discord alerts)
+    profile-param-value-origin: organization
   ca-07_odp.06:
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - system owner (Brian Chaplow)
+    profile-param-value-origin: organization
   ca-07_odp.07:
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - monthly (ConMon cycle output); daily (Wazuh/Discord alerts)
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -132,8 +132,20 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: ca-7 -->
+CA-7 is the hero control for the MSS CA family. The entire Plan 2 ConMon pipeline -- designed, built, and live-verified in `homelab-fedramp-low` -- is the CA-7 implementation. This control is implemented end-to-end.
 
-#### Implementation Status: planned
+**ConMon orchestration.** `./pipelines.sh conmon` (`pipelines/cli.py` `conmon` command) executes the complete monthly cycle in a single command: ingest-findings (Wazuh vulnerability data) -- push to DefectDojo -- build OSCAL POA&M -- render IIW xlsx -- render POA&M xlsx. The live April 2026 run produced `poam/POAM-2026-04.xlsx` (4.9 MB, 8,473 rows) and `inventory/IIW-2026-04.xlsx` (178 KB, 7 rows) verified against live infrastructure per ADR 0007. The ConMon procedure is documented in `runbooks/monthly-conmon.md`.
+
+**Real-time monitoring.** Wazuh SIEM (brisket, 10.10.20.30) is the primary real-time monitoring platform with 15 enrolled agents: brisket, haccp, smokehouse, sear, PITBOSS, DC01, WS01, DVWA/Juice Shop, Metasploitable 3 Linux and Win, WordPress, crAPI, vsftpd, dojo (016), and regscale (017), plus OPNsense syslog (514/UDP). The Zeek pipeline ships 7 indices (`zeek-*`) to the Wazuh Indexer (OpenSearch at `https://10.10.20.30:9200`). ELK Stack (haccp, 10.10.30.25) runs Elasticsearch 8.17 plus Kibana plus Fleet plus Logstash in Docker (`/opt/elk/docker-compose.yml`); 4 Fleet agents; 214 detection rules; `logs-zeek.haccp-default-*` data stream from the Phase 14 Zeek enrichment pipeline.
+
+**Threat intelligence enrichment.** OpenCTI v7 (brisket:8080) provides threat intelligence with 6 active connectors. IOC sync to Wazuh CDB lists runs every 6 hours (`0 */6 * * *`); sync to haccp `opencti-threat-intel` index runs every 6 hours (`15 */6 * * *`). The Phase 14 Logstash enrichment pipeline on haccp is a 5-stage pipeline: de-dot -- OpenCTI TI lookups -- novel-entity tracking in `haccp-entities-seen` -- tier routing -- Ollama LLM classification on brisket qwen3:8b via token-bucket rate limiter (10 requests/min cap after thermal hardening on 2026-04-08, preventing brisket RTX A1000 from exceeding 63C sustained). Output to `logs-zeek.haccp-default-*`. PCAP archival to smokehouse via daily SSH/rsync cron at 0300. Nightly briefing generator at 0515 feeds Shuffle WF10.
+
+**SOAR and alerting.** Shuffle SOAR (brisket:3443) runs 10 active workflows: WF1 v2 (webhook-triggered enrichment + OPNsense block + dedup via Cloudflare and AbuseIPDB), WF2 (digest cron 0600/1800), WF3 (Caldera webhook), WF5 (cron Mon-Sat 1200), WF6 (cron 0900), WF8 (cron 1500), WF9 (5-min polling for stalker alerts), WF10 (0530 EST nightly briefing from Phase 14 pipeline output), and WF11 (1730 EST). All workflow credentials are Shuffle workflow variables (`$discord_webhook`, `$abuseipdb_key`, `$cf_api_token`, `$elk_url`, etc.) -- no hardcoded secrets. Grafana (brisket:3000) provides SOC v3 Overview dashboards plus the "GPU Thermal Critical -- Brisket Above 90C" alert (uid=dfihoiidr7k00c, 2-minute window) routing to Discord #infrastructure-alerts.
+
+**Vulnerability assessment.** `pipelines/ingest/wazuh_vulns.py` ingests all open findings from `wazuh-states-vulnerabilities-*` using `search_after` pagination (8,471 findings across 5 agents in April 2026 cycle). `pipelines/push/defectdojo.py` normalizes and pushes to DefectDojo monthly engagement "ConMon YYYY-MM" per product. `pipelines/build/oscal_poam.py` maps each finding to an OSCAL POA&M item with FedRAMP Low SLA dates (Critical=15, High=30, Medium/Moderate=90, Low=180 days). DefectDojo SLA enforcement flags findings approaching or past SLA across all 5 MSS products.
+
+**Status reporting.** Security status is reported to the system owner (Brian Chaplow) via two channels: daily through Discord (#morning-briefing via Shuffle WF10 nightly briefing, #soc-alerts via Wazuh/Shuffle real-time routing) and monthly through `poam/POAM-2026-04.xlsx` (updated on each `./pipelines.sh conmon` run). The test suite (136 tests after Plan 3 Task 3 in `tests/`) provides automated regression-safety assertion of pipeline correctness on every run. Elastic ML trial license on haccp analyzes DC01/WS01 Windows Security events for anomalies, extending correlation into behavioral analytics.
+
+#### Implementation Status: implemented
 
 ______________________________________________________________________

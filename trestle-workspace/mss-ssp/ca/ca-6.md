@@ -25,8 +25,8 @@ x-trestle-set-params:
   ca-06_odp:
     alt-identifier: ca-6_prm_1
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - annually; following significant security change
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -82,7 +82,13 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: ca-6 -->
+Brian Chaplow (system owner and sole operator) is assigned as the authorizing official (AO) for the MSS homelab system. This is the maximum level of independence feasible for a single-person portfolio system; the AO role and system owner role are held by the same individual, which is the honest state for this scope.
+
+This SSP (`oscal/ssp.json`, assembled from `trestle-workspace/mss-ssp/`) constitutes the authorization package. It documents the system boundary (7 in-boundary components per `oscal/component-definition.json`), the complete FedRAMP Rev 5 Low control implementation, and the POA&M (`poam/POAM-2026-04.xlsx`, 8,473 items). Plan 3 SSP authoring is the authorization event -- a completed SSP with realistic Tier-1-grade implementation prose, live-verified CA-7 ConMon pipeline, and passing test suite (136 tests) represents the ATO artifact for portfolio purposes.
+
+ADR 0009 (planned, to be filed at Plan 3 Gate 5) will serve as the formal self-authorization decision record. ADR 0008 §"Authoritative Plan 3 artifacts" explicitly identifies ADR 0009 as the "Plan 3 completion" ADR filed at Gate 5; that ADR will capture the AO's acceptance of risk and authorization to operate. No common controls are inherited from a shared services provider; this system is standalone and all controls are system-specific. Authorization updates are performed annually and following any significant security change, leveraging the monthly ConMon cycle results as the evidentiary basis.
+
+A real FedRAMP authorization requires a federally-delegated AO and a FedRAMP-authorized 3PAO. This homelab treats the system owner as AO and the automated test suite plus SSP as the equivalent of a 3PAO assessment package, per the explicit portfolio scope documented in `README.md`. ADR 0009 has not been filed (pending Plan 3 Gate 5); the authorization event has not yet formally occurred.
 
 #### Implementation Status: planned
 

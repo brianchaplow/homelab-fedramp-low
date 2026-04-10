@@ -46,8 +46,14 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: ca-2.1 -->
+This is a single-person portfolio system owned and operated by Brian Chaplow. Full assessor independence -- a separate organizational entity with no stake in the system -- is not feasible at homelab scale. The control is implemented at a commensurate level through three structural independence mechanisms.
 
-#### Implementation Status: planned
+First, `pipelines/ingest/wazuh_vulns.py` ingests vulnerability findings directly from the Wazuh Indexer (OpenSearch at `https://10.10.20.30:9200`) without manual filtering. The scanner result is authoritative: the operator cannot alter the finding data before it enters DefectDojo. Second, `pipelines/push/defectdojo.py` writes findings to DefectDojo (10.10.30.27:8080) as a separate system with a separate credential (`$DD_API_KEY` in `.env`); findings cannot be deleted or modified without explicit DefectDojo API access, creating an audit trail that is independent of the pipeline authoring workflow. Third, the test suite in `tests/` (136 tests after Plan 3 Task 3) provides automated, deterministic verification of every pipeline module -- test failures are objective and not subject to operator override without a code change.
+
+The Gate 3 spot-check documented in `docs/adr/0008-plan-3-pre-execution-realignment.md` applies a 144-point self-review of evidence citations against repo artifacts before SSP publication, reducing the risk of undetected hallucinated citations. This is the closest analog to a third-party review available in a single-operator scope.
+
+The accepted limitation is that true third-party independence is not implemented and no contracted 3PAO assessment exists. This is the honest state for a homelab portfolio; the automated pipeline provides the nearest feasible independence substitute and is identified as such.
+
+#### Implementation Status: partial
 
 ______________________________________________________________________
