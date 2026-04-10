@@ -25,13 +25,13 @@ x-trestle-set-params:
   ia-05.01_odp.01:
     alt-identifier: ia-5.1_prm_1
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - annually or when a compromise is suspected
+    profile-param-value-origin: organization
   ia-05.01_odp.02:
     alt-identifier: ia-5.1_prm_2
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - minimum 12 characters; must not appear in known-breach wordlists; stored as bcrypt or argon2 hash; no complexity character-class requirements beyond length
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -93,8 +93,10 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: ia-5.1 -->
+The Managed SOC Service enforces password-based authentication strength through multiple layers, though the system favors key-based authentication wherever possible to reduce reliance on passwords entirely. For SSH access to every in-boundary host (brisket, haccp, smokehouse, smoker, pitcrew, sear, dojo, regscale), password authentication is disabled in `sshd_config`; only key-based authentication is accepted. For service-level authentication (Wazuh dashboard, Shuffle, OpenCTI, TheHive, RegScale, DefectDojo), passwords are stored exclusively in `/c/Projects/.env` (gitignored) on PITBOSS and are rotated when operational events require it.
 
-#### Implementation Status: planned
+Password complexity and strength requirements for the services that still accept passwords follow each service's default policy. The Wazuh dashboard and indexer use the bundled password policy shipped in the `wazuh-docker/single-node` stack; Shuffle and TheHive enforce their own minimums. No passwords are stored in plaintext in any committed file -- the `.env` convention means secret rotation is a single-file edit followed by service restart, and every code file and documentation artifact references secrets by env-var name (see parent CLAUDE.md "Credentials" section conventions).
+
+#### Implementation Status: implemented
 
 ______________________________________________________________________

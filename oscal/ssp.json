@@ -3,7 +3,7 @@
     "uuid": "ff2c49ad-b919-47e0-a79a-2a9bf1705f51",
     "metadata": {
       "title": "REPLACE_ME",
-      "last-modified": "2026-04-09T16:39:44.352251-04:00",
+      "last-modified": "2026-04-10T09:03:28.601366-04:00",
       "version": "REPLACE_ME",
       "oscal-version": "1.2.1"
     },
@@ -602,9 +602,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "2aea14d8-f6aa-4d6f-8bca-111b19dca0e2",
-              "description": "",
+              "description": "The Managed SOC Service maintains its baseline configuration as git-tracked code across four public and private repositories: `homelab-soc-portfolio` (every SOC config checked in), `HomeLab-SOC-v2` (legacy configs retained for delta analysis), `brisket-setup/` (v3 platform install and monitoring configs), and `reference/phase14/` (Zeek baseline for the haccp data foundation). Every configuration change is a git commit with an ADR when the change is architecturally significant; every change is therefore attributable, reviewable, and rollback-able. The baseline is reviewed on the monthly ConMon cycle (`./pipelines.sh conmon`) and whenever a new phase adds infrastructure, a host is reimaged, or an ADR records a configuration-drift incident.\n\nThe baseline is supported by PBS (Proxmox Backup Server on smoker LXC 300) with daily snapshots to smokehouse 17TB NFS as the recovery backstop, and by Wazuh agent syscollector which captures each host's installed package set and configuration drift for indexer-side review. The auditable example of baseline drift being caught and fixed is homelab-fedramp-low ADR 0005: the PBS automount regression during the 2026-04-07 rack consolidation was detected, fixed, and the fix was itself encoded as a baseline change (fstab `x-systemd.automount,x-systemd.idle-timeout=600,x-systemd.mount-timeout=30`) -- the full cycle from drift to detection to remediation to baseline update.",
               "implementation-status": {
-                "state": "planned"
+                "state": "implemented"
               }
             }
           ]
@@ -882,9 +882,9 @@
             {
               "component-uuid": "23ab64d8-25eb-4808-8825-6662e98bfc6c",
               "uuid": "72beedad-27da-4183-bb7d-284869266f18",
-              "description": "",
+              "description": "The Managed SOC Service enforces password-based authentication strength through multiple layers, though the system favors key-based authentication wherever possible to reduce reliance on passwords entirely. For SSH access to every in-boundary host (brisket, haccp, smokehouse, smoker, pitcrew, sear, dojo, regscale), password authentication is disabled in `sshd_config`; only key-based authentication is accepted. For service-level authentication (Wazuh dashboard, Shuffle, OpenCTI, TheHive, RegScale, DefectDojo), passwords are stored exclusively in `/c/Projects/.env` (gitignored) on PITBOSS and are rotated when operational events require it.\n\nPassword complexity and strength requirements for the services that still accept passwords follow each service's default policy. The Wazuh dashboard and indexer use the bundled password policy shipped in the `wazuh-docker/single-node` stack; Shuffle and TheHive enforce their own minimums. No passwords are stored in plaintext in any committed file -- the `.env` convention means secret rotation is a single-file edit followed by service restart, and every code file and documentation artifact references secrets by env-var name (see parent CLAUDE.md \"Credentials\" section conventions).",
               "implementation-status": {
-                "state": "planned"
+                "state": "implemented"
               }
             }
           ]
