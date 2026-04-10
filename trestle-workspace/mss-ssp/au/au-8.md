@@ -25,8 +25,8 @@ x-trestle-set-params:
   au-08_odp:
     alt-identifier: au-8_prm_1
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - one second granularity of time measurement
+    profile-param-value-origin: inherited
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -62,8 +62,10 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: au-8 -->
+All in-boundary Linux hosts -- brisket (Ubuntu 24.04), haccp (Ubuntu 24.04), smokehouse (Ubuntu 24.04 on QNAP), dojo (Ubuntu 24.04.4 LTS, Wazuh agent 016), and regscale (Ubuntu 24.04.4 LTS, Wazuh agent 017) -- run `systemd-timesyncd` synchronized to pool.ntp.org, which is active by default on the Ubuntu 24.04 kernel (6.8.0-107-generic, confirmed in ADR 0002). OPNsense synchronizes to pool.ntp.org via its built-in NTP client. All system clocks are set to UTC, providing the Coordinated Universal Time reference required by AU-8(b). The FedRAMP baseline mandates one-second granularity -- actual implementations exceed this floor: Wazuh alerts carry ISO 8601 UTC timestamps with millisecond granularity in the `@timestamp` field; Zeek logs record `ts` as Unix epoch with microsecond precision; Arkime PCAP timestamps are captured at kernel libpcap precision (microsecond). ELK Elasticsearch stores all `@timestamp` fields as UTC epoch milliseconds.
 
-#### Implementation Status: planned
+The Phase 14 Zeek community-id-propagate.zeek script instruments NTP protocol events (hook defined at lines 199-204), confirming that NTP traffic crossing the span0 mirror is itself auditable within the Zeek logging stack -- any NTP source change or stratum shift is visible in the `logs-zeek.haccp-default-*` data stream. This provides a secondary verification layer on time-sync integrity. Consistent UTC-referenced timestamps across both the Wazuh and ELK stacks are prerequisite for community-id cross-correlation between Zeek records and Arkime PCAP sessions -- any drift would break the correlation and is therefore operationally self-detecting.
+
+#### Implementation Status: implemented
 
 ______________________________________________________________________

@@ -25,8 +25,8 @@ x-trestle-set-params:
   au-09_odp:
     alt-identifier: au-9_prm_1
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - Brian Chaplow (system owner, sole operator) via Discord #infrastructure-alerts (Grafana alert on host unreachability)
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -62,8 +62,10 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: au-9 -->
+Audit information protection relies on three complementary controls. First, transport security: Wazuh Indexer (OpenSearch) at brisket:9200 requires TLS and HTTP basic authentication (`admin` account, password stored only in `.env` which is gitignored per CLAUDE.md conventions and never committed to version control); ELK Elasticsearch at haccp:9200 requires TLS and `elastic` user authentication. Logstash output in `zeek-enrichment.conf` (lines 287-299) authenticates to Elasticsearch with TLS and credentials before writing any enriched records. Second, network isolation: both OpenSearch (brisket) and Elasticsearch (haccp) run in Docker networks with no host-port exposure beyond the documented service ports; Wazuh alert indices are write-only from the Wazuh Manager container -- enrolled agents cannot directly write to, read from, or delete index data. Third, host-level access controls: UFW enforces default-deny ingress on all in-boundary Linux hosts, requiring explicit port-level allows that are documented in ADR 0002 and CLAUDE.md. PCAP files on haccp at `/opt/arkime/raw` are owned by `nobody:daemon` (Arkime drops privileges after start via `dropUser=nobody`/`dropGroup=daemon`), preventing any user-context process from writing or deleting PCAP directly.
 
-#### Implementation Status: planned
+The gap in this control is the absence of write-once or WORM storage for audit records and the absence of cryptographic integrity verification (e.g., hash chaining) applied to index content. Wazuh FIM could be configured to monitor the Docker volume mount points on brisket and haccp to detect unauthorized modification or deletion of index files on disk -- this is not currently wired. Until file-integrity monitoring is applied to the audit index data paths and a WORM or integrity-verification mechanism is in place, this control is assessed as partial.
+
+#### Implementation Status: partial
 
 ______________________________________________________________________

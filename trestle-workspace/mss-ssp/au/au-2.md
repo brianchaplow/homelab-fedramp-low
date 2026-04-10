@@ -26,25 +26,25 @@ x-trestle-set-params:
     aggregates:
       - au-02_odp.02
       - au-02_odp.03
-    profile-param-value-origin: <REPLACE_ME>
+    profile-param-value-origin: organization
   au-02_odp.01:
     alt-identifier: au-2_prm_1
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - successful and unsuccessful account logon events, account management events, object access, policy change, privilege functions, process tracking, and system events. For Web applications: all administrator activity, authentication checks, authorization checks, data deletions, data access, data changes, and permission changes
+    profile-param-value-origin: inherited
   au-02_odp.02:
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - all FedRAMP-mandated event types listed in AU-02_ODP[01] are logged continuously across all in-boundary agents; additionally, network protocol metadata (conn, dns, http, ssl, ssh, files, x509), IDS signature alerts, full-PCAP records, and threat-intel-enriched tier events are logged across the Zeek and Suricata stacks
+    profile-param-value-origin: organization
   au-02_odp.03:
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - continuously (real-time ingestion via Wazuh agents, Zeek, Suricata, Filebeat, and Logstash pipelines)
+    profile-param-value-origin: organization
   au-02_odp.04:
     alt-identifier: au-2_prm_3
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - annually and whenever there is a change in the threat environment
+    profile-param-value-origin: inherited
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -99,8 +99,10 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: au-2 -->
+The MSS event logging capability is anchored by Wazuh 4.14.4 on brisket, which manages 15 in-boundary agents across every monitored host and ships all alert records to `wazuh-alerts-4.x-*` indices on the Wazuh Indexer (OpenSearch, brisket:9200). The 214 active detection rules cover the complete FedRAMP-mandated event set: account logon success/failure (Wazuh rule groups `authentication_success`, `authentication_failed`), account management events (group `account_changed`), object access and privilege function usage via Wazuh FIM and syscheck, policy changes, process tracking via syscollector, and system events from syslog and OPNsense firewall syslog (UDP 514). Suricata on smokehouse eth4 runs the ET Open ruleset (47,487+ signatures) plus 10 custom HOMELAB rules (SIDs 9000001-9000021) covering SQL injection, XSS, command injection, SQLmap, and directory traversal -- IDS alert records ship via the smokehouse Wazuh agent into the same `wazuh-alerts-*` index.
 
-#### Implementation Status: planned
+The second logging stack operates on haccp: Zeek 8.1.1 on span0 produces JSON protocol logs for conn, dns, http, ssl, ssh, files, x509, and notice log types, enriched with JA3/JA4 TLS fingerprints and community-id for cross-source correlation. Filebeat ships Zeek JSON to Logstash:5044 where the 5-stage zeek-enrichment pipeline (de-dot, OpenCTI TI lookup, novel-entity tracking, tier routing, Ollama LLM classification) produces `logs-zeek.haccp-default-*` records in ELK Elasticsearch (haccp:9200). Arkime on haccp span0 captures full PCAP indexed against the same community-id namespace, providing forensic-completeness for any event surfaced by either stack. The `generate-attack-layer.py` script queries both `wazuh-alerts-*` and `logs-zeek.*` to produce a unified MITRE ATT&CK Navigator coverage layer, confirming coordinated event-type selection across the dual-stack architecture. Event types selected for logging are reviewed annually and whenever the threat environment changes.
+
+#### Implementation Status: implemented
 
 ______________________________________________________________________

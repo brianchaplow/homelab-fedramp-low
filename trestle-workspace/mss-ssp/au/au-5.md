@@ -25,18 +25,18 @@ x-trestle-set-params:
   au-05_odp.01:
     alt-identifier: au-5_prm_1
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - Brian Chaplow (system owner, sole operator) via Discord #infrastructure-alerts
+    profile-param-value-origin: organization
   au-05_odp.02:
     alt-identifier: au-5_prm_2
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - within 15 minutes (Grafana alert evaluation window plus Discord delivery)
+    profile-param-value-origin: organization
   au-05_odp.03:
     alt-identifier: au-5_prm_3
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - overwrite oldest record
+    profile-param-value-origin: inherited
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -72,8 +72,10 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: au-5 -->
+Grafana Unified Alerting on brisket provides the primary failure-notification mechanism for audit log storage exhaustion. Four alert rules defined in `build-grafana-alerts.py` route to Discord `#infrastructure-alerts` via the `$discord_webhook_infra` Shuffle variable: "Disk Critical -- Usage Above 90%" fires when any monitored host's primary volume exceeds 90% utilization; "Service Down" fires when a Blackbox HTTP probe detects a monitored service unreachable; "Host Unreachable" fires when an ICMP probe fails; and "GPU Thermal Critical -- Brisket Above 90C" (uid=dfihoiidr7k00c) fires when GPU temperature threatens the Logstash/Ollama enrichment pipeline. All four alert evaluation windows are 2-5 minutes, delivering Discord notification to the operator within 15 minutes of detection. When disk capacity approaches saturation, the FedRAMP-mandated additional action is overwrite-oldest-record -- for Arkime PCAP this is enforced automatically by the `freeSpaceG=100` config parameter; for OpenSearch indices no automated overwrite is configured (gap: operator must manually manage index deletion or implement ILM).
 
-#### Implementation Status: planned
+The gap with respect to AU-5 is that Wazuh indexer health, Filebeat pipeline status, and Logstash pipeline errors are not currently subjects of dedicated alerting. This gap became visible during homelab-fedramp-low ADR 0005, which documents that a 5-day PBS backup failure went undetected because no targeted alert existed for that subsystem -- the same failure mode applies to audit pipelines. Plan 1 Task 20 captured a ConMon follow-up to wire a Wazuh/Discord alert on PBS backup status; an equivalent alert for Logstash pipeline errors and OpenSearch indexer availability is in the ConMon roadmap. Until that gap is closed, this control is assessed as partial.
+
+#### Implementation Status: partial
 
 ______________________________________________________________________

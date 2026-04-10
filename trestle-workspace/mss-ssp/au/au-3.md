@@ -64,8 +64,10 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: au-3 -->
+Wazuh alert records in `wazuh-alerts-4.x-*` satisfy all six AU-3 content elements. (a) Event type: the `rule.description` field identifies what occurred (e.g., "Multiple authentication failures," "File integrity monitoring -- file modified"). (b) Timestamp: `@timestamp` in ISO 8601 UTC with millisecond precision. (c) Where: `agent.name` and `agent.ip` identify the host where the event was generated; `manager.name` identifies the Wazuh node. (d) Source: `data.srcip`, `data.win.eventdata.ipAddress`, or equivalent source-address fields capture the originating entity; for FIM events, the path field identifies the object. (e) Outcome: `rule.level` (0-15 severity scale) and `rule.groups` encode success/failure; for authentication events, `data.win.system.keywords` carries Success/Failure explicitly. (f) Identity: `data.win.eventdata.targetUserName`, `data.srcuser`, or `agent.name` identify the subject or object associated with the event -- covering both human accounts and process identities.
 
-#### Implementation Status: planned
+At the network layer, Zeek records in `logs-zeek.haccp-default-*` carry the same six elements: `_path` (event type), `ts` (Unix epoch microseconds, UTC), `id_orig_h`/`id_resp_h` (source/destination addresses satisfying where and source), connection state field (outcome -- S0, SF, REJ, RSTO), and community-id enabling correlation back to the originating Wazuh alert or Arkime PCAP session for identity resolution. The Logstash zeek-enrichment pipeline appends `llm.verdict` (Ollama classification) and OpenCTI TI match fields, enriching the base content without replacing the required six elements. Arkime PCAP provides packet-level source/destination/payload as a forensic backstop for any event where field-level identity resolution is incomplete.
+
+#### Implementation Status: implemented
 
 ______________________________________________________________________

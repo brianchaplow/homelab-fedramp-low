@@ -26,45 +26,45 @@ x-trestle-set-params:
     aggregates:
       - au-01_odp.01
       - au-01_odp.02
-    profile-param-value-origin: <REPLACE_ME>
+    profile-param-value-origin: organization
   au-01_odp.01:
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - Brian Chaplow (system owner, sole operator)
+    profile-param-value-origin: organization
   au-01_odp.02:
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - Brian Chaplow (system owner, sole operator)
+    profile-param-value-origin: organization
   au-01_odp.03:
     alt-identifier: au-1_prm_2
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - system-level
+    profile-param-value-origin: organization
   au-01_odp.04:
     alt-identifier: au-1_prm_3
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - Brian Chaplow, system owner
+    profile-param-value-origin: organization
   au-01_odp.05:
     alt-identifier: au-1_prm_4
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - at least every 3 years
+    profile-param-value-origin: inherited
   au-01_odp.06:
     alt-identifier: au-1_prm_5
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - significant changes
+    profile-param-value-origin: inherited
   au-01_odp.07:
     alt-identifier: au-1_prm_6
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - at least annually
+    profile-param-value-origin: inherited
   au-01_odp.08:
     alt-identifier: au-1_prm_7
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - significant changes
+    profile-param-value-origin: inherited
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -142,8 +142,10 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: au-1 -->
+The Managed SOC Service audit and accountability policy is documented at the system level within this SSP and its supporting ADR chain (`docs/adr/`). This SSP constitutes the AU policy artifact, covering purpose (detection and accountability for all in-boundary system events), scope (all components enumerated in Section 2 of this SSP), roles (Brian Chaplow as system owner and sole operator), responsibilities (operator bears all AU implementation and ConMon duties), management commitment (ADR 0001 pre-flight signoff), and compliance with NIST SP 800-53 Rev 5 FedRAMP Low baseline. `CLAUDE.md` captures operating conventions and service-inventory context that informs daily AU decisions. The gap inherent in this approach is the absence of a standalone formal policy document -- appropriate for a single-operator system but acknowledged here for assessor transparency.
 
-#### Implementation Status: planned
+Procedures for audit and accountability are captured in `runbooks/monthly-conmon.md`, which documents the recurring ConMon cycle including audit log review cadence, alert triage, and evidence collection. ADR 0007 (Plan 2 completion) establishes the OSCAL pipeline as the authority for SSP assembly and ongoing policy maintenance. ADR 0008 (Plan 3 pre-execution) documents set-params conventions and implementation-status rubric applied across this SSP. Policy review is scheduled at least every 3 years and following significant changes (infrastructure additions, ADR-recorded drift events, or security incidents); procedures are reviewed at least annually. Brian Chaplow is designated as the responsible official for the development, documentation, and dissemination of this policy and its associated procedures.
+
+#### Implementation Status: partial
 
 ______________________________________________________________________

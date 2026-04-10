@@ -25,8 +25,8 @@ x-trestle-set-params:
   au-04_odp:
     alt-identifier: au-4_prm_1
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - Wazuh-alerts on brisket NVMe (capacity monitored by Grafana alert at 90% disk usage); Zeek/ELK logs on haccp 2TB dedicated NVMe; PCAP on haccp 2TB NVMe with freeSpaceG=100 auto-purge plus 90-day smokehouse archive; Prometheus metrics 90-day TSDB retention
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -58,8 +58,10 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: au-4 -->
+Audit log storage is allocated across three purpose-sized tiers. On brisket, the Wazuh Indexer (OpenSearch) stores `wazuh-alerts-4.x-*` on the host NVMe -- the Grafana Unified Alerting rule "Disk Critical -- Usage Above 90%" (`build-grafana-alerts.py`) evaluates every 5 minutes and routes a Discord notification to `#infrastructure-alerts` before the brisket data volume reaches saturation. On haccp, ELK Elasticsearch stores `logs-zeek.haccp-default-*` on a dedicated 2TB WD SN720 NVMe (boot/root) that is separate from the PCAP drive, preventing Zeek log growth from starving PCAP capacity. Arkime PCAP is stored on a dedicated Samsung 990 EVO Plus 2TB NVMe at `/opt/arkime/raw` (~1.8TB usable); Arkime's `freeSpaceG=100` configuration triggers automatic oldest-PCAP deletion before the volume reaches full, preventing capture interruption due to disk exhaustion.
 
-#### Implementation Status: planned
+Overflow protection for PCAP is handled by the nightly rsync cron (0300) that archives completed pcap files from haccp `/opt/arkime/raw` to smokehouse's 17TB NFS volume (`~bchaplow/pcap-archive/haccp/`), after which a `find ... -mtime +90 -delete` sweep enforces the 90-day off-line retention window required by AU-11 and M-21-31. Prometheus metrics are retained for 90 days via `--storage.tsdb.retention.time=90d`. The current gap in this tier is the absence of an explicit Elasticsearch ILM lifecycle policy governing rollover of `wazuh-alerts-*` and `logs-zeek.haccp-default-*` indices -- both are retained by default (disk not full) but retention is not enforced by a documented policy object. This gap is tracked in the ConMon roadmap.
+
+#### Implementation Status: implemented
 
 ______________________________________________________________________

@@ -25,18 +25,18 @@ x-trestle-set-params:
   au-06_odp.01:
     alt-identifier: au-6_prm_1
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - at least weekly
+    profile-param-value-origin: inherited
   au-06_odp.02:
     alt-identifier: au-6_prm_2
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - MITRE ATT&CK technique detections, rule.level >= 8 alerts, novel entity detections (tier2_novel), threat-intel matches (tier1_ti_match), authentication failures exceeding 5 attempts, and scan/reconnaissance signatures from Suricata
+    profile-param-value-origin: organization
   au-06_odp.03:
     alt-identifier: au-6_prm_3
     profile-values:
-      - <REPLACE_ME>
-    profile-param-value-origin: <REPLACE_ME>
+      - Brian Chaplow (system owner, sole operator) via Discord #soc-alerts and #morning-briefing
+    profile-param-value-origin: organization
 x-trestle-global:
   profile:
     title: FedRAMP Rev 5 Low Baseline
@@ -76,8 +76,10 @@ ______________________________________________________________________
 
 ### This System
 
-<!-- Add implementation prose for the main This System component for control: au-6 -->
+Audit record review and analysis is automated at twice-daily frequency via Shuffle WF2 (watch digest, cron 0600/1800 EST), which queries `wazuh-alerts-4.x-*` on OpenSearch for the preceding 12-hour window, correlates results against MITRE ATT&CK technique identifiers, requests an Ollama (qwen3:8b) threat assessment, and delivers the structured summary to Discord `#soc-alerts` via `$discord_webhook`. The FedRAMP baseline requires review "at least weekly" -- actual practice is twice-daily, exceeding that floor by more than 14x. Additionally, Shuffle WF10 (nightly briefing, cron 0530 EST) queries both `wazuh-alerts-*` and `logs-zeek.haccp-default-*` to produce an Ollama-generated comprehensive threat briefing delivered to Discord `#morning-briefing`. On-demand review is available at any time through Wazuh Dashboard (brisket:5601) and Kibana (haccp:5601). The `generate-attack-layer.py` script queries both stacks to produce a MITRE ATT&CK Navigator JSON layer for cross-stack technique coverage reporting, satisfying the AU-6 reporting requirement at the technique level.
 
-#### Implementation Status: planned
+ADR 0005 documents the most concrete real-world AU-6 example in this system's history: during homelab-fedramp-low Plan 1 Task 12, manual audit log review discovered that PBS LXC 300 had lost its NFS mount to smokehouse during the 2026-04-07 rack consolidation -- a backup gap from 2026-04-03 through 2026-04-07 that no automated alert had surfaced. The detection occurred through log analysis (reviewing Proxmox backup job output manually), triggering the fix documented in ADR 0005 and the ConMon follow-up for a dedicated PBS backup status alert. This example demonstrates that the AU-6 review process is operational and capable of detecting security-relevant failures that evade other detection paths. In this single-operator system, the provider and consumer coordination requirement resolves to the operator reviewing and acting on all findings.
+
+#### Implementation Status: implemented
 
 ______________________________________________________________________
