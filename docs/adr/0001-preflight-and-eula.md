@@ -1,4 +1,4 @@
-# ADR 0001 — Pre-flight Verification + RegScale CE EULA Review
+# ADR 0001 -- Pre-flight Verification + RegScale CE EULA Review
 
 **Date:** 2026-04-08
 **Status:** Accepted
@@ -24,7 +24,7 @@ and accepted RegScale Community Edition license terms.
 | 10.10.30.28 IP free | ✓ | ✓ ping 100% loss | ✓ |
 | RegScale CE EULA | accepts homelab/portfolio use | ✓ full review, see appendix | ✓ |
 | FedRAMP Rev 5 template URLs | reachable | ✓ all three HTTP 200, pre-downloaded to `templates/` | ✓ |
-| WSL2 Ubuntu | available | ✓ Ubuntu-22.04 present (not 24.04 — see deviation below) | ✓ |
+| WSL2 Ubuntu | available | ✓ Ubuntu-22.04 present (not 24.04 -- see deviation below) | ✓ |
 | Wazuh API authentication | working | ✓ JWT token received for `wazuh-wui` | ✓ |
 | PBS LXC 300 | running | ✓ `pct status 300` = running on smoker | ✓ |
 
@@ -48,16 +48,16 @@ full on 2026-04-08.
 
 | Clause | Effect |
 |---|---|
-| §1.A — License "solely for internal business purposes" | OK. Personal professional development + homelab learning fits. No paid client work on this instance. |
-| §2(i) — No commercial exploitation; no making the Software available to others | OK. Single-user lab. Public writeup will reference RegScale CE only with attribution and a link to community.regscale.com; no redistribution of binaries or installer. |
-| §2(ii) — **No real PHI, credit card, financial, HIPAA/GLBA/PCI-scope data** | **HARD REQUIREMENT.** All FedRAMP-Low scope data loaded into CE will be synthetic. Spec already calls for this. |
-| §2(v) — No modifying, copying, derivative works of the Software | OK. We are using CE as-shipped. The MIT-licensed `standalone_regscale.py` wrapper is separate and may be modified. |
-| §2(vii) — No use for competing product or copying UI | OK. Portfolio is a FedRAMP automation case study, not a GRC product. |
-| §2(ix) — No publishing circumvention info | OK. Writeup will not include circumvention techniques. |
-| §4.B — License revocable at RegScale's sole discretion | Acknowledged risk: RegScale could pull CE at any time. Mitigation: data exports stay in OSCAL JSON (vendor-neutral), so a future migration to Compliance-Trestle-only is possible. Already in spec §11 risks. |
-| §6 — Damages capped at $100 | Acknowledged. No reliance on uptime guarantees. |
-| §7 — Operator indemnifies RegScale for submitted content | Acknowledged. Synthetic data only. |
-| §12 — Arbitration, Virginia jurisdiction, class action waiver | Acknowledged. |
+| §1.A -- License "solely for internal business purposes" | OK. Personal professional development + homelab learning fits. No paid client work on this instance. |
+| §2(i) -- No commercial exploitation; no making the Software available to others | OK. Single-user lab. Public writeup will reference RegScale CE only with attribution and a link to community.regscale.com; no redistribution of binaries or installer. |
+| §2(ii) -- **No real PHI, credit card, financial, HIPAA/GLBA/PCI-scope data** | **HARD REQUIREMENT.** All FedRAMP-Low scope data loaded into CE will be synthetic. Spec already calls for this. |
+| §2(v) -- No modifying, copying, derivative works of the Software | OK. We are using CE as-shipped. The MIT-licensed `standalone_regscale.py` wrapper is separate and may be modified. |
+| §2(vii) -- No use for competing product or copying UI | OK. Portfolio is a FedRAMP automation case study, not a GRC product. |
+| §2(ix) -- No publishing circumvention info | OK. Writeup will not include circumvention techniques. |
+| §4.B -- License revocable at RegScale's sole discretion | Acknowledged risk: RegScale could pull CE at any time. Mitigation: data exports stay in OSCAL JSON (vendor-neutral), so a future migration to Compliance-Trestle-only is possible. Already in spec §11 risks. |
+| §6 -- Damages capped at $100 | Acknowledged. No reliance on uptime guarantees. |
+| §7 -- Operator indemnifies RegScale for submitted content | Acknowledged. Synthetic data only. |
+| §12 -- Arbitration, Virginia jurisdiction, class action waiver | Acknowledged. |
 
 ### EULA line items
 
@@ -72,7 +72,7 @@ Public writeup attribution:         REQUIRED (link community.regscale.com, no en
 Revocability acknowledged:          yes (mitigation: OSCAL exports, Trestle fallback path)
 Installer source:                   github.com/RegScale/community (MIT)
 Docker image source:                Docker Hub regscale/regscale (public, no auth)
-Signup required:                    NO — bypassed entirely
+Signup required:                    NO -- bypassed entirely
 ```
 
 ## Pre-fetched templates

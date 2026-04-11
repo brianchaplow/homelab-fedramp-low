@@ -1,4 +1,4 @@
-"""Tests for pipelines.common.wazuh — Wazuh API REST client.
+"""Tests for pipelines.common.wazuh -- Wazuh API REST client.
 
 Per ADR 0006 Deviation 5, this client intentionally does NOT expose
 ``get_vulnerabilities()``. The /vulnerability/{agent_id} endpoint was

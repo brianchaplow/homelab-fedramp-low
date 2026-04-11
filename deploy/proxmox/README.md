@@ -19,7 +19,7 @@ smoker.
 | regscale | 10.10.30.28 | 30 (untagged) | smoker (10.10.30.21) | 301 | BC:24:11:DE:F0:02 |
 
 Both hosts run Proxmox VE 9.1.6. Neither is part of a cluster (no corosync),
-which is why VMID 201 and 301 can coexist — one on each node, they never
+which is why VMID 201 and 301 can coexist -- one on each node, they never
 conflict because there is no shared cluster VMID namespace.
 
 ## Resource reservations
@@ -48,7 +48,7 @@ These four deviations were applied to both dojo and regscale during
 2. **Pin the MAC upfront.** `virtio=BC:24:11:DE:F0:01` for dojo,
    `BC:24:11:DE:F0:02` for regscale. Editing net0 after the fact churns
    the MAC and permanently breaks cloud-init's NIC identity.
-3. **Modern boot syntax.** `qm set <VMID> --boot "order=scsi0"` — the
+3. **Modern boot syntax.** `qm set <VMID> --boot "order=scsi0"` -- the
    legacy `--boot c --bootdisk scsi0` is silently accepted by Proxmox
    9.1.6 but produces a VM that hangs at the serial console and never
    boots into Linux.
@@ -120,7 +120,7 @@ Install on the guest:
 ```bash
 # On the VM, as ubuntu:
 sudo apt-get install -y qemu-guest-agent
-# Ubuntu 24.04 socket-activates the unit — no systemctl enable needed,
+# Ubuntu 24.04 socket-activates the unit -- no systemctl enable needed,
 # just start it and reboot-on-install is fine too:
 sudo systemctl start qemu-guest-agent
 ```
@@ -145,6 +145,6 @@ qm stop <VMID> 2>/dev/null || true
 qm destroy <VMID> --purge
 ```
 
-PBS snapshots for the VM are NOT deleted by `qm destroy --purge` — they
+PBS snapshots for the VM are NOT deleted by `qm destroy --purge` -- they
 remain in the datastore and can be used with `qmrestore` (see
 `runbooks/restore-from-pbs.md`).

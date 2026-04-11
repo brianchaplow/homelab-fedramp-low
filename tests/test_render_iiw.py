@@ -1,4 +1,4 @@
-"""Tests for pipelines.render.iiw — OSCAL component-definition → FedRAMP IIW xlsx."""
+"""Tests for pipelines.render.iiw -- OSCAL component-definition → FedRAMP IIW xlsx."""
 from __future__ import annotations
 
 import json
@@ -105,7 +105,7 @@ def test_render_iiw_writes_to_inventory_sheet(
     wb = load_workbook(output)
     assert IIW_SHEET_NAME in wb.sheetnames
     ws = wb[IIW_SHEET_NAME]
-    # Data starts at IIW_TEMPLATE_DATA_START_ROW — find brisket there
+    # Data starts at IIW_TEMPLATE_DATA_START_ROW -- find brisket there
     row = IIW_TEMPLATE_DATA_START_ROW
     asset_id = ws.cell(row=row, column=COLUMN_MAP["asset-id"]).value
     assert asset_id == "MSS-HOST-BRISKET"

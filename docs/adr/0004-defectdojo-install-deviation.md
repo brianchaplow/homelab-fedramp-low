@@ -1,8 +1,8 @@
-# ADR 0004 — DefectDojo install path deviation from runbook
+# ADR 0004 -- DefectDojo install path deviation from runbook
 
 ## Status
 
-Accepted — 2026-04-08
+Accepted -- 2026-04-08
 
 ## Context
 
@@ -23,7 +23,7 @@ A third discovery at execution time: nginx inside the 2.57.0 container serves
 **HTTP on 8080** only. The compose file publishes port 8443 as well, but the
 bundled nginx container ships without a TLS cert or `listen 8443 ssl;`
 directive, so that port is effectively unused. The original plan assumed
-`https://...:8080/` as the URL — this was wrong on two counts (wrong scheme
+`https://...:8080/` as the URL -- this was wrong on two counts (wrong scheme
 and wrong port). Corrected URL: `http://10.10.30.27:8080/`.
 
 ## Decision
@@ -31,7 +31,7 @@ and wrong port). Corrected URL: `http://10.10.30.27:8080/`.
 - Pin to tag `2.57.0` for reproducibility
 - Use `./docker/setEnv.sh release` to select release mode (removes any override symlink)
 - Use direct `docker compose build` + `docker compose up -d` against the canonical compose file
-- No manual `.env.prod` copy — the `initializer` container handles seeding
+- No manual `.env.prod` copy -- the `initializer` container handles seeding
 - Admin password still captured from `docker compose logs initializer | grep 'Admin password'`
 - Document the valkey rename in `deploy/defectdojo/README.md` so the runbook reader is not surprised
 - Accept HTTP-only on 8080 for the homelab; explicitly call out in the
@@ -47,7 +47,7 @@ and wrong port). Corrected URL: `http://10.10.30.27:8080/`.
 
 **Negative:**
 - Version upgrade is now a deliberate operation (`git fetch && git checkout <newtag>`)
-  rather than a clone-tracks-master pattern — but this is desirable for ConMon
+  rather than a clone-tracks-master pattern -- but this is desirable for ConMon
 - No rollback shortcut if 2.57.0 has regressions in this environment; operator
   must fall back one tag manually
 

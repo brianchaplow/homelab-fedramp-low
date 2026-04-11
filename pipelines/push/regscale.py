@@ -1,6 +1,6 @@
 """Best-effort OSCAL push to RegScale CE.
 
-Per ADR 0006 Deviation 7, RegScale CE has no long-lived API key — the
+Per ADR 0006 Deviation 7, RegScale CE has no long-lived API key -- the
 client re-authenticates per invocation via
 :class:`pipelines.common.regscale.RegScaleClient`. Per a live Swagger
 probe on 2026-04-09, CE also has **no generic OSCAL import endpoints**
@@ -12,7 +12,7 @@ OSCAL artifact for import.
 **Push strategy:**
 
 1. Attempt an OSCAL validation call via
-   ``POST /api/oscal/ValidateFedRAMP`` (best-effort — on failure,
+   ``POST /api/oscal/ValidateFedRAMP`` (best-effort -- on failure,
    the validation is skipped and noted in the result).
 2. If :data:`OSCAL_IMPORT_PATHS` has a real path for the requested
    ``oscal_type``, POST the artifact there and return
@@ -44,7 +44,7 @@ OscalType = Literal["ssp", "poam", "component-definition", "catalog", "profile"]
 
 
 # Populated only when RegScale CE exposes generic import endpoints.
-# Empty today — ``push_oscal_to_regscale`` therefore returns
+# Empty today -- ``push_oscal_to_regscale`` therefore returns
 # ``manual-required`` for every call. When CE ships these endpoints
 # in a future version, populate this dict and the push pipeline will
 # switch automatically without a code change.
@@ -62,7 +62,7 @@ def _try_validate(
     """Attempt the ValidateFedRAMP call. Return a human-readable result."""
     try:
         body = client.post(VALIDATE_FEDRAMP_PATH, json_body=payload)
-    except Exception as exc:  # noqa: BLE001 — best-effort
+    except Exception as exc:  # noqa: BLE001 -- best-effort
         logger.warning(
             "RegScale ValidateFedRAMP call failed (%s); validation skipped", exc
         )
@@ -87,12 +87,12 @@ def push_oscal_to_regscale(
     Returns:
         A status dict. Possible shapes:
 
-        * ``{"status": "error", "body": "...", ...}`` — file missing
+        * ``{"status": "error", "body": "...", ...}`` -- file missing
           or client errored out on a non-validation call.
         * ``{"status": "manual-required", "runbook": "...",
-          "validation": "..."}`` — the common case today: CE has no
+          "validation": "..."}`` -- the common case today: CE has no
           import endpoint, so the operator must use the UI runbook.
-        * ``{"status": "ok", "regscale_id": ...}`` — a future CE
+        * ``{"status": "ok", "regscale_id": ...}`` -- a future CE
           release exposed the import endpoint and the push succeeded.
     """
     if not oscal_path.exists():

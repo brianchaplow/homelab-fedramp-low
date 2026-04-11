@@ -3,7 +3,7 @@
 The FedRAMP Rev 5 Integrated Inventory Workbook template has three
 sheets: ``INSTRUCTIONS``, ``Inventory``, and ``Record of Changes``. This
 renderer writes data into the ``Inventory`` sheet starting at
-:data:`IIW_TEMPLATE_DATA_START_ROW` — row 13 — which is the first row
+:data:`IIW_TEMPLATE_DATA_START_ROW` -- row 13 -- which is the first row
 *after* the 10-row example/guidance block (rows 3 through 12) that the
 template itself marks for deletion before submission. The headers in
 row 2 stay intact. Column A is the instructional "delete before
@@ -134,7 +134,7 @@ def render_iiw_from_oscal(
     wb = load_workbook(template_path)
     if IIW_SHEET_NAME not in wb.sheetnames:
         raise ValueError(
-            f"IIW template missing expected sheet '{IIW_SHEET_NAME}' — found {wb.sheetnames}"
+            f"IIW template missing expected sheet '{IIW_SHEET_NAME}' -- found {wb.sheetnames}"
         )
     ws = wb[IIW_SHEET_NAME]
 

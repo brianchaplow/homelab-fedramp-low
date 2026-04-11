@@ -1,4 +1,4 @@
-# DefectDojo Deployment — `dojo` VM
+# DefectDojo Deployment -- `dojo` VM
 
 ## Target
 
@@ -54,14 +54,14 @@ curl -s http://10.10.30.27:8080/login -o /dev/null -w '%{http_code}\n'
 
 - Initial admin username: `admin`
 - Initial admin password: see `/c/Projects/.env` on PITBOSS (`DEFECTDOJO_ADMIN_PASS`)
-- URL: **http://10.10.30.27:8080/** (HTTP, not HTTPS — see ADR 0004 for rationale)
+- URL: **http://10.10.30.27:8080/** (HTTP, not HTTPS -- see ADR 0004 for rationale)
 
 ## Why HTTP in a ConMon demo?
 
 DefectDojo 2.57.0 upstream `docker-compose.yml` publishes two ports:
 
-- `8080` — nginx serving HTTP
-- `8443` — published by Docker, but the bundled nginx container ships
+- `8080` -- nginx serving HTTP
+- `8443` -- published by Docker, but the bundled nginx container ships
   without a TLS cert or listen directive, so the port is effectively unused
 
 A real FedRAMP-Low deployment would front DefectDojo with a TLS-terminating
@@ -69,22 +69,22 @@ reverse proxy (ALB, nginx, Traefik) holding a CA-signed cert. In this homelab
 the tool is reached only from trusted VLANs (10/20/30) via IP; adding a
 self-signed cert would create a false sense of security without demonstrating
 any new ConMon concept. The writeup in Plan 4 calls this out as an explicit
-"in production, do X" control trade-off — a more useful portfolio artifact
+"in production, do X" control trade-off -- a more useful portfolio artifact
 than a self-signed-cert workaround.
 
 ## Version pinning rationale
 
 Pinned to 2.57.0 (released 2026-04-06). Why pin rather than track master:
 
-1. Reproducibility — anyone re-running this runbook gets the same stack.
-2. Deliberate upgrades — version bumps are ConMon-tracked events, not accidents.
-3. Rollback — if 2.57.0 has a regression, fall back one tag before deep debugging.
+1. Reproducibility -- anyone re-running this runbook gets the same stack.
+2. Deliberate upgrades -- version bumps are ConMon-tracked events, not accidents.
+3. Rollback -- if 2.57.0 has a regression, fall back one tag before deep debugging.
 
 ## Deviation from original runbook
 
 The original Plan 1 Task 8 referenced `./dc-up.sh postgres-redis`, a convenience
 wrapper that existed in older DefectDojo releases but was removed before 2.57.0.
-The profile-based naming (`postgres-redis`, `mysql-rabbitmq`) is also gone —
+The profile-based naming (`postgres-redis`, `mysql-rabbitmq`) is also gone --
 DefectDojo standardized on a single PostgreSQL + Valkey stack. The current flow
 is `setEnv.sh release` + `docker compose build` + `docker compose up -d`
 against the canonical `docker-compose.yml`. See

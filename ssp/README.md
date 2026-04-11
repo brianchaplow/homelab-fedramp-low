@@ -1,22 +1,22 @@
 # System Security Plan (SSP)
 
 This directory contains the SSP for the notional **Managed SOC Service
-(MSS)** — the system boundary that wraps the homelab SOC
+(MSS)** -- the system boundary that wraps the homelab SOC
 infrastructure and is being authored against NIST SP 800-53 Rev 5
 controls selected by the FedRAMP Low baseline profile.
 
 ## Status
 
-- **Scaffold** — generated 2026-04-09 during Plan 2 Task 4
-- **Tier-1 authoring** — pending (Plan 3)
-- **Tier-2 authoring** — pending (Plan 3)
-- **OSCAL assembly** — pending (Plan 3 done-criteria)
+- **Scaffold** -- generated 2026-04-09 during Plan 2 Task 4
+- **Tier-1 authoring** -- pending (Plan 3)
+- **Tier-2 authoring** -- pending (Plan 3)
+- **OSCAL assembly** -- pending (Plan 3 done-criteria)
 
 Until Plan 3 lands, every control markdown file under `controls/` is
 a Trestle-generated scaffold containing the control statement text
 from the NIST catalog plus `<REPLACE_ME>` placeholders for the FedRAMP
 organizationally-defined parameters (ODPs). The scaffold is
-schema-complete — it's ready for authoring — but the implementation
+schema-complete -- it's ready for authoring -- but the implementation
 prose is empty.
 
 ## Structure
@@ -50,7 +50,7 @@ ssp/
 │   └── sr/                        11 controls
 └── appendices/                  ← pending (acronym list, references,
                                     control summary table, rules-of-
-                                    behavior — Plan 3)
+                                    behavior -- Plan 3)
 ```
 
 Total: **156 control markdown files** across **18 families**.
@@ -59,7 +59,7 @@ Total: **156 control markdown files** across **18 families**.
 
 Plan 3 will author the 156 controls across two tiers:
 
-- **Tier 1 — full implementation statements** (~40 controls). The
+- **Tier 1 -- full implementation statements** (~40 controls). The
   controls where the homelab implementation has real evidence worth
   documenting: audit logging (AU family), configuration management
   (CM), identification and authentication (IA), system and
@@ -67,7 +67,7 @@ Plan 3 will author the 156 controls across two tiers:
   remediation (RA-5, SI-2), incident response (IR). These are the
   controls a 3PAO would actually inspect, and they're the ones the
   portfolio writeup (Plan 4) will feature.
-- **Tier 2 — stub implementations** (~116 controls). The remaining
+- **Tier 2 -- stub implementations** (~116 controls). The remaining
   controls get brief "see policy" statements with NA-rationale where
   applicable. The goal isn't to fake a production SSP; it's to
   demonstrate that the author understands the scoping decisions a real
@@ -100,7 +100,7 @@ When Plan 3 starts authoring:
   manages the workspace copy; this `ssp/controls/` directory is a
   mirror maintained for public-repo visibility. The mirror is
   re-synced during commits.
-- Preserve the `x-trestle-*` frontmatter blocks — they are instructions
+- Preserve the `x-trestle-*` frontmatter blocks -- they are instructions
   to `ssp-assemble` and removing them will break the OSCAL assembly.
 - Set ODP parameter values in the `x-trestle-set-params` block by
   replacing `<REPLACE_ME>` with the FedRAMP-required value (or the

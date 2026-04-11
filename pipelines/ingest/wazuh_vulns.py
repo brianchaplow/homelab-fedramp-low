@@ -17,11 +17,11 @@ Field mapping (live schema verified 2026-04-09)::
     hit['_source']['package']['name']               → affected_package
     hit['_source']['agent']['name']                 → affected_host
 
-Wazuh's own severity label is preferred over a computed one — it
+Wazuh's own severity label is preferred over a computed one -- it
 already maps CVSS v2/v3/v4 scores correctly. The CVSS-based mapping
 is the fallback when ``severity`` is missing or blank. Every finding
 maps to ``RA-5`` (Vulnerability Scanning) and ``SI-2`` (Flaw
-Remediation) — controls a 3PAO expects on any CVE-based POA&M item.
+Remediation) -- controls a 3PAO expects on any CVE-based POA&M item.
 """
 from __future__ import annotations
 
@@ -85,7 +85,7 @@ def _parse_detected_at(value: str | None) -> datetime:
     try:
         return datetime.fromisoformat(normalized)
     except ValueError:
-        logger.warning("unparseable detected_at '%s' — defaulting to now()", value)
+        logger.warning("unparseable detected_at '%s' -- defaulting to now()", value)
         return datetime.now(timezone.utc)
 
 

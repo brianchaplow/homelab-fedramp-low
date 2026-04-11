@@ -1,6 +1,6 @@
-# CP — Contingency Planning: Evidence Catalog
+# CP -- Contingency Planning: Evidence Catalog
 
-**Family:** CP — Contingency Planning
+**Family:** CP -- Contingency Planning
 **Controls in FedRAMP Rev 5 Low baseline:** cp-1, cp-2, cp-3, cp-4, cp-9, cp-10
 **Catalog date:** 2026-04-09
 **Author:** Plan 3 Phase 1 subagent
@@ -11,16 +11,16 @@
 
 Each control has six standard headings:
 
-1. **Control summary** — what the control requires
-2. **Implementation status** — `implemented`, `partial`, or `planned`
-3. **What is implemented** — specific mechanisms in production
-4. **Gaps / open items** — honest gaps driving the status rating
-5. **Evidence paths** — verified file paths in this repo; all paths confirmed to exist as of catalog date
-6. **ODP values** — organization-defined parameter values; baseline-mandated values noted where FedRAMP fixes them
+1. **Control summary** -- what the control requires
+2. **Implementation status** -- `implemented`, `partial`, or `planned`
+3. **What is implemented** -- specific mechanisms in production
+4. **Gaps / open items** -- honest gaps driving the status rating
+5. **Evidence paths** -- verified file paths in this repo; all paths confirmed to exist as of catalog date
+6. **ODP values** -- organization-defined parameter values; baseline-mandated values noted where FedRAMP fixes them
 
 ---
 
-## CP-1 — Contingency Planning Policy and Procedures
+## CP-1 -- Contingency Planning Policy and Procedures
 
 ### Control summary
 
@@ -48,9 +48,9 @@ No dedicated contingency planning policy document exists in the repository. The 
 
 ### Evidence paths
 
-- `docs/adr/0005-pbs-backup-gap-and-automount-fix.md` — reactive CP decision record (NFS automount hardening)
-- `runbooks/restore-from-pbs.md` — informal recovery procedures (dojo, regscale)
-- `runbooks/monthly-conmon.md` — interim backup monitoring tripwire (§"Daily PBS backup tripwire")
+- `docs/adr/0005-pbs-backup-gap-and-automount-fix.md` -- reactive CP decision record (NFS automount hardening)
+- `runbooks/restore-from-pbs.md` -- informal recovery procedures (dojo, regscale)
+- `runbooks/monthly-conmon.md` -- interim backup monitoring tripwire (§"Daily PBS backup tripwire")
 
 ### ODP values
 
@@ -67,7 +67,7 @@ No dedicated contingency planning policy document exists in the repository. The 
 
 ---
 
-## CP-2 — Contingency Plan
+## CP-2 -- Contingency Plan
 
 ### Control summary
 
@@ -83,7 +83,7 @@ The following partial elements are in place:
 
 - **Recovery procedures documented:** `runbooks/restore-from-pbs.md` provides step-by-step restore commands for dojo (VMID 201 on pitcrew) and regscale (VMID 301 on smoker) from PBS LXC 300 snapshots. Procedure covers snapshot verification, VM stop, pre-restore config preservation, `qmrestore` invocation, startup, and smoke check validation.
 - **Backup chain documented:** `deploy/proxmox/README.md` documents the PBS backup job schedule (pitcrew job at 02:00, smoker job at 02:30), storage target (`pbs-smokehouse` → `10.10.20.10:/pbs-datastore`), and the NFS automount hardening from ADR 0005.
-- **Incident-to-recovery linkage:** ADR 0005 (`docs/adr/0005-pbs-backup-gap-and-automount-fix.md`) documents a real contingency event (5-day backup gap 2026-04-03 to 2026-04-07) including root cause, corrective action, and consequences — the structural equivalent of a lessons-learned section.
+- **Incident-to-recovery linkage:** ADR 0005 (`docs/adr/0005-pbs-backup-gap-and-automount-fix.md`) documents a real contingency event (5-day backup gap 2026-04-03 to 2026-04-07) including root cause, corrective action, and consequences -- the structural equivalent of a lessons-learned section.
 - **Essential system components identified (implicitly):** The critical backup job covers DC01 (VMID 100), WS01 (VMID 101), TheHive (VMID 200), dojo (VMID 201), and regscale (VMID 301), implying these are the essential components.
 - **FedRAMP DR Form template available:** `templates/FedRAMP-DR-Form.xlsx` downloaded 2026-04-08 from fedramp.gov (Rev 5).
 
@@ -94,18 +94,18 @@ The following partial elements are in place:
 - No explicit restoration priority ordering across the five covered VMs.
 - No contingency contact list or assigned individuals with contact information.
 - No documented coordination procedure linking CP to incident response (IR-4 / IR-8).
-- Restore drill not yet executed — `runbooks/restore-from-pbs.md` §"First-time restore drill" calls for a drill within 7 days of Plan 1 completion (Plan 1 completed 2026-04-08); an ADR documenting drill results is still owed.
+- Restore drill not yet executed -- `runbooks/restore-from-pbs.md` §"First-time restore drill" calls for a drill within 7 days of Plan 1 completion (Plan 1 completed 2026-04-08); an ADR documenting drill results is still owed.
 - The weekly PBS job (Sunday 03:00 on smoker) covers the target-VM group but is not formally documented as a contingency asset.
 - Contingency plan is not stored in a location protected from unauthorized modification (currently ad-hoc in runbooks).
 
 ### Evidence paths
 
-- `runbooks/restore-from-pbs.md` — step-by-step restore procedure for dojo and regscale (the primary partial CP-2 artifact)
-- `docs/adr/0005-pbs-backup-gap-and-automount-fix.md` — lessons-learned record from the April 2026 backup gap
-- `deploy/proxmox/README.md` — PBS backup job schedules, storage target, MAC pinning, and re-creation runbook
-- `runbooks/monthly-conmon.md` — §"Daily PBS backup tripwire" and §"Backup verification (monthly)" (operational monitoring aligned with CP)
-- `templates/FedRAMP-DR-Form.xlsx` — FedRAMP Rev 5 Disaster Recovery form template (not yet filled)
-- `docs/adr/0002-deployment-complete.md` — §"Infrastructure state (end of Plan 1)" establishes the system component inventory
+- `runbooks/restore-from-pbs.md` -- step-by-step restore procedure for dojo and regscale (the primary partial CP-2 artifact)
+- `docs/adr/0005-pbs-backup-gap-and-automount-fix.md` -- lessons-learned record from the April 2026 backup gap
+- `deploy/proxmox/README.md` -- PBS backup job schedules, storage target, MAC pinning, and re-creation runbook
+- `runbooks/monthly-conmon.md` -- §"Daily PBS backup tripwire" and §"Backup verification (monthly)" (operational monitoring aligned with CP)
+- `templates/FedRAMP-DR-Form.xlsx` -- FedRAMP Rev 5 Disaster Recovery form template (not yet filled)
+- `docs/adr/0002-deployment-complete.md` -- §"Infrastructure state (end of Plan 1)" establishes the system component inventory
 
 ### ODP values
 
@@ -114,14 +114,14 @@ The following partial elements are in place:
 | Personnel or roles (plan review) | cp-02_odp.01 | System Owner (Brian Chaplow) | organization |
 | Personnel or roles (plan approval) | cp-02_odp.02 | System Owner (Brian Chaplow) | organization |
 | Key contingency personnel (plan distribution) | cp-02_odp.03 | System Owner (Brian Chaplow) | organization |
-| Organizational elements (plan distribution) | cp-02_odp.04 | N/A — single-operator homelab; no organizational elements | organization |
+| Organizational elements (plan distribution) | cp-02_odp.04 | N/A -- single-operator homelab; no organizational elements | organization |
 | Plan review frequency | cp-02_odp.05 | annually | organization |
 | Key contingency personnel (change notification) | cp-02_odp.06 | System Owner (Brian Chaplow) | organization |
-| Organizational elements (change notification) | cp-02_odp.07 | N/A — single-operator homelab | organization |
+| Organizational elements (change notification) | cp-02_odp.07 | N/A -- single-operator homelab | organization |
 
 ---
 
-## CP-3 — Contingency Training
+## CP-3 -- Contingency Training
 
 ### Control summary
 
@@ -147,8 +147,8 @@ The system is a single-operator homelab. The system owner both designs the conti
 
 ### Evidence paths
 
-- `runbooks/restore-from-pbs.md` — implicitly serves as operator reference material; not formal training
-- `runbooks/monthly-conmon.md` — §"Daily PBS backup tripwire" describes monitoring procedure the operator is expected to know
+- `runbooks/restore-from-pbs.md` -- implicitly serves as operator reference material; not formal training
+- `runbooks/monthly-conmon.md` -- §"Daily PBS backup tripwire" describes monitoring procedure the operator is expected to know
 
 ### ODP values
 
@@ -161,7 +161,7 @@ The system is a single-operator homelab. The system owner both designs the conti
 
 ---
 
-## CP-4 — Contingency Plan Testing
+## CP-4 -- Contingency Plan Testing
 
 ### Control summary
 
@@ -187,9 +187,9 @@ No contingency plan test has been formally conducted. The restore procedure was 
 
 ### Evidence paths
 
-- `docs/adr/0005-pbs-backup-gap-and-automount-fix.md` — §"Verification" section: operational vzdump verification run on 2026-04-08 (nearest analog to a partial CP test)
-- `runbooks/restore-from-pbs.md` — §"First-time restore drill": drill specification and expected ADR output
-- `docs/adr/0002-deployment-complete.md` — §"Operator action items deferred to Plan 2 or beyond" item 3: restore drill called out as a Plan 1 follow-on action
+- `docs/adr/0005-pbs-backup-gap-and-automount-fix.md` -- §"Verification" section: operational vzdump verification run on 2026-04-08 (nearest analog to a partial CP test)
+- `runbooks/restore-from-pbs.md` -- §"First-time restore drill": drill specification and expected ADR output
+- `docs/adr/0002-deployment-complete.md` -- §"Operator action items deferred to Plan 2 or beyond" item 3: restore drill called out as a Plan 1 follow-on action
 
 ### ODP values
 
@@ -201,7 +201,7 @@ No contingency plan test has been formally conducted. The restore procedure was 
 
 ---
 
-## CP-9 — System Backup
+## CP-9 -- System Backup
 
 ### Control summary
 
@@ -240,18 +240,18 @@ The backup infrastructure is implemented and operational:
 
 - **Confidentiality:** PBS backup data is transmitted over the LAN NFS mount without TLS encryption (NFS v4.1 in-flight, unencrypted). SC-8 is a known gap treated as a portfolio trade-off per ADR 0002 §"Operator action items" item 4 and `runbooks/cert-trust.md`. CP-9.d.01 (confidentiality protection) is therefore a gap.
 - **Integrity verification:** PBS uses chunk-based deduplication with SHA-256 hashes for chunk integrity. No additional cryptographic signing of backup archives is in place (no GPG signatures, no HMAC over full archives). CP-9.d.02 (integrity protection) is partially met (chunk hashes) but not fully.
-- **Backup alerting:** No automated Wazuh/Discord alert is wired for PBS backup job failure. The 5-day gap (ADR 0005) went undetected because `mail-to-root` on the PBS LXC is the only notification target, which nobody reads. A Wazuh custom rule + Shuffle fanout is documented as a follow-up TODO in `runbooks/monthly-conmon.md` §"Follow-up TODO — proper PBS alert wiring". Interim manual tripwire is active.
+- **Backup alerting:** No automated Wazuh/Discord alert is wired for PBS backup job failure. The 5-day gap (ADR 0005) went undetected because `mail-to-root` on the PBS LXC is the only notification target, which nobody reads. A Wazuh custom rule + Shuffle fanout is documented as a follow-up TODO in `runbooks/monthly-conmon.md` §"Follow-up TODO -- proper PBS alert wiring". Interim manual tripwire is active.
 - **Backup of brisket (SOC platform) and haccp (ELK):** Neither brisket (VLAN 20, SOC platform) nor haccp (VLAN 30, ELK + Arkime) has a VM-level PBS backup job. These are bare-metal hosts, not VMs, so vzdump cannot be used directly. PCAP archival from haccp to smokehouse via nightly SSH/rsync cron (0300) is documented in CLAUDE.md but is not a full system backup.
 - **Backup frequency for system documentation:** Git push cadence is ad-hoc (per-commit); no dedicated documentation backup schedule exists beyond git.
 
 ### Evidence paths
 
-- `docs/adr/0005-pbs-backup-gap-and-automount-fix.md` — root cause, fix, and verification of the backup chain (fstab hardening, mount verification, vzdump confirmation)
-- `docs/adr/0002-deployment-complete.md` — §"Deployment Done Criteria" row "Both VMs show successful PBS backup" and §"Plan 2 start" gap-closure confirmation
-- `deploy/proxmox/README.md` — §"Resource reservations": PBS job UUIDs, schedules, storage target, offset rationale
-- `runbooks/restore-from-pbs.md` — snapshot verification commands and restore procedure (availability evidence)
-- `runbooks/monthly-conmon.md` — §"Daily PBS backup tripwire" (interim availability monitoring), §"Backup verification (monthly)", §"Follow-up TODO — proper PBS alert wiring"
-- `runbooks/cert-trust.md` — documents NFS/TLS gap and upgrade path (confidentiality gap context)
+- `docs/adr/0005-pbs-backup-gap-and-automount-fix.md` -- root cause, fix, and verification of the backup chain (fstab hardening, mount verification, vzdump confirmation)
+- `docs/adr/0002-deployment-complete.md` -- §"Deployment Done Criteria" row "Both VMs show successful PBS backup" and §"Plan 2 start" gap-closure confirmation
+- `deploy/proxmox/README.md` -- §"Resource reservations": PBS job UUIDs, schedules, storage target, offset rationale
+- `runbooks/restore-from-pbs.md` -- snapshot verification commands and restore procedure (availability evidence)
+- `runbooks/monthly-conmon.md` -- §"Daily PBS backup tripwire" (interim availability monitoring), §"Backup verification (monthly)", §"Follow-up TODO -- proper PBS alert wiring"
+- `runbooks/cert-trust.md` -- documents NFS/TLS gap and upgrade path (confidentiality gap context)
 
 ### ODP values
 
@@ -264,7 +264,7 @@ The backup infrastructure is implemented and operational:
 
 ---
 
-## CP-10 — System Recovery and Reconstitution
+## CP-10 -- System Recovery and Reconstitution
 
 ### Control summary
 
@@ -283,7 +283,7 @@ The technical capability to recover both in-boundary GRC VMs from PBS snapshots 
 - Restore smoke checks (`./pipelines.sh smoke-dojo`, `./pipelines.sh smoke-regscale`) provide automated verification that the restored system reaches a healthy known state.
 - MAC address pinning (dojo `BC:24:11:DE:F0:01`, regscale `BC:24:11:DE:F0:02`) documented in `deploy/proxmox/README.md` ensures cloud-init state survives restore without NIC identity churn.
 
-**Recovery Point Objective (RPO — implicit):**
+**Recovery Point Objective (RPO -- implicit):**
 - Nightly backup jobs (02:00 pitcrew, 02:30 smoker) imply an RPO of ≤24 hours for all covered VMs. In practice the gap between the most recent snapshot and a failure event is at most the time since the last successful backup window.
 
 **Known state definition:**
@@ -305,14 +305,14 @@ The technical capability to recover both in-boundary GRC VMs from PBS snapshots 
 
 ### Evidence paths
 
-- `runbooks/restore-from-pbs.md` — complete restore procedure for dojo and regscale (primary CP-10 artifact)
-- `docs/adr/0005-pbs-backup-gap-and-automount-fix.md` — §"Verification": 11m11s dojo restore run validating recovery speed and snapshot completeness
-- `deploy/proxmox/README.md` — §"Resource reservations" (backup schedules supporting RPO), §"Rollback" (VM destroy / recreate path), MAC pinning guidance
-- `deploy/regscale/reset-admin-password.sh` — reconstitution step for RegScale admin credential
-- `deploy/defectdojo/post-install.sh` — idempotent reconstitution step for DefectDojo SLA + product seeding
-- `tests/smoke/check_defectdojo.sh` — known-state verification for dojo post-restore
-- `tests/smoke/check_regscale.sh` — known-state verification for regscale post-restore
-- `docs/adr/0002-deployment-complete.md` — §"Operator action items deferred to Plan 2 or beyond" item 3: restore drill noted as owed
+- `runbooks/restore-from-pbs.md` -- complete restore procedure for dojo and regscale (primary CP-10 artifact)
+- `docs/adr/0005-pbs-backup-gap-and-automount-fix.md` -- §"Verification": 11m11s dojo restore run validating recovery speed and snapshot completeness
+- `deploy/proxmox/README.md` -- §"Resource reservations" (backup schedules supporting RPO), §"Rollback" (VM destroy / recreate path), MAC pinning guidance
+- `deploy/regscale/reset-admin-password.sh` -- reconstitution step for RegScale admin credential
+- `deploy/defectdojo/post-install.sh` -- idempotent reconstitution step for DefectDojo SLA + product seeding
+- `tests/smoke/check_defectdojo.sh` -- known-state verification for dojo post-restore
+- `tests/smoke/check_regscale.sh` -- known-state verification for regscale post-restore
+- `docs/adr/0002-deployment-complete.md` -- §"Operator action items deferred to Plan 2 or beyond" item 3: restore drill noted as owed
 
 ### ODP values
 
@@ -336,8 +336,8 @@ The technical capability to recover both in-boundary GRC VMs from PBS snapshots 
 
 ### Key cross-cutting gaps (for SSP prose authoring)
 
-1. **No formal CP plan document** — CP-2 is the highest-priority authoring target; it will draw on the runbook and ADR corpus.
-2. **Restore drill outstanding** — due by 2026-04-15; result ADR will close the CP-4 and CP-10 readiness gaps.
-3. **NFS backup transport unencrypted** — SC-8 gap that touches CP-9 confidentiality; documented as portfolio trade-off.
-4. **PBS backup alerting absent** — the ADR 0005 gap story is the strongest evidence for CP-9 partial rating; Wazuh/Discord alert is the pending fix (`runbooks/monthly-conmon.md` §"Follow-up TODO").
-5. **brisket and haccp have no VM-level backup** — bare-metal hosts; CP-9 scope is bounded to the five PBS-covered VMs for SSP authoring purposes.
+1. **No formal CP plan document** -- CP-2 is the highest-priority authoring target; it will draw on the runbook and ADR corpus.
+2. **Restore drill outstanding** -- due by 2026-04-15; result ADR will close the CP-4 and CP-10 readiness gaps.
+3. **NFS backup transport unencrypted** -- SC-8 gap that touches CP-9 confidentiality; documented as portfolio trade-off.
+4. **PBS backup alerting absent** -- the ADR 0005 gap story is the strongest evidence for CP-9 partial rating; Wazuh/Discord alert is the pending fix (`runbooks/monthly-conmon.md` §"Follow-up TODO").
+5. **brisket and haccp have no VM-level backup** -- bare-metal hosts; CP-9 scope is bounded to the five PBS-covered VMs for SSP authoring purposes.

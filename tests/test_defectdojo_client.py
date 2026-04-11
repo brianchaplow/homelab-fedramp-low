@@ -1,4 +1,4 @@
-"""Tests for pipelines.common.defectdojo — DefectDojo API v2 client."""
+"""Tests for pipelines.common.defectdojo -- DefectDojo API v2 client."""
 from __future__ import annotations
 
 from unittest.mock import MagicMock, patch

@@ -3,12 +3,12 @@
 **Auditor:** Claude Code (independent reviewer, no catalog authorship)
 **Date:** 2026-04-09
 **Scope:** 18 FedRAMP Low evidence catalog files in `docs/plan-3/evidence-catalog/`
-**Method:** Per-family path verification — min(10, control_count) paths sampled across controls; each path checked via `ls` or `Read` on the local filesystem; live index names (ELK/OpenSearch data streams) skipped
+**Method:** Per-family path verification -- min(10, control_count) paths sampled across controls; each path checked via `ls` or `Read` on the local filesystem; live index names (ELK/OpenSearch data streams) skipped
 **Protocol:** Paths with `/c/Projects/homelab-fedramp-low/` prefix OR no prefix (repo-relative) checked against repo root; paths with `/c/Projects/` prefix checked against parent workspace
 
 ---
 
-## AC — Access Control (11 controls)
+## AC -- Access Control (11 controls)
 
 | Control | Evidence Path | Status |
 |---------|--------------|--------|
@@ -27,7 +27,7 @@
 
 ---
 
-## AT — Awareness and Training (5 controls)
+## AT -- Awareness and Training (5 controls)
 
 | Control | Evidence Path | Status |
 |---------|--------------|--------|
@@ -41,7 +41,7 @@
 
 ---
 
-## AU — Audit and Accountability (10 controls)
+## AU -- Audit and Accountability (10 controls)
 
 | Control | Evidence Path | Status |
 |---------|--------------|--------|
@@ -60,7 +60,7 @@
 
 ---
 
-## CA — Assessment, Authorization, and Monitoring (10 controls)
+## CA -- Assessment, Authorization, and Monitoring (10 controls)
 
 | Control | Evidence Path | Status |
 |---------|--------------|--------|
@@ -79,7 +79,7 @@
 
 ---
 
-## CM — Configuration Management (9 controls)
+## CM -- Configuration Management (9 controls)
 
 | Control | Evidence Path | Status |
 |---------|--------------|--------|
@@ -98,7 +98,7 @@
 
 ---
 
-## CP — Contingency Planning (6 controls)
+## CP -- Contingency Planning (6 controls)
 
 | Control | Evidence Path | Status |
 |---------|--------------|--------|
@@ -113,7 +113,7 @@
 
 ---
 
-## IA — Identification and Authentication (16 controls)
+## IA -- Identification and Authentication (16 controls)
 
 | Control | Evidence Path | Status |
 |---------|--------------|--------|
@@ -132,7 +132,7 @@
 
 ---
 
-## IR — Incident Response (7 controls)
+## IR -- Incident Response (7 controls)
 
 | Control | Evidence Path | Status |
 |---------|--------------|--------|
@@ -148,7 +148,7 @@
 
 ---
 
-## MA — Maintenance (4 controls)
+## MA -- Maintenance (4 controls)
 
 | Control | Evidence Path | Status |
 |---------|--------------|--------|
@@ -161,7 +161,7 @@
 
 ---
 
-## MP — Media Protection (4 controls)
+## MP -- Media Protection (4 controls)
 
 | Control | Evidence Path | Status |
 |---------|--------------|--------|
@@ -176,7 +176,7 @@
 
 ---
 
-## PE — Physical and Environmental Protection (10 controls)
+## PE -- Physical and Environmental Protection (10 controls)
 
 | Control | Evidence Path | Status |
 |---------|--------------|--------|
@@ -195,7 +195,7 @@
 
 ---
 
-## PL — Planning (7 controls)
+## PL -- Planning (7 controls)
 
 | Control | Evidence Path | Status |
 |---------|--------------|--------|
@@ -211,7 +211,7 @@
 
 ---
 
-## PS — Personnel Security (9 controls, mostly N/A)
+## PS -- Personnel Security (9 controls, mostly N/A)
 
 | Control | Evidence Path | Status |
 |---------|--------------|--------|
@@ -225,11 +225,11 @@
 
 ---
 
-## RA — Risk Assessment (8 controls)
+## RA -- Risk Assessment (8 controls)
 
 | Control | Evidence Path | Status |
 |---------|--------------|--------|
-| RA-1 | `docs/superpowers/specs/2026-04-09-homelab-fedramp-low-plan-3-ssp-authoring-design.md` | **MISSING** — cited without `/c/Projects/` prefix; file exists only at `/c/Projects/docs/superpowers/specs/2026-04-09-homelab-fedramp-low-plan-3-ssp-authoring-design.md` (parent workspace), not as a repo-relative path |
+| RA-1 | `docs/superpowers/specs/2026-04-09-homelab-fedramp-low-plan-3-ssp-authoring-design.md` | **MISSING** -- cited without `/c/Projects/` prefix; file exists only at `/c/Projects/docs/superpowers/specs/2026-04-09-homelab-fedramp-low-plan-3-ssp-authoring-design.md` (parent workspace), not as a repo-relative path |
 | RA-2 | `pipelines/ingest/inventory.py` | VERIFIED |
 | RA-3 | `poam/POAM-2026-04.xlsx` | VERIFIED |
 | RA-5 | `docs/adr/0007-wazuh-agent-vuln-scan-deviation.md` | VERIFIED |
@@ -242,17 +242,17 @@
 
 ---
 
-## SA — System and Services Acquisition (multiple controls)
+## SA -- System and Services Acquisition (multiple controls)
 
 | Control | Evidence Path | Status |
 |---------|--------------|--------|
 | SA-1 | `deploy/defectdojo/README.md` | VERIFIED |
 | SA-1 | `deploy/regscale/README.md` | VERIFIED |
-| SA-3 | `docs/superpowers/specs/2026-04-09-homelab-fedramp-low-plan-3-ssp-authoring-design.md` | **MISSING** — cited without `/c/Projects/` prefix; file exists only at `/c/Projects/docs/superpowers/specs/2026-04-09-homelab-fedramp-low-plan-3-ssp-authoring-design.md` (parent workspace), not as a repo-relative path |
+| SA-3 | `docs/superpowers/specs/2026-04-09-homelab-fedramp-low-plan-3-ssp-authoring-design.md` | **MISSING** -- cited without `/c/Projects/` prefix; file exists only at `/c/Projects/docs/superpowers/specs/2026-04-09-homelab-fedramp-low-plan-3-ssp-authoring-design.md` (parent workspace), not as a repo-relative path |
 | SA-4 | `docs/adr/0003-regscale-install-deviation.md` | VERIFIED |
 | SA-4 | `docs/adr/0004-defectdojo-install-deviation.md` | VERIFIED |
 | SA-5 | `runbooks/restore-from-pbs.md` | VERIFIED |
-| SA-8 | `docs/superpowers/specs/2026-04-07-homelab-fedramp-low-design.md` | **MISSING** — cited without `/c/Projects/` prefix; file exists only at `/c/Projects/docs/superpowers/specs/2026-04-07-homelab-fedramp-low-design.md` (parent workspace), not as a repo-relative path |
+| SA-8 | `docs/superpowers/specs/2026-04-07-homelab-fedramp-low-design.md` | **MISSING** -- cited without `/c/Projects/` prefix; file exists only at `/c/Projects/docs/superpowers/specs/2026-04-07-homelab-fedramp-low-design.md` (parent workspace), not as a repo-relative path |
 | SA-9 | `inventory/overlay.yaml` | VERIFIED |
 | SA-11 | `pipelines/build/oscal_component.py` | VERIFIED |
 | SA-22 | `docs/adr/0006-plan-2-environment-and-api-realignment.md` | VERIFIED |
@@ -261,7 +261,7 @@
 
 ---
 
-## SC — System and Communications Protection (14 controls)
+## SC -- System and Communications Protection (14 controls)
 
 | Control | Evidence Path | Status |
 |---------|--------------|--------|
@@ -280,7 +280,7 @@
 
 ---
 
-## SI — System and Information Integrity (6 controls)
+## SI -- System and Information Integrity (6 controls)
 
 | Control | Evidence Path | Status |
 |---------|--------------|--------|
@@ -299,7 +299,7 @@
 
 ---
 
-## SR — Supply Chain Risk Management (11 controls)
+## SR -- Supply Chain Risk Management (11 controls)
 
 | Control | Evidence Path | Status |
 |---------|--------------|--------|
@@ -348,7 +348,7 @@
 
 ---
 
-## Missing Paths — Correction Required
+## Missing Paths -- Correction Required
 
 All 3 missing paths share the same root cause: the `docs/superpowers/specs/` directory exists only in the **parent workspace** (`/c/Projects/docs/superpowers/specs/`), not inside the `homelab-fedramp-low` repo itself. The catalogs cite these paths without the required `/c/Projects/` prefix.
 
@@ -371,7 +371,7 @@ All 3 missing paths share the same root cause: the `docs/superpowers/specs/` dir
 
 ## Notes
 
-- **Live index names skipped** (not file paths): `logs-zeek.haccp-default-*`, `wazuh-alerts-*`, `zeek-*`, `haccp-entities-seen`, `honeypot-*`, `apache-parsed-v2` — these are ELK/OpenSearch data stream identifiers, not filesystem paths
-- **Claude memory file** (`/c/Users/bchap/.claude/projects/C--Projects/memory/rack_build_2026-04-07.md`) cited in the MA catalog was verified as present but is not a repo artifact — it is the operator's persistent memory file. The path resolves correctly.
+- **Live index names skipped** (not file paths): `logs-zeek.haccp-default-*`, `wazuh-alerts-*`, `zeek-*`, `haccp-entities-seen`, `honeypot-*`, `apache-parsed-v2` -- these are ELK/OpenSearch data stream identifiers, not filesystem paths
+- **Claude memory file** (`/c/Users/bchap/.claude/projects/C--Projects/memory/rack_build_2026-04-07.md`) cited in the MA catalog was verified as present but is not a repo artifact -- it is the operator's persistent memory file. The path resolves correctly.
 - **SA catalog self-disclosure:** The SA catalog's own "unresolved questions" section already flagged the SA-3 path inconsistency. Gate 3 independently confirms and records it.
 - **No catalog-authorship bias:** All verification performed independently via `ls` / `Read` checks with no reference to the catalog's own assessments.

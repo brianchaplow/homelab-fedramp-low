@@ -21,7 +21,7 @@ set -e
 REPO_ROOT="$(cd "$(dirname "$0")" && pwd)"
 cd "$REPO_ROOT"
 
-# Locate the env file — PITBOSS stores it in /c/Projects/.env per
+# Locate the env file -- PITBOSS stores it in /c/Projects/.env per
 # homelab convention. On POSIX hosts (WSL, Linux, macOS) fall back to
 # the repo root .env then ~/.env.
 find_env() {
@@ -78,7 +78,7 @@ EOF
 
   test)
     if [ -z "$VENV_PY" ]; then
-      echo "ERROR: no .venv — run ./pipelines.sh install first" >&2
+      echo "ERROR: no .venv -- run ./pipelines.sh install first" >&2
       exit 1
     fi
     # Use the POSIX-style pytest binary when present, else module mode.
@@ -136,7 +136,7 @@ EOF
     # build-poam, render-poam, oscal, conmon) lands here and is executed
     # by pipelines/cli.py via the same venv that pipelines.sh selected.
     if [ -z "$VENV_PY" ]; then
-      echo "ERROR: no .venv — run ./pipelines.sh install first" >&2
+      echo "ERROR: no .venv -- run ./pipelines.sh install first" >&2
       exit 1
     fi
     load_env

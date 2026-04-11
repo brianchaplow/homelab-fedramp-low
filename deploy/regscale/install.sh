@@ -5,9 +5,9 @@
 #
 # Uses the MIT-licensed standalone Python installer from
 # github.com/RegScale/community, which pulls the public regscale/regscale
-# Docker image and serves plain HTTP on port 80 (NOT 81 — see ADR 0003).
+# Docker image and serves plain HTTP on port 80 (NOT 81 -- see ADR 0003).
 #
-# Post-install requires manual admin password reset via SQL — RegScale CE
+# Post-install requires manual admin password reset via SQL -- RegScale CE
 # does NOT print or document a default admin password (see ADR 0003).
 #
 set -e
@@ -32,7 +32,7 @@ python3.11 -m venv .venv
 . .venv/bin/activate
 pip install --upgrade pip > /dev/null
 
-echo "[4/5] Running installer (8-10 minutes; will say it errored — that is fine)..."
+echo "[4/5] Running installer (8-10 minutes; will say it errored -- that is fine)..."
 # The installer wraps docker compose. On a 6 GB VM the SQL Server migration
 # wave can race the EF Core lock release and the Python installer prints a
 # fatal-looking exception, BUT atlas's restart_policy=always then retries
@@ -52,5 +52,5 @@ done
 echo
 echo "Install complete."
 echo
-echo "ADMIN PASSWORD RESET REQUIRED — see deploy/regscale/reset-admin-password.sh"
+echo "ADMIN PASSWORD RESET REQUIRED -- see deploy/regscale/reset-admin-password.sh"
 echo "(RegScale CE does not ship a known default admin password.)"

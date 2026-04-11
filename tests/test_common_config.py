@@ -1,4 +1,4 @@
-"""Tests for pipelines.common.config — env loader.
+"""Tests for pipelines.common.config -- env loader.
 
 Covers ADR 0006 Deviations 3 (HTTPS validator scoped to Wazuh endpoints
 only) and 4 (hybrid env var defaults with secrets-only REQUIRED_ENV_VARS).
@@ -50,7 +50,7 @@ def _clear_all(monkeypatch: pytest.MonkeyPatch) -> None:
 def test_load_config_reads_required_secrets_and_applies_defaults(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    """Load with only the required secrets set — architectural constants fill in."""
+    """Load with only the required secrets set -- architectural constants fill in."""
     _clear_all(monkeypatch)
     _set_required(monkeypatch)
 
@@ -128,7 +128,7 @@ def test_https_validator_accepts_https_wazuh_endpoints(
     """Wazuh endpoints must use https:// (ADR 0006 Deviation 3)."""
     _clear_all(monkeypatch)
     _set_required(monkeypatch)
-    # Defaults are already https — load should succeed
+    # Defaults are already https -- load should succeed
     cfg = load_config()
     assert cfg.wazuh_api_url.startswith("https://")
     assert cfg.wazuh_indexer_url.startswith("https://")
@@ -159,7 +159,7 @@ def test_https_validator_rejects_http_wazuh_indexer_url(
 def test_defectdojo_and_regscale_accept_http(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    """DefectDojo and RegScale run http:// in lab — validator must not reject.
+    """DefectDojo and RegScale run http:// in lab -- validator must not reject.
 
     ADRs 0003 (RegScale CE port 80) and 0004 (DefectDojo bundled nginx no TLS)
     are the source of this asymmetry. ADR 0006 Deviation 3 scopes the HTTPS
@@ -167,14 +167,14 @@ def test_defectdojo_and_regscale_accept_http(
     """
     _clear_all(monkeypatch)
     _set_required(monkeypatch)
-    # Already http:// in _set_required — a plain load must succeed
+    # Already http:// in _set_required -- a plain load must succeed
     cfg = load_config()
     assert cfg.defectdojo_url.startswith("http://")
     assert cfg.regscale_url.startswith("http://")
 
 
 def test_config_is_frozen(monkeypatch: pytest.MonkeyPatch) -> None:
-    """Config is immutable — downstream code cannot mutate loaded settings."""
+    """Config is immutable -- downstream code cannot mutate loaded settings."""
     _clear_all(monkeypatch)
     _set_required(monkeypatch)
     cfg = load_config()

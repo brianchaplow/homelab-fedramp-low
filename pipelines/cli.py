@@ -34,7 +34,7 @@ Commands
     Full monthly cycle: ingest-findings + oscal + render-iiw + render-poam.
 
 The ``HOST_TO_PRODUCT`` map uses ASCII hyphens per ADR 0006 amendment
-2026-04-09 — the DefectDojo seed script in Plan 1 created the
+2026-04-09 -- the DefectDojo seed script in Plan 1 created the
 products with ``-``, not em dashes. It includes the ``opnsense``
 non-agent entry so a future SCA or firewall-audit source can route
 findings to product id=4 without another code change.
@@ -235,7 +235,7 @@ def regscale_push() -> None:
         (OSCAL_POAM, "poam"),
     ):
         if not oscal_path.exists():
-            click.echo(f"SKIP: {oscal_path} not present — run the builder first")
+            click.echo(f"SKIP: {oscal_path} not present -- run the builder first")
             continue
         result = push_oscal_to_regscale(client, oscal_path, oscal_type)
         click.echo(
@@ -258,7 +258,7 @@ def ssp_assemble() -> None:
     """Run trestle author ssp-assemble against the markdown scaffold.
 
     Plan 2 wires the assembly path without filling the 156 control
-    markdown files — running this against the empty scaffold is
+    markdown files -- running this against the empty scaffold is
     expected to either produce a minimal SSP or fail with a Trestle
     diagnostic that tells Plan 3 exactly which controls need prose.
     """

@@ -2,14 +2,14 @@
 
 Per ADR 0006 Deviation 7, RegScale CE has no long-lived API key. The
 only supported authentication flow is ``POST /api/authentication/login``
-with a JSON body of ``{"username": "...", "password": "..."}`` — the
+with a JSON body of ``{"username": "...", "password": "..."}`` -- the
 response carries a 24-hour JWT in the ``auth_token`` field. That JWT
 is used as a ``Authorization: Bearer <token>`` header on subsequent
 requests. This client caches the token, re-authenticates automatically
 on a 401 response, and exposes a minimal ``get`` / ``post`` pair that
 downstream pipeline code can build on.
 
-The field name is ``username`` (lowercase), not ``userName`` — verified
+The field name is ``username`` (lowercase), not ``userName`` -- verified
 against ``tests/smoke/check_regscale.sh`` which is the known-working
 reference implementation.
 
@@ -132,5 +132,5 @@ class RegScaleClient:
         raise RuntimeError("RegScale auth loop exhausted")
 
     def seeding_status(self) -> dict[str, Any]:
-        """Probe ``/api/SeedingStatus`` — the canonical smoke-test endpoint."""
+        """Probe ``/api/SeedingStatus`` -- the canonical smoke-test endpoint."""
         return self.get("/api/SeedingStatus")

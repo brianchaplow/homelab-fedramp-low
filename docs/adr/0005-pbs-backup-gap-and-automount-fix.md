@@ -1,8 +1,8 @@
-# ADR 0005 — PBS backup gap discovered + NFS automount hardening
+# ADR 0005 -- PBS backup gap discovered + NFS automount hardening
 
 ## Status
 
-Accepted — 2026-04-08
+Accepted -- 2026-04-08
 
 ## Context
 
@@ -20,7 +20,7 @@ Diagnostic walk:
 
 | Check | Result |
 |---|---|
-| smoker host has `/mnt/pbs-store/`? | No — PBS storage lives inside LXC 300 |
+| smoker host has `/mnt/pbs-store/`? | No -- PBS storage lives inside LXC 300 |
 | LXC 300 fstab | `10.10.20.10:/pbs-datastore /mnt/pbs-store nfs defaults,_netdev 0 0` |
 | LXC 300 → smokehouse ping | OK |
 | smokehouse export visible | `showmount -e 10.10.20.10` → `/pbs-datastore 10.10.30.0/24` |
@@ -50,7 +50,7 @@ root mailbox, which nobody reads.
    pct exec 300 -- systemctl restart proxmox-backup-proxy proxmox-backup
    ```
 2. **Harden the fstab line** with `x-systemd.automount` so the mount becomes
-   lazy — systemd brings up an automount placeholder at boot, and the actual
+   lazy -- systemd brings up an automount placeholder at boot, and the actual
    NFS mount happens on the first access. This eliminates the boot-order race
    with smokehouse:
    ```
@@ -70,12 +70,12 @@ root mailbox, which nobody reads.
 **Positive:**
 - PBS backups working again, including VM 201 (first dojo backup is now in PBS)
 - Boot-race class of failure eliminated by automount
-- Real bug discovered + fixed as a side-effect of Plan 1 — exactly the kind
+- Real bug discovered + fixed as a side-effect of Plan 1 -- exactly the kind
   of "ConMon catches what manual checks miss" story the FedRAMP portfolio
   needs
 
 **Negative:**
-- 5-day backup gap for DC01, WS01, TheHive — not catastrophic but the homelab
+- 5-day backup gap for DC01, WS01, TheHive -- not catastrophic but the homelab
   has no Wazuh/Discord alert wired up to PBS, which let the gap grow
   unnoticed
 - Operator must manually verify the Apr 9 02:00 run actually succeeds before
@@ -103,7 +103,7 @@ mnt-pbs\x2dstore.mount      loaded active   mounted /mnt/pbs-store
 
 The automount unit is dead-but-loaded right now because the .mount is
 manually active (mutually exclusive). After the next LXC reboot, the
-automount unit will become active and lazy-mount on first access — this is
+automount unit will become active and lazy-mount on first access -- this is
 the desired steady state.
 
 ## Notes

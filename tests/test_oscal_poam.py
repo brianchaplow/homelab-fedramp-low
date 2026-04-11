@@ -1,4 +1,4 @@
-"""Tests for pipelines.build.oscal_poam — DefectDojo findings → OSCAL POA&M."""
+"""Tests for pipelines.build.oscal_poam -- DefectDojo findings → OSCAL POA&M."""
 from __future__ import annotations
 
 import json
@@ -24,7 +24,7 @@ UUID_RE = re.compile(
 
 
 def test_sla_days_match_fedramp_low_windows() -> None:
-    """FedRAMP Low ConMon Strategy Guide — Critical 15, High 30,
+    """FedRAMP Low ConMon Strategy Guide -- Critical 15, High 30,
     Moderate 90, Low 180. Not the plan text's 30/90/180/365 which
     were a pre-execution mistake documented in ADR 0006 amendment."""
     assert SLA_DAYS == {
@@ -112,7 +112,7 @@ def test_build_poam_item_properties(tmp_path: Path) -> None:
 
 
 def test_build_poam_empty_props_are_omitted(tmp_path: Path) -> None:
-    """OSCAL rejects empty prop values — same rule as Task 8."""
+    """OSCAL rejects empty prop values -- same rule as Task 8."""
     finding = _sample_finding(cve=None, description="")
     out = tmp_path / "poam.json"
     build_poam_from_defectdojo([finding], out)

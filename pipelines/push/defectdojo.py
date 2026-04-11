@@ -12,7 +12,7 @@ carried across; optional fields are omitted when empty so the import
 payload stays clean.
 
 Product names use ASCII hyphens (e.g. ``"MSS Core - brisket"``) per
-ADR 0006 amendment 2026-04-09 — the Plan 1 seed script created them
+ADR 0006 amendment 2026-04-09 -- the Plan 1 seed script created them
 with ``-``, not em dashes.
 """
 from __future__ import annotations
@@ -36,7 +36,7 @@ def findings_to_generic_format(findings: list[Finding]) -> dict[str, Any]:
     on 2026-04-09 returned
     ``"Not allowed fields are present: ['host']"``. The correct way
     to carry the affected asset is the ``endpoints`` list, which the
-    parser treats as URI strings — we pass a single-element list of
+    parser treats as URI strings -- we pass a single-element list of
     the hostname.
     """
     out_findings: list[dict[str, Any]] = []
@@ -110,7 +110,7 @@ def push_findings_to_defectdojo(
     Raises:
         ValueError: if any value in ``host_to_product`` names a product
             that is not present in DefectDojo. This is a fail-fast
-            safety check — mistyped product names are the most common
+            safety check -- mistyped product names are the most common
             cause of silent data loss in this pipeline.
     """
     products_by_name: dict[str, int] = {

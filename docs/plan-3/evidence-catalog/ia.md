@@ -1,6 +1,6 @@
-# IA — Identification and Authentication: Evidence Catalog
+# IA -- Identification and Authentication: Evidence Catalog
 
-**Family:** IA — Identification and Authentication
+**Family:** IA -- Identification and Authentication
 **FedRAMP Rev 5 Low controls:** 16 (IA-1, IA-2, IA-2(1), IA-2(2), IA-2(8), IA-2(12), IA-4, IA-5, IA-5(1), IA-6, IA-7, IA-8, IA-8(1), IA-8(2), IA-8(4), IA-11)
 **Catalog built:** 2026-04-09
 **Authoring session:** Plan 3, Phase 1 (evidence-catalog subagent)
@@ -14,15 +14,15 @@
 | SSH auth model | Key-only on all in-boundary hosts; `PasswordAuthentication no` in `sshd_config`. Hosts: brisket, haccp, smokehouse, smoker, pitcrew, sear, dojo, regscale |
 | Per-service accounts | Wazuh: `admin` (dashboard/indexer) + `wazuh-wui` (API); Shuffle: `admin`; OpenCTI: `admin@opencti.local`; TheHive: `admin@thehive.local` + `socadmin@thehive.local`; Cortex: `admin` + `socadmin@SOC`; Velociraptor: `admin`; DefectDojo: `admin`; RegScale: `admin` |
 | RegScale auth | 24-hour JWT via `POST /api/authentication/login`; re-auth per invocation per ADR 0003 + ADR 0006 Deviation 7 |
-| Remote-access mesh | Tailscale — device identity via Tailscale auth; WireGuard keys provisioned per device |
+| Remote-access mesh | Tailscale -- device identity via Tailscale auth; WireGuard keys provisioned per device |
 | MFA | Not implemented for any in-boundary service |
-| PIV | Not applicable — no federal PIV infrastructure |
+| PIV | Not applicable -- no federal PIV infrastructure |
 | Secret storage | All service passwords in `/c/Projects/.env` (gitignored); rotated on operational events |
 | Identifier reuse policy | Per-service accounts are never reassigned; usernames retired when a service is decommissioned |
 
 ---
 
-## IA-1 — Identification and Authentication Policy and Procedures
+## IA-1 -- Identification and Authentication Policy and Procedures
 
 ### Status
 partial
@@ -40,11 +40,11 @@ The `CLAUDE.md` root document (parent workspace) and `README.md` in this repo es
 - No dissemination mechanism beyond the git repository
 
 ### Evidence paths
-- `README.md` — top-level project overview (auth conventions referenced)
-- `CLAUDE.md` (parent workspace `/c/Projects/CLAUDE.md`) — SSH auth model, credential conventions, per-service account inventory
-- `runbooks/cert-trust.md` — documents TLS posture and auth channel decisions for each service
-- `docs/adr/0003-regscale-install-deviation.md` — RegScale auth deviation from plan (policy-level decision)
-- `docs/adr/0006-plan-2-environment-and-api-realignment.md` Deviation 7 — RegScale JWT re-auth policy
+- `README.md` -- top-level project overview (auth conventions referenced)
+- `CLAUDE.md` (parent workspace `/c/Projects/CLAUDE.md`) -- SSH auth model, credential conventions, per-service account inventory
+- `runbooks/cert-trust.md` -- documents TLS posture and auth channel decisions for each service
+- `docs/adr/0003-regscale-install-deviation.md` -- RegScale auth deviation from plan (policy-level decision)
+- `docs/adr/0006-plan-2-environment-and-api-realignment.md` Deviation 7 -- RegScale JWT re-auth policy
 
 ### ODP values / baseline-mandated parameters
 | ODP | Parameter | Value | Origin |
@@ -60,7 +60,7 @@ The `CLAUDE.md` root document (parent workspace) and `README.md` in this repo es
 
 ---
 
-## IA-2 — Identification and Authentication (Organizational Users)
+## IA-2 -- Identification and Authentication (Organizational Users)
 
 ### Status
 implemented
@@ -87,20 +87,20 @@ Every in-boundary host requires unique authentication before granting access:
 No gaps in unique identification for the single-operator system boundary. All accounts are named and non-shared.
 
 ### Evidence paths
-- `CLAUDE.md` (parent workspace) — "Credentials" section: full per-service account inventory
-- `inventory/overlay.yaml` — lists all in-boundary hosts with agent assignments
-- `pipelines/common/wazuh.py` — `WazuhClient.authenticate()` (wazuh-wui per-invocation JWT)
-- `pipelines/common/regscale.py` — `RegScaleClient` JWT login per ADR 0006 Deviation 7
-- `deploy/regscale/install.sh` — post-install verification confirms `POST /api/authentication/login` returns JWT with `GlobalAdmin` role claim
-- `deploy/regscale/reset-admin-password.sh` — admin account provisioning (PBKDF2-HMAC-SHA512 hash)
-- `docs/adr/0003-regscale-install-deviation.md` — RegScale auth schema and credential verification evidence
+- `CLAUDE.md` (parent workspace) -- "Credentials" section: full per-service account inventory
+- `inventory/overlay.yaml` -- lists all in-boundary hosts with agent assignments
+- `pipelines/common/wazuh.py` -- `WazuhClient.authenticate()` (wazuh-wui per-invocation JWT)
+- `pipelines/common/regscale.py` -- `RegScaleClient` JWT login per ADR 0006 Deviation 7
+- `deploy/regscale/install.sh` -- post-install verification confirms `POST /api/authentication/login` returns JWT with `GlobalAdmin` role claim
+- `deploy/regscale/reset-admin-password.sh` -- admin account provisioning (PBKDF2-HMAC-SHA512 hash)
+- `docs/adr/0003-regscale-install-deviation.md` -- RegScale auth schema and credential verification evidence
 
 ### ODP values / baseline-mandated parameters
 No ODPs for IA-2 base control.
 
 ---
 
-## IA-2(1) — Multi-factor Authentication to Privileged Accounts
+## IA-2(1) -- Multi-factor Authentication to Privileged Accounts
 
 ### Status
 partial
@@ -111,7 +111,7 @@ Implement multi-factor authentication for access to privileged accounts.
 ### What is implemented
 No MFA is currently wired to any in-boundary service. SSH access uses a private key (something you have) as the sole factor; this constitutes single-factor authentication via a cryptographic authenticator.
 
-SSH key authentication is stronger than password-only authentication and meets replay-resistance requirements (see IA-2(8)), but it is not a second factor paired with a password or biometric — it replaces the password entirely. Under NIST SP 800-63B, SSH key authentication is a single-factor cryptographic authenticator at AAL2, which does not satisfy MFA.
+SSH key authentication is stronger than password-only authentication and meets replay-resistance requirements (see IA-2(8)), but it is not a second factor paired with a password or biometric -- it replaces the password entirely. Under NIST SP 800-63B, SSH key authentication is a single-factor cryptographic authenticator at AAL2, which does not satisfy MFA.
 
 Tailscale device authentication uses WireGuard keys (device-bound cryptographic factor). No second factor is required at Tailscale login for homelab devices.
 
@@ -121,16 +121,16 @@ Tailscale device authentication uses WireGuard keys (device-bound cryptographic 
 - MFA implementation is a planned remediation item (tracked as a deviation per the FedRAMP Low posture)
 
 ### Evidence paths
-- `CLAUDE.md` (parent workspace) — Credentials section confirms per-service password auth without MFA
-- `trestle-workspace/mss-ssp/ia/ia-2.1.md` — scaffold control file (status: planned)
-- `docs/adr/0008-plan-3-pre-execution-realignment.md` — IA context notes, no MFA wired
+- `CLAUDE.md` (parent workspace) -- Credentials section confirms per-service password auth without MFA
+- `trestle-workspace/mss-ssp/ia/ia-2.1.md` -- scaffold control file (status: planned)
+- `docs/adr/0008-plan-3-pre-execution-realignment.md` -- IA context notes, no MFA wired
 
 ### ODP values / baseline-mandated parameters
-No ODPs for IA-2(1). FedRAMP mandates MFA for privileged accounts — this is a required control, not an ODP-parameterized one.
+No ODPs for IA-2(1). FedRAMP mandates MFA for privileged accounts -- this is a required control, not an ODP-parameterized one.
 
 ---
 
-## IA-2(2) — Multi-factor Authentication to Non-privileged Accounts
+## IA-2(2) -- Multi-factor Authentication to Non-privileged Accounts
 
 ### Status
 partial
@@ -141,22 +141,22 @@ Implement multi-factor authentication for access to non-privileged accounts.
 ### What is implemented
 Same posture as IA-2(1). SSH key authentication is in use for all system access but constitutes single-factor authentication. No MFA is wired for non-privileged account access to any service.
 
-In this single-operator homelab boundary, the distinction between privileged and non-privileged accounts is largely nominal — the operator holds admin credentials for all services. However, the `socadmin@thehive.local` and `socadmin@SOC` accounts in TheHive and Cortex represent lower-privilege operator roles and also lack MFA.
+In this single-operator homelab boundary, the distinction between privileged and non-privileged accounts is largely nominal -- the operator holds admin credentials for all services. However, the `socadmin@thehive.local` and `socadmin@SOC` accounts in TheHive and Cortex represent lower-privilege operator roles and also lack MFA.
 
 ### What is partial or missing
 - No MFA for non-privileged service accounts
 - Planned alongside IA-2(1) remediation
 
 ### Evidence paths
-- `CLAUDE.md` (parent workspace) — Credentials section
-- `trestle-workspace/mss-ssp/ia/ia-2.2.md` — scaffold control file (status: planned)
+- `CLAUDE.md` (parent workspace) -- Credentials section
+- `trestle-workspace/mss-ssp/ia/ia-2.2.md` -- scaffold control file (status: planned)
 
 ### ODP values / baseline-mandated parameters
-No ODPs for IA-2(2). FedRAMP mandates MFA for non-privileged accounts — required control.
+No ODPs for IA-2(2). FedRAMP mandates MFA for non-privileged accounts -- required control.
 
 ---
 
-## IA-2(8) — Access to Accounts — Replay Resistant
+## IA-2(8) -- Access to Accounts -- Replay Resistant
 
 ### Status
 implemented
@@ -177,11 +177,11 @@ All authentication mechanisms in use are replay-resistant:
 RegScale, DefectDojo, and TheHive serve on HTTP on the lab network (documented in `runbooks/cert-trust.md` and ADR 0004). Cookie/token transmission over HTTP on the internal network is technically replayable within the same network segment. However, all in-boundary hosts are on VLAN 20 or VLAN 30 with managed-switch ACLs, and the risk is accepted as a lab-posture deviation per ADR 0003.
 
 ### Evidence paths
-- `pipelines/common/wazuh.py` — `authenticate()` method: JWT per-invocation auth
-- `pipelines/common/regscale.py` — `RegScaleClient`: JWT login with 24-hour TTL, re-auth on 401
-- `runbooks/cert-trust.md` — documents which services use HTTP vs HTTPS and the accepted risk
-- `docs/adr/0003-regscale-install-deviation.md` — RegScale HTTP posture documented (§Consequences: "Plain HTTP on port 80 is acceptable on the lab network but should be fronted with a reverse proxy + TLS")
-- `docs/adr/0004-defectdojo-install-deviation.md` — DefectDojo HTTP posture
+- `pipelines/common/wazuh.py` -- `authenticate()` method: JWT per-invocation auth
+- `pipelines/common/regscale.py` -- `RegScaleClient`: JWT login with 24-hour TTL, re-auth on 401
+- `runbooks/cert-trust.md` -- documents which services use HTTP vs HTTPS and the accepted risk
+- `docs/adr/0003-regscale-install-deviation.md` -- RegScale HTTP posture documented (§Consequences: "Plain HTTP on port 80 is acceptable on the lab network but should be fronted with a reverse proxy + TLS")
+- `docs/adr/0004-defectdojo-install-deviation.md` -- DefectDojo HTTP posture
 
 ### ODP values / baseline-mandated parameters
 | ODP | Parameter | Value | Origin |
@@ -190,7 +190,7 @@ RegScale, DefectDojo, and TheHive serve on HTTP on the lab network (documented i
 
 ---
 
-## IA-2(12) — Acceptance of PIV Credentials
+## IA-2(12) -- Acceptance of PIV Credentials
 
 ### Status
 not-applicable
@@ -199,21 +199,21 @@ not-applicable
 Accept and electronically verify Personal Identity Verification-compliant credentials.
 
 ### What is implemented
-N/A — the Managed SOC Service is a private homelab with no PIV infrastructure. PIV issuance requires a federal agency sponsorship; the system owner holds no PIV card and no PIV issuance authority. No PIV card readers, middleware (e.g., OpenSC), or PIV-aware identity providers are deployed.
+N/A -- the Managed SOC Service is a private homelab with no PIV infrastructure. PIV issuance requires a federal agency sponsorship; the system owner holds no PIV card and no PIV issuance authority. No PIV card readers, middleware (e.g., OpenSC), or PIV-aware identity providers are deployed.
 
 ### What is partial or missing
 Not applicable. No PIV infrastructure exists or is planned.
 
 ### Evidence paths
-- `CLAUDE.md` (parent workspace) — no PIV references; all auth is SSH key or service password
-- `trestle-workspace/mss-ssp/ia/ia-2.12.md` — scaffold (Implementation Status: planned — to be updated to not-applicable in authoring)
+- `CLAUDE.md` (parent workspace) -- no PIV references; all auth is SSH key or service password
+- `trestle-workspace/mss-ssp/ia/ia-2.12.md` -- scaffold (Implementation Status: planned -- to be updated to not-applicable in authoring)
 
 ### ODP values / baseline-mandated parameters
 No ODPs for IA-2(12). Control applicability is the decision point.
 
 ---
 
-## IA-4 — Identifier Management
+## IA-4 -- Identifier Management
 
 ### Status
 implemented
@@ -236,20 +236,20 @@ Identifier management for the Managed SOC Service:
 - Identifier reuse time period is not formally defined (treated as indefinite)
 
 ### Evidence paths
-- `inventory/overlay.yaml` — stable agent-name-keyed inventory; documents all in-boundary hosts with their assigned identifiers
-- `pipelines/common/wazuh.py` — `list_agents()` returns agent ids and names
-- `docs/adr/0006-plan-2-environment-and-api-realignment.md` Deviation 6 — agent ID collision and name-stability policy
-- `CLAUDE.md` (parent workspace) — "All Hosts" table: IP, VLAN, Wazuh agent ID per host
+- `inventory/overlay.yaml` -- stable agent-name-keyed inventory; documents all in-boundary hosts with their assigned identifiers
+- `pipelines/common/wazuh.py` -- `list_agents()` returns agent ids and names
+- `docs/adr/0006-plan-2-environment-and-api-realignment.md` Deviation 6 -- agent ID collision and name-stability policy
+- `CLAUDE.md` (parent workspace) -- "All Hosts" table: IP, VLAN, Wazuh agent ID per host
 
 ### ODP values / baseline-mandated parameters
 | ODP | Parameter | Value | Origin |
 |-----|-----------|-------|--------|
 | ia-04_odp.01 | Personnel or roles authorized to assign identifiers | System owner (Brian Chaplow) | organization |
-| ia-04_odp.02 | Identifier reuse prevention time period | Indefinite — retired identifiers are never reassigned within this system boundary | organization |
+| ia-04_odp.02 | Identifier reuse prevention time period | Indefinite -- retired identifiers are never reassigned within this system boundary | organization |
 
 ---
 
-## IA-5 — Authenticator Management
+## IA-5 -- Authenticator Management
 
 ### Status
 partial
@@ -258,7 +258,7 @@ partial
 Manage authenticators through their lifecycle: verify identity at initial distribution, establish initial content, ensure strength, implement distribution/loss/revocation procedures, change defaults before first use, rotate on schedule, protect from disclosure/modification, require individual protection, and change group authenticators when membership changes.
 
 ### What is implemented
-- **SSH keys (a, b, c)**: SSH key pairs are generated by the operator on the PITBOSS workstation. Initial key distribution to each host is performed by the operator (identity verified implicitly — single-operator model). Keys use ED25519 or RSA-4096, which are sufficient strength. No shared private keys.
+- **SSH keys (a, b, c)**: SSH key pairs are generated by the operator on the PITBOSS workstation. Initial key distribution to each host is performed by the operator (identity verified implicitly -- single-operator model). Keys use ED25519 or RSA-4096, which are sufficient strength. No shared private keys.
 - **Default authenticator change before first use (e)**: RegScale CE ships with an undocumented default password hash; `deploy/regscale/reset-admin-password.sh` overwrites the default before the service is placed in use (documented in ADR 0003). DefectDojo, TheHive, Cortex, and Velociraptor ship with no usable default credential or require first-run admin setup; defaults are changed at deployment per ADR 0004 and platform runbooks.
 - **Secret storage protection (g)**: all service passwords are in `/c/Projects/.env` (gitignored); no credential appears in committed code or documentation artifacts.
 - **Group account changes (i)**: TheHive and Cortex have two named accounts (`admin` + `socadmin`). In the single-operator model, no membership changes have occurred. The Wazuh `admin` account is used for infrastructure only; no shared account passwords are issued to additional users.
@@ -271,11 +271,11 @@ Manage authenticators through their lifecycle: verify identity at initial distri
 - No automated tool for tracking authenticator age or expiry
 
 ### Evidence paths
-- `deploy/regscale/reset-admin-password.sh` — default authenticator replacement (PBKDF2-HMAC-SHA512, ADR 0003 §Decisions point 3)
-- `deploy/regscale/install.sh` — post-install auth verification
-- `CLAUDE.md` (parent workspace) — "Credentials" section: secret-in-.env convention
-- `docs/adr/0003-regscale-install-deviation.md` — default-password analysis and hash reset procedure
-- `runbooks/cert-trust.md` — documents which services accept TLS and how auth tokens are protected in transit
+- `deploy/regscale/reset-admin-password.sh` -- default authenticator replacement (PBKDF2-HMAC-SHA512, ADR 0003 §Decisions point 3)
+- `deploy/regscale/install.sh` -- post-install auth verification
+- `CLAUDE.md` (parent workspace) -- "Credentials" section: secret-in-.env convention
+- `docs/adr/0003-regscale-install-deviation.md` -- default-password analysis and hash reset procedure
+- `runbooks/cert-trust.md` -- documents which services accept TLS and how auth tokens are protected in transit
 
 ### ODP values / baseline-mandated parameters
 | ODP | Parameter | Value | Origin |
@@ -285,7 +285,7 @@ Manage authenticators through their lifecycle: verify identity at initial distri
 
 ---
 
-## IA-5(1) — Password-based Authentication
+## IA-5(1) -- Password-based Authentication
 
 ### Status
 implemented
@@ -307,11 +307,11 @@ Defined parameters: passwords must be at least 12 characters; must not appear in
 - The 12-character minimum and breach-wordlist policy are operational conventions, not enforced by a centralized policy engine; services use their own enforcement internally
 
 ### Evidence paths
-- `trestle-workspace/mss-ssp/ia/ia-5.1.md` — authored prose (Gate 2 shape-check control; status: implemented; set-params ia-05.01_odp.01 and ia-05.01_odp.02 filled)
-- `docs/plan-3/SHAPE-CHECK-LOG.md` — IA-5(1) shape-check results: desc_len=1233, ssp-assemble PASS
-- `CLAUDE.md` (parent workspace) — "Credentials" section: `.env` convention; `PasswordAuthentication no` sshd posture
-- `deploy/regscale/install.sh` — password handling for RegScale CE
-- `deploy/regscale/reset-admin-password.sh` — PBKDF2-HMAC-SHA512 hash generation (approved KDF with 100,000 PBKDF2 iterations, 16-byte salt, 32-byte subkey)
+- `trestle-workspace/mss-ssp/ia/ia-5.1.md` -- authored prose (Gate 2 shape-check control; status: implemented; set-params ia-05.01_odp.01 and ia-05.01_odp.02 filled)
+- `docs/plan-3/SHAPE-CHECK-LOG.md` -- IA-5(1) shape-check results: desc_len=1233, ssp-assemble PASS
+- `CLAUDE.md` (parent workspace) -- "Credentials" section: `.env` convention; `PasswordAuthentication no` sshd posture
+- `deploy/regscale/install.sh` -- password handling for RegScale CE
+- `deploy/regscale/reset-admin-password.sh` -- PBKDF2-HMAC-SHA512 hash generation (approved KDF with 100,000 PBKDF2 iterations, 16-byte salt, 32-byte subkey)
 
 ### ODP values / baseline-mandated parameters
 | ODP | Parameter | Value | Origin |
@@ -321,7 +321,7 @@ Defined parameters: passwords must be at least 12 characters; must not appear in
 
 ---
 
-## IA-6 — Authentication Feedback
+## IA-6 -- Authentication Feedback
 
 ### Status
 implemented
@@ -349,17 +349,17 @@ All password fields rely on the browser/terminal platform's standard masking beh
 No gaps identified. All active authentication interfaces mask credential input.
 
 ### Evidence paths
-- `CLAUDE.md` (parent workspace) — Credentials section (all services listed; no plaintext terminal echo of secrets)
-- `pipelines/common/config.py` — `load_config()`: passwords read from env, never echoed in log output
-- `pipelines/common/logging.py` — log configuration (no credential logging)
-- `runbooks/cert-trust.md` — service URL inventory (HTTPS vs HTTP per service)
+- `CLAUDE.md` (parent workspace) -- Credentials section (all services listed; no plaintext terminal echo of secrets)
+- `pipelines/common/config.py` -- `load_config()`: passwords read from env, never echoed in log output
+- `pipelines/common/logging.py` -- log configuration (no credential logging)
+- `runbooks/cert-trust.md` -- service URL inventory (HTTPS vs HTTP per service)
 
 ### ODP values / baseline-mandated parameters
 No ODPs for IA-6.
 
 ---
 
-## IA-7 — Cryptographic Module Authentication
+## IA-7 -- Cryptographic Module Authentication
 
 ### Status
 implemented
@@ -381,18 +381,18 @@ No FIPS mode is enforced. No proprietary or custom cryptographic modules are in 
 No FIPS 140-3 validated mode enforcement; this is a known posture limitation for the homelab boundary. A production FedRAMP deployment would require FIPS-validated module operation (e.g., Ubuntu FIPS kernels or RHEL FIPS mode). Tracked as an accepted risk for the lab.
 
 ### Evidence paths
-- `CLAUDE.md` (parent workspace) — host OS details (Ubuntu 24.04 on brisket/dojo/regscale; Ubuntu 22.04 on haccp)
-- `inventory/overlay.yaml` — host hardware and OS function inventory
-- `runbooks/cert-trust.md` — TLS posture per service
-- `deploy/regscale/install.sh` — Python 3.11 + OpenSSL dependency chain
-- `docs/adr/0003-regscale-install-deviation.md` — RegScale TLS posture (HTTP on port 80, plain network; TLS reverse proxy deferred)
+- `CLAUDE.md` (parent workspace) -- host OS details (Ubuntu 24.04 on brisket/dojo/regscale; Ubuntu 22.04 on haccp)
+- `inventory/overlay.yaml` -- host hardware and OS function inventory
+- `runbooks/cert-trust.md` -- TLS posture per service
+- `deploy/regscale/install.sh` -- Python 3.11 + OpenSSL dependency chain
+- `docs/adr/0003-regscale-install-deviation.md` -- RegScale TLS posture (HTTP on port 80, plain network; TLS reverse proxy deferred)
 
 ### ODP values / baseline-mandated parameters
 No ODPs for IA-7.
 
 ---
 
-## IA-8 — Identification and Authentication (Non-organizational Users)
+## IA-8 -- Identification and Authentication (Non-organizational Users)
 
 ### Status
 not-applicable
@@ -414,15 +414,15 @@ There are no public-facing endpoints within the FedRAMP Low boundary.
 Not applicable. No non-organizational users exist or are planned for the in-boundary system.
 
 ### Evidence paths
-- `CLAUDE.md` (parent workspace) — VLAN topology: VLAN 20 (SOC infra), VLAN 30 (lab/Proxmox). No public-internet exposure of in-boundary services.
-- `inventory/overlay.yaml` — boundary classification: all in-scope hosts marked `boundary: in`
+- `CLAUDE.md` (parent workspace) -- VLAN topology: VLAN 20 (SOC infra), VLAN 30 (lab/Proxmox). No public-internet exposure of in-boundary services.
+- `inventory/overlay.yaml` -- boundary classification: all in-scope hosts marked `boundary: in`
 
 ### ODP values / baseline-mandated parameters
 No ODPs for IA-8 base control.
 
 ---
 
-## IA-8(1) — Acceptance of PIV Credentials from Other Agencies
+## IA-8(1) -- Acceptance of PIV Credentials from Other Agencies
 
 ### Status
 not-applicable
@@ -437,14 +437,14 @@ Not applicable. The Managed SOC Service is a private homelab with no federal age
 Not applicable.
 
 ### Evidence paths
-- `CLAUDE.md` (parent workspace) — no federal interconnection or PIV references
+- `CLAUDE.md` (parent workspace) -- no federal interconnection or PIV references
 
 ### ODP values / baseline-mandated parameters
 No ODPs for IA-8(1).
 
 ---
 
-## IA-8(2) — Acceptance of External Authenticators
+## IA-8(2) -- Acceptance of External Authenticators
 
 ### Status
 not-applicable
@@ -459,14 +459,14 @@ Not applicable. The Managed SOC Service does not accept any external authenticat
 Not applicable.
 
 ### Evidence paths
-- `CLAUDE.md` (parent workspace) — all auth is SSH key or service password; no external IdP references
+- `CLAUDE.md` (parent workspace) -- all auth is SSH key or service password; no external IdP references
 
 ### ODP values / baseline-mandated parameters
 No ODPs for IA-8(2).
 
 ---
 
-## IA-8(4) — Use of Defined Profiles
+## IA-8(4) -- Use of Defined Profiles
 
 ### Status
 partial
@@ -489,10 +489,10 @@ No formal identity management profile (e.g., FICAM-compliant, SAML 2.0, OpenID C
 - No SP 800-63B Authenticator Assurance Level (AAL) designations formally assigned to each service
 
 ### Evidence paths
-- `pipelines/common/wazuh.py` — JWT-based auth (RFC 7519 pattern)
-- `pipelines/common/regscale.py` — JWT-based auth (RFC 7519 pattern; 24-hour TTL per ADR 0003)
-- `docs/adr/0003-regscale-install-deviation.md` — JWT token structure (role claim: GlobalAdmin, TTL: 1440 min)
-- `runbooks/cert-trust.md` — TLS version and cipher posture per service
+- `pipelines/common/wazuh.py` -- JWT-based auth (RFC 7519 pattern)
+- `pipelines/common/regscale.py` -- JWT-based auth (RFC 7519 pattern; 24-hour TTL per ADR 0003)
+- `docs/adr/0003-regscale-install-deviation.md` -- JWT token structure (role claim: GlobalAdmin, TTL: 1440 min)
+- `runbooks/cert-trust.md` -- TLS version and cipher posture per service
 
 ### ODP values / baseline-mandated parameters
 | ODP | Parameter | Value | Origin |
@@ -501,7 +501,7 @@ No formal identity management profile (e.g., FICAM-compliant, SAML 2.0, OpenID C
 
 ---
 
-## IA-11 — Re-authentication
+## IA-11 -- Re-authentication
 
 ### Status
 implemented
@@ -526,10 +526,10 @@ Operator-defined re-authentication trigger: role change, credential reset, secur
 - SSH `ClientAliveInterval` and `ClientAliveCountMax` settings are not uniformly documented across all hosts
 
 ### Evidence paths
-- `pipelines/common/wazuh.py` — `authenticate()` and 401-retry logic (re-auth on token expiry)
-- `pipelines/common/regscale.py` — `_get_token()` with per-invocation login + 401 re-auth
-- `docs/adr/0003-regscale-install-deviation.md` — JWT TTL: 1440 minutes (`expires_in: 1440`)
-- `docs/adr/0006-plan-2-environment-and-api-realignment.md` Deviation 7 — "every pipeline invocation is a fresh process and gets a fresh token"
+- `pipelines/common/wazuh.py` -- `authenticate()` and 401-retry logic (re-auth on token expiry)
+- `pipelines/common/regscale.py` -- `_get_token()` with per-invocation login + 401 re-auth
+- `docs/adr/0003-regscale-install-deviation.md` -- JWT TTL: 1440 minutes (`expires_in: 1440`)
+- `docs/adr/0006-plan-2-environment-and-api-realignment.md` Deviation 7 -- "every pipeline invocation is a fresh process and gets a fresh token"
 
 ### ODP values / baseline-mandated parameters
 | ODP | Parameter | Value | Origin |

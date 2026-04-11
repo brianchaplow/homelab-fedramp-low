@@ -1,8 +1,8 @@
-# ADR 0003 — RegScale CE install path deviation from runbook
+# ADR 0003 -- RegScale CE install path deviation from runbook
 
 ## Status
 
-Accepted — 2026-04-08
+Accepted -- 2026-04-08
 
 ## Context
 
@@ -25,27 +25,27 @@ already-patched plan.
 
 - Use the standalone Python installer from the MIT repo
 - Run under Python 3.11 (deadsnakes PPA) since the script does not yet support 3.12
-- Skip the regscale.com signup flow entirely — no license key needed for CE
+- Skip the regscale.com signup flow entirely -- no license key needed for CE
 
 ### Discovered at execution time and corrected here
 
 1. **Port is 80, not 81.** The bundled `docker-compose.yml` maps host 80 → atlas:8080. UFW rules updated to allow port 80 from VLANs 10/20/30; the placeholder port 81 rules from Task 14 were deleted.
 
-2. **The Python installer reports a fatal exception that is not actually fatal.** On a 6 GB VM, the SQL Server migration wave races the EF Core distributed lock release and the atlas container exits with `Microsoft.Data.SqlClient.SqlException: A transport-level error has occurred when receiving results from the server. (provider: TCP Provider, error: 35)` during the initial `MigrateAsync` call. The Python wrapper sees this exit and prints `Unexpected error with standalone RegScale instance startup`. **However**, the atlas container's `restart_policy: always` then restarts it; on the second attempt the migration completes and post-startup seeding finishes cleanly. The Python wrapper's exit code is therefore not load-bearing — always wait for HTTP probe + container health to decide whether the install succeeded. `install.sh` swallows the wrapper exit and polls `curl -sf http://127.0.0.1/`.
+2. **The Python installer reports a fatal exception that is not actually fatal.** On a 6 GB VM, the SQL Server migration wave races the EF Core distributed lock release and the atlas container exits with `Microsoft.Data.SqlClient.SqlException: A transport-level error has occurred when receiving results from the server. (provider: TCP Provider, error: 35)` during the initial `MigrateAsync` call. The Python wrapper sees this exit and prints `Unexpected error with standalone RegScale instance startup`. **However**, the atlas container's `restart_policy: always` then restarts it; on the second attempt the migration completes and post-startup seeding finishes cleanly. The Python wrapper's exit code is therefore not load-bearing -- always wait for HTTP probe + container health to decide whether the install succeeded. `install.sh` swallows the wrapper exit and polls `curl -sf http://127.0.0.1/`.
 
 3. **There is no documented default admin password.** RegScale CE seeds a user (`Email=admin@admin.com`, `UserName=admin`) but:
-   - `EmailConfirmed = 0` — login will fail even with the correct password.
+   - `EmailConfirmed = 0` -- login will fail even with the correct password.
    - `PasswordHash` is set to a hashed value not documented in the installer, the GitHub repo, the upstream README, or any env var.
    - There is no `--initial-admin-password` flag, no first-run wizard, and no password-reset endpoint exposed at install time.
-   - Login lookup uses `UserName`, not `Email`, even though the row's `Email` is `admin@admin.com` — atlas logs `Username does not exist: admin@admin.com` if you try the email address.
+   - Login lookup uses `UserName`, not `Email`, even though the row's `Email` is `admin@admin.com` -- atlas logs `Username does not exist: admin@admin.com` if you try the email address.
    The only practical way to log into a fresh CE deployment is to overwrite the `PasswordHash` row directly. `deploy/regscale/reset-admin-password.sh` does this:
    - Generates an ASP.NET Identity v3 PBKDF2-HMAC-SHA512 hash (1-byte format marker = 1, 4-byte PRF = 2, 4-byte iter = 100000, 4-byte salt size = 16, 16-byte salt, 32-byte subkey, total 61 bytes, base64 encoded to 84 characters) for the desired password.
    - `UPDATE AspNetUsers SET PasswordHash = ..., EmailConfirmed = 1, AccessFailedCount = 0, LockoutEnd = NULL` `WHERE UserName = 'admin'`.
    - Verifies via `POST /api/authentication/login`.
 
-4. **`sqlcmd` requires `-I` (ANSI QUOTED_IDENTIFIER on)** for any UPDATE that touches AspNetUsers — there's a filtered index on the table that only accepts SET QUOTED_IDENTIFIER ON. Default sqlcmd has it OFF and the UPDATE fails with `Msg 1934`. The reset script passes `-I` explicitly.
+4. **`sqlcmd` requires `-I` (ANSI QUOTED_IDENTIFIER on)** for any UPDATE that touches AspNetUsers -- there's a filtered index on the table that only accepts SET QUOTED_IDENTIFIER ON. Default sqlcmd has it OFF and the UPDATE fails with `Msg 1934`. The reset script passes `-I` explicitly.
 
-5. **Login schema field is `username` (lowercase), credentials POST body uses `username` not `userName`** — though System.Text.Json's case-insensitive matching makes either work in practice.
+5. **Login schema field is `username` (lowercase), credentials POST body uses `username` not `userName`** -- though System.Text.Json's case-insensitive matching makes either work in practice.
 
 ## Consequences
 
@@ -66,7 +66,7 @@ already-patched plan.
 ## EULA notes (from ADR 0001)
 
 RegScale CE EULA permits homelab and portfolio use. The only restriction relevant
-to this deployment is §2(ii) — no real financial data, no real PHI, no HIPAA/
+to this deployment is §2(ii) -- no real financial data, no real PHI, no HIPAA/
 GLBA/PCI-scope data. The homelab loads only synthetic FedRAMP-Low scope data.
 
 ## Verification (as deployed on regscale 2026-04-08)

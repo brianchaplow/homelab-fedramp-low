@@ -3,7 +3,7 @@
 Each DefectDojo finding becomes one OSCAL POA&M item with the FedRAMP
 ConMon SLA-based scheduled completion date. The input shape is
 DefectDojo's REST API finding dict (the ``/api/v2/findings/`` result
-shape), not the normalized Finding schema — this is intentional so
+shape), not the normalized Finding schema -- this is intentional so
 that a future Task 12.5 can backfill POA&M items from Nessus or
 tenable.io without re-implementing the whole builder.
 
@@ -20,7 +20,7 @@ Low               180
 ================  ====  ==============================
 
 Plan 2's draft text specified 30/90/180/365 as the SLA windows. Those
-values are wrong — FedRAMP Low uses 15/30/90/180. Corrected here and
+values are wrong -- FedRAMP Low uses 15/30/90/180. Corrected here and
 documented as an ADR 0006 amendment (Task 12).
 
 The POA&M output conforms to NIST OSCAL 1.1.2. The same empty-prop
@@ -58,7 +58,7 @@ def sla_due_date(discovered: date, severity: str) -> date:
     """Return the FedRAMP Low ConMon SLA due date for a finding.
 
     Unknown severities (including ``Info`` and ``""``) fall back to the
-    Low window (180 days) — the longest, not the shortest, so the
+    Low window (180 days) -- the longest, not the shortest, so the
     caller can adjust upward if they discover the severity mid-cycle.
     """
     days = SLA_DAYS.get(severity, SLA_DAYS["Low"])

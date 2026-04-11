@@ -1,5 +1,5 @@
-# CA — Assessment, Authorization, and Monitoring
-## Evidence Catalog — Plan 3 Phase 1
+# CA -- Assessment, Authorization, and Monitoring
+## Evidence Catalog -- Plan 3 Phase 1
 
 **Generated:** 2026-04-09
 **Controls:** CA-1, CA-2, CA-2(1), CA-3, CA-5, CA-6, CA-7, CA-7(4), CA-8, CA-9
@@ -8,7 +8,7 @@
 
 ---
 
-## CA-1 — Policy and Procedures
+## CA-1 -- Policy and Procedures
 
 ### 1. Control Statement Summary
 
@@ -48,7 +48,7 @@ CA-2, CA-5, CA-6, CA-7, PM-9, PM-10
 
 ---
 
-## CA-2 — Control Assessments
+## CA-2 -- Control Assessments
 
 ### 1. Control Statement Summary
 
@@ -68,13 +68,13 @@ No FedRAMP-mandated fixed values apply to CA-2 ODPs in the Rev 5 Low profile; "a
 - **Test suite** (130 passing tests at Plan 2 completion per ADR 0007; 136 after Plan 3 Task 3): located in `tests/` and exercised via `./pipelines.sh test`. The test suite is the mechanism by which control effectiveness is assessed on a per-pipeline-run basis. Each `./pipelines.sh conmon` invocation re-executes the pipeline and validates the output artifacts, providing ongoing evidence of correctness.
 - **`pipelines/build/oscal_poam.py`**: SLA window logic (15/30/90/180 days, corrected from plan text per ADR 0006 Amendment Task 12) encodes the assessment finding → remediation timeline mapping per FedRAMP Low ConMon Strategy Guide.
 - **`poam/POAM-2026-04.xlsx`** (4.9 MB, 8,473 items): the April 2026 assessment output. Each row is a finding produced by live Wazuh vulnerability scan against 5 in-boundary agents (brisket, haccp, smokehouse, dojo, regscale). This is the assessment report artifact for the initial ConMon cycle.
-- **`docs/adr/0007-plan-2-complete.md`** §"Done criteria — verified": documents the live end-to-end assessment run that validated all pipeline subcommands against live infrastructure on 2026-04-09.
+- **`docs/adr/0007-plan-2-complete.md`** §"Done criteria -- verified": documents the live end-to-end assessment run that validated all pipeline subcommands against live infrastructure on 2026-04-09.
 - **DefectDojo** (`http://10.10.30.27:8080`): hosts the imported findings in 5 products (MSS Core - brisket, MSS Log Analytics - haccp, MSS Network Sensors - smokehouse, MSS GRC Tooling - dojo + regscale, MSS Boundary Protection - OPNsense). The per-product engagement "ConMon 2026-04" is the assessment scope artifact.
 - **Assessor:** Brian Chaplow (system owner) serves as self-assessor for this homelab portfolio. CA-2(1) addresses the independence constraint.
 
 ### 4. Gaps / Open Items
 
-Formal written assessment plan (distinct document) has not been produced — the SSP and test suite together serve this function for the homelab scope. Frequency parameter not yet set in markdown. Status: **partial**.
+Formal written assessment plan (distinct document) has not been produced -- the SSP and test suite together serve this function for the homelab scope. Frequency parameter not yet set in markdown. Status: **partial**.
 
 ### 5. Related Controls
 
@@ -86,7 +86,7 @@ CA-2(1), CA-5, CA-7, RA-5, SI-2
 
 ---
 
-## CA-2(1) — Independent Assessors
+## CA-2(1) -- Independent Assessors
 
 ### 1. Control Statement Summary
 
@@ -100,9 +100,9 @@ No ODPs. No `x-trestle-set-params` block in scaffold (`trestle-workspace/mss-ssp
 
 - **Homelab scope context:** This is a single-person portfolio system owned and operated by Brian Chaplow. Full assessor independence (separate organizational entity) is not feasible for a homelab. The control is implemented at a commensurate level: the test suite in `tests/` provides automated, deterministic verification independent of manual operator judgment; Wazuh (brisket) runs the vulnerability scanner independently of the manual authoring workflow; DefectDojo SLA enforcement is automated and not subject to operator override without a code change.
 - **Structural independence mechanisms:**
-  - `pipelines/ingest/wazuh_vulns.py` ingests scan data directly from the Wazuh Indexer (OpenSearch at `https://10.10.20.30:9200`) without manual filtering — the scanner result is authoritative.
+  - `pipelines/ingest/wazuh_vulns.py` ingests scan data directly from the Wazuh Indexer (OpenSearch at `https://10.10.20.30:9200`) without manual filtering -- the scanner result is authoritative.
   - `pipelines/push/defectdojo.py` pushes findings to DefectDojo as a separate system; findings cannot be deleted without DefectDojo API access (separate credential).
-  - `docs/adr/0008-plan-3-pre-execution-realignment.md` §"Gate 3 spot-check scope" documents 144 planned spot-checks of evidence citations by the author against repo artifacts — a self-review gate that catches hallucinated citations before SSP publication.
+  - `docs/adr/0008-plan-3-pre-execution-realignment.md` §"Gate 3 spot-check scope" documents 144 planned spot-checks of evidence citations by the author against repo artifacts -- a self-review gate that catches hallucinated citations before SSP publication.
 - **Accepted limitation:** True third-party independence is not implemented. This is the honest state; the portfolio treats CA-2(1) as partially implemented with the automated pipeline as the independence substitute.
 
 ### 4. Gaps / Open Items
@@ -119,7 +119,7 @@ CA-2, CA-7, CA-8
 
 ---
 
-## CA-3 — Information Exchange
+## CA-3 -- Information Exchange
 
 ### 1. Control Statement Summary
 
@@ -163,7 +163,7 @@ The MSS homelab boundary has four categories of external information exchange, a
 
 ### 4. Gaps / Open Items
 
-Formal written interconnection security agreements (ISAs) do not exist — the SSP prose and CLAUDE.md serve as the agreement documentation for this homelab. HTTP-only posture for DefectDojo and RegScale is a known gap documented in ADR 0002 §"Operator action items" and ADR 0003; SC-8 addresses the mitigations in the SC family. Status: **partial**.
+Formal written interconnection security agreements (ISAs) do not exist -- the SSP prose and CLAUDE.md serve as the agreement documentation for this homelab. HTTP-only posture for DefectDojo and RegScale is a known gap documented in ADR 0002 §"Operator action items" and ADR 0003; SC-8 addresses the mitigations in the SC family. Status: **partial**.
 
 ### 5. Related Controls
 
@@ -175,7 +175,7 @@ CA-9, SC-7, SC-8, AC-17, AC-20
 
 ---
 
-## CA-5 — Plan of Action and Milestones
+## CA-5 -- Plan of Action and Milestones
 
 ### 1. Control Statement Summary
 
@@ -195,13 +195,13 @@ FedRAMP ConMon Strategy Guide requires monthly POA&M updates; "monthly" is the c
 - **`oscal/poam.json`** (gitignored, regenerated monthly): OSCAL 1.1.2 POA&M JSON, 16.8 MB, 8,473 items from the April 2026 ConMon cycle. Source of truth for the rendered spreadsheet.
 - **`poam/POAM-2026-04.xlsx`** (4.9 MB, 8,473 rows): April 2026 POA&M in FedRAMP Rev 5 POA&M template format (`templates/FedRAMP-POAM-Template-Rev5.xlsx`). Data in "Open POA&M Items" sheet starting at row 8. Internal `Medium` severity mapped to `Moderate` for the template dropdown. `False Positive` state sets the FP column to Yes.
 - **`pipelines/render/poam.py`**: POA&M xlsx renderer. Writes into the FedRAMP template format with correct column mapping.
-- **`./pipelines.sh conmon`** (`pipelines/cli.py` `conmon` command): runs the full monthly cycle — ingest-findings → oscal → render-iiw → render-poam — producing updated POA&M artifacts from live Wazuh scan data on each invocation.
+- **`./pipelines.sh conmon`** (`pipelines/cli.py` `conmon` command): runs the full monthly cycle -- ingest-findings → oscal → render-iiw → render-poam -- producing updated POA&M artifacts from live Wazuh scan data on each invocation.
 - **DefectDojo SLA enforcement** (`http://10.10.30.27:8080`): the 5 MSS products have FedRAMP Low ConMon SLA configurations applied via `deploy/defectdojo/post-install.sh` (idempotent seed script). DefectDojo flags findings approaching or past SLA, providing the early-warning mechanism for the monthly POA&M update.
 - **`docs/adr/0007-plan-2-complete.md`** §"Done criteria": documents the live April 2026 run that produced the first POA&M.
 
 ### 4. Gaps / Open Items
 
-POA&M is implemented and live. The update frequency parameter needs to be set in the scaffold markdown. Monthly update cadence is established by `./pipelines.sh conmon` but is not yet a scheduled/automated cron — operator runs it manually. Status: **implemented** (the artifact and pipeline exist; cron automation is a future enhancement, not a control gap).
+POA&M is implemented and live. The update frequency parameter needs to be set in the scaffold markdown. Monthly update cadence is established by `./pipelines.sh conmon` but is not yet a scheduled/automated cron -- operator runs it manually. Status: **implemented** (the artifact and pipeline exist; cron automation is a future enhancement, not a control gap).
 
 ### 5. Related Controls
 
@@ -213,7 +213,7 @@ CA-2, CA-7, RA-5, SI-2, PM-4
 
 ---
 
-## CA-6 — Authorization
+## CA-6 -- Authorization
 
 ### 1. Control Statement Summary
 
@@ -228,7 +228,7 @@ Assign a senior official as the authorizing official (AO) for the system and for
 ### 3. Implementation Evidence
 
 - **Authorizing Official:** Brian Chaplow (system owner and sole operator) serves as the AO for this homelab system. This is the maximum independence feasible for a single-person portfolio system.
-- **This SSP** (`oscal/ssp.json`, assembled from `trestle-workspace/mss-ssp/`): constitutes the authorization package. The SSP documents the system boundary, controls, and implementation status. Plan 3 SSP authoring is the authorization event — a completed SSP with realistic implementation prose represents the ATO artifact for portfolio purposes.
+- **This SSP** (`oscal/ssp.json`, assembled from `trestle-workspace/mss-ssp/`): constitutes the authorization package. The SSP documents the system boundary, controls, and implementation status. Plan 3 SSP authoring is the authorization event -- a completed SSP with realistic implementation prose represents the ATO artifact for portfolio purposes.
 - **ADR 0009** (planned, to be filed at Plan 3 Gate 5): will serve as the self-authorization decision record. ADR 0008 §"Authoritative Plan 3 artifacts" explicitly identifies ADR 0009 as the "Plan 3 completion" ADR filed at Gate 5. This is the authorization record that a reviewer can walk to confirm the AO accepted the risk and authorized the system.
 - **Common controls:** No inherited common controls from a shared services provider in this homelab. The system is standalone; all controls are system-specific or organization-defined.
 - **FedRAMP Low context:** A real FedRAMP authorization requires a federally-delegated AO and a FedRAMP-authorized 3PAO. This homelab treats the system owner as AO and the automated test suite + SSP as the equivalent of a 3PAO assessment package, per the explicit portfolio scope documented in `README.md`.
@@ -247,7 +247,7 @@ CA-2, CA-7, PL-2, PM-10
 
 ---
 
-## CA-7 — Continuous Monitoring
+## CA-7 -- Continuous Monitoring
 
 ### 1. Control Statement Summary
 
@@ -270,24 +270,24 @@ Note: `ca-7_prm_4` aggregates `ca-07_odp.04` + `ca-07_odp.06` (security + privac
 CA-7 is the hero control for the CA family. The entire Plan 2 pipeline is the CA-7 implementation.
 
 **ConMon orchestration:**
-- **`./pipelines.sh conmon`** (`pipelines/cli.py` `conmon` command): single command executes the full monthly cycle — ingest-findings → inventory → build-poam → render-iiw → render-poam. Verified live against the homelab SOC on 2026-04-09 per ADR 0007.
+- **`./pipelines.sh conmon`** (`pipelines/cli.py` `conmon` command): single command executes the full monthly cycle -- ingest-findings → inventory → build-poam → render-iiw → render-poam. Verified live against the homelab SOC on 2026-04-09 per ADR 0007.
 - **`runbooks/monthly-conmon.md`**: ConMon procedure runbook. Stub during Plan 1; procedure fills in as Plan 2/3 pipeline matures.
 
-**Ongoing monitoring — real-time:**
+**Ongoing monitoring -- real-time:**
 - **Wazuh SIEM** (brisket, 10.10.20.30): 15 agents active (brisket, haccp, smokehouse, sear, PITBOSS, DC01, WS01, DVWA/Juice Shop, Metasploitable 3 Linux and Win, WordPress, crAPI, vsftpd, dojo, regscale, OPNsense syslog). Zeek pipeline (7 indices: `zeek-*` on Wazuh Indexer). Wazuh Dashboard at brisket:5601.
 - **ELK Stack** (haccp, 10.10.30.25): Elasticsearch 8.17 + Kibana + Fleet + Logstash in Docker (`/opt/elk/docker-compose.yml`). 4 Fleet agents. 214 detection rules. `logs-zeek.haccp-default-*` data stream from Phase 14 Zeek pipeline. Kibana at haccp:5601.
 - **OpenCTI** (brisket:8080): Threat intelligence platform v7, 6 connectors, IOC sync to Wazuh CDB lists every 6 hours (`0 */6 * * *`) and to haccp `opencti-threat-intel` index every 6 hours (`15 */6 * * *`).
-- **Grafana** (brisket:3000): SOC v3 Overview dashboard + Grafana alert "GPU Thermal Critical — Brisket Above 90C" (uid=dfihoiidr7k00c, 2m window) routing to #infrastructure-alerts via Discord.
+- **Grafana** (brisket:3000): SOC v3 Overview dashboard + Grafana alert "GPU Thermal Critical -- Brisket Above 90C" (uid=dfihoiidr7k00c, 2m window) routing to #infrastructure-alerts via Discord.
 - **Shuffle SOAR** (brisket:3443): 10 active workflows including WF10 (nightly briefing, 0530 EST) and WF9 (5-min polling). Real-time alert routing to Discord.
 
-**Ongoing monitoring — vulnerability scanning:**
+**Ongoing monitoring -- vulnerability scanning:**
 - **`pipelines/ingest/wazuh_vulns.py`**: reads `wazuh-states-vulnerabilities-*` index via `WazuhIndexerClient` with `search_after` pagination. Live run: 8,471 findings across 5 in-boundary agents (brisket 2804, haccp 1899, regscale 1861, dojo 1861, smokehouse 46). Per ADR 0007 Task 10.
 - **`pipelines/push/defectdojo.py`**: pushes normalized findings to DefectDojo, creating monthly engagement "ConMon YYYY-MM" per product.
 
 **Control effectiveness assessment:**
 - **`pipelines/build/oscal_poam.py`** + **`poam/POAM-2026-04.xlsx`**: assessment output artifact (8,473 items with FedRAMP SLA due dates).
 - **`inventory/IIW-2026-04.xlsx`** (178 KB, 7 rows): Inventory of Interfaces and Weaknesses in FedRAMP Rev 5 template format (`templates/FedRAMP-IIW-Template-Rev5.xlsx`). Produced by `pipelines/render/iiw.py` from `oscal/component-definition.json`.
-- **Test suite** (130+ tests in `tests/`): regression safety net for control effectiveness — every pipeline module tested per ADR 0007 §"Test suite."
+- **Test suite** (130+ tests in `tests/`): regression safety net for control effectiveness -- every pipeline module tested per ADR 0007 §"Test suite."
 
 **Correlation and analysis:**
 - Phase 14 Logstash enrichment pipeline on haccp: 5-stage pipeline (de-dot → OpenCTI TI lookups → novel-entity tracking in `haccp-entities-seen` → tier routing → Ollama classification on brisket qwen3:8b with token-bucket rate limit, 10/min cap after thermal hardening on 2026-04-08). Output: `logs-zeek.haccp-default-*`.
@@ -316,7 +316,7 @@ CA-2, CA-5, CA-7(4), CA-8, RA-5, SI-4, AU-6, PM-6
 
 ---
 
-## CA-7(4) — Risk Monitoring
+## CA-7(4) -- Risk Monitoring
 
 ### 1. Control Statement Summary
 
@@ -332,7 +332,7 @@ CA-7(4) is fully covered by the CA-7 evidence above, extended to the three monit
 
 **Effectiveness monitoring:**
 - Wazuh 15 agents provide continuous real-time telemetry. Agent connectivity gaps surface in Wazuh Dashboard (brisket:5601) within minutes of failure.
-- `./pipelines.sh conmon` re-ingests all open findings each cycle and recomputes SLA due dates in `pipelines/build/oscal_poam.py` — findings that were "open" and have passed their SLA window are automatically identified in `poam/POAM-2026-04.xlsx`.
+- `./pipelines.sh conmon` re-ingests all open findings each cycle and recomputes SLA due dates in `pipelines/build/oscal_poam.py` -- findings that were "open" and have passed their SLA window are automatically identified in `poam/POAM-2026-04.xlsx`.
 - Test suite (130+ tests): automated effectiveness check on every pipeline invocation. A regression in any pipeline module causes a test failure before the POA&M is published.
 - Grafana alerting (brisket:3000): GPU thermal, agent health, and service-level metrics provide effectiveness signal for infrastructure controls.
 
@@ -362,7 +362,7 @@ CA-7, RA-3, PM-9, PM-28, SI-4
 
 ---
 
-## CA-8 — Penetration Testing
+## CA-8 -- Penetration Testing
 
 ### 1. Control Statement Summary
 
@@ -384,7 +384,7 @@ FedRAMP Low does not mandate CA-8 as a baseline requirement; however, the homela
 - **Attack discipline:** All attacks target VLAN 40 only (10.10.40.0/24) per `CLAUDE.md` §"Conventions." The `./run_attack.sh` wrapper provides ground-truth logging for each penetration test session.
 - **Wazuh detection validation:** Caldera red-team exercises validated Wazuh detection rules (Phase 7 complete per `CLAUDE.md` §v3 Migration Status, row Phase 7). Detection validation is the penetration testing feedback loop.
 - **VLAN isolation:** MokerLink L3 switch (10.10.10.2) enforces VLAN 40 isolation via ACL. OPNsense (10.10.10.1) enforces inter-VLAN firewall rules. sear (VLAN 20) cannot route to VLAN 40 except through the attack path; this prevents lateral movement from the tester to production infrastructure.
-- **Test coverage:** Targets include DVWA + Juice Shop (web application), Metasploitable 3 Linux and Win (multi-service), WordPress (WPScan), crAPI (REST API), vsftpd (FTP), SMTP relay, and SNMPd — all on VLAN 40.
+- **Test coverage:** Targets include DVWA + Juice Shop (web application), Metasploitable 3 Linux and Win (multi-service), WordPress (WPScan), crAPI (REST API), vsftpd (FTP), SMTP relay, and SNMPd -- all on VLAN 40.
 
 ### 4. Gaps / Open Items
 
@@ -400,7 +400,7 @@ CA-2, CA-7, RA-5, SI-4, IR-4
 
 ---
 
-## CA-9 — Internal System Connections
+## CA-9 -- Internal System Connections
 
 ### 1. Control Statement Summary
 
@@ -418,7 +418,7 @@ Authorize internal connections of defined system components; document interface 
 
 **Authorization and documentation mechanism:**
 - **`CLAUDE.md` §"All Hosts" table**: authoritative inventory of all in-boundary and connected hosts, including IP, VLAN, and role. Every host listed is an authorized internal connection.
-- **`CLAUDE.md` §"VLANs" table**: defines the VLAN architecture that partitions connections by trust level (VLAN 10 Management, VLAN 20 SOC, VLAN 30 Lab/Proxmox/AD, VLAN 40 Targets — ISOLATED).
+- **`CLAUDE.md` §"VLANs" table**: defines the VLAN architecture that partitions connections by trust level (VLAN 10 Management, VLAN 20 SOC, VLAN 30 Lab/Proxmox/AD, VLAN 40 Targets -- ISOLATED).
 - **`CLAUDE.md` §"Network Quick Reference" → `reference/network.md`**: detailed topology, OPNsense interfaces, firewall rules, and MokerLink ACL table. The MokerLink ACL table is the authorization record for inter-VLAN connections.
 - **`oscal/component-definition.json`** (16 KB, 7 components): OSCAL-format inventory of in-boundary components (brisket, haccp, smokehouse, dojo, regscale, opnsense, mokerlink) produced by `pipelines/build/oscal_component.py` from live Wazuh syscollector data + `inventory/overlay.yaml`.
 
@@ -437,13 +437,13 @@ Authorize internal connections of defined system components; document interface 
 | PITBOSS (10.10.10.100) → pipelines endpoint | SSH/Git Bash | Pipeline invocations | VLAN 10 → VLAN 20 | Authorized per management VLAN design |
 
 **Enforcement mechanism:**
-- **MokerLink L3 switch** (10.10.10.2): ACL table enforces authorized inter-VLAN routing. VLAN 40 targets are isolated — no routing path from target segment to production VLANs except through OPNsense firewall rules explicitly permitting the Caldera C2 path.
+- **MokerLink L3 switch** (10.10.10.2): ACL table enforces authorized inter-VLAN routing. VLAN 40 targets are isolated -- no routing path from target segment to production VLANs except through OPNsense firewall rules explicitly permitting the Caldera C2 path.
 - **OPNsense firewall** (10.10.10.1): inter-VLAN rules enforce the connection policy. Firewall rules documented in `reference/network.md`.
-- **MokerLink mirror sessions 1+2** (TE1-TE9 → TE10/TE11): SPAN configuration feeds haccp `span0` USB 2.5GbE (Arkime capture) and smokehouse sensor — authorized read-only mirror, not a routable connection.
+- **MokerLink mirror sessions 1+2** (TE1-TE9 → TE10/TE11): SPAN configuration feeds haccp `span0` USB 2.5GbE (Arkime capture) and smokehouse sensor -- authorized read-only mirror, not a routable connection.
 
 **Termination conditions:**
-- Component decommission: OpenCTI LXC 202 (10.10.30.26) is a documented example — decommissioned after Phase 12 migration to brisket Docker; autostart disabled; connection terminated.
-- Security incident: Shuffle WF1 v2 can trigger OPNsense block via `$cf_api_token` and `$cf_account_id` Cloudflare workflow variables — immediate connection termination path exists.
+- Component decommission: OpenCTI LXC 202 (10.10.30.26) is a documented example -- decommissioned after Phase 12 migration to brisket Docker; autostart disabled; connection terminated.
+- Security incident: Shuffle WF1 v2 can trigger OPNsense block via `$cf_api_token` and `$cf_account_id` Cloudflare workflow variables -- immediate connection termination path exists.
 
 ### 4. Gaps / Open Items
 
@@ -480,18 +480,18 @@ CA-3, SC-7, AC-4, AC-17, CM-8
 - The `ca-7_prm_4` / `ca-7_prm_5` aggregated params (security+privacy reporting recipients/frequency) will be identical values since this system has a single stakeholder.
 
 **Evidence paths verified as of 2026-04-09:**
-- `trestle-workspace/mss-ssp/ca/ca-*.md` — confirmed via `ls trestle-workspace/mss-ssp/ca/` (10 files)
-- `pipelines/build/oscal_poam.py` — confirmed via file enumeration; `SLA_DAYS` dict read at lines 49-54
-- `pipelines/cli.py` — confirmed; `conmon` command at line 272
-- `pipelines/render/poam.py`, `pipelines/render/iiw.py` — confirmed via Glob
-- `pipelines/ingest/wazuh_vulns.py` — confirmed via Glob
-- `pipelines/push/defectdojo.py` — confirmed via Glob
-- `pipelines/build/oscal_component.py` — confirmed via Glob
-- `docs/adr/0002-deployment-complete.md` through `docs/adr/0008-plan-3-pre-execution-realignment.md` — confirmed via Read
-- `runbooks/monthly-conmon.md` — confirmed via Read
-- `tests/smoke/check_defectdojo.sh`, `tests/smoke/check_regscale.sh` — confirmed via Glob
-- `templates/FedRAMP-POAM-Template-Rev5.xlsx`, `templates/FedRAMP-IIW-Template-Rev5.xlsx` — confirmed via Glob
-- `deploy/defectdojo/post-install.sh` — confirmed via Glob
-- `oscal/ssp.json`, `oscal/component-definition.json` — documented in ADR 0007 final artifact inventory
-- `poam/POAM-2026-04.xlsx`, `inventory/IIW-2026-04.xlsx` — documented in ADR 0007 final artifact inventory
-- `docs/adr/0009-plan-3-complete.md` — does not yet exist (pending Plan 3 Gate 5; referenced as planned)
+- `trestle-workspace/mss-ssp/ca/ca-*.md` -- confirmed via `ls trestle-workspace/mss-ssp/ca/` (10 files)
+- `pipelines/build/oscal_poam.py` -- confirmed via file enumeration; `SLA_DAYS` dict read at lines 49-54
+- `pipelines/cli.py` -- confirmed; `conmon` command at line 272
+- `pipelines/render/poam.py`, `pipelines/render/iiw.py` -- confirmed via Glob
+- `pipelines/ingest/wazuh_vulns.py` -- confirmed via Glob
+- `pipelines/push/defectdojo.py` -- confirmed via Glob
+- `pipelines/build/oscal_component.py` -- confirmed via Glob
+- `docs/adr/0002-deployment-complete.md` through `docs/adr/0008-plan-3-pre-execution-realignment.md` -- confirmed via Read
+- `runbooks/monthly-conmon.md` -- confirmed via Read
+- `tests/smoke/check_defectdojo.sh`, `tests/smoke/check_regscale.sh` -- confirmed via Glob
+- `templates/FedRAMP-POAM-Template-Rev5.xlsx`, `templates/FedRAMP-IIW-Template-Rev5.xlsx` -- confirmed via Glob
+- `deploy/defectdojo/post-install.sh` -- confirmed via Glob
+- `oscal/ssp.json`, `oscal/component-definition.json` -- documented in ADR 0007 final artifact inventory
+- `poam/POAM-2026-04.xlsx`, `inventory/IIW-2026-04.xlsx` -- documented in ADR 0007 final artifact inventory
+- `docs/adr/0009-plan-3-complete.md` -- does not yet exist (pending Plan 3 Gate 5; referenced as planned)

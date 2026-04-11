@@ -77,7 +77,7 @@ class Finding(BaseModel):
 
 
 class InventoryComponent(BaseModel):
-    """A normalized inventory component — one row of the FedRAMP Integrated
+    """A normalized inventory component -- one row of the FedRAMP Integrated
     Inventory Workbook.
 
     Field names match the IIW column headers closely enough that the

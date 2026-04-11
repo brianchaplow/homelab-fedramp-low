@@ -8,7 +8,7 @@ produce the submission package.
 
 ## Status
 
-**STUB — Plan 1 complete, Plan 2 pipelines IN PROGRESS as of 2026-04-09.**
+**STUB -- Plan 1 complete, Plan 2 pipelines IN PROGRESS as of 2026-04-09.**
 
 This runbook will be filled in once Plan 2 implements the OSCAL pipelines.
 Until then, the only action taken for the monthly cycle is a smoke check:
@@ -68,7 +68,7 @@ RegScale OK at http://10.10.30.28 (root=200 login=200 seedingstatus=200, JWT rou
 All smoke checks passed.
 ```
 
-## Daily PBS backup tripwire (interim — run once per day)
+## Daily PBS backup tripwire (interim -- run once per day)
 
 Until the proper Wazuh/Discord alert is wired (see "Follow-up TODO"
 below), the operator runs this one-line check each morning as a
@@ -81,7 +81,7 @@ ssh root@10.10.30.21 "pct exec 300 -- find /mnt/pbs-store/data/vm -maxdepth 2 -n
 
 Expected: at least one snapshot per day for each of VM 100 (DC01), VM
 101 (WS01), VM 200 (TheHive), VM 201 (dojo), VM 301 (regscale). If any
-VM has no snapshot under 36 hours old, investigate immediately — PBS
+VM has no snapshot under 36 hours old, investigate immediately -- PBS
 has silently stopped backing up that host.
 
 A faster one-liner that just alarms if anything is stale:
@@ -104,14 +104,14 @@ ssh root@10.10.30.21 'pct exec 300 -- ls /mnt/pbs-store/data/vm/301/ | tail -5'
 
 Expected: a snapshot for each of the last 3 calendar days.
 
-## Follow-up TODO — proper PBS alert wiring (deferred per ADR 0006)
+## Follow-up TODO -- proper PBS alert wiring (deferred per ADR 0006)
 
 **Wire a Wazuh/Discord alert on PBS backup job failure.** The 5-day gap
 documented in ADR 0005 went unnoticed because the only notification
 target was `mail-to-root` on the PBS LXC, which nobody reads.
 
 This was originally queued for Plan 2 but deferred out of scope per ADR
-0006 §"Deferred — PBS backup-failure alerting" because the real fix
+0006 §"Deferred -- PBS backup-failure alerting" because the real fix
 requires dedicated research into PBS log shipping (LXC 300 via smoker,
 whether PBS journals surface through the existing Wazuh agent, and
 which Shuffle edge owns the Discord fanout) that would widen Plan 2

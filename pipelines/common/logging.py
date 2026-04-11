@@ -5,7 +5,7 @@ and shares the returned instance. The logger writes to stderr with a fixed
 format ``<timestamp> <level> [<name>] <message>`` that is both human-
 readable for interactive runs and easy to parse for later log shipping.
 
-Handlers are attached idempotently — a second call to :func:`get_logger`
+Handlers are attached idempotently -- a second call to :func:`get_logger`
 with the same name returns the existing logger without stacking duplicate
 handlers. ``propagate`` is disabled so messages do not double-print via the
 root logger if the host application also configures logging.
@@ -38,7 +38,7 @@ def get_logger(name: str | None = None, level: int = logging.INFO) -> logging.Lo
 
     logger = logging.getLogger(name)
     if logger.handlers:
-        # Already configured — return it without stacking another handler.
+        # Already configured -- return it without stacking another handler.
         return logger
 
     handler = logging.StreamHandler(sys.stderr)

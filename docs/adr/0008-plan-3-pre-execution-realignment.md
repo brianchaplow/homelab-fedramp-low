@@ -1,4 +1,4 @@
-# ADR 0008 — Plan 3 Pre-Execution Realignment
+# ADR 0008 -- Plan 3 Pre-Execution Realignment
 
 **Date:** 2026-04-09
 **Status:** Accepted
@@ -7,7 +7,7 @@
 
 ## Decision
 
-The 2026-04-07 Plan 3 plan (`docs/superpowers/plans/2026-04-07-homelab-fedramp-low-plan-3-ssp-authoring.md` in the parent workspace) was authored before Plan 1 and Plan 2 executed. Plan 2 execution (complete 2026-04-09, ADR 0007) discovered realignments that make the 2026-04-07 plan silently wrong in the same way ADR 0006 was wrong about Plan 2. This ADR is the Plan 3 analogue of ADR 0006 — the pre-execution realignment record that a reviewer can walk to see every decision made before Plan 3 authoring started.
+The 2026-04-07 Plan 3 plan (`docs/superpowers/plans/2026-04-07-homelab-fedramp-low-plan-3-ssp-authoring.md` in the parent workspace) was authored before Plan 1 and Plan 2 executed. Plan 2 execution (complete 2026-04-09, ADR 0007) discovered realignments that make the 2026-04-07 plan silently wrong in the same way ADR 0006 was wrong about Plan 2. This ADR is the Plan 3 analogue of ADR 0006 -- the pre-execution realignment record that a reviewer can walk to see every decision made before Plan 3 authoring started.
 
 The authoritative Plan 3 artifacts are:
 - **Design spec:** `docs/superpowers/specs/2026-04-09-homelab-fedramp-low-plan-3-ssp-authoring-design.md`
@@ -37,7 +37,7 @@ The 2026-04-07 Plan 3 plan file is kept in the parent workspace as historical co
 5. **Implementation Status rubric:** honest per-control. No `alternative`.
 6. **Set-params policy:** filled inline with prose, per control. Baseline-mandated values use `inherited` origin; organization-defined use `organization`.
 7. **Branch strategy:** direct commits to `main` per ADR 0006 Branch Strategy.
-8. **No new pytest tests** (except a single unit test for `docs/plan-3/verify-family.py` per TDD — that test lives in `tests/` and is counted in the regression pass).
+8. **No new pytest tests** (except a single unit test for `docs/plan-3/verify-family.py` per TDD -- that test lives in `tests/` and is counted in the regression pass).
 
 ## Consequences
 
@@ -50,7 +50,7 @@ The 2026-04-07 Plan 3 plan file is kept in the parent workspace as historical co
 **Negative / accepted:**
 
 - The 2026-04-07 Plan 3 plan file lingers in the parent workspace. The SUPERSEDED banner mitigates this. A cleaner repo would delete the file, but the user direction at Plan 3 kickoff was "leave it, document document document."
-- Plan 3 scope is larger than the 2026-04-07 estimate (87 vs ~40 Tier 1). Context budget is correspondingly larger — Plan 3 is sliced into 4 sessions per design section 7.2.
+- Plan 3 scope is larger than the 2026-04-07 estimate (87 vs ~40 Tier 1). Context budget is correspondingly larger -- Plan 3 is sliced into 4 sessions per design section 7.2.
 
 **Risks going into Plan 3 authoring:**
 

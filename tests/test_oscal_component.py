@@ -1,4 +1,4 @@
-"""Tests for pipelines.build.oscal_component — OSCAL component-definition builder."""
+"""Tests for pipelines.build.oscal_component -- OSCAL component-definition builder."""
 from __future__ import annotations
 
 import json
@@ -155,7 +155,7 @@ def test_component_props_include_homelab_metadata(
 
 
 def test_component_has_no_status_field(sample_components, tmp_path: Path) -> None:
-    """OSCAL component-definition components do NOT carry a status field —
+    """OSCAL component-definition components do NOT carry a status field --
     that lives in system-implementation. Verified by round-tripping through
     ``trestle.oscal.component.ComponentDefinition`` on 2026-04-09; ``status``
     raises 'extra fields not permitted'."""

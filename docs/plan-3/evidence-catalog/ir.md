@@ -1,13 +1,13 @@
-# IR — Incident Response: Evidence Catalog
+# IR -- Incident Response: Evidence Catalog
 
 **Family:** IR (Incident Response)  
 **FedRAMP Rev 5 Low controls:** IR-1, IR-2, IR-4, IR-5, IR-6, IR-7, IR-8  
 **Catalog date:** 2026-04-09  
-**Source:** homelab-fedramp-low repo — live homelab SOC on brisket + pitcrew + haccp  
+**Source:** homelab-fedramp-low repo -- live homelab SOC on brisket + pitcrew + haccp  
 
 ---
 
-## IR-1 — Incident Response Policy and Procedures
+## IR-1 -- Incident Response Policy and Procedures
 
 ### Control Summary
 
@@ -18,10 +18,10 @@ Develop, document, and disseminate an incident response policy (purpose, scope, 
 | ODP | ID | Meaning |
 |-----|----|---------|
 | Personnel/roles to receive policy | ir-01_odp.01 + ir-01_odp.02 | Who receives the policy |
-| Review frequency — policy | ir-01_odp.03 | How often policy is reviewed |
-| Triggering events — policy | ir-01_odp.04 | Events that trigger review |
-| Review frequency — procedures | ir-01_odp.05 | How often procedures are reviewed |
-| Triggering events — procedures | ir-01_odp.06 | Events that trigger procedure review |
+| Review frequency -- policy | ir-01_odp.03 | How often policy is reviewed |
+| Triggering events -- policy | ir-01_odp.04 | Events that trigger review |
+| Review frequency -- procedures | ir-01_odp.05 | How often procedures are reviewed |
+| Triggering events -- procedures | ir-01_odp.06 | Events that trigger procedure review |
 | Designated official | ir-01_odp.07 | Role that manages IR policy |
 
 All six ODPs are organization-defined (no FedRAMP-mandated fixed value). Values are set at authoring time in `trestle-workspace/mss-ssp/ir/ir-1.md`.
@@ -57,8 +57,8 @@ Procedures are documented in `runbooks/monthly-conmon.md` and per-incident ADRs.
 
 | ODP | Value | Origin |
 |-----|-------|--------|
-| ir-01_odp.01 (personnel — policy) | system owner; SOC operator | organization |
-| ir-01_odp.02 (personnel — procedures) | system owner; SOC operator | organization |
+| ir-01_odp.01 (personnel -- policy) | system owner; SOC operator | organization |
+| ir-01_odp.02 (personnel -- procedures) | system owner; SOC operator | organization |
 | ir-01_odp.03 (policy review frequency) | annually | organization |
 | ir-01_odp.04 (policy review triggers) | security incident resulting in an ADR; significant regulatory change | organization |
 | ir-01_odp.05 (procedure review frequency) | annually | organization |
@@ -72,7 +72,7 @@ Procedures are documented in `runbooks/monthly-conmon.md` and per-incident ADRs.
 
 ---
 
-## IR-2 — Incident Response Training
+## IR-2 -- Incident Response Training
 
 ### Control Summary
 
@@ -100,7 +100,7 @@ The system owner and sole SOC operator is self-trained through construction and 
 The Managed SOC Service is a single-operator homelab. The system owner maintains IR competency through:
 
 - **Continuous hands-on operation** of the Wazuh → Shuffle → TheHive → Velociraptor incident pipeline (Phases 5–6, 14 execution).
-- **Real incident handling** producing documented ADRs (ADR 0005: PBS backup gap — detection, investigation, containment, fix, verification cycle).
+- **Real incident handling** producing documented ADRs (ADR 0005: PBS backup gap -- detection, investigation, containment, fix, verification cycle).
 - **Caldera red-team exercises** (Phase 7) that validate detection and response: 4 Sandcat agents on smoker running adversary simulations against VLAN 40 targets, with Wazuh detection confirmed.
 - **Velociraptor DFIR training** through enrollment of 7 clients and endpoint artifact collection walkthroughs.
 
@@ -131,13 +131,13 @@ Training content review is triggered by any new ADR that reveals a response proc
 
 ---
 
-## IR-4 — Incident Handling
+## IR-4 -- Incident Handling
 
 ### Control Summary
 
 Implement an incident handling capability (preparation, detection and analysis, containment, eradication, recovery) consistent with the incident response plan. Coordinate with contingency planning. Incorporate lessons learned. Ensure rigor and consistency of handling activities.
 
-**No ODPs** — all sub-elements are prescriptive (the phases of incident handling are NIST-defined).
+**No ODPs** -- all sub-elements are prescriptive (the phases of incident handling are NIST-defined).
 
 ### Implementation Status
 
@@ -175,7 +175,7 @@ The Managed SOC Service implements all five NIST incident handling phases:
 - PBS snapshots provide same-day rollback capability (daily job at 02:00; verified via ADR 0005).
 - Restore procedure documented in `runbooks/restore-from-pbs.md`.
 
-**Lessons learned** are captured as ADRs after every real incident (ADR 0005 is the canonical example — PBS backup gap prompted fstab hardening and runbook update).
+**Lessons learned** are captured as ADRs after every real incident (ADR 0005 is the canonical example -- PBS backup gap prompted fstab hardening and runbook update).
 
 **Coordination with contingency planning:** The restore runbook cross-references CP controls; the monthly ConMon cycle (`runbooks/monthly-conmon.md`) coordinates IR outputs with the OSCAL POA&M update cycle.
 
@@ -187,10 +187,10 @@ The Managed SOC Service implements all five NIST incident handling phases:
 | PBS backup gap incident (real IR cycle) | `docs/adr/0005-pbs-backup-gap-and-automount-fix.md` | Detection→analysis→containment→eradication→recovery demonstrated |
 | Restore runbook (recovery) | `runbooks/restore-from-pbs.md` | Recovery SOP for in-boundary VMs |
 | Monthly ConMon runbook (coordination) | `runbooks/monthly-conmon.md` | IR output feeds POA&M update |
-| Wazuh agent enrollment (15 agents) | CLAUDE.md §Service Inventory — brisket Wazuh Manager | 15 agents: brisket, haccp, OPNsense syslog, dojo (016), regscale (017), etc. |
+| Wazuh agent enrollment (15 agents) | CLAUDE.md §Service Inventory -- brisket Wazuh Manager | 15 agents: brisket, haccp, OPNsense syslog, dojo (016), regscale (017), etc. |
 | Shuffle WF1 v2 (enrichment + block + case) | CLAUDE.md §Shuffle Workflow Variables | WF1: webhook → AbuseIPDB → Cloudflare → TheHive case |
-| TheHive 4 + Cortex 3 (case management) | CLAUDE.md §pitcrew — TheHive LXC 200 | 5 Cortex analyzers |
-| Velociraptor DFIR (7 clients) | CLAUDE.md §brisket — Velociraptor :8889 | Endpoint forensics collection |
+| TheHive 4 + Cortex 3 (case management) | CLAUDE.md §pitcrew -- TheHive LXC 200 | 5 Cortex analyzers |
+| Velociraptor DFIR (7 clients) | CLAUDE.md §brisket -- Velociraptor :8889 | Endpoint forensics collection |
 
 ### Parameter Values
 
@@ -198,17 +198,17 @@ IR-4 has no ODPs; all sub-elements are prescriptive per NIST SP 800-53 Rev 5.
 
 ### Gaps / Notes
 
-- PBS backup-failure alerting (Wazuh → Discord) is deferred — the 5-day silent gap in ADR 0005 would have been caught earlier with this alert. Interim tripwire documented in `runbooks/monthly-conmon.md`. This gap is tracked as a Plan 1 Task 20 follow-up.
+- PBS backup-failure alerting (Wazuh → Discord) is deferred -- the 5-day silent gap in ADR 0005 would have been caught earlier with this alert. Interim tripwire documented in `runbooks/monthly-conmon.md`. This gap is tracked as a Plan 1 Task 20 follow-up.
 - Velociraptor hunt groups (post-migration item per CLAUDE.md) are not yet configured; endpoint forensics is available but not pre-staged with specific hunt profiles for the in-boundary VMs (dojo, regscale).
 - Shuffle WF4 (Velociraptor automated triage) is pending (listed in CLAUDE.md post-migration items), so automated DFIR escalation is not yet wired end-to-end.
 
 ---
 
-## IR-5 — Incident Monitoring
+## IR-5 -- Incident Monitoring
 
 ### Control Summary
 
-Track and document incidents. (No ODPs — prescriptive.)
+Track and document incidents. (No ODPs -- prescriptive.)
 
 ### Implementation Status
 
@@ -239,8 +239,8 @@ The Managed SOC Service provides two complementary incident monitoring mechanism
 |----------|------|-------|
 | IR-5 SSP prose | `trestle-workspace/mss-ssp/ir/ir-5.md` | Authored in Plan 3 |
 | PBS backup gap incident record | `docs/adr/0005-pbs-backup-gap-and-automount-fix.md` | Incident tracked + documented end-to-end |
-| Shuffle WF1 v2 (auto case creation) | CLAUDE.md §Shuffle Workflow Variables — WF1 | TheHive case per alert |
-| TheHive 4 case management | CLAUDE.md §pitcrew — TheHive LXC 200 | Case tracking platform |
+| Shuffle WF1 v2 (auto case creation) | CLAUDE.md §Shuffle Workflow Variables -- WF1 | TheHive case per alert |
+| TheHive 4 case management | CLAUDE.md §pitcrew -- TheHive LXC 200 | Case tracking platform |
 | Zeek data stream | haccp ES `logs-zeek.haccp-default-*` | Network event audit trail |
 | Arkime PCAP archive | haccp `/opt/arkime/raw/` → smokehouse NFS | Full PCAP retention |
 
@@ -256,7 +256,7 @@ IR-5 has no ODPs.
 
 ---
 
-## IR-6 — Incident Reporting
+## IR-6 -- Incident Reporting
 
 ### Control Summary
 
@@ -280,7 +280,7 @@ The single-operator homelab model means the system owner is simultaneously the p
 ### System Implementation
 
 **Internal reporting (same-operator model):**
-- Wazuh automatically forwards alerts to Shuffle WF1 via webhook; WF1 posts to Discord `#soc-alerts` and creates a TheHive case within minutes of detection. This satisfies "report to the organizational IR capability" for the single-operator system — the operator is notified via Discord within the response time.
+- Wazuh automatically forwards alerts to Shuffle WF1 via webhook; WF1 posts to Discord `#soc-alerts` and creates a TheHive case within minutes of detection. This satisfies "report to the organizational IR capability" for the single-operator system -- the operator is notified via Discord within the response time.
 - Infrastructure-layer alerts (e.g., GPU thermal, service down) route to `#infrastructure-alerts` via the Grafana alerting integration (`$discord_webhook_infra`).
 - Nightly briefing (WF10 cron 0530 via `$discord_webhook_briefing`) posts to `#morning-briefing`, providing daily review even when no real-time alert fires.
 
@@ -295,8 +295,8 @@ The single-operator homelab model means the system owner is simultaneously the p
 | Artifact | Path | Notes |
 |----------|------|-------|
 | IR-6 SSP prose | `trestle-workspace/mss-ssp/ir/ir-6.md` | Authored in Plan 3 |
-| Shuffle WF1 (Discord notification) | CLAUDE.md §Shuffle Workflow Variables — `$discord_webhook` | SOC alert channel |
-| Grafana GPU thermal alert | CLAUDE.md §Phase 14 thermal hardening — uid=dfihoiidr7k00c | Infrastructure alert via `$discord_webhook_infra` |
+| Shuffle WF1 (Discord notification) | CLAUDE.md §Shuffle Workflow Variables -- `$discord_webhook` | SOC alert channel |
+| Grafana GPU thermal alert | CLAUDE.md §Phase 14 thermal hardening -- uid=dfihoiidr7k00c | Infrastructure alert via `$discord_webhook_infra` |
 | PBS backup gap ADR (reporting record) | `docs/adr/0005-pbs-backup-gap-and-automount-fix.md` | Demonstrates incident detection and documentation workflow |
 
 ### Parameter Values
@@ -313,7 +313,7 @@ The single-operator homelab model means the system owner is simultaneously the p
 
 ---
 
-## IR-7 — Incident Response Assistance
+## IR-7 -- Incident Response Assistance
 
 ### Control Summary
 
@@ -332,7 +332,7 @@ The Managed SOC Service provides the following IR support resources:
 **TheHive 4 (pitcrew LXC 200, 10.10.30.22:9000):**
 - Structured case management platform with case timeline, observable tracking, and task assignment.
 - 5 Cortex 3 analyzers provide automated indicator analysis (IP reputation, file hash lookup, etc.) on demand from within any case.
-- Functions as the "help desk" equivalent — every alert that clears the Shuffle dedup filter becomes a TheHive case that the operator can investigate with analyzer assistance.
+- Functions as the "help desk" equivalent -- every alert that clears the Shuffle dedup filter becomes a TheHive case that the operator can investigate with analyzer assistance.
 
 **Shuffle SOAR WF1 v2 (brisket:3443/5001):**
 - Provides pre-analysis advice for each alert: AbuseIPDB score, Cloudflare block status, Wazuh rule classification.
@@ -351,10 +351,10 @@ The Managed SOC Service provides the following IR support resources:
 | Artifact | Path | Notes |
 |----------|------|-------|
 | IR-7 SSP prose | `trestle-workspace/mss-ssp/ir/ir-7.md` | Authored in Plan 3 |
-| TheHive 4 + Cortex 3 | CLAUDE.md §pitcrew — TheHive LXC 200 | Case management + 5 analyzers |
-| Velociraptor DFIR | CLAUDE.md §brisket — Velociraptor :8889 | 7 enrolled clients |
+| TheHive 4 + Cortex 3 | CLAUDE.md §pitcrew -- TheHive LXC 200 | Case management + 5 analyzers |
+| Velociraptor DFIR | CLAUDE.md §brisket -- Velociraptor :8889 | 7 enrolled clients |
 | Shuffle WF1 (enrichment + Discord) | CLAUDE.md §Shuffle Workflow Variables | Enrichment advice per alert |
-| Nightly briefing WF10 | CLAUDE.md §Shuffle Workflow Variables — WF10 cron 0530 | LLM narrative summary |
+| Nightly briefing WF10 | CLAUDE.md §Shuffle Workflow Variables -- WF10 cron 0530 | LLM narrative summary |
 
 ### Parameter Values
 
@@ -367,7 +367,7 @@ IR-7 has no ODPs.
 
 ---
 
-## IR-8 — Incident Response Plan
+## IR-8 -- Incident Response Plan
 
 ### Control Summary
 
@@ -415,7 +415,7 @@ The Managed SOC Service's incident response plan is composed of the following ar
 - pitcrew LXC 200: TheHive 4 + Cortex 3.
 - haccp (ThinkStation P340 Tiny, 32GB): ELK 8.17 + Arkime + Zeek (span0).
 - smoker LXC 300: PBS backup server with NFS mount to smokehouse 17TB.
-- No additional management budget required — all resources are deployed.
+- No additional management budget required -- all resources are deployed.
 
 **Information sharing (IR-8a.8):**
 - Incident information is shared via Discord webhooks (immediate notification to operator), TheHive cases (structured incident record), and the ADR series (formal post-incident documentation committed to the public GitHub repo).
@@ -442,7 +442,7 @@ The Managed SOC Service's incident response plan is composed of the following ar
 | Monthly ConMon runbook | `runbooks/monthly-conmon.md` | Metrics collection procedure |
 | Restore runbook | `runbooks/restore-from-pbs.md` | Recovery SOP referenced by IRP |
 | POA&M (metrics artifact) | `poam/POAM-2026-04.xlsx` | 8,473 open findings, severity-bucketed |
-| OSCAL SSP (IRP distribution artifact) | `oscal/ssp.json` | Assembled SSP — Plan 3 delivery |
+| OSCAL SSP (IRP distribution artifact) | `oscal/ssp.json` | Assembled SSP -- Plan 3 delivery |
 | Component definition (resource inventory) | `oscal/component-definition.json` | 7 in-boundary components |
 
 ### Parameter Values
@@ -451,11 +451,11 @@ The Managed SOC Service's incident response plan is composed of the following ar
 |-----|-------|--------|
 | ir-08_odp.01 (review/approval personnel) | system owner (Brian Chaplow) | organization |
 | ir-08_odp.02 (review frequency) | annually | organization |
-| ir-08_odp.03 (distribution — IR personnel) | system owner; SOC operator | organization |
-| ir-08_odp.04 (distribution — org elements) | homelab-fedramp-low GitHub repo (public) | organization |
-| ir-08_odp.05 (change notice — IR personnel) | system owner; SOC operator | organization |
-| ir-08_odp.06 (change notice — org elements) | homelab-fedramp-low GitHub repo (git commit notification) | organization |
-| ir-08_odp.07 (change notice — additional) | Discord `#soc-alerts` channel | organization |
+| ir-08_odp.03 (distribution -- IR personnel) | system owner; SOC operator | organization |
+| ir-08_odp.04 (distribution -- org elements) | homelab-fedramp-low GitHub repo (public) | organization |
+| ir-08_odp.05 (change notice -- IR personnel) | system owner; SOC operator | organization |
+| ir-08_odp.06 (change notice -- org elements) | homelab-fedramp-low GitHub repo (git commit notification) | organization |
+| ir-08_odp.07 (change notice -- additional) | Discord `#soc-alerts` channel | organization |
 
 ### Gaps / Notes
 
@@ -478,9 +478,9 @@ The Managed SOC Service's incident response plan is composed of the following ar
 | IR-7 | implemented | TheHive 4 + Cortex 3 (5 analyzers) + Velociraptor + Ollama WF10 briefing |
 | IR-8 | partial | Distributed IRP across SSP + runbooks + ADRs; no standalone IRP document |
 
-**Notes for SSP authoring (Plan 3 Task 8 — IR family):**
+**Notes for SSP authoring (Plan 3 Task 8 -- IR family):**
 
-1. IR-4 and IR-5 and IR-7 are the strongest controls — write detailed prose grounded in the Wazuh→Shuffle→TheHive pipeline and the ADR 0005 incident record.
-2. IR-1, IR-2, and IR-8 are partial — prose should be honest about the distributed/informal nature of the policy, training, and plan documents while demonstrating the underlying operational maturity.
+1. IR-4 and IR-5 and IR-7 are the strongest controls -- write detailed prose grounded in the Wazuh→Shuffle→TheHive pipeline and the ADR 0005 incident record.
+2. IR-1, IR-2, and IR-8 are partial -- prose should be honest about the distributed/informal nature of the policy, training, and plan documents while demonstrating the underlying operational maturity.
 3. IR-6 external reporting: explicitly state this is a homelab portfolio system and US-CERT reporting is not applicable; do not claim implemented for the external-authorities sub-element.
 4. All IR ODPs are organization-defined; no FedRAMP-mandated fixed values exist for this family. Values in the parameter table above are the proposed organizational values to be filled into `x-trestle-set-params` in each control's markdown source.

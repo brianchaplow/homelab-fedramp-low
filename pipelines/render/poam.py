@@ -2,20 +2,20 @@
 
 The FedRAMP Rev 5 POA&M template has six sheets; this renderer writes
 active items into the ``Open POA&M Items`` sheet starting at
-:data:`POAM_DATA_START_ROW` — row 8 — which is the first blank row
+:data:`POAM_DATA_START_ROW` -- row 8 -- which is the first blank row
 after the header (row 5), guidance (row 6), and example (row 7) rows.
 The Closed POA&M Items sheet and the top-of-document CSP/CSO/Impact
 metadata cells (rows 2-3) are not touched by Plan 2; Plan 3 can add
 those.
 
 Column mapping was discovered via ``openpyxl`` read of row 5 in the
-live template on 2026-04-09. Row 5 is the header row, not row 1 —
+live template on 2026-04-09. Row 5 is the header row, not row 1 --
 the template uses rows 1-4 for branded document header cells.
 
 Severity translation: the internal ``Finding`` schema uses
 ``Critical/High/Medium/Low/Info`` but the FedRAMP POA&M template's
 "Original Risk Rating" validation only accepts
-``Low/Moderate/High/Critical`` — ``Medium`` maps to ``Moderate`` and
+``Low/Moderate/High/Critical`` -- ``Medium`` maps to ``Moderate`` and
 ``Info`` maps to ``Low``. The poam-state string is flattened to
 template-native columns: ``False Positive`` → column 21 = "Yes".
 ``Vendor Dependency`` is always written as ``No`` because the
@@ -122,7 +122,7 @@ def render_poam_from_oscal(
     wb = load_workbook(template_path)
     if POAM_SHEET_NAME not in wb.sheetnames:
         raise ValueError(
-            f"POA&M template missing expected sheet '{POAM_SHEET_NAME}' — "
+            f"POA&M template missing expected sheet '{POAM_SHEET_NAME}' -- "
             f"found {wb.sheetnames}"
         )
     ws = wb[POAM_SHEET_NAME]

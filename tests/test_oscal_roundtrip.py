@@ -1,4 +1,4 @@
-"""OSCAL round-trip smoke test — Trestle 4.0.1 under Python 3.14.
+"""OSCAL round-trip smoke test -- Trestle 4.0.1 under Python 3.14.
 
 This test is the early-warning tripwire required by ADR 0006 Deviation 9.
 
@@ -11,7 +11,7 @@ functionality isn't compatible with Python 3.14 or greater." The warning
 is issued from `trestle/oscal/component.py:33`.
 
 ADR 0006 decided to proceed on the Trestle 4.0.1 + Python 3.14 stack on
-the hypothesis that the warning is cosmetic — that despite Pydantic's
+the hypothesis that the warning is cosmetic -- that despite Pydantic's
 warning, the v1 shim is actually functional for all the schema shapes
 OSCAL relies on. This test proves it by performing a full schema-level
 round-trip against the largest OSCAL document in the project (the NIST
@@ -22,7 +22,7 @@ controls including enhancements):
     2. Parse it into Trestle's Catalog pydantic model
     3. Re-serialize the model to a dict
     4. Assert the serialized output is a round-trip match for the
-       original load (structure, not byte-identical — pydantic may
+       original load (structure, not byte-identical -- pydantic may
        reorder keys and normalize whitespace)
 
 If the pydantic.v1 shim is subtly broken under Python 3.14 at any level
@@ -60,7 +60,7 @@ CATALOG_PATH = REPO_ROOT / "trestle-workspace" / "catalogs" / "nist-800-53-rev5"
 def raw_catalog() -> dict:
     """Load the raw NIST catalog JSON as a dict."""
     if not CATALOG_PATH.exists():
-        pytest.skip(f"Catalog not found at {CATALOG_PATH} — run Plan 2 Task 2 first")
+        pytest.skip(f"Catalog not found at {CATALOG_PATH} -- run Plan 2 Task 2 first")
     with CATALOG_PATH.open(encoding="utf-8") as fh:
         return json.load(fh)
 
@@ -71,7 +71,7 @@ def test_catalog_file_exists_and_is_nist_800_53_rev5(raw_catalog: dict) -> None:
     meta = raw_catalog["catalog"]["metadata"]
     assert "800-53" in meta["title"], f"Unexpected catalog title: {meta['title']}"
     assert meta["version"].startswith("5"), f"Unexpected version: {meta['version']}"
-    assert len(raw_catalog["catalog"].get("groups", [])) >= 18, "Fewer than 18 control families — unexpected"
+    assert len(raw_catalog["catalog"].get("groups", [])) >= 18, "Fewer than 18 control families -- unexpected"
 
 
 def test_trestle_oscal_catalog_parses_under_python_314(raw_catalog: dict) -> None:
@@ -169,7 +169,7 @@ def test_trestle_catalog_serializes_to_valid_json(raw_catalog: dict) -> None:
         model = Catalog(**raw_catalog["catalog"])
         # default=str handles datetime fields that pydantic.v1 may leave as
         # datetime objects rather than ISO strings. If this is needed, it
-        # means there's a fidelity gap worth noting — but the test still
+        # means there's a fidelity gap worth noting -- but the test still
         # passes because the shape is preserved.
         serialized_str = json.dumps(model.dict(by_alias=True, exclude_none=True), default=str)
 

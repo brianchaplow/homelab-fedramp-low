@@ -19,7 +19,7 @@ DefectDojo and RegScale CE run plain HTTP in the lab (ADRs 0004 and 0003
 respectively) and a validator that rejected ``http://`` would fail every
 pipeline invocation at startup.
 
-No ``REGSCALE_API_KEY`` exists anywhere — RegScale CE has no long-lived
+No ``REGSCALE_API_KEY`` exists anywhere -- RegScale CE has no long-lived
 bearer token. The client re-authenticates per invocation via JWT
 (ADR 0006 Deviation 7).
 """
@@ -47,7 +47,7 @@ WAZUH_INDEXER_USER_DEFAULT: str = "admin"
 
 
 # ---------------------------------------------------------------------------
-# Required env vars — secrets and operator-specific URLs only
+# Required env vars -- secrets and operator-specific URLs only
 # ---------------------------------------------------------------------------
 
 REQUIRED_ENV_VARS: tuple[str, ...] = (
@@ -64,7 +64,7 @@ REQUIRED_ENV_VARS: tuple[str, ...] = (
 class Config(BaseModel):
     """Frozen pipeline configuration. All values come from env vars or defaults.
 
-    The HTTPS validator is intentionally asymmetric — it applies to
+    The HTTPS validator is intentionally asymmetric -- it applies to
     ``wazuh_api_url`` and ``wazuh_indexer_url`` only. DefectDojo and RegScale
     URLs accept ``http://`` because that is what the lab appliances actually
     serve (see ADRs 0003, 0004, and 0006 Deviation 3).
@@ -110,7 +110,7 @@ def load_config(env_file: Path | None = None) -> Config:
 
     Architectural defaults (Wazuh URLs/users) fall back to the constants
     defined at module scope if the corresponding env var is unset. Secrets
-    and operator-specific URLs are required — a missing value raises with
+    and operator-specific URLs are required -- a missing value raises with
     every missing name in the error message.
 
     Raises:

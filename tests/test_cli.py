@@ -1,4 +1,4 @@
-"""Tests for pipelines.cli — Click app surface area.
+"""Tests for pipelines.cli -- Click app surface area.
 
 These tests exercise the Click command tree via CliRunner without
 actually hitting Wazuh or DefectDojo. The full end-to-end run is
@@ -32,8 +32,8 @@ def test_host_to_product_uses_ascii_hyphens_and_has_six_entries() -> None:
     and 6 host entries (5 Wazuh agents + opnsense non-agent)."""
     assert len(HOST_TO_PRODUCT) == 6
     for product in HOST_TO_PRODUCT.values():
-        # No em dash anywhere
-        assert "—" not in product
+        # No em dash anywhere (U+2014)
+        assert "\u2014" not in product
         assert "-" in product
     # Required mappings
     assert HOST_TO_PRODUCT["brisket"] == "MSS Core - brisket"

@@ -1,4 +1,4 @@
-# ADR 0006 — Plan 2 Environment and API Realignment
+# ADR 0006 -- Plan 2 Environment and API Realignment
 
 **Date:** 2026-04-09
 **Status:** Accepted
@@ -20,7 +20,7 @@ The realignments below were confirmed by a live environment probe on
 (env var strategy, orchestration home, PBS alerting scope, branch
 strategy) were decided up front rather than discovered mid-plan.
 
-## Deviation 1 — Environment: Git Bash on Windows, not WSL
+## Deviation 1 -- Environment: Git Bash on Windows, not WSL
 
 **Plan 2 assumes:** WSL2 Ubuntu on PITBOSS as the execution host. Every
 task block is tagged `[wsl]`. Commands use `~/homelab-fedramp-low/`,
@@ -40,7 +40,7 @@ substitution is mechanical:
 |-----------------------------------|------------------------------------------------------------|
 | `cd ~/homelab-fedramp-low`        | `cd /c/Projects/homelab-fedramp-low`                       |
 | `source ~/.env`                   | `set -a; source /c/Projects/.env; set +a`                  |
-| `.venv/bin/activate`              | n/a — invoke `.venv/Scripts/python.exe` directly           |
+| `.venv/bin/activate`              | n/a -- invoke `.venv/Scripts/python.exe` directly           |
 | `.venv/bin/python`                | `.venv/Scripts/python.exe`                                 |
 | `.venv/bin/pytest`                | `.venv/Scripts/pytest.exe`                                 |
 | `.venv/bin/pip`                   | `.venv/Scripts/pip.exe`                                    |
@@ -52,7 +52,7 @@ loading for both POSIX and Git Bash paths (see `pipelines.sh` find_env()
 and VENV_PY selection logic), so in practice most invocations reduce to
 `./pipelines.sh <subcommand>` regardless of host.
 
-## Deviation 2 — Orchestration: pipelines.sh passthrough, not a rewritten Makefile
+## Deviation 2 -- Orchestration: pipelines.sh passthrough, not a rewritten Makefile
 
 **Plan 2 assumes:** Task 14 Step 2 rewrites `Makefile` with a full 60+
 line build system containing `install`, `test`, `smoke`, `inventory`,
@@ -95,7 +95,7 @@ CLI-only with verbose invocation): it preserves the one-entry-point
 invariant from Plan 1, keeps Git Bash and POSIX behavior identical,
 and lets Click's `CliRunner` test the orchestration logic in pytest.
 
-## Deviation 3 — Config loader: HTTPS validator scoped to Wazuh only
+## Deviation 3 -- Config loader: HTTPS validator scoped to Wazuh only
 
 **Plan 2 assumes:** Task 5's `Config` Pydantic model has a field
 validator `must_start_with_https` on `wazuh_api_url`, `defectdojo_url`,
@@ -128,31 +128,31 @@ No validator on the DefectDojo or RegScale URLs. The field-level
 docstring references this ADR so a future reader understands the
 asymmetry.
 
-## Deviation 4 — Wazuh credential surface: hybrid env vars with defaults
+## Deviation 4 -- Wazuh credential surface: hybrid env vars with defaults
 
 **Plan 2 assumes:** Task 5 requires `WAZUH_API_URL`, `WAZUH_API_USER`,
 `WAZUH_API_PASS` as three separate environment variables.
 
 **Reality:** `/c/Projects/.env` contains only `WAZUH_API_PASSWORD`.
 Parent `CLAUDE.md` convention states the Wazuh API user is always
-`wazuh-wui` and the URL is always `https://10.10.20.30:55000` — these
+`wazuh-wui` and the URL is always `https://10.10.20.30:55000` -- these
 are architectural constants, not configuration. Plan 1 established this
 convention and uses it across every touchpoint (smoke scripts, ml-scorer,
 Shuffle workflows, Grafana alerts).
 
-**Realignment:** `load_config()` uses hybrid defaults — constants live
+**Realignment:** `load_config()` uses hybrid defaults -- constants live
 in code with comments pointing to this ADR, passwords are required from
 env. The env var name for the password matches what already exists in
 `.env`:
 
 ```python
-# Wazuh infrastructure constants — architectural, not configurable
+# Wazuh infrastructure constants -- architectural, not configurable
 WAZUH_API_URL_DEFAULT     = "https://10.10.20.30:55000"
 WAZUH_API_USER_DEFAULT    = "wazuh-wui"
 WAZUH_INDEXER_URL_DEFAULT = "https://10.10.20.30:9200"
 WAZUH_INDEXER_USER_DEFAULT = "admin"
 
-# Required env vars (no defaults — secrets only)
+# Required env vars (no defaults -- secrets only)
 REQUIRED_ENV_VARS = (
     "WAZUH_API_PASSWORD",
     "WAZUH_INDEXER_PASSWORD",
@@ -165,7 +165,7 @@ REQUIRED_ENV_VARS = (
 ```
 
 A fork targeting a different Wazuh host can still override via env vars
-— `os.environ.get("WAZUH_API_URL", WAZUH_API_URL_DEFAULT)` — without
+-- `os.environ.get("WAZUH_API_URL", WAZUH_API_URL_DEFAULT)` -- without
 editing any code. Secrets stay in `.env` only.
 
 `WAZUH_INDEXER_PASSWORD` is new to `/c/Projects/.env`. Source of truth
@@ -174,7 +174,7 @@ brisket under `INDEXER_PASSWORD` (verified 2026-04-09). Task 1 copies
 this into `/c/Projects/.env` as `WAZUH_INDEXER_PASSWORD` before any
 pipeline task runs.
 
-## Deviation 5 — Wazuh `/vulnerability` REST endpoint removed
+## Deviation 5 -- Wazuh `/vulnerability` REST endpoint removed
 
 **Plan 2 assumes:** Task 6 `WazuhClient.get_vulnerabilities(agent_id)`
 hits `GET /vulnerability/{agent_id}?limit=1000` on the Wazuh API. Task
@@ -193,7 +193,7 @@ HTTP 404  GET https://10.10.20.30:55000/vulnerability
 HTTP 404  GET https://10.10.20.30:55000/vulnerability/016/summary/cve
 ```
 
-The data still exists — in the indexer (OpenSearch), not the API.
+The data still exists -- in the indexer (OpenSearch), not the API.
 Index `wazuh-states-vulnerabilities-wazuh.manager` on the single-node
 cluster at `https://10.10.20.30:9200` holds 12,949 documents (8.1 MB,
 green health). All agents' vulnerability state is stored in this one
@@ -241,7 +241,7 @@ structure (verified 2026-04-09):
 
 4. **Task 10 control mapping is unchanged.** Every wazuh-vuln finding
    still links to `RA-5` (Vulnerability Scanning) and `SI-2` (Flaw
-   Remediation) — these are the controls a 3PAO expects regardless of
+   Remediation) -- these are the controls a 3PAO expects regardless of
    the detection mechanism, and the mapping is semantic, not API-tied.
 
 5. **Test surface adjusts.** The mocked response in
@@ -249,7 +249,7 @@ structure (verified 2026-04-09):
    `WazuhIndexerClient.search_vulnerabilities()` returning a list of
    OpenSearch hits, not a list of REST items.
 
-## Deviation 6 — Wazuh agent IDs 014/015 → 016/017
+## Deviation 6 -- Wazuh agent IDs 014/015 → 016/017
 
 **Plan 2 assumes:** Dojo is Wazuh agent `014` and regscale is Wazuh
 agent `015`. Task 1 Step 2 filters `.id == "014" or .id == "015"` to
@@ -261,10 +261,10 @@ assigned `016` and regscale `017`.
 
 **Realignment:** Every Plan 2 reference to agents 014/015 becomes
 016/017. This is a mechanical substitution. The overlay.yaml in Task 7
-already keys by agent *name* (not id) which is more robust — IDs drift
+already keys by agent *name* (not id) which is more robust -- IDs drift
 with enrollment order, names don't.
 
-## Deviation 7 — RegScale CE has no long-lived API key
+## Deviation 7 -- RegScale CE has no long-lived API key
 
 **Plan 2 assumes:** `REGSCALE_API_KEY` is a long-lived bearer token
 that can be set in `.env` and used via `Authorization: Bearer
@@ -280,7 +280,7 @@ invocation, which is actually simpler than token rotation.
 
 **Realignment:**
 
-1. **New module** `pipelines/common/regscale.py` — `RegScaleClient`
+1. **New module** `pipelines/common/regscale.py` -- `RegScaleClient`
    with JWT caching, re-auth on 401, retry-with-backoff. Same shape as
    the `WazuhClient` in Task 6. The auth flow mirrors
    `tests/smoke/check_regscale.sh`, which is the source of truth for
@@ -298,32 +298,32 @@ invocation, which is actually simpler than token rotation.
 4. **Task 16** uses `RegScaleClient` from its OSCAL push code. No code
    anywhere in `pipelines/` references `REGSCALE_API_KEY`.
 
-The 24-hour JWT TTL is adequate for Plan 2's scope — every pipeline
+The 24-hour JWT TTL is adequate for Plan 2's scope -- every pipeline
 invocation is a fresh process and gets a fresh token. If a future phase
 needs cross-process token sharing (e.g., a long-running webhook), that
 would earn its own ADR.
 
-## Deviation 8 — ADR numbering starts at 0006
+## Deviation 8 -- ADR numbering starts at 0006
 
 **Plan 2 assumes:** Task 17 Step 4 writes `docs/adr/0003-pipelines-complete.md`.
 
 **Reality:** ADRs 0001 through 0005 are occupied:
-- 0001 — pre-flight and EULA review
-- 0002 — Plan 1 deployment complete
-- 0003 — RegScale install deviation
-- 0004 — DefectDojo install deviation
-- 0005 — PBS backup gap and automount fix
+- 0001 -- pre-flight and EULA review
+- 0002 -- Plan 1 deployment complete
+- 0003 -- RegScale install deviation
+- 0004 -- DefectDojo install deviation
+- 0005 -- PBS backup gap and automount fix
 
 **Realignment:** Plan 2 numbering starts at **0006**, which is this
 ADR. Further Plan-2-in-flight deviation ADRs (if any are needed beyond
 what this ADR already covers) take 0007, 0008, ... sequentially. The
 Plan 2 completion ADR lands at whatever number is free when Task 17
-runs — likely **0007** if no further deviations surface, higher
+runs -- likely **0007** if no further deviations surface, higher
 otherwise. Plan 2 Task 17 will be updated at execution time to reflect
 the actual number, not written against the hard-coded 0003 from the
 plan text.
 
-## Deviation 9 — Trestle 4.0.1 CLI drift
+## Deviation 9 -- Trestle 4.0.1 CLI drift
 
 **Plan 2 assumes:** Compliance Trestle 3.4+. Uses `trestle create
 system-security-plan -o mss-ssp` (Task 4 Step 1), `trestle href add`
@@ -331,12 +331,12 @@ system-security-plan -o mss-ssp` (Task 4 Step 1), `trestle href add`
 
 **Reality:** Installed version is Trestle 4.0.1 (verified 2026-04-09,
 `.venv/Scripts/python.exe -c "import trestle; print(trestle.__version__)"`).
-Trestle 4 has shifted some command surfaces — Task 3 Step 3 and Task 4
+Trestle 4 has shifted some command surfaces -- Task 3 Step 3 and Task 4
 Step 1 already anticipate this with fallback paths, but the preferred
 path in 4.0.1 is:
 
 - **Catalog/profile import:** `trestle import -f <path> -o <name>`
-  (unchanged — verify at execution time)
+  (unchanged -- verify at execution time)
 - **SSP scaffold from profile:** `trestle author ssp-generate -p
   <profile-name> -o <ssp-name>` (use this directly; skip the deprecated
   `trestle create system-security-plan` path)
@@ -356,7 +356,7 @@ compatible` warning at import time. Imports still work (confirmed
 validate -> re-serialize -> validate) under 3.14 to prove the warning
 is cosmetic at OSCAL schema scale before Plan 2 commits to the stack.
 
-## Deviation 10 — Python 3.12 → 3.10/3.14 (already handled)
+## Deviation 10 -- Python 3.12 → 3.10/3.14 (already handled)
 
 **Plan 2 assumes:** Python 3.12 in WSL.
 
@@ -368,7 +368,7 @@ as a secondary path. No code change needed; this entry exists solely
 for Plan 2 text that mentions "Python 3.12" so the reader knows the
 discrepancy is already reconciled.
 
-## Deviation 11 — GSA/fedramp-automation repo removed; profile bootstrapped from Trestle plugin XML
+## Deviation 11 -- GSA/fedramp-automation repo removed; profile bootstrapped from Trestle plugin XML
 
 **Plan 2 assumes:** Task 3 Step 1 downloads the FedRAMP Rev 5 Low
 baseline profile JSON from
@@ -381,7 +381,7 @@ current path.
 of 2026-04-09. The `GSA/fedramp-automation` URL returns HTTP 404, no
 alternate branches or paths resolve, and the GitHub API's repo
 metadata endpoint returns `Not Found`. The FedRAMP GitHub organization
-(`FedRAMP/` — confirmed exists) hosts only `community`, `roadmap`,
+(`FedRAMP/` -- confirmed exists) hosts only `community`, `roadmap`,
 `docs`, `docs-alpha`, `Marketplace-poc`, `fedramp-marketplace-preview`,
 and `join`, plus FRMR documentation. None of these host OSCAL
 baselines. NIST's `usnistgov/oscal-content` only hosts NIST-authored
@@ -398,7 +398,7 @@ git submodule pinned before the delete, and a February 2024 commit
 (`feat: updates content and git submodule for FedRAMP Rev5 validation`)
 vendored the pinned snapshot into its own tree at
 `trestle_fedramp/resources/fedramp-source/content/baselines/rev5/`.
-**Only XML versions are in that snapshot** — no JSON peers. Trestle
+**Only XML versions are in that snapshot** -- no JSON peers. Trestle
 4.0.1's `trestle import` explicitly refuses XML with
 `Unsupported file extension .xml`.
 
@@ -429,7 +429,7 @@ text.
 (VALID). `trestle author profile-resolve -n fedramp-rev5-low -o
 fedramp-rev5-low-resolved` produces a resolved catalog with exactly
 156 controls when counted recursively (parents + enhancements),
-matching the upstream XML's `<with-id>` count precisely — zero
+matching the upstream XML's `<with-id>` count precisely -- zero
 missing, zero extra. The resolved catalog also passes `trestle
 validate`. All acceptance criteria for Plan 2 Task 3 are met.
 
@@ -440,7 +440,7 @@ upgrade is needed (parties, modify blocks, etc.), the path is to add
 `saxonche` as a dev dependency, pull the NIST OSCAL XML-to-JSON XSLT,
 and transform the full XML. That would be its own ADR amendment.
 
-## Deferred — PBS backup-failure alerting
+## Deferred -- PBS backup-failure alerting
 
 ADR 0002 Operator Action Item #2 (wire a Wazuh/Discord alert on PBS
 backup failure) is intentionally *not* in Plan 2 scope. The real fix
@@ -450,7 +450,7 @@ Shuffle edge owns the Discord fanout) that would widen Plan 2 beyond
 its OSCAL focus.
 
 **Interim mitigation inside Plan 2 scope:** Task 1 adds a manual
-tripwire to `runbooks/monthly-conmon.md` — a one-line SSH command the
+tripwire to `runbooks/monthly-conmon.md` -- a one-line SSH command the
 operator runs daily to verify the most recent critical-job snapshot is
 under 36 hours old. This is not a proper alert, but it is a tripwire
 that keeps the gap visible until the dedicated phase lands.
@@ -459,7 +459,7 @@ that keeps the gap visible until the dedicated phase lands.
 its own ADR (likely 0008+ depending on how many deviation ADRs
 accumulate during Plan 2 execution).
 
-## Branch strategy — direct commits to main
+## Branch strategy -- direct commits to main
 
 Plan 2 execution commits directly to `main`, same pattern as Plan 1.
 No feature branch. Rationale:
@@ -494,7 +494,7 @@ story we want to tell.
   phase touching RegScale CE can depend on.
 - The orchestration decision (passthrough from `pipelines.sh` to
   `pipelines/cli.py`) preserves the Plan 1 contract while giving us
-  testable Python orchestration — both goals met.
+  testable Python orchestration -- both goals met.
 - The HTTPS-validator asymmetry is honest about the lab posture
   without becoming a landmine.
 
@@ -504,7 +504,7 @@ story we want to tell.
   Wazuh Indexer client). Context budget for the execution session is
   meaningfully larger.
 - The hybrid env-var approach (constants in code, passwords in `.env`)
-  is slightly magic — a reader has to look at `load_config()` to
+  is slightly magic -- a reader has to look at `load_config()` to
   discover defaults. Documented in the field-level docstrings.
 - RegScale's 24-hour JWT means every pipeline invocation re-auths.
   Acceptable for monthly/daily cadence; would need revisiting if a
@@ -532,7 +532,7 @@ story we want to tell.
 ADR's scope rather than warranting a separate ADR are appended here
 with date + task reference.)*
 
-### 2026-04-09 (Task 2) — Future Python 3.16 tripwire
+### 2026-04-09 (Task 2) -- Future Python 3.16 tripwire
 
 The OSCAL round-trip tests in `tests/test_oscal_roundtrip.py` pass
 cleanly under Python 3.14 + Trestle 4.0.1, confirming Deviation 9's
@@ -546,7 +546,7 @@ in Python 3.16. Use ForwardRef.evaluate() or typing.evaluate_forward_ref()
 instead.
 ```
 
-This is **not** the same warning as Deviation 9 — it's a Python 3.16
+This is **not** the same warning as Deviation 9 -- it's a Python 3.16
 removal warning from `pydantic.v1.typing` using a private
 `typing.ForwardRef._evaluate` API. When Python 3.16 releases, this
 stops being a warning and becomes an `AttributeError`, at which point
@@ -561,14 +561,14 @@ time rather than mid-pipeline.
 removes the pydantic.v1 shim entirely, OR pin Python to 3.15.x until
 Trestle does so. The decision should be its own ADR at that time.
 
-### 2026-04-09 (Task 4) — Trestle 4.0.1 `ssp-generate` output path
+### 2026-04-09 (Task 4) -- Trestle 4.0.1 `ssp-generate` output path
 
 **Plan 2 assumed:** `trestle author ssp-generate -p fedramp-rev5-low -o
 mss-ssp` writes to `trestle-workspace/system-security-plans/mss-ssp/`
 (based on the workspace directory layout).
 
 **Reality:** Trestle 4.0.1 writes the markdown scaffold to
-`trestle-workspace/mss-ssp/` — a *top-level* directory named after the
+`trestle-workspace/mss-ssp/` -- a *top-level* directory named after the
 SSP, not nested under `system-security-plans/`. The
 `system-security-plans/` directory is reserved for assembled OSCAL
 JSON artifacts produced by `ssp-assemble`.
@@ -579,21 +579,21 @@ assembler wiring) needs to point `ssp-assemble -m mss-ssp` at the
 top-level `mss-ssp/` directory, and the assembled output will land
 under `trestle-workspace/system-security-plans/mss-ssp/system-security-plan.json`.
 
-### 2026-04-09 (Task 1) — DefectDojo product names use ASCII hyphens
+### 2026-04-09 (Task 1) -- DefectDojo product names use ASCII hyphens
 
 **Plan 2 assumed (Task 14):** `HOST_TO_PRODUCT` dictionary uses em
 dashes in product names:
 
 ```python
 HOST_TO_PRODUCT = {
-    "brisket": "MSS Core — brisket",
-    "haccp": "MSS Log Analytics — haccp",
+    "brisket": "MSS Core -- brisket",
+    "haccp": "MSS Log Analytics -- haccp",
     ...
 }
 ```
 
 **Reality:** Plan 1 Task 11's DefectDojo seed script created the
-products with ASCII hyphens (`-`), not em dashes (`—`). Queried the
+products with ASCII hyphens (`-`), not em dashes (`--`). Queried the
 live API during Task 1 pre-flight:
 
 ```
@@ -604,7 +604,7 @@ id=4  MSS Boundary Protection - OPNsense
 id=5  MSS GRC Tooling - dojo + regscale
 ```
 
-**Additional finding:** there are **5 products**, not 4 — a **5th
+**Additional finding:** there are **5 products**, not 4 -- a **5th
 product `MSS Boundary Protection - OPNsense`** exists that Plan 2 Task
 14 doesn't map at all. OPNsense inventory (the boundary firewall on
 10.10.10.1, documented in `inventory/overlay.yaml` under
@@ -615,7 +615,7 @@ adds `opnsense` → `MSS Boundary Protection - OPNsense`. Any unit test
 assertions in Task 11/14 that reference product names should be
 written against the real strings, not Plan 2's em-dash text.
 
-### 2026-04-09 (Task 12) — FedRAMP Low ConMon SLA windows are 15/30/90/180, not 30/90/180/365
+### 2026-04-09 (Task 12) -- FedRAMP Low ConMon SLA windows are 15/30/90/180, not 30/90/180/365
 
 **Plan 2 assumed** (Task 12 Step 3 `SLA_DAYS`):
 
@@ -638,11 +638,11 @@ specifies ConMon remediation windows per severity as:
 | Moderate | 90   |
 | Low      | 180  |
 
-The plan text's numbers are all off by one "bucket" — what the plan
+The plan text's numbers are all off by one "bucket" -- what the plan
 calls Critical (30d) is actually High; what the plan calls High (90d)
 is actually Moderate; etc. Using the plan values would generate POA&M
 items that all report overdue dates weeks to months later than the
-real SLA — the exact opposite direction from what an auditor would
+real SLA -- the exact opposite direction from what an auditor would
 accept.
 
 **Realignment:** `pipelines/build/oscal_poam.py` uses the correct
@@ -656,7 +656,7 @@ April 31 under the old plan values.
 3PAO review immediately. This ADR amendment is the single source of
 truth for the real SLA windows going forward.
 
-### 2026-04-09 (Task 6b) — Wazuh indexer sort tiebreaker is `_id`, not `vulnerability.id.keyword`
+### 2026-04-09 (Task 6b) -- Wazuh indexer sort tiebreaker is `_id`, not `vulnerability.id.keyword`
 
 **Deviation 5 implied** that `WazuhIndexerClient.search_vulnerabilities()`
 would page via `search_after` on `vulnerability.detected_at` then
@@ -665,7 +665,7 @@ would page via `search_after` on `vulnerability.detected_at` then
 `query_shard_exception: No mapping found for [vulnerability.id.keyword]`.
 
 **Root cause:** `vulnerability.id` is already a `keyword`-typed field in
-the mapping (`type: keyword, ignore_above: 1024`) — there is no
+the mapping (`type: keyword, ignore_above: 1024`) -- there is no
 `.keyword` subfield to sort on. Additionally, even `vulnerability.id`
 alone is not reliably unique: the same CVE repeats across multiple
 packages on the same host, so using it as a tiebreaker can cause hit
@@ -677,16 +677,16 @@ loss during `search_after` paging if two hits share the same
 field is always present, always sortable, and guaranteed unique per
 document, so it is the only safe tiebreaker. Verified with a full
 paging sweep that returned the expected hit counts (dojo 1861,
-regscale 1861, brisket 2804, haccp 1899, smokehouse 46 — total 8471
+regscale 1861, brisket 2804, haccp 1899, smokehouse 46 -- total 8471
 hits, consistent with the cluster-wide 12,949 counting the three
 Windows agents Plan 2 does not ingest).
 
-**Impact:** cosmetic only — the search body changes by two keystrokes.
+**Impact:** cosmetic only -- the search body changes by two keystrokes.
 No downstream code depends on the sort key shape, only on the returned
 hit ordering being deterministic.
 
 ---
 
 **Next:** Plan 2 Task 1 (Verify Plan 1 done state and capture
-environment). Task 1 itself is adjusted per this ADR — see Task 1
+environment). Task 1 itself is adjusted per this ADR -- see Task 1
 execution notes for the specific step substitutions.

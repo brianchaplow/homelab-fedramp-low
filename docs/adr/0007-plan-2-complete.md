@@ -1,11 +1,11 @@
-# ADR 0007 — Plan 2 Pipelines Complete
+# ADR 0007 -- Plan 2 Pipelines Complete
 
 **Date:** 2026-04-09
 **Status:** Accepted
-**Plan:** [2026-04-07 Plan 2 — OSCAL Foundation + Pipelines](../superpowers/plans/2026-04-07-homelab-fedramp-low-plan-2-oscal-pipelines.md)
+**Plan:** [2026-04-07 Plan 2 -- OSCAL Foundation + Pipelines](../superpowers/plans/2026-04-07-homelab-fedramp-low-plan-2-oscal-pipelines.md)
 **Predecessors:** ADR 0001 (pre-flight), 0002 (Plan 1 deployment), 0003
 (RegScale install), 0004 (DefectDojo install), 0005 (PBS backup gap),
-0006 (Plan 2 environment + API realignment — the authoritative
+0006 (Plan 2 environment + API realignment -- the authoritative
 deviation record for this plan)
 
 ## Decision
@@ -13,10 +13,10 @@ deviation record for this plan)
 Plan 2 (OSCAL Foundation + Pipelines) is **complete**. Every done
 criterion from the plan has a verified implementation, a passing
 test, and a live end-to-end run against the homelab SOC. The repo
-tags the milestone as `plan-2-complete` and the next phase (Plan 3 —
+tags the milestone as `plan-2-complete` and the next phase (Plan 3 --
 SSP Authoring) is unblocked.
 
-## Done criteria — verified
+## Done criteria -- verified
 
 - [x] **NIST 800-53 Rev 5 catalog** imported via Trestle
   (`trestle-workspace/catalogs/nist-800-53-rev5/catalog.json`, 10.7 MB)
@@ -24,13 +24,13 @@ SSP Authoring) is unblocked.
   Task 2.
 - [x] **FedRAMP Rev 5 Low profile** bootstrapped from the
   `compliance-trestle-fedramp` plugin XML (the upstream
-  `GSA/fedramp-automation` repo was deleted before Plan 2 executed —
+  `GSA/fedramp-automation` repo was deleted before Plan 2 executed --
   see ADR 0006 Deviation 11) and committed at
   `trestle-workspace/profiles/fedramp-rev5-low/profile.json`. 156
   `<with-id>` references preserved, VALID. Plan 2 Task 3.
 - [x] **SSP markdown scaffold** generated with 156 control files
   under `trestle-workspace/mss-ssp/` (top-level dir, not nested
-  under `system-security-plans/` — see ADR 0006 Amendment 2026-04-09
+  under `system-security-plans/` -- see ADR 0006 Amendment 2026-04-09
   Task 4). Mirrored to `ssp/controls/` for public-repo visibility.
   Plan 2 Task 4.
 - [x] **Common pipeline modules** (`pipelines/common/config.py`,
@@ -39,10 +39,10 @@ SSP Authoring) is unblocked.
   secrets required from `.env`. HTTPS validator scoped to Wazuh
   endpoints only. Plan 2 Task 5.
 - [x] **Wazuh REST client** (`pipelines/common/wazuh.py`) without
-  `get_vulnerabilities()` — Wazuh 4.8 removed that endpoint per
+  `get_vulnerabilities()` -- Wazuh 4.8 removed that endpoint per
   ADR 0006 Deviation 5. Plan 2 Task 6.
 - [x] **Wazuh Indexer (OpenSearch) client**
-  (`pipelines/common/wazuh_indexer.py`) — new module per ADR 0006
+  (`pipelines/common/wazuh_indexer.py`) -- new module per ADR 0006
   Deviation 5. Pages through
   `wazuh-states-vulnerabilities-*` via `search_after` with `_id`
   tiebreaker (ADR 0006 Amendment Task 6b). Plan 2 Task 6b.
@@ -75,7 +75,7 @@ SSP Authoring) is unblocked.
   `pipelines/push/defectdojo.py`): Token-header auth, auto-paginated
   `list_findings` (1000-row page cap), auto-create engagement per
   product. `findings_to_generic_format` sends the affected host
-  through the `endpoints` list — DefectDojo Generic Findings Import
+  through the `endpoints` list -- DefectDojo Generic Findings Import
   rejects a top-level `host` field (probed live 2026-04-09, returned
   "Not allowed fields are present: ['host']"). Live end-to-end:
   8,471 findings pushed to 4 products with zero skipped. Plan 2 Task 11.
@@ -95,7 +95,7 @@ SSP Authoring) is unblocked.
   (`pipelines/cli.py`, `pipelines.sh`, Task 14): Click CLI with
   seven subcommands + two composites (`oscal`, `conmon`). Unknown
   `pipelines.sh` commands forward to `pipelines.cli` via a
-  passthrough arm per ADR 0006 Deviation 2 — the Makefile stays a
+  passthrough arm per ADR 0006 Deviation 2 -- the Makefile stays a
   thin alias from Plan 1, not rewritten. `HOST_TO_PRODUCT` uses
   ASCII hyphens and 6 entries including `opnsense → MSS Boundary
   Protection - OPNsense` per ADR 0006 Amendment 2026-04-09 Task 1.
@@ -112,7 +112,7 @@ SSP Authoring) is unblocked.
 - [x] **RegScale CE OSCAL push (best-effort)**
   (`pipelines/common/regscale.py`, `pipelines/push/regscale.py`):
   JWT client per ADR 0006 Deviation 7. Swagger probe 2026-04-09
-  confirmed CE has **no generic OSCAL import endpoints** — the 13
+  confirmed CE has **no generic OSCAL import endpoints** -- the 13
   OSCAL-prefixed paths are all export or validation.
   `OSCAL_IMPORT_PATHS` is therefore empty today and every push
   returns `status="manual-required"` pointing at
@@ -166,7 +166,7 @@ DefectDojo client/push, RegScale client/push, CLI).
 
 ## Live deliverables vs. Plan 2 scope
 
-Plan 2 is bounded — it lays the pipeline rails without filling the
+Plan 2 is bounded -- it lays the pipeline rails without filling the
 SSP control prose. Specifically:
 
 - The SSP is a 156-control skeleton with `REPLACE_ME` placeholders.
@@ -175,7 +175,7 @@ SSP control prose. Specifically:
 - The POA&M represents every open Wazuh finding on in-boundary
   hosts. A real 3PAO-ready POA&M would deduplicate per-CVE across
   hosts, resolve vendor dependencies, and include remediation
-  plans — all Plan 3/4 work.
+  plans -- all Plan 3/4 work.
 - RegScale ingestion is a manual runbook today because CE exposes
   no generic OSCAL import. A future CE upgrade unlocks the
   automated push path.
@@ -183,12 +183,12 @@ SSP control prose. Specifically:
   IIW, for example) is a documented manual step. Plan 4 can add an
   automated scrub step if the portfolio demo warrants it.
 
-None of these are regressions — they are intentional scope edges
+None of these are regressions -- they are intentional scope edges
 called out in ADR 0006 and in the module docstrings.
 
 ## Next
 
-**Plan 3 — SSP Authoring.** Populate the 156 control markdown
+**Plan 3 -- SSP Authoring.** Populate the 156 control markdown
 files under `trestle-workspace/mss-ssp/` with prose grounded in
 the live homelab implementation. Tier 1 priority families per
 ADR 0006 roadmap: AC, AU, CM, CP, IA, IR, RA, SC, SI. Tier 2 is
@@ -202,7 +202,7 @@ stub prose for the remaining families. The goal state is a
 
 - The monthly ConMon cycle is now a single `./pipelines.sh conmon`
   command. Every artifact a 3PAO asks for is generated from live
-  homelab state — no manual data entry.
+  homelab state -- no manual data entry.
 - Every deviation from the plan text is captured in ADR 0006 with
   live-probe evidence, so a reviewer walking the repo
   chronologically can reconstruct the exact decisions made during
@@ -230,7 +230,7 @@ stub prose for the remaining families. The goal state is a
 **Risks going into Plan 3:**
 
 - Trestle 4.0.1 `ssp-assemble` behavior with real control prose
-  (as opposed to `REPLACE_ME` placeholders) is untested — Plan 3
+  (as opposed to `REPLACE_ME` placeholders) is untested -- Plan 3
   Task 1 should run an early assembly against a single filled
   control to catch any shape surprises.
 - DefectDojo findings pile up per run because the import-scan

@@ -4,7 +4,7 @@ Output conforms to the NIST OSCAL ``component-definition`` schema at
 version 1.1.2, which is the shape RegScale CE imports and what the
 FedRAMP RFC-0024 machine-readable package mandate requires.
 
-Scope of this module is deliberately narrow — it takes a list of
+Scope of this module is deliberately narrow -- it takes a list of
 :class:`pipelines.common.schemas.InventoryComponent`, assigns UUIDs,
 maps ``asset_type`` + ``is_virtual`` to an OSCAL component type, and
 flattens the homelab metadata into OSCAL ``props``. Schema validation
@@ -27,7 +27,7 @@ Two OSCAL schema nuances verified via round-tripping through
 * ``status`` is **not** a field on a component inside a
   component-definition. It only exists in the system-implementation
   component schema. Emitting it causes "extra fields not permitted".
-* Prop ``value`` strings must match ``^\\S(.*\\S)?$`` — empty strings
+* Prop ``value`` strings must match ``^\\S(.*\\S)?$`` -- empty strings
   and whitespace-only strings are rejected. Optional inventory fields
   (``asset_tag``, ``hardware_model``, ``diagram_label``, etc.) are
   therefore **omitted** rather than emitted as empty-string props.
@@ -52,7 +52,7 @@ OSCAL_VERSION: str = "1.1.2"
 def _now_iso() -> str:
     """Return the current UTC time as an OSCAL-friendly ISO 8601 string.
 
-    OSCAL tooling is strict about the timezone offset format — it must be
+    OSCAL tooling is strict about the timezone offset format -- it must be
     ``Z`` or ``+HH:MM`` (with the colon). ``datetime.isoformat()`` on a
     timezone-aware datetime produces the colon form automatically.
     """
@@ -74,7 +74,7 @@ def _component_to_oscal(component: InventoryComponent) -> dict[str, Any]:
     Every non-empty field on the InventoryComponent round-trips into an
     OSCAL prop so the IIW renderer (Task 9) has enough data to populate
     the full FedRAMP Integrated Inventory Workbook without re-reading
-    the source overlay. Props are emitted only when non-empty — OSCAL
+    the source overlay. Props are emitted only when non-empty -- OSCAL
     rejects empty-string prop values.
 
     The ``title``, ``description``, and ``purpose`` top-level fields

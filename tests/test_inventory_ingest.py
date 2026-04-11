@@ -1,4 +1,4 @@
-"""Tests for pipelines.ingest.inventory — overlay merge + Wazuh → components."""
+"""Tests for pipelines.ingest.inventory -- overlay merge + Wazuh → components."""
 from __future__ import annotations
 
 from pathlib import Path
@@ -138,7 +138,7 @@ def test_build_components_filters_to_in_boundary(overlay_yaml: Path) -> None:
 
 def test_build_components_handles_empty_os_info(overlay_yaml: Path) -> None:
     """Agents with a stale or empty syscollector.os record still produce
-    a valid InventoryComponent — fields fall through to None."""
+    a valid InventoryComponent -- fields fall through to None."""
     fake = MagicMock()
     fake.list_agents.return_value = [
         {"id": "015", "name": "brisket", "ip": "10.10.20.30", "status": "active"},
@@ -165,7 +165,7 @@ def test_build_components_excludes_out_of_boundary_agents(
 
 
 def test_build_components_skips_unknown_agents(overlay_yaml: Path) -> None:
-    """DC01 has no overlay entry — treated as out-of-boundary and excluded."""
+    """DC01 has no overlay entry -- treated as out-of-boundary and excluded."""
     fake = _wazuh_mock_with_os_hw()
     components = build_components_from_wazuh(fake, load_overlay(overlay_yaml))
     assert not any(c.hostname == "DC01" for c in components)

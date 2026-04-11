@@ -1,4 +1,4 @@
-"""Tests for pipelines.common.wazuh_indexer — OpenSearch vuln client.
+"""Tests for pipelines.common.wazuh_indexer -- OpenSearch vuln client.
 
 Per ADR 0006 Deviation 5, Wazuh 4.8 removed the REST /vulnerability
 endpoint. Vulnerability state now lives in the

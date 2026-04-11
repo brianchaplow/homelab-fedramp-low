@@ -1,4 +1,4 @@
-"""Tests for pipelines.common.logging — structured logger factory."""
+"""Tests for pipelines.common.logging -- structured logger factory."""
 from __future__ import annotations
 
 import logging

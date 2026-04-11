@@ -14,7 +14,7 @@ with the schema::
     _source.vulnerability.score.base  (CVSS base score)
     _source.vulnerability.detected_at (ISO 8601)
     _source.vulnerability.description
-    _source.vulnerability.reference   (URL string — downstream may split)
+    _source.vulnerability.reference   (URL string -- downstream may split)
     _source.package.name
     _source.package.version
 
@@ -106,12 +106,12 @@ class WazuhIndexerClient:
         (``vulnerability.detected_at`` then ``_id`` as a stable tiebreaker).
         Live probe on 2026-04-09 showed ``vulnerability.id`` is already a
         ``keyword`` type but is not unique across re-detects of the same
-        package — ``_id`` is the only reliably unique sort key, so we use
+        package -- ``_id`` is the only reliably unique sort key, so we use
         it as the tiebreaker. Empty page signals the end of results.
 
         Args:
             agent_name: Wazuh agent name (e.g. ``"dojo"``).
-            page_size: Number of hits per request. Defaults to 500 —
+            page_size: Number of hits per request. Defaults to 500 --
                 well under the 10k scroll limit and large enough that
                 most agents are one or two requests.
 
@@ -149,7 +149,7 @@ class WazuhIndexerClient:
 
             last_sort = hits[-1].get("sort")
             if not last_sort:
-                # No sort value — we cannot page further safely
+                # No sort value -- we cannot page further safely
                 logger.warning(
                     "search_after paging halted: last hit has no sort key"
                 )

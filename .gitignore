@@ -1,4 +1,4 @@
-# Secrets — never commit
+# Secrets -- never commit
 .env
 .env.local
 secrets/
@@ -28,7 +28,7 @@ desktop.ini
 *.swp
 *.swo
 
-# Trestle workspace internal state — catalogs/profiles/SSPs are mirrored
+# Trestle workspace internal state -- catalogs/profiles/SSPs are mirrored
 # to oscal/ and ssp/ for public-repo visibility. The workspace itself is
 # a working tree whose .trestle/ directory contains cached hashes and
 # local config we don't need to track.

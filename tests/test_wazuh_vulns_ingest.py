@@ -1,4 +1,4 @@
-"""Tests for pipelines.ingest.wazuh_vulns — Wazuh indexer → Finding records.
+"""Tests for pipelines.ingest.wazuh_vulns -- Wazuh indexer → Finding records.
 
 Per ADR 0006 Deviation 5, this pipeline reads vulnerability state from
 the Wazuh Indexer (OpenSearch) index ``wazuh-states-vulnerabilities-*``
@@ -90,7 +90,7 @@ def test_hit_to_finding_prefers_wazuh_severity_over_cvss() -> None:
     """Wazuh already maps CVSS v2/v3/v4 to a severity label consistently;
     use its label as the primary source and only fall back to cvss_score
     if Wazuh's severity is missing or blank."""
-    # Wazuh says Critical but base score is only 5.0 — we trust Wazuh
+    # Wazuh says Critical but base score is only 5.0 -- we trust Wazuh
     hit = _hit(severity="Critical", base=5.0, cve="CVE-X")
     f = wazuh_indexer_hit_to_finding(hit)
     assert f.severity == Severity.CRITICAL
@@ -185,7 +185,7 @@ def test_ingest_wazuh_vulns_empty_agent_list_returns_empty() -> None:
 
 def test_ingest_wazuh_vulns_skips_malformed_hit() -> None:
     """A hit with a missing _source.vulnerability should not crash the
-    whole pipeline — the bad hit is logged and skipped."""
+    whole pipeline -- the bad hit is logged and skipped."""
     indexer = MagicMock()
     indexer.search_vulnerabilities.return_value = [
         _hit(cve="CVE-GOOD"),

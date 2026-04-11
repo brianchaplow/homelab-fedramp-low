@@ -5,14 +5,14 @@
 # file supplies everything else: location, function, diagram labels, asset
 # tags, virtual/bare-metal flag, and boundary classification.
 #
-# Keyed by Wazuh agent **name**, not id — agent ids drift with enrollment
+# Keyed by Wazuh agent **name**, not id -- agent ids drift with enrollment
 # order (see ADR 0006 Deviation 6) but names are stable.
 
 defaults:
   location: "On-prem homelab rack, Virginia"
   asset_type: "Server"
 
-# In-boundary agents — every host below gets pulled into the IIW and the
+# In-boundary agents -- every host below gets pulled into the IIW and the
 # OSCAL component-definition.
 agents:
   brisket:
@@ -23,7 +23,7 @@ agents:
     is_virtual: false
     hardware_model: "Lenovo ThinkStation P3 Tiny Gen 2 (Ultra 9 285, 64GB)"
     end_of_life: "2029-04"
-    comments: "Core SIEM host — v3 platform per HomeLab-SOC-v3 phases 1-13"
+    comments: "Core SIEM host -- v3 platform per HomeLab-SOC-v3 phases 1-13"
 
   haccp:
     asset_tag: HOMELAB-002
@@ -43,7 +43,7 @@ agents:
     is_virtual: false
     hardware_model: "QNAP TVS-871 (i7-4790S, 16GB, 17TB NFS backup target)"
     end_of_life: "2027-12"
-    comments: "Sensor host — eth4 SPAN; PBS NFS backup target"
+    comments: "Sensor host -- eth4 SPAN; PBS NFS backup target"
 
   dojo:
     asset_tag: HOMELAB-004
@@ -52,7 +52,7 @@ agents:
     boundary: in
     is_virtual: true
     hardware_model: "Proxmox VM on pitcrew (VMID 201, 4C/6GB/40GB)"
-    comments: "GRC tooling — DefectDojo. Plan 1 deployment, ADR 0004"
+    comments: "GRC tooling -- DefectDojo. Plan 1 deployment, ADR 0004"
 
   regscale:
     asset_tag: HOMELAB-005
@@ -61,9 +61,9 @@ agents:
     boundary: in
     is_virtual: true
     hardware_model: "Proxmox VM on smoker (VMID 301, 4C/6GB/40GB)"
-    comments: "GRC tooling — RegScale CE. Plan 1 deployment, ADR 0003"
+    comments: "GRC tooling -- RegScale CE. Plan 1 deployment, ADR 0003"
 
-# Out-of-boundary endpoints — documented here so an auditor can see the
+# Out-of-boundary endpoints -- documented here so an auditor can see the
 # full list of monitored assets, but intentionally NOT written to the IIW.
 # These are "customer" assets in the MSS analogy: AD lab and GCP VM.
 out_of_boundary:
@@ -78,22 +78,22 @@ out_of_boundary:
     reason: "Customer asset on GCP hosting brianchaplow.com + bytesbourbonbbq.com"
   - hostname: sear
     ip: 10.10.20.20
-    reason: "Red team / attack box — explicitly excluded from the MSS boundary"
+    reason: "Red team / attack box -- explicitly excluded from the MSS boundary"
   - hostname: pitcrew
     ip: 10.10.30.20
-    reason: "Proxmox host for AD lab — underlying hypervisor, not a managed service"
+    reason: "Proxmox host for AD lab -- underlying hypervisor, not a managed service"
   - hostname: smoker
     ip: 10.10.30.21
-    reason: "Proxmox host for targets + Caldera + PBS LXC + regscale VM — hypervisor"
+    reason: "Proxmox host for targets + Caldera + PBS LXC + regscale VM -- hypervisor"
   - hostname: pbs
     ip: 10.10.30.24
-    reason: "Proxmox Backup Server — out of scope for MSS, in scope for a separate backup ADR"
+    reason: "Proxmox Backup Server -- out of scope for MSS, in scope for a separate backup ADR"
   - hostname: PITBOSS
     ip: 10.10.10.100
-    reason: "Operator workstation — endpoint visibility only, not a managed MSS asset"
+    reason: "Operator workstation -- endpoint visibility only, not a managed MSS asset"
   - hostname: thehive
     ip: 10.10.30.22
-    reason: "Internal ITSM for the MSS analyst workflow — tracked separately"
+    reason: "Internal ITSM for the MSS analyst workflow -- tracked separately"
 
 # Non-Wazuh-managed in-boundary assets (firewall, switch). These are added
 # to the IIW as unauthenticated rows so the asset count is accurate, even
@@ -108,7 +108,7 @@ non_agent_assets:
     is_virtual: false
     hardware_model: "Protectli VP2420"
     boundary: in
-    comments: "OPNsense — boundary protection enforcer; logs shipped via syslog to Wazuh"
+    comments: "OPNsense -- boundary protection enforcer; logs shipped via syslog to Wazuh"
 
   - hostname: mokerlink
     ip: 10.10.10.2

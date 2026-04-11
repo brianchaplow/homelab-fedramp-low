@@ -2,7 +2,7 @@
 
 ## File
 
-`FedRAMP_rev5_LOW-baseline-profile.json` — the FedRAMP Rev 5 Low
+`FedRAMP_rev5_LOW-baseline-profile.json` -- the FedRAMP Rev 5 Low
 baseline profile, selecting 156 controls from
 [`../catalog/NIST_SP-800-53_rev5_catalog.json`](../catalog/NIST_SP-800-53_rev5_catalog.json).
 
@@ -28,7 +28,7 @@ FedRAMP Rev 5 Low baseline XML** using a one-shot converter during Plan
    JSON from `https://raw.githubusercontent.com/GSA/fedramp-automation/master/dist/content/rev5/baselines/json/FedRAMP_rev5_LOW-baseline_profile.json`.
 
 2. That URL returns HTTP 404 as of 2026-04-09. The entire
-   `GSA/fedramp-automation` repository has been removed or renamed — no
+   `GSA/fedramp-automation` repository has been removed or renamed -- no
    alternate branch or path under `GSA/` hosts the content, and the
    FedRAMP GitHub organization (`FedRAMP/`) does not have an
    `fedramp-automation` peer either. FedRAMP content has reorganized
@@ -62,7 +62,7 @@ FedRAMP Rev 5 Low baseline XML** using a one-shot converter during Plan
    `trestle author profile-resolve -n fedramp-rev5-low -o fedramp-rev5-low-resolved`.
    The resolved catalog has **exactly 156 controls** when counted
    recursively (parents + control enhancements), matching the upstream
-   XML's `<with-id>` count precisely — zero missing, zero extra.
+   XML's `<with-id>` count precisely -- zero missing, zero extra.
 
 ## What was NOT carried across from the XML source
 
@@ -83,8 +83,8 @@ modifications apply to a tiny subset of controls and can be added
 selectively during Plan 3 (SSP Authoring) if a given control's
 authoring requires the FedRAMP-specific prose.
 
-If a future phase requires full fidelity — for instance, if a
-reviewer wants to see the `<alter>` blocks exposed in the SSP — the
+If a future phase requires full fidelity -- for instance, if a
+reviewer wants to see the `<alter>` blocks exposed in the SSP -- the
 path forward is:
 
 1. Install a Python XSLT engine (e.g., `saxonche`)
@@ -103,12 +103,12 @@ extractor is cleaner.
 ## Canonical vs public copy
 
 - **Canonical (Trestle-managed)**:
-  `trestle-workspace/profiles/fedramp-rev5-low/profile.json` — this is
+  `trestle-workspace/profiles/fedramp-rev5-low/profile.json` -- this is
   the copy Trestle operates on for `profile-resolve`, `ssp-generate`,
   `ssp-assemble`, etc. It must stay in the Trestle workspace layout or
   commands fail.
-- **Public mirror**: this directory —
-  `oscal/profile/FedRAMP_rev5_LOW-baseline-profile.json` — exists so
+- **Public mirror**: this directory --
+  `oscal/profile/FedRAMP_rev5_LOW-baseline-profile.json` -- exists so
   that a reader browsing the repo's top-level `oscal/` directory sees
   the profile without needing to understand Trestle layout. Both
   copies are byte-identical.

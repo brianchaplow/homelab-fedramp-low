@@ -2,7 +2,7 @@
 
 This module is a thin wrapper around ``trestle author ssp-assemble``.
 Plan 2 scope is to wire the assembly path without filling the 156
-control markdown files — that is Plan 3's job. Running this with the
+control markdown files -- that is Plan 3's job. Running this with the
 empty scaffold will either produce a minimal SSP or fail with a
 Trestle-specific diagnostic; either outcome is informative for Plan 3.
 
@@ -62,7 +62,7 @@ def _find_trestle_binary() -> str:
         return on_path
 
     raise FileNotFoundError(
-        "trestle executable not found in venv or PATH — run "
+        "trestle executable not found in venv or PATH -- run "
         "`./pipelines.sh install` to reinstall dependencies"
     )
 
@@ -142,7 +142,7 @@ def assemble_ssp(
     )
     if not assembled.exists():
         raise FileNotFoundError(
-            f"Trestle did not produce SSP at {assembled} — check for "
+            f"Trestle did not produce SSP at {assembled} -- check for "
             f"unresolved control prose or missing compdefs"
         )
 

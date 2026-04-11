@@ -2,11 +2,11 @@
 # Smoke check for DefectDojo availability.
 #
 # The canonical endpoint is HTTP on port 8080 in DefectDojo 2.57.0
-# (bundled nginx has no TLS cert wired in — see docs/adr/0004).
+# (bundled nginx has no TLS cert wired in -- see docs/adr/0004).
 #
 # We check two signals:
-#   1. /api/v2/user_profile/    — must return 403 (service up, auth required)
-#   2. /login                    — must return 200 (login page renders)
+#   1. /api/v2/user_profile/    -- must return 403 (service up, auth required)
+#   2. /login                    -- must return 200 (login page renders)
 #
 # Either signal alone could be faked by a generic 403-returning proxy,
 # so both are required for a PASS.

@@ -1,4 +1,4 @@
-"""Tests for pipelines.common.regscale — RegScale CE JWT client.
+"""Tests for pipelines.common.regscale -- RegScale CE JWT client.
 
 Per ADR 0006 Deviation 7, RegScale CE has no long-lived API key. Auth
 is via POST /api/authentication/login with username/password, returning
@@ -39,7 +39,7 @@ def test_authenticate_posts_username_password_and_caches_token(
     token = c.authenticate()
     assert token == "jwt-ABC"
     assert c._token == "jwt-ABC"
-    # Next call should NOT re-auth — token is cached
+    # Next call should NOT re-auth -- token is cached
     token2 = c.authenticate()
     assert token2 == "jwt-ABC"
     assert mock_post.call_count == 1  # Only once

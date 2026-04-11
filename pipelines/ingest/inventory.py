@@ -16,7 +16,7 @@ every time an agent is re-registered.
 Fields like kernel release, CPU model, RAM size live under different
 paths in the live Wazuh syscollector response than the plan text
 originally hinted (``release`` at top-level, not ``os.kernel``). This
-module uses the live shape — live probe 2026-04-09 — not the plan
+module uses the live shape -- live probe 2026-04-09 -- not the plan
 text's guess.
 """
 from __future__ import annotations
@@ -91,14 +91,14 @@ def build_components_from_wazuh(
         name = agent.get("name")
         if not name or name not in agent_overlays:
             logger.debug(
-                "skipping agent %s — no overlay entry, treated as out-of-boundary",
+                "skipping agent %s -- no overlay entry, treated as out-of-boundary",
                 name,
             )
             continue
 
         meta = merge_overlay(agent_overlays[name], defaults)
         if meta.get("boundary") != "in":
-            logger.debug("skipping agent %s — overlay marks it out-of-boundary", name)
+            logger.debug("skipping agent %s -- overlay marks it out-of-boundary", name)
             continue
 
         os_info = client.get_syscollector_os(agent["id"]) or {}

@@ -1,4 +1,4 @@
-"""Tests for pipelines.build.oscal_ssp — Trestle ssp-assemble wrapper."""
+"""Tests for pipelines.build.oscal_ssp -- Trestle ssp-assemble wrapper."""
 from __future__ import annotations
 
 import subprocess

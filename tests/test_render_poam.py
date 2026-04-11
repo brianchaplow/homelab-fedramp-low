@@ -1,4 +1,4 @@
-"""Tests for pipelines.render.poam — OSCAL POA&M → FedRAMP POA&M xlsx."""
+"""Tests for pipelines.render.poam -- OSCAL POA&M → FedRAMP POA&M xlsx."""
 from __future__ import annotations
 
 import json
@@ -111,7 +111,7 @@ def test_render_poam_writes_to_open_items_sheet(
 def test_render_poam_severity_medium_becomes_moderate(
     sample_poam: Path, tmp_path: Path
 ) -> None:
-    """FedRAMP POA&M template uses 'Moderate' — map Medium → Moderate."""
+    """FedRAMP POA&M template uses 'Moderate' -- map Medium → Moderate."""
     out = tmp_path / "poam.xlsx"
     render_poam_from_oscal(sample_poam, TEMPLATE, out)
     ws = load_workbook(out)[POAM_SHEET_NAME]

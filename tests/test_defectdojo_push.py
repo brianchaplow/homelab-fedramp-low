@@ -1,4 +1,4 @@
-"""Tests for pipelines.push.defectdojo — group findings by product + import."""
+"""Tests for pipelines.push.defectdojo -- group findings by product + import."""
 from __future__ import annotations
 
 from datetime import datetime, timezone
@@ -63,7 +63,7 @@ def test_findings_to_generic_format_carries_severity_and_host(sample_findings) -
     assert first["title"] == "openssl heap overflow"
     assert first["severity"] == "High"
     # DefectDojo Generic Findings Import rejects a top-level 'host' field
-    # (probed live 2026-04-09 — returned "Not allowed fields are present").
+    # (probed live 2026-04-09 -- returned "Not allowed fields are present").
     # Hostname goes through the endpoints list instead.
     assert "host" not in first
     assert first["endpoints"] == ["brisket"]
@@ -190,7 +190,7 @@ def test_push_uses_existing_engagement_when_present(sample_findings) -> None:
         engagement_name="ConMon 2026-04",
     )
     assert result["imported"] == 2
-    # No engagement creation — both already existed
+    # No engagement creation -- both already existed
     client.create_engagement.assert_not_called()
 
 

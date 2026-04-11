@@ -1,4 +1,4 @@
-"""Tests for pipelines.common.schemas — normalized Finding and InventoryComponent."""
+"""Tests for pipelines.common.schemas -- normalized Finding and InventoryComponent."""
 from __future__ import annotations
 
 from datetime import datetime, timezone

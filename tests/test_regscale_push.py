@@ -1,4 +1,4 @@
-"""Tests for pipelines.push.regscale — best-effort OSCAL push."""
+"""Tests for pipelines.push.regscale -- best-effort OSCAL push."""
 from __future__ import annotations
 
 import json
@@ -54,7 +54,7 @@ def test_push_oscal_reports_validation_skip_when_endpoint_unavailable(
     sample_oscal: Path,
 ) -> None:
     """If the ValidateFedRAMP endpoint errors, the push still returns
-    manual-required — validation is a nice-to-have, not a gate."""
+    manual-required -- validation is a nice-to-have, not a gate."""
     client = MagicMock()
     client.post.side_effect = Exception("500 Server Error")
     result = push_oscal_to_regscale(client, sample_oscal, "poam")

@@ -1,7 +1,7 @@
 """Wazuh API REST client with JWT auth and retry-with-backoff.
 
 This client covers the Wazuh REST surface that the FedRAMP Low pipelines
-actually use — agent listing and syscollector (OS / hardware / packages).
+actually use -- agent listing and syscollector (OS / hardware / packages).
 It does **not** expose a ``get_vulnerabilities()`` method: Wazuh 4.8
 removed the ``/vulnerability/{agent_id}`` REST endpoint, and a live probe
 against v4.14.4 returned HTTP 404 for every variant. Vulnerability state
@@ -12,7 +12,7 @@ Deviation 5 for the full rationale and live-probe evidence.
 
 Transport details:
 
-* TLS verification is off by default — the Wazuh manager serves a
+* TLS verification is off by default -- the Wazuh manager serves a
   self-signed cert that is trusted at the lab posture level, documented in
   ``runbooks/cert-trust.md``. ``urllib3`` warnings are suppressed once at
   module import to avoid spamming the pipeline log.
@@ -37,7 +37,7 @@ from tenacity import (
 from pipelines.common.logging import get_logger
 
 
-# Self-signed certs in lab — suppress once at import time.
+# Self-signed certs in lab -- suppress once at import time.
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 logger = get_logger(__name__)

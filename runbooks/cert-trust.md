@@ -12,15 +12,15 @@ control trade-off documented in ADRs 0003 and 0004:
 
 There are no self-signed certificates to trust. If a command-line or
 Python client sees a TLS error talking to these services, it means the
-caller is pointing at the wrong scheme — correct to `http://`.
+caller is pointing at the wrong scheme -- correct to `http://`.
 
 ## Why this is acceptable in the homelab
 
 - Reachable only from VLAN 10/20/30 (trusted subnets) via UFW egress rules
   on the service VMs
-- Synthetic FedRAMP-Low scope data only (no real PHI / PII / financial —
+- Synthetic FedRAMP-Low scope data only (no real PHI / PII / financial --
   see ADR 0001 for the RegScale EULA analysis)
-- No external exposure — no OPNsense port forwards to these VMs, no
+- No external exposure -- no OPNsense port forwards to these VMs, no
   Tailscale exit nodes routing public traffic through them
 - Portfolio writeup (Plan 4) explicitly calls this out as "in a real
   FedRAMP-Low deployment, front with a TLS-terminating reverse proxy"
@@ -43,7 +43,7 @@ The recommended pattern for this homelab is:
 6. Scrub `/c/Projects/.env` `DEFECTDOJO_URL` / `REGSCALE_URL` to the new
    https URLs
 7. Rerun `./pipelines.sh smoke` to confirm the pipelines still work via
-   the proxy — this is a good regression check
+   the proxy -- this is a good regression check
 
 ## In Python requests (current HTTP-only reality)
 
@@ -69,7 +69,7 @@ proxy lands, switch to `verify=True` (the default) against the trusted
 ## In browsers (PITBOSS Firefox / Chrome / Edge)
 
 Just visit the HTTP URL. Chromium-family browsers will show a "Not
-secure" badge — expected for the lab. Do **not** click "Proceed to
+secure" badge -- expected for the lab. Do **not** click "Proceed to
 site" for an HTTPS error on these services; that means the URL is wrong.
 
 ## Portfolio writeup note

@@ -35,7 +35,7 @@ agent: enabled
 # 1. vmbr0 on smoker is VLAN 30 native (no bridge-vlan-aware setup). Adding
 #    tag=30 would double-tag and break connectivity. Confirmed by inspecting
 #    smoker host config: vmbr0 stanza binds 10.10.30.21 directly without
-#    bridge-vlan-aware. (VM 200 uses tag=40 for VLAN 40 targets — that works
+#    bridge-vlan-aware. (VM 200 uses tag=40 for VLAN 40 targets -- that works
 #    because the upstream MokerLink port carries VLAN 40 tagged in addition
 #    to untagged VLAN 30.)
 # 2. Interface name is eth0 (Ubuntu 24.04 cloud image), not ens18.
