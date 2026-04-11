@@ -41,6 +41,7 @@ findings to product id=4 without another code change.
 """
 from __future__ import annotations
 
+import os
 from datetime import date
 from pathlib import Path
 
@@ -98,6 +99,20 @@ SSP_NAME = "mss-ssp"
 
 
 def _current_month() -> str:
+    """Return YYYY-MM for the current ConMon cycle.
+
+    Defaults to today's calendar month.  Set ``CONMON_MONTH=YYYY-MM``
+    to override -- used when staging a future cycle (e.g. May) from an
+    earlier calendar date (e.g. April 10).
+    """
+    override = os.environ.get("CONMON_MONTH", "").strip()
+    if override:
+        # Basic validation: must be YYYY-MM
+        if len(override) == 7 and override[4] == "-":
+            return override
+        raise click.UsageError(
+            f"CONMON_MONTH must be YYYY-MM, got: {override!r}"
+        )
     return date.today().strftime("%Y-%m")
 
 
