@@ -66,7 +66,7 @@
 - **Supporting mechanisms:** N/A
 - **Evidence paths:**
   - `C:/Projects/CLAUDE.md` lines 71–81 (host inventory — confirms single operator with no other personnel having system access)
-  - `homelab-fedramp-low/README.md` (author statement: "I'm a 27-year veteran… building FedRAMP-specific ConMon fluency")
+  - `homelab-fedramp-low/README.md` (author statement confirming single-operator personal system: "I'm a 26-year Navy veteran running a production homelab")
 - **Set-params (proposed values):**
   - No ODP parameters in scaffold (`at-2.2` has no `x-trestle-set-params` frontmatter — verified in `trestle-workspace/mss-ssp/at/at-2.2.md`)
 - **Authoring notes:** One clean sentence: N/A because single-operator system eliminates the insider-versus-organization threat model. Do not overexplain. The README and CLAUDE.md host inventory are the supporting evidence that only one person has access.

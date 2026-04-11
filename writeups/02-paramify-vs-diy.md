@@ -2,11 +2,11 @@
 
 *By Brian Chaplow -- April 2026 -- ~7 min read*
 
-> The job description for a public-sector TRC Analyst role I'm targeting names five GRC platforms: RegScale, DefectDojo, Paramify, ServiceNow GRC, and Onspring. I can self-host two of them. This post bridges the third.
+> Five commercial GRC platforms dominate the ATO-focused FedRAMP space: RegScale, DefectDojo, Paramify, ServiceNow GRC, and Onspring. Two of them have free self-hostable tiers and are deployed as part of the companion [homelab-fedramp-low](https://github.com/brianchaplow/homelab-fedramp-low) project. Paramify is the one commercial-SaaS benchmark I can't self-host. This post exists to bridge that gap honestly, using only Paramify's public documentation.
 
 ## Why this exists
 
-I'm preparing a portfolio for a federal-adjacent compliance analyst role. The job description specifically lists five ATO-focused GRC platforms as expected familiarity. Of those five:
+The ATO-focused FedRAMP GRC space has five platforms worth knowing if you're building or evaluating a continuous-monitoring program. In the companion [homelab-fedramp-low](https://github.com/brianchaplow/homelab-fedramp-low) project I deployed and integrated the two that have free self-hostable tiers. This post covers the third. The full lineup:
 
 - **DefectDojo** -- open source, self-hostable. Deployed as part of my [homelab-fedramp-low](https://github.com/brianchaplow/homelab-fedramp-low) project.
 - **RegScale Community Edition** -- free CE exists, self-hostable. Deployed alongside DefectDojo.
@@ -103,7 +103,7 @@ If you're a GRC analyst evaluating platforms like Paramify, the most useful thin
 
 For me personally, building this pipeline gave me concrete vocabulary for things I'd previously only read about: "the SLA clock starts at discovery, not at verification"; "the POA&M and the SSP are authored as a pair"; "the boundary diagram drives every other artifact"; "OSCAL component-definition is the canonical inventory format and IIW xlsx is just a projection"; "a significant change requires AO approval before implementation, not after". I would not have learned these as crisply by clicking through a SaaS UI.
 
-That's the core thesis: **understanding what these platforms automate makes you a more effective user of them**. And in interviews, demonstrating that understanding from first principles is more memorable than name-dropping the platform. If I'm hired into a role that uses Paramify or RegScale CE or DefectDojo, I'll be a better user of the platform because I built a primitive version first.
+That's the core thesis: **understanding what these platforms automate makes you a more effective user of them**. Demonstrating that understanding from first principles is more memorable than name-dropping the tool. When a team I'm on eventually adopts Paramify, RegScale CE, or DefectDojo, I'll be a better user of the platform because I built a primitive version first.
 
 ## Links
 

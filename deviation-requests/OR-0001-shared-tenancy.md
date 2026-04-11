@@ -107,8 +107,9 @@ This is the **most valuable** DR in this package from a learning
 perspective. It demonstrates that the SSP authoring process surfaced a
 real, defensible compliance gap in the homelab -- and that the operator
 chose to document and accept it rather than fabricate a clean state.
-This is the honest "found a gap in my own environment" moment that
-hiring managers respond to in interviews.
+A fabricated clean-state SSP doesn't produce an Operational Requirement
+Deviation Request because it never finds anything to accept; this one
+did, because it was authored against a real running environment.
 
 The 6-month expiration (rather than the default 12-month) reflects the
 fact that shared tenancy is a temporary pilot constraint, not a

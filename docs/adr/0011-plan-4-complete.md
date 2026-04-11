@@ -1,4 +1,4 @@
-# ADR 0011 -- Plan 4 Complete: Portfolio Ready for Application
+# ADR 0011 -- Plan 4 Complete: Portfolio Ready
 
 **Date:** 2026-04-10
 **Status:** Accepted
@@ -8,9 +8,10 @@
 ## Decision
 
 Plan 4 (ConMon writeups + portfolio integration) is complete. The
-`homelab-fedramp-low` repository is portfolio-ready for the Rapid7 US
-Public Sector Trust, Risk, and Compliance Analyst application. This
-ADR captures the done state, the deliverables, and the 10-question
+`homelab-fedramp-low` repository is portfolio-ready as a public FedRAMP
+Low reference implementation and as a working OSCAL-first pipeline
+aligned with the RFC-0024 September 30, 2026 machine-readable mandate.
+This ADR captures the done state, the deliverables, and the 10-question
 success criteria check from the whole-project design spec Section 1.4.
 
 ## Deliverables
@@ -75,7 +76,7 @@ success criteria check from the whole-project design spec Section 1.4.
   vendor reference, vendor support) and what DIY wins (data ownership,
   learning depth, OSCAL-native from day one). All Paramify facts sourced
   from public paramify.com blog posts and the FedRAMP Marketplace listing.
-- **Polished public README** with the 60-second recruiter test structure:
+- **Polished public README** with a 60-second quick-read structure:
   boundary diagram hero image, what's-real-vs-notional table, 12-row quick
   tour, tooling inventory (including the three not-evaluated commercial
   platforms called out for honesty), three reading paths
@@ -205,13 +206,13 @@ they were out of scope for the portfolio-ready milestone:
 - **Main writeup:** `writeups/01-building-fedramp-low-conmon-homelab.md` (3,229 words)
 - **Paramify comparison:** `writeups/02-paramify-vs-diy.md` (1,805 words)
 
-## Application target
+## GRC platform inventory
 
-Rapid7 US Public Sector Trust, Risk, and Compliance Analyst (Continuous
-Monitoring and POA&M role). Five named GRC platforms in the job
-description: RegScale (deployed), DefectDojo (deployed), Paramify
-(comparison post), ServiceNow GRC (acknowledged not evaluated), Onspring
-(acknowledged not evaluated).
+The five commercial GRC platforms most commonly named in FedRAMP
+ATO-focused work: RegScale (deployed as RegScale CE), DefectDojo
+(deployed), Paramify (comparison post sourced from public docs),
+ServiceNow GRC (not evaluated, no self-hostable tier), Onspring
+(not evaluated, no self-hostable tier).
 
 ## Notes
 

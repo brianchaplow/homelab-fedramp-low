@@ -6,9 +6,9 @@
 
 ## Why this exists
 
-I'm a 27-year veteran transitioning into GRC analyst work. I've managed POA&Ms in the military and done deep research on NIST SP 800-53 Rev 5, but I hadn't worked FedRAMP-specific Continuous Monitoring hands-on. This project closed that gap by building the program end-to-end against a real technical environment I already operate.
+I'm a 26-year Navy veteran running a production homelab SOC, and this project extends that cybersecurity work into the GRC side of the discipline. I've managed POA&Ms in the military and done deep research on NIST SP 800-53 Rev 5, but I hadn't worked FedRAMP-specific Continuous Monitoring hands-on. This project closed that gap by building the program end-to-end against a real technical environment I already operate.
 
-The motivation is concrete: I'm applying for a public-sector Trust, Risk, and Compliance Analyst role focused on Continuous Monitoring and POA&M management. The job description specifically calls out five ATO-focused GRC platforms -- DefectDojo, RegScale, Paramify, ServiceNow GRC, and Onspring. I deployed and integrated the two that have free self-hosted versions. The third (Paramify) gets a comparison post. The remaining two are acknowledged honestly as not evaluated.
+The platform choices aren't theoretical. DefectDojo (free, self-hosted, strong vulnerability-management bones) handles ingestion from the live Wazuh indexer. RegScale Community Edition (the free tier of a serious OSCAL-native GRC product) receives the assembled SSP and POA&M via OSCAL import. Compliance Trestle handles the OSCAL build steps that sit between them. For context on the commercial side of the space, I wrote a companion post comparing this DIY pipeline against Paramify, which hit its FedRAMP 20x Moderate Authorization milestone in March 2026 and is the most interesting current example of an all-in-one CSP-to-OSCAL commercial workflow. Two other commercial platforms in the ATO-focused GRC space (ServiceNow GRC and Onspring) aren't evaluated here because neither offers a self-hostable tier.
 
 Everything in this post is sourced from the [repo](https://github.com/brianchaplow/homelab-fedramp-low) and its commit history. There's no bin-of-screenshots in place of a working pipeline; everything that looks like data came out of the pipeline.
 
@@ -117,7 +117,7 @@ This isn't speculative. Every security team I've talked to in adjacent communiti
 
 ## What's real, what's notional, what I learned
 
-I want to be transparent about the boundary between real homelab operation and notional compliance theater, because hiring managers deserve to know what they're evaluating.
+I want to be transparent about the boundary between real homelab operation and notional compliance theater, because any serious reader deserves to know what they're evaluating.
 
 | Real | Notional |
 |---|---|
@@ -145,7 +145,7 @@ A few items I want to name explicitly so a reviewer knows I'm not hiding them:
 - **POA&M items from SSP planned controls.** The current pipeline sources POA&M items from DefectDojo findings only. SSP controls marked `Planned` (a gap that the SSP itself identifies) do not currently flow into the POA&M as distinct items. This is a scope boundary, not a bug -- documenting it here rather than pretending otherwise. The Plan 4 ADR 0010 captures it as a deferred item.
 - **FedRAMP Moderate or High baselines.** Out of scope. The whole-project design Section 1.5 lists these explicitly as out of scope.
 - **3PAO assessment simulation, FedRAMP PMO submission, AO approval workflows.** Out of scope (theatrical without adding value). Notional throughout.
-- **Onspring and ServiceNow GRC platform coverage.** Acknowledged for honesty rather than pretended-at. Paramify gets a [full comparison post](02-paramify-vs-diy.md) because the job description specifically named it.
+- **Onspring and ServiceNow GRC platform coverage.** Both are prominent commercial GRC platforms in the ATO-focused space, but neither offers a self-hostable tier, so hands-on evaluation on the homelab wasn't possible. Paramify gets a [full comparison post](02-paramify-vs-diy.md) because it's the most interesting current example of an all-in-one commercial CSP-to-OSCAL workflow in the space.
 
 ## Links and next steps
 
@@ -159,4 +159,4 @@ A few items I want to name explicitly so a reviewer knows I'm not hiding them:
 - **Significant Change Request:** [`significant-changes/SCR-0001-capitol-signals-boundary.md`](../significant-changes/SCR-0001-capitol-signals-boundary.md)
 - **ADR chain:** [`docs/adr/`](../docs/adr/) (0001 through 0010 as of this writing)
 
-If you're hiring for a public-sector ConMon analyst role and you want to talk, reach out via LinkedIn or the email on [brianchaplow.com](https://brianchaplow.com).
+If you want to talk about the build, the RFC-0024 deadline, or how an OSCAL-first pipeline compares to an Excel-first one, reach out via LinkedIn or the contact links on [brianchaplow.com](https://brianchaplow.com).
