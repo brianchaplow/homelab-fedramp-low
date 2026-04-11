@@ -83,17 +83,14 @@ success criteria check from the whole-project design spec Section 1.4.
   architecture diagram, ADR chain pointer. Scrubbed Unicode em dash from
   previous Plan 1 stub per feedback rule.
 
-### Session 4: Application materials + final validation (2026-04-10)
+### Session 4: Final validation (2026-04-10)
 
-- **`application/resume-bullet.md`** with 5-line detailed variant and
-  3-line short variant.
-- **`application/cover-letter-paragraph.md`** with 3-sentence variant,
-  full-paragraph variant, and 1-sentence recruiter blurb.
-- **`application/linkedin-featured.md`** with Featured Project card
-  metadata, announcement post draft, and short-form (Twitter / Threads /
-  BlueSky) version.
 - **This ADR (0011)** capturing Plan 4 completion.
 - **Git tag** `plan-4-complete` on the final commit.
+
+Note: job-application materials (resume bullet, cover letter paragraph,
+LinkedIn copy) were authored during Plan 4 but kept private. They live
+outside this public repo.
 
 ## 10-question success criteria (from whole-project design Section 1.4)
 
@@ -207,12 +204,6 @@ they were out of scope for the portfolio-ready milestone:
 - **Repo:** [github.com/brianchaplow/homelab-fedramp-low](https://github.com/brianchaplow/homelab-fedramp-low)
 - **Main writeup:** `writeups/01-building-fedramp-low-conmon-homelab.md` (3,229 words)
 - **Paramify comparison:** `writeups/02-paramify-vs-diy.md` (1,805 words)
-
-## Application materials location
-
-- `application/resume-bullet.md`
-- `application/cover-letter-paragraph.md`
-- `application/linkedin-featured.md`
 
 ## Application target
 
