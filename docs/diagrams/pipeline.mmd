@@ -1,0 +1,69 @@
+flowchart LR
+    subgraph SOURCES["Data Sources -- live homelab"]
+        WAZUH_API[Wazuh Manager REST API<br/>syscollector for inventory]
+        WAZUH_IDX[Wazuh Indexer OpenSearch<br/>vulnerability state index]
+        OVERLAY[inventory/overlay.yaml<br/>static metadata]
+    end
+
+    subgraph INGEST["Stage 1: Ingest"]
+        ING_INV[pipelines.ingest.inventory<br/>Wazuh agents + overlay]
+        ING_VULN[pipelines.ingest.wazuh_vulns<br/>indexer vuln hits]
+    end
+
+    subgraph PUSH["Stage 2: DefectDojo Push"]
+        PUSH_DD[pipelines.push.defectdojo<br/>per-product engagements<br/>Generic Findings Import]
+        DD[(DefectDojo<br/>SLA clock + dedup)]
+    end
+
+    subgraph BUILD["Stage 3: OSCAL Build"]
+        BUILD_COMP[pipelines.build.oscal_component]
+        BUILD_POAM[pipelines.build.oscal_poam<br/>FedRAMP Low SLA 15/30/90/180]
+        BUILD_SSP[pipelines.build.oscal_ssp<br/>Trestle ssp-assemble]
+    end
+
+    subgraph RENDER["Stage 4: xlsx Render"]
+        REN_IIW[pipelines.render.iiw<br/>FedRAMP Rev 5 IIW template]
+        REN_POAM[pipelines.render.poam<br/>FedRAMP Rev 5 POA&M template]
+    end
+
+    subgraph PUSH_REGSCALE["Stage 5: RegScale Push"]
+        PUSH_RS[pipelines.push.regscale<br/>manual fallback per ADR 0006 D7]
+        RS[(RegScale CE)]
+    end
+
+    subgraph OUTPUTS["Committed Artifacts"]
+        OSCAL_COMP[oscal/component-definition.json]
+        OSCAL_POAM[oscal/poam.json<br/>source of truth]
+        OSCAL_SSP[oscal/ssp.json<br/>156 controls]
+        IIW_XLSX[inventory/IIW-YYYY-MM.xlsx]
+        POAM_XLSX[poam/POAM-YYYY-MM.xlsx]
+    end
+
+    WAZUH_API --> ING_INV
+    OVERLAY --> ING_INV
+    WAZUH_IDX --> ING_VULN
+
+    ING_INV --> BUILD_COMP
+    ING_VULN --> PUSH_DD
+    PUSH_DD --> DD
+    DD --> BUILD_POAM
+
+    BUILD_COMP --> OSCAL_COMP
+    BUILD_POAM --> OSCAL_POAM
+    BUILD_SSP --> OSCAL_SSP
+
+    OSCAL_COMP --> REN_IIW
+    OSCAL_POAM --> REN_POAM
+    REN_IIW --> IIW_XLSX
+    REN_POAM --> POAM_XLSX
+
+    OSCAL_SSP --> PUSH_RS
+    OSCAL_POAM --> PUSH_RS
+    PUSH_RS --> RS
+
+    classDef source fill:#e3f2fd,stroke:#1976d2;
+    classDef stage fill:#f3e5f5,stroke:#7b1fa2;
+    classDef output fill:#e8f5e9,stroke:#388e3c;
+    class WAZUH_API,WAZUH_IDX,OVERLAY source;
+    class INGEST,PUSH,BUILD,RENDER,PUSH_REGSCALE,ING_INV,ING_VULN,PUSH_DD,BUILD_COMP,BUILD_POAM,BUILD_SSP,REN_IIW,REN_POAM,PUSH_RS stage;
+    class OSCAL_COMP,OSCAL_POAM,OSCAL_SSP,IIW_XLSX,POAM_XLSX output;

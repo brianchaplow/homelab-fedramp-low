@@ -1,0 +1,79 @@
+flowchart TD
+    %% MSS Authorization Boundary (notional) -- FedRAMP Low
+    %% Green fill = in boundary. Dashed tan fill = out of boundary.
+
+    %% In-boundary components, grouped by host
+    subgraph BRISKET["brisket 10.10.20.30 -- MSS Core"]
+        WAZUH[Wazuh Manager +<br/>Indexer + Dashboard]
+        SHUFFLE[Shuffle SOAR]
+        VELO[Velociraptor]
+        OPENCTI[OpenCTI v7]
+        MLSCORER[ml-scorer]
+        PROMGRAF[Prometheus + Grafana]
+    end
+
+    subgraph HACCP["haccp 10.10.30.25 -- Log Analytics"]
+        ELK[ELK 8.17]
+        ARKIME[Arkime PCAP]
+        FLEET[Fleet Server]
+    end
+
+    subgraph SMOKE["smokehouse 10.10.20.10 -- Sensors"]
+        SURI[Suricata IDS]
+        ZEEK[Zeek]
+    end
+
+    subgraph DOJO_VM["dojo VM 10.10.30.27"]
+        DEFECTDOJO[DefectDojo]
+    end
+
+    subgraph REGSCALE_VM["regscale VM 10.10.30.28"]
+        REGSCALECE[RegScale CE]
+    end
+
+    OPNSENSE[OPNsense firewall<br/>10.10.10.1 -- inter-VLAN]
+    MOKERLINK[MokerLink switch<br/>10.10.10.2 -- microseg]
+
+    %% Out-of-boundary
+    subgraph CUST["Customer endpoints (out of boundary)"]
+        DC01[DC01 AD DC]
+        WS01[WS01 Win]
+        GCPVM[GCP VM]
+    end
+
+    PITBOSS[PITBOSS operator workstation<br/>10.10.10.100 -- out of boundary]
+
+    subgraph TENANT["Co-tenants (out of boundary -- OR-0001)"]
+        ALGO[AlgoTrader]
+        CAPSIG[Capitol Signals API]
+    end
+
+    PBS[PBS LXC 300<br/>external backup -- CA-3]
+
+    %% In-boundary data flows
+    SURI -->|eve.json| WAZUH
+    ZEEK -->|JSON logs| ELK
+    WAZUH -->|vuln findings| DEFECTDOJO
+    DEFECTDOJO -->|OSCAL import| REGSCALECE
+
+    %% External ingress (customer telemetry)
+    DC01 -.->|Wazuh agent TLS| WAZUH
+    WS01 -.->|Wazuh agent TLS| WAZUH
+    GCPVM -.->|Wazuh over Tailscale| WAZUH
+
+    %% Admin access path
+    PITBOSS -.->|SSH key auth| BRISKET
+    PITBOSS -.->|SSH key auth| HACCP
+
+    %% Co-tenant shared compute (OR-0001)
+    ALGO -.->|cgroup-isolated| BRISKET
+    CAPSIG -.->|cgroup-isolated| BRISKET
+
+    %% External backup
+    BRISKET -.->|backup| PBS
+    HACCP -.->|backup| PBS
+
+    classDef inb fill:#d4f4dd,stroke:#2c5e2e,stroke-width:2px;
+    classDef outb fill:#f4e5d4,stroke:#8b4513,stroke-width:1px,stroke-dasharray: 5 5;
+    class BRISKET,HACCP,SMOKE,DOJO_VM,REGSCALE_VM,WAZUH,SHUFFLE,VELO,OPENCTI,MLSCORER,PROMGRAF,ELK,ARKIME,FLEET,SURI,ZEEK,DEFECTDOJO,REGSCALECE,OPNSENSE,MOKERLINK inb;
+    class CUST,TENANT,DC01,WS01,GCPVM,PITBOSS,ALGO,CAPSIG,PBS outb;
