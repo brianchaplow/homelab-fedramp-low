@@ -1,15 +1,15 @@
 {
   "component-definition": {
-    "uuid": "6702145b-684a-4a7a-b599-40e89f8f0fcb",
+    "uuid": "3a7d5bbe-5c05-4869-96b5-7f52c4e2db23",
     "metadata": {
       "title": "Managed SOC Service",
-      "last-modified": "2026-04-11T00:00:59.756486+00:00",
+      "last-modified": "2026-04-12T17:07:59.250464+00:00",
       "version": "0.1.0",
       "oscal-version": "1.1.2"
     },
     "components": [
       {
-        "uuid": "1337e791-45e9-453f-957b-d0e74a39b0ca",
+        "uuid": "28b18457-9612-44b2-b9bc-6442db6cdca4",
         "type": "hardware",
         "title": "smokehouse",
         "description": "Network IDS Sensors (Suricata + Zeek on VLAN 20)",
@@ -97,12 +97,12 @@
           },
           {
             "name": "comments",
-            "value": "Sensor host \u2014 eth4 SPAN; PBS NFS backup target"
+            "value": "Sensor host -- eth4 SPAN; PBS NFS backup target"
           }
         ]
       },
       {
-        "uuid": "14d15705-cb4f-47d0-9739-0adab50f3024",
+        "uuid": "844323a1-bff2-4398-9d54-59b0dc8efb7a",
         "type": "hardware",
         "title": "haccp",
         "description": "Log Analytics + PCAP (ELK 8.17 + Arkime + Zeek span0)",
@@ -195,7 +195,7 @@
         ]
       },
       {
-        "uuid": "9f2b01c7-17d3-424f-b274-acf1e1e074a1",
+        "uuid": "2a0d9972-9b42-4fa4-bdd8-243e0874b294",
         "type": "hardware",
         "title": "brisket",
         "description": "SIEM Manager (Wazuh + SOAR + DFIR + OpenCTI + ml-scorer)",
@@ -283,12 +283,12 @@
           },
           {
             "name": "comments",
-            "value": "Core SIEM host \u2014 v3 platform per HomeLab-SOC-v3 phases 1-13"
+            "value": "Core SIEM host -- v3 platform per HomeLab-SOC-v3 phases 1-13"
           }
         ]
       },
       {
-        "uuid": "a164c7b4-e26b-44ef-839c-bc8973e3abfb",
+        "uuid": "09dce065-5736-4051-9429-e3c314a92823",
         "type": "software",
         "title": "dojo",
         "description": "Vulnerability Management (DefectDojo 2.57.0)",
@@ -372,12 +372,12 @@
           },
           {
             "name": "comments",
-            "value": "GRC tooling \u2014 DefectDojo. Plan 1 deployment, ADR 0004"
+            "value": "GRC tooling -- DefectDojo. Plan 1 deployment, ADR 0004"
           }
         ]
       },
       {
-        "uuid": "726298e8-454f-4a39-931a-2ae749d52868",
+        "uuid": "498b33c3-1943-436b-86a3-c93efdae0f71",
         "type": "software",
         "title": "regscale",
         "description": "GRC Workflow + OSCAL Ingest (RegScale CE)",
@@ -461,12 +461,12 @@
           },
           {
             "name": "comments",
-            "value": "GRC tooling \u2014 RegScale CE. Plan 1 deployment, ADR 0003"
+            "value": "GRC tooling -- RegScale CE. Plan 1 deployment, ADR 0003"
           }
         ]
       },
       {
-        "uuid": "0d366a77-7086-4181-8a30-778dae944e05",
+        "uuid": "59879c95-101f-42c3-bdd5-06ea05c3d2d2",
         "type": "hardware",
         "title": "opnsense",
         "description": "Boundary firewall (Protectli VP2420, OPNsense 24.x)",
@@ -526,12 +526,12 @@
           },
           {
             "name": "comments",
-            "value": "OPNsense \u2014 boundary protection enforcer; logs shipped via syslog to Wazuh"
+            "value": "OPNsense -- boundary protection enforcer; logs shipped via syslog to Wazuh"
           }
         ]
       },
       {
-        "uuid": "c633139f-7fd4-4bc1-a086-4f1739d68642",
+        "uuid": "5c0961c3-13d4-4229-bc5d-88b8ab6fcef7",
         "type": "network",
         "title": "mokerlink",
         "description": "L2/L3 microsegmentation (10G managed switch)",

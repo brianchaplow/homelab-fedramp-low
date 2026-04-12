@@ -1,89 +1,63 @@
 # POA&M Summary -- May 2026
 
-> The full POA&M is in `POAM-2026-05.xlsx` (13 MB, too large for GitHub's inline renderer). This summary provides the key metrics. Download the xlsx for the complete item-level data.
+> The full POA&M is in `POAM-2026-05.xlsx` (3.0 MB). This summary provides the key metrics. Download the xlsx for the complete item-level data.
 
 ## Totals
 
 | Metric | Count |
 |---|---:|
-| Total POA&M items | 25,416 |
-| Unique CVEs | 1,004 |
-| Unique affected packages | 79 |
+| Total POA&M items | 4,876 |
+| Unique CVEs | 998 |
+| Unique affected packages | ~70 |
 
-## Status Distribution
+## Diff vs April 2026
 
-| Status | Count | Change vs April |
-|---|---:|---:|
-| Open | 25,414 | +8,470 |
-| Completed | 1 | +1 |
-| Deviated | 1 | +1 |
+| Metric | April 2026 | May 2026 | Change |
+|---|---:|---:|---:|
+| Total POA&M items | 16,944 | 4,876 | -12,068 (-71.2%) |
+| Critical | 72 | 20 | -52 (-72.2%) |
+| High | 3,254 | 937 | -2,317 (-71.2%) |
+| Medium | 7,622 | 2,203 | -5,419 (-71.1%) |
+| Low | 5,996 | 1,716 | -4,280 (-71.4%) |
+| Unique CVEs | 1,003 | 998 | -5 |
 
-## State Transitions (April to May)
-
-| Transition | Finding | Detail |
-|---|---|---|
-| Open to Completed | CVE-2026-32249 in Vim | Patched via `apt upgrade` across all in-boundary Ubuntu 24.04 hosts, verified by re-scan |
-| Open to Deviated | Openssl Heap Overflow | Risk-accepted via DefectDojo risk_acceptance endpoint, linked to Deviation Request RA-0001 |
-| New (May only) | CVE-2026-99999 in Libfoo | Synthetic finding created for May cycle demo (see README for staging disclosure) |
-
-All three transitions were staged intentionally before running the May cycle, per ADR 0010. See the [May submission README](README.md) for the full staging disclosure.
+The 71.2% reduction is from real remediation (stale kernel removal + package upgrades) across all four in-boundary Ubuntu hosts on 2026-04-12. See the [submission README](README.md) for the full remediation narrative.
 
 ## Severity Distribution
 
-| Severity | Total Items | Unique CVEs | Change vs April |
-|---|---:|---:|---:|
-| Critical | 108 | 4 | +36 items, +0 CVEs |
-| High | 4,880 | 199 | +1,626 items, +0 CVEs |
-| Medium | 11,434 | 454 | +3,812 items, +1 CVE |
-| Low | 8,994 | 347 | +2,998 items, +0 CVEs |
+| Severity | Total Items |
+|---|---:|
+| Critical | 20 |
+| High | 937 |
+| Medium | 2,203 |
+| Low | 1,716 |
 
-The +8,472 total-item growth is the documented import-scan pile-up (ADR 0007 Risk #2): each monthly run re-imports the full Wazuh indexer hit set into a new engagement. The unique CVE count grew by only 1 (the synthetic finding).
+## Top 10 Affected Packages
 
-## Top 20 Affected Packages
+| Items | Package |
+|---:|---|
+| 2,694 | linux-image-6.8.0-107-generic (running kernel on haccp, dojo, regscale) |
+| 898 | linux-image-6.17.0-19-generic (running kernel on brisket) |
+| 898 | linux-image-6.17.0-20-generic (pending kernel on brisket) |
+| 34 | Qemu-Guest-Agent |
+| 16 | Busybox-Static |
+| 16 | Busybox-Initramfs |
+| 11 | Openssl-Fips-Provider-Latest |
+| 11 | Openssl-Libs |
+| 10 | Amd64-Microcode |
+| 8 | Libelf1t64 |
 
-| Items | Severity | Package |
-|---:|---|---|
-| 10,776 | Low | linux-image-6.8.0-107-generic |
-| 8,082 | High | linux-image-6.8.0-106-generic |
-| 2,694 | High | linux-image-6.17.0-19-generic |
-| 2,694 | High | linux-image-6.17.0-20-generic |
-| 102 | Medium | Qemu-Guest-Agent |
-| 48 | Medium | Busybox-Static |
-| 48 | Medium | Busybox-Initramfs |
-| 33 | High | Openssl-Fips-Provider-Latest |
-| 33 | High | Openssl-Libs |
-| 30 | Medium | Amd64-Microcode |
-| 24 | Medium | Libelf1t64 |
-| 24 | Medium | Libde265-0 |
-| 24 | Medium | Libavahi-Common-Data |
-| 24 | Medium | Libavahi-Client3 |
-| 24 | Medium | Libdw1t64 |
-| 24 | High | Patch |
-| 24 | Medium | libxslt1.1 |
-| 24 | Medium | Libavahi-Common3 |
-| 24 | High | Libarchive13t64 |
-| 18 | Medium | Libctf-Nobfd0 |
+91.7% of remaining items (4,490 of 4,876) are in linux kernel image packages that require a kernel upgrade + reboot or upstream Ubuntu security patches to close.
 
-**Note:** 95.4% of all items (24,246 of 25,416) are in four linux kernel image packages. Two of these (`6.8.0-106`, `6.8.0-107`) are stale kernels no longer booted by any in-boundary host. Removing them via `apt autoremove` would eliminate approximately 18,858 items (74.3%) as legitimate remediations.
+## Remediation Summary
 
-## Critical CVEs (4 unique)
-
-| CVE | Package Context |
-|---|---|
-| CVE-2021-3773 | linux kernel images |
-| CVE-2025-68263 | linux kernel images |
-| CVE-2026-23112 | linux kernel images |
-| CVE-2026-23240 | linux kernel images |
-
-All four Critical CVEs affect linux kernel image packages only.
-
-## Remediation Priorities
-
-1. **Remove stale kernel packages** (`6.8.0-106`, `6.8.0-107`) via `apt autoremove` on all in-boundary hosts. Estimated impact: ~18,858 items closed (74.3%).
-2. **Patch non-kernel packages** (Qemu-Guest-Agent, Busybox, OpenSSL, Patch, libde265, libxslt, libarchive) via `apt upgrade`. Estimated impact: ~500+ items.
-3. **Evaluate current-kernel CVEs** (`6.17.0-19`, `6.17.0-20`) for available Ubuntu security patches. If patched upstream, a kernel upgrade + reboot closes ~5,388 items.
-4. **File additional DRs** for kernel CVEs with no upstream patch available (OR or FP category depending on root cause).
+| Action | Items Eliminated | Detail |
+|---|---:|---|
+| Removed linux-image-6.8.0-106-generic | ~8,082 | Was stale on haccp, dojo, regscale (not booted) |
+| Removed linux-image-6.8.0-107-generic from brisket | ~3,592 | Was stale on brisket (HWE kernel 6.17.0 is active) |
+| Package upgrades (apt upgrade) | ~394 | apparmor, Docker CE, fwupd, systemd, filebeat, etc. |
+| **Total eliminated** | **~12,068** | **71.2% of April baseline** |
 
 ## Data Source
 
-Generated from `oscal/mss-poam-2026-05.json` by the `pipelines.sh conmon` pipeline. Findings sourced from the Wazuh Indexer vulnerability state index via DefectDojo Generic Findings Import.
+Generated from `oscal/mss-poam-2026-05.json` by the `pipelines.sh conmon` pipeline on 2026-04-12. Findings sourced from the Wazuh Indexer vulnerability state index. DefectDojo was cleared of all prior engagements before this run to eliminate import-scan pile-up.
