@@ -5,7 +5,32 @@
 > OSCAL-native, aligned with FedRAMP RFC-0024's September 30, 2026 machine-readable
 > authorization package mandate.
 
-**Authorization Boundary:** Five in-boundary hosts (brisket, haccp, smokehouse, dojo VM, regscale VM) plus OPNsense firewall and MokerLink switch provide the Managed SOC Service. Customer endpoints (DC01, WS01, GCP VM), the operator workstation, co-tenant workloads (OR-0001), and external backup are all explicitly out of boundary. The test is not hosting location; it is whether the asset *is* the service or *consumes* it.
+## Host reference
+
+The homelab uses descriptive hostnames. This table maps them for readers encountering them for the first time.
+
+**In boundary (the Managed SOC Service):**
+
+| Hostname | IP | Role | What it runs |
+|---|---|---|---|
+| **brisket** | 10.10.20.30 | MSS Core | Wazuh SIEM (15 agents), Shuffle SOAR, Velociraptor DFIR, OpenCTI threat intel, ML scorer, Prometheus + Grafana |
+| **haccp** | 10.10.30.25 | Log Analytics | ELK 8.17 (Elasticsearch + Kibana + Fleet), Arkime full-PCAP, Logstash enrichment pipeline, Zeek on SPAN port |
+| **smokehouse** | 10.10.20.10 | Network Sensors | Suricata IDS, Zeek (eth4 SPAN), Fluent Bit log shipping. QNAP NAS appliance. |
+| **dojo** | 10.10.30.27 | GRC Tooling | DefectDojo 2.57 (vulnerability management, FedRAMP Low SLA clocks) |
+| **regscale** | 10.10.30.28 | GRC Tooling | RegScale Community Edition (OSCAL import, SSP and POA&M reporting UI) |
+| OPNsense | 10.10.10.1 | Firewall | Inter-VLAN routing, boundary protection (SC-7) |
+| MokerLink | 10.10.10.2 | Switch | L3 managed 10G switch, microsegmentation, SPAN mirror sessions |
+
+**Out of boundary (consumes or interacts with the service, not part of it):**
+
+| Asset | Why out of boundary |
+|---|---|
+| DC01, WS01, GCP VM | Customer endpoints: monitored by the service, not components of it |
+| PITBOSS (10.10.10.100) | Operator workstation: admin access path, not a service component |
+| AlgoTrader, Capitol Signals API | Co-tenant workloads on brisket: shared compute documented in OR-0001 |
+| PBS LXC 300 | External backup target: inter-system data flow documented under CA-3 |
+
+The boundary test is not hosting location. It is whether the asset *is* the monitoring service or *consumes* it. The GCP VM and DC01 are identical under that test, even though one runs in Google Cloud and the other runs in the rack.
 
 ## What this is
 
@@ -28,7 +53,7 @@ POA&M items, no hand-edited xlsx, no theatrical 3PAO reports.
 |---|---|
 | The homelab SOC infrastructure (brisket, haccp, smokehouse, dojo, regscale) | The "MSS" commercial offering |
 | Live Wazuh / ELK / Suricata / Zeek / OpenCTI scans and findings | The CSP business relationship |
-| The 25,416 POA&M items and their state transitions in DefectDojo | The 3PAO assessment and AO approval |
+| The 4,876 POA&M items (post-remediation) and the 71% April-to-May reduction | The 3PAO assessment and AO approval |
 | The OSCAL SSP / POA&M / IIW pipeline and its Trestle schema validation | The FedRAMP PMO submission workflow |
 | The shared-tenancy compliance gap and OR-0001 DR (found during SSP authoring) | The annual authorization cycle |
 

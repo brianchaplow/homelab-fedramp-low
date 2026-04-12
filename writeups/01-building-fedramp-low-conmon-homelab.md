@@ -30,7 +30,62 @@ The pipeline turns live homelab data -- the Wazuh Manager REST API, the Wazuh In
 
 The whole thing runs as `./pipelines.sh conmon` and is reproducible from any commit. The Plan 2 work (pipeline foundation, 130 tests) and Plan 3 work (156-control SSP authoring, 6 new `verify-family.py` tests, Gate 4 validation) were done before this writeup was drafted; the April and May 2026 ConMon cycles are Plan 4 output.
 
-![Authorization boundary diagram](../docs/diagrams/rendered/boundary.png)
+### The service: what runs where
+
+```mermaid
+flowchart LR
+    subgraph brisket["brisket (MSS Core)"]
+        W[Wazuh SIEM]
+        SH[Shuffle SOAR]
+        V[Velociraptor]
+        OC[OpenCTI]
+    end
+    subgraph haccp["haccp (Log Analytics)"]
+        ELK[ELK 8.17]
+        ARK[Arkime PCAP]
+    end
+    subgraph smoke["smokehouse (Sensors)"]
+        SUR[Suricata IDS]
+        ZK[Zeek]
+    end
+    smoke -->|eve.json + JSON logs| brisket
+    smoke -->|Zeek JSON| haccp
+```
+
+### The boundary: in vs out
+
+```mermaid
+flowchart TD
+    subgraph IN["In Boundary (the service)"]
+        B[brisket -- SIEM + SOAR + DFIR]
+        H[haccp -- ELK + PCAP]
+        S[smokehouse -- IDS + Zeek]
+        D[dojo -- DefectDojo]
+        R[regscale -- RegScale CE]
+    end
+    subgraph OUT["Out of Boundary (consumes the service)"]
+        DC[DC01 / WS01 / GCP VM -- customer endpoints]
+        P[PITBOSS -- operator workstation]
+        T[AlgoTrader + Capitol Signals -- co-tenants, OR-0001]
+        PBS[PBS LXC 300 -- external backup, CA-3]
+    end
+    DC -.->|Wazuh agent TLS| B
+    P -.->|SSH admin| B
+    T -.->|cgroup-isolated on brisket| B
+    B -.->|backup| PBS
+```
+
+### The compliance pipeline: scans to OSCAL
+
+```mermaid
+flowchart LR
+    WI[Wazuh Indexer] --> ING[Python ingest]
+    ING --> DD[DefectDojo -- SLA clocks]
+    DD --> BUILD[Trestle -- OSCAL build]
+    BUILD --> OSCAL[SSP + POA&M JSON]
+    OSCAL --> XLSX[FedRAMP Rev 5 xlsx]
+    OSCAL --> RS[RegScale CE import]
+```
 
 ## The authorization boundary -- and what most homelab portfolios get wrong
 
@@ -73,19 +128,21 @@ The single most-impressive artifact in this entire portfolio is the **April -> M
 
 **May 2026 submission** (`conmon-submissions/2026-05/`):
 
-- 25,416 POA&M items total (+8,472 from April)
-- **25,414 Open + 1 Completed + 1 Deviated** -- three intentional state transitions visible in the OSCAL output via the `poam-state` prop
+- **4,876 POA&M items** (down from 16,944 in April, a **71.2% reduction**)
+- 20 Critical, 937 High, 2,203 Medium, 1,716 Low
+- 998 unique CVEs (5 fully eliminated via package upgrades)
 - One Significant Change Request submitted: SCR-0001 proposing to add Capitol Signals API to the authorization boundary
 
-The three state transitions are honest: I staged them in DefectDojo before running the May cycle, per the plan's ADR 0010 scope decision. Specifically:
+The reduction is real remediation, not dashboard clicks. On April 12, 2026, the operator:
 
-1. **Closed via remediation:** finding id=5 (`CVE-2026-32249 in Vim`) was marked `is_mitigated=True, active=False` via the DefectDojo API. The OSCAL POA&M builder picks this up through its `_finding_state` function and emits `poam-state: Completed`.
-2. **Newly deviated:** finding id=2 (`Openssl Heap Overflow`) was risk-accepted via the `/api/v2/risk_acceptance/` endpoint (not by PATCHing the finding directly -- that was a real debugging detour worth noting). The emitted state is `Deviated` and the DR reference ties back to RA-0001.
-3. **New finding introduced:** finding id=16945 (`CVE-2026-99999 in Libfoo on brisket -- synthetic May cycle demo`) was created with `date=2026-04-25` to represent a new vulnerability discovered between cycles.
+1. **Removed stale kernel packages** from all four in-boundary Ubuntu hosts. Brisket had `linux-image-6.8.0-107-generic` (stale; the HWE kernel `6.17.0-19` is the active boot path). Haccp, dojo, and regscale each had `linux-image-6.8.0-106-generic` (stale; running kernel is `6.8.0-107`). These packages were never booted but carried thousands of CVE findings each.
+2. **Ran `apt upgrade`** across all four hosts, patching apparmor, Docker CE, fwupd, systemd, linux-firmware, filebeat, and others.
+3. **Restarted Wazuh agents** to force immediate syscollector re-inventory. The vulnerability detector re-evaluated within 5 minutes.
+4. **Cleared DefectDojo** of prior pile-up engagements and re-ran the May pipeline against the post-remediation Wazuh Indexer state.
 
-**Key discipline:** a POA&M item is closed when the **next scan confirms** the finding is gone, not when the operator clicks "fixed". This is the verify-before-close rule that separates ticket management from actual ConMon. A reviewer who probes *"how do you know a POA&M is really closed?"* gets the answer: *"the next scan shows the finding absent; if it re-appears we re-open with a regression note."*
+The Wazuh Indexer confirmed: 0 findings for `linux-image-6.8.0-106-generic` post-remediation. That is the verify-before-close discipline in action: the **next scan** shows the finding absent, not the operator marking it fixed in a dashboard.
 
-The +8,472 net growth in total items is **not** new CVE discoveries between cycles. It's the documented import-scan pile-up (captured as a risk in ADR 0007 Risk #2): each monthly run creates a new `ConMon YYYY-MM` engagement per product and re-imports the full Wazuh Indexer hit set into that engagement. DefectDojo's native dedup prevents duplicate findings *within* an engagement but does not dedup *across* engagements. I investigated the `reimport-scan` endpoint as an alternative during May staging; it handles within-engagement reimport but not cross-engagement. The documented workaround is to keep a single rolling engagement per product, which is a structural pipeline change deferred to the next ConMon milestone. The May submission README calls this out explicitly -- the three intentional transitions are the narrative signal, not the volume growth.
+**Key discipline:** a POA&M item is closed when the **next scan confirms** the finding is gone. This is the verify-before-close rule that separates ticket management from actual ConMon. A reviewer who probes *"how do you know a POA&M is really closed?"* gets the answer: *"the Wazuh Indexer shows the package is no longer installed on the host; the finding is absent from the re-scan."*
 
 ## Deviation Requests: the FedRAMP-specific vocabulary
 
@@ -123,12 +180,12 @@ I want to be transparent about the boundary between real homelab operation and n
 |---|---|
 | The homelab SOC infrastructure (brisket, haccp, smokehouse, and the new dojo + regscale VMs) | The "Managed SOC Service" commercial offering |
 | The Wazuh / ELK / Suricata / Zeek / OpenCTI scans and findings | The CSP business relationship with a federal customer |
-| The 25,416 POA&M items and their live state transitions in DefectDojo | The 3PAO assessment and AO approval signatures |
+| The 4,876 POA&M items (post-remediation) and the 71% reduction from April | The 3PAO assessment and AO approval signatures |
 | The OSCAL SSP / POA&M / IIW generation pipeline and its Trestle schema validation | The FedRAMP PMO submission workflow |
 | The shared-tenancy compliance gap and OR-0001 DR (found during SSP authoring) | The annual authorization cycle |
-| The three state transitions in the May cycle (mitigated, deviated, new finding) | The **triggering events** -- they were staged, not organic |
+| The April-to-May remediation (stale kernels removed, packages patched, re-scanned) | The Managed SOC Service commercial customer relationship |
 
-The staging of the May transitions is worth dwelling on. The plan's ADR 0010 explicitly decided to stage them so the April -> May diff is controlled and narratively clean, and the May submission README documents this openly. A real CSP's May diff would look similar in shape but would have organic rather than staged transitions. I chose transparency over theatrical-ops because a reviewer who discovers undocumented staging loses trust in everything else; a reviewer who sees the staging called out explicitly in the README gains trust.
+The April-to-May reduction is real. Stale kernel packages were removed from every in-boundary Ubuntu host, non-kernel packages were patched, Wazuh agents re-scanned, and the pipeline re-ran against the post-remediation Wazuh Indexer state. The 71% reduction comes from packages that are genuinely no longer installed, verified by the absence of findings in the Wazuh Indexer rather than by marking items closed in DefectDojo.
 
 Three things I learned that I'm fairly sure I couldn't have learned by reading alone:
 
