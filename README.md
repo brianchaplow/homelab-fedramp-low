@@ -5,7 +5,7 @@
 > OSCAL-native, aligned with FedRAMP RFC-0024's September 30, 2026 machine-readable
 > authorization package mandate.
 
-![System boundary diagram](docs/diagrams/rendered/boundary.png)
+**Authorization Boundary:** Five in-boundary hosts (brisket, haccp, smokehouse, dojo VM, regscale VM) plus OPNsense firewall and MokerLink switch provide the Managed SOC Service. Customer endpoints (DC01, WS01, GCP VM), the operator workstation, co-tenant workloads (OR-0001), and external backup are all explicitly out of boundary. The test is not hosting location; it is whether the asset *is* the service or *consumes* it.
 
 ## What this is
 
@@ -94,7 +94,7 @@ If you're a **technical reviewer**:
 - [Building a FedRAMP Low ConMon Program in a Homelab](writeups/01-building-fedramp-low-conmon-homelab.md) (main build narrative, ~12 min read)
 - [Paramify vs. DIY: What a Few Hundred Lines of Python Replicates from a Commercial GRC Platform](writeups/02-paramify-vs-diy.md) (comparison post, ~7 min read)
 
-Both posts are (or will be) cross-posted on:
+Both posts are cross-posted on:
 
 - [brianchaplow.com](https://brianchaplow.com)
 - [bytesbourbonbbq.com](https://bytesbourbonbbq.com)
@@ -124,7 +124,7 @@ The project was built across four sequential plans:
 | Plan 1 | Done (2026-04-08) | Infrastructure: DefectDojo + RegScale CE VMs, Wazuh agents 016/017, PBS backup integration |
 | Plan 2 | Done (2026-04-09) | OSCAL pipelines: Trestle + Python + 130 tests, 5 OSCAL artifacts from live homelab data |
 | Plan 3 | Done (2026-04-10) | SSP authoring: 156 controls across 18 families, zero REPLACE_ME, 6 new verify-family.py tests |
-| Plan 4 | In progress (2026-04-10) | ConMon cycles + DRs + SCR + writeups + portfolio polish (this README is the polish step) |
+| Plan 4 | Done (2026-04-10) | ConMon cycles + DRs + SCR + writeups + portfolio polish |
 
 Each plan's completion is captured in an ADR in [`docs/adr/`](docs/adr/). ADR 0010 is
 the pre-execution realignment for Plan 4, documenting the scope decisions that shaped
@@ -132,7 +132,7 @@ the final output.
 
 ## Pipelines at a glance
 
-![OSCAL pipeline architecture](docs/diagrams/rendered/pipeline.png)
+**Five stages:** Wazuh Indexer vulnerability state plus Wazuh Manager REST API inventory feed into a Python ingest stage. Findings push to DefectDojo (SLA clocks, dedup, per-product engagements). OSCAL build via Compliance Trestle produces the canonical JSON artifacts (component-definition, 156-control SSP, POA&M). An xlsx render stage projects into official FedRAMP Rev 5 IIW and POA&M templates. RegScale CE receives the SSP and POA&M via OSCAL import.
 
 **Core principle** (from the design spec Section 5.1): OSCAL is the source of truth;
 xlsx and markdown are projections. Every artifact is generated, never hand-edited.
