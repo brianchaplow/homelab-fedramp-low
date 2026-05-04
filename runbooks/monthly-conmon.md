@@ -92,6 +92,44 @@ ssh root@10.10.30.21 "pct exec 300 -- bash -c 'for vm in 100 101 200 201 301; do
 
 Expected: five `ok: vm <id>` lines. Any `STALE:` line is a fault.
 
+## Weekly apt sweep (between manual ConMon cycles)
+
+A wrapper script + cron entry runs `apt-get update && apt-get upgrade && systemctl restart wazuh-agent` every Sunday 04:00 host-local on each in-boundary Ubuntu host (brisket, haccp, dojo VM, regscale VM). This picks up Canonical noble-security and noble-updates patches as they ship, so the FedRAMP Low POA&M residual decays organically between manual ConMon cycles instead of accumulating into a single large patch event the day before submission.
+
+**Scope of the sweep:**
+
+- Runs `apt-get -y -o Dpkg::Options::=--force-confold upgrade` (does NOT touch held packages such as `docker-ce`, `docker-ce-cli`, `containerd.io` -- those follow a separate, slower cadence).
+- Restarts `wazuh-agent` after the upgrade so the vuln-state index re-evaluates the new package versions within ~5 minutes.
+- Logs to `/var/log/conmon-apt-sweep.log` with weekly logrotate (12-week retention).
+- Wrapper-script pattern (NOT inline cron chain) per `memory/feedback_cron_chain_log_swallow.md` -- a chain like `cd && source && cmd >> log` silently swallows output when any preceding step fails. The redirect on the wrapper invocation captures every line including unexpected stderr.
+
+**Files in repo:**
+
+- `runbooks/conmon-apt-sweep.sh` -- canonical wrapper (deployed to `/usr/local/sbin/` on each host)
+- `runbooks/conmon-apt-sweep.cron` -- cron entry (deployed to `/etc/cron.d/conmon-apt-sweep`)
+- `runbooks/conmon-apt-sweep.logrotate` -- logrotate config (deployed to `/etc/logrotate.d/conmon-apt-sweep`)
+
+**Verification each Monday morning:**
+
+```bash
+for host in brisket haccp; do
+  ssh bchaplow@$host 'sudo tail -3 /var/log/conmon-apt-sweep.log'
+done
+ssh root@10.10.30.20 "qm guest exec 201 --timeout 30 -- bash -c 'tail -3 /var/log/conmon-apt-sweep.log'"
+ssh root@10.10.30.21 "qm guest exec 301 --timeout 30 -- bash -c 'tail -3 /var/log/conmon-apt-sweep.log'"
+```
+
+Expected: each host's last log line is `=== <ISO timestamp> conmon-apt-sweep END on <host> ===`. A missing END marker means the sweep aborted partway -- inspect the full log and run manually as root.
+
+**Manual run (off-schedule):**
+
+```bash
+# bare metal:
+ssh bchaplow@<host> "sudo /usr/local/sbin/conmon-apt-sweep.sh && sudo tail -30 /var/log/conmon-apt-sweep.log"
+# VMs:
+ssh root@<hypervisor> "qm guest exec <vmid> --timeout 600 -- bash -c '/usr/local/sbin/conmon-apt-sweep.sh && tail -30 /var/log/conmon-apt-sweep.log'"
+```
+
 ## Backup verification (monthly)
 
 Once per month during the ConMon cycle, also confirm the full snapshot

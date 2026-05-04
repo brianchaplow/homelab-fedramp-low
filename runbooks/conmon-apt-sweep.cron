@@ -1,0 +1,5 @@
+# /etc/cron.d/conmon-apt-sweep
+# Weekly apt sweep for FedRAMP Low ConMon -- picks up noble-security
+# patches between manual ConMon cycles. Sunday 0400 host-local.
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+0 4 * * 0 root /usr/local/sbin/conmon-apt-sweep.sh
