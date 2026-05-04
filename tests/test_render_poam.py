@@ -120,17 +120,36 @@ def test_render_poam_severity_medium_becomes_moderate(
 
 
 @pytest.mark.skipif(not TEMPLATE.exists(), reason="POA&M template missing")
-def test_render_poam_false_positive_flag(sample_poam: Path, tmp_path: Path) -> None:
-    """poam-state 'False Positive' sets the False Positive column to 'Yes'."""
+def test_render_poam_excludes_dr_adjudicated_items(
+    sample_poam: Path, tmp_path: Path
+) -> None:
+    """Items in DR-adjudicated states (False Positive / Risk Accepted /
+    Closed / Operational Requirement) are excluded from the 'Open POA&M
+    Items' sheet so the active count auditors see does not include
+    items that have already been documented as out-of-scope.
+
+    Behavior change as of FP-0002 / FP-0003 / OR-0002 (2026-05-04). The
+    sample fixture contains 3 items: one Open, one Open (Medium ->
+    Moderate severity test), and one False Positive. After this change
+    the False Positive item should not appear at all on the Open sheet,
+    and the row at POAM_DATA_START_ROW + 2 should be untouched (None).
+
+    The full count of items including DR-adjudicated ones still lives
+    in oscal/poam.json for audit traceability.
+    """
     out = tmp_path / "poam.xlsx"
     render_poam_from_oscal(sample_poam, TEMPLATE, out)
     ws = load_workbook(out)[POAM_SHEET_NAME]
-    row3 = POAM_DATA_START_ROW + 2  # false-positive finding
-    assert ws.cell(row=row3, column=COLUMN_MAP["false-positive"]).value == "Yes"
+    # First Open item lands at POAM_DATA_START_ROW with FP column = "No"
     assert (
         ws.cell(row=POAM_DATA_START_ROW, column=COLUMN_MAP["false-positive"]).value
         == "No"
     )
+    # Third item (the False Positive in the fixture) is excluded from
+    # the Open sheet entirely -- the cell is empty / None.
+    row3 = POAM_DATA_START_ROW + 2
+    assert ws.cell(row=row3, column=COLUMN_MAP["title"]).value is None
+    assert ws.cell(row=row3, column=COLUMN_MAP["false-positive"]).value is None
 
 
 @pytest.mark.skipif(not TEMPLATE.exists(), reason="POA&M template missing")
