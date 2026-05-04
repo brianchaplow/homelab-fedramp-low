@@ -1,15 +1,15 @@
 {
   "component-definition": {
-    "uuid": "d4a70681-3f44-43b7-a86e-9d41d5e1be4d",
+    "uuid": "b8609ee6-f402-4082-8681-262b67b043f6",
     "metadata": {
       "title": "Managed SOC Service",
-      "last-modified": "2026-05-04T16:24:06.034122+00:00",
+      "last-modified": "2026-05-04T16:50:13.500284+00:00",
       "version": "0.1.0",
       "oscal-version": "1.1.2"
     },
     "components": [
       {
-        "uuid": "34323792-8505-4522-89c6-bf94f414e182",
+        "uuid": "1a680e0a-fac4-4c34-af05-d3f5db6a7c87",
         "type": "hardware",
         "title": "smokehouse",
         "description": "Network IDS Sensors (Suricata + Zeek on VLAN 20)",
@@ -102,7 +102,7 @@
         ]
       },
       {
-        "uuid": "c175682b-837f-49db-a6c5-6089ab220ff0",
+        "uuid": "e7cba150-6fac-423b-b4ec-564c5b52c484",
         "type": "hardware",
         "title": "haccp",
         "description": "Log Analytics + PCAP (ELK 8.17 + Arkime + Zeek span0)",
@@ -195,7 +195,7 @@
         ]
       },
       {
-        "uuid": "12021bfa-bfe2-432d-8796-bfc498e9f15e",
+        "uuid": "07c94cdc-e50c-475e-824a-6ed6b6b3265b",
         "type": "hardware",
         "title": "brisket",
         "description": "SIEM Manager (Wazuh + SOAR + DFIR + OpenCTI + ml-scorer)",
@@ -288,7 +288,7 @@
         ]
       },
       {
-        "uuid": "a90314ac-78f5-44fd-8409-99f11b4ce92c",
+        "uuid": "aa8203d0-a428-4b6c-ac09-4fa1c64e7cd2",
         "type": "software",
         "title": "dojo",
         "description": "Vulnerability Management (DefectDojo 2.57.0)",
@@ -377,7 +377,7 @@
         ]
       },
       {
-        "uuid": "76fea1e9-24d2-48db-a3e0-7b007b6799f9",
+        "uuid": "62cdacb2-ad10-48a3-a67e-17db68525a09",
         "type": "software",
         "title": "regscale",
         "description": "GRC Workflow + OSCAL Ingest (RegScale CE)",
@@ -466,7 +466,7 @@
         ]
       },
       {
-        "uuid": "fdfbcd37-99dc-46d9-9e16-8916b1949d66",
+        "uuid": "ac655047-e7b9-4215-9a70-5c3156644a68",
         "type": "hardware",
         "title": "opnsense",
         "description": "Boundary firewall (Protectli VP2420, OPNsense 24.x)",
@@ -531,7 +531,7 @@
         ]
       },
       {
-        "uuid": "5476ce7e-fe27-4d75-b548-710b23743a22",
+        "uuid": "079cd3af-645f-4250-ae30-0bb43fc411d7",
         "type": "network",
         "title": "mokerlink",
         "description": "L2/L3 microsegmentation (10G managed switch)",

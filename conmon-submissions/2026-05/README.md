@@ -12,20 +12,20 @@
 
 - `POAM-2026-05.xlsx` -- FedRAMP Rev 5 POA&M, Open Items sheet contains 3,796 active items
 - `IIW-2026-05.xlsx` -- FedRAMP Rev 5 Integrated Inventory Workbook (7 components)
-- `oscal/mss-poam-2026-05.json` -- machine-readable POA&M (4,143 total items including DR-adjudicated)
+- `oscal/mss-poam-2026-05.json` -- machine-readable POA&M (4,131 total items including DR-adjudicated)
 - `oscal/mss-component-def-2026-05.json` -- machine-readable inventory
 - `scan-evidence/` -- raw Wazuh indexer vulnerability query responses
 
 ## Status snapshot
 
-**Open POA&M items this cycle:** 3,772 (down from April baseline of 16,944, -77.7%)
+**Open POA&M items this cycle:** 3,760 (down from April baseline of 16,944, -77.8%)
 
 **Severity distribution (Open only):**
 
 - Critical: 56
-- High: 944
-- Medium: 1,684
-- Low: 1,088
+- High: 940
+- Medium: 1,678
+- Low: 1,086
 
 **DR-adjudicated (excluded from Open sheet, retained in OSCAL JSON):**
 
@@ -37,16 +37,16 @@
 
 | Metric | April 2026 | May 2026 (Open) | Change |
 |---|---:|---:|---:|
-| Total POA&M items | 16,944 | 3,772 | -13,172 (-77.7%) |
+| Total POA&M items | 16,944 | 3,760 | -13,184 (-77.8%) |
 | Critical | 72 | 56 | -16 (-22.2%) |
-| High | 3,254 | 944 | -2,310 (-71.0%) |
-| Medium | 7,622 | 1,684 | -5,938 (-77.9%) |
-| Low | 5,996 | 1,088 | -4,908 (-81.9%) |
-| Unique CVEs | 1,003 | ~950 | ~ -53 |
+| High | 3,254 | 940 | -2,314 (-71.1%) |
+| Medium | 7,622 | 1,678 | -5,944 (-78.0%) |
+| Low | 5,996 | 1,086 | -4,910 (-81.9%) |
+| Unique CVEs | 1,003 | ~945 | ~ -58 |
 
 ### What drove the reduction
 
-**Four remediation passes plus DR adjudication:**
+**Five remediation passes plus DR adjudication:**
 
 1. **2026-04-12 pass.** Removed stale `linux-image-6.8.0-106-generic` from haccp/dojo/regscale and stale `linux-image-6.8.0-107-generic` from brisket. Brought 16,944 → 4,876 (-71.2%).
 
@@ -56,27 +56,29 @@
 
 4. **2026-05-04 dead-weight package purge.** Removed `telnet` + `inetutils-telnet` from all four hosts. Both are insecure-by-design CLI clients with zero legitimate use on these systems, and all 8 corresponding Wazuh findings were rated High severity. Real remediation, not risk-acceptance. 4,151 → 4,143 (-8 items).
 
-5. **2026-05-04 DR adjudication pass.** Three deviation requests filed and applied via `runbooks/apply-deviation-requests.py`:
+5. **2026-05-04 Wazuh manager + smokehouse agent bump (4.14.4 → 4.14.5).** Brisket Wazuh manager + indexer + dashboard recreated at v4.14.5 (compose pull + up -d; ~60s containerized service blip; persistent volumes preserved manager configuration, indexer data, dashboard saved objects). Smokehouse Wazuh agent container also recreated at v4.14.5 with identity preserved via `client.keys` persistence to the bind mount. The 4.14.5 image refreshed openssl-fips-provider-latest + openssl-libs in the smokehouse Wazuh container's Amazon Linux 2 base, closing 12 items (smokehouse 29 → 17). haccp + brisket Wazuh agent binaries already at 4.14.5 (Wazuh's own apt repo updated them ahead of the manager bump during today's earlier package upgrade work). 4,143 → 4,131 (-12 items).
+
+6. **2026-05-04 DR adjudication pass.** Three deviation requests filed and applied via `runbooks/apply-deviation-requests.py`:
 
    - **FP-0002 -- Package Installed But Code Path Unreachable.** 43 items: amd64-microcode (20, hard-required by HWE meta but never loaded on Intel CPUs), libde265-0 (8, HEVC decoder with no media path on these hosts), libavahi-client3 + libavahi-common3 + libavahi-common-data (15 on brisket, no avahi-daemon installed so the libraries are dead code on disk).
    - **FP-0003 -- qemu-guest-agent: hypervisor-side CVEs against guest-only binary.** 24 items: every CVE Wazuh flags against `qemu-guest-agent` lives in QEMU hypervisor code paths (`hw/ahci`, `hw/pci`, `hw/ide`, `hw/sd`, virtio devices, megasas, eepro100, 9pfs). The vulnerable binary is `qemu-system-x86_64`, which is NOT installed on dojo or regscale; only the guest-side `qemu-ga` daemon is. Class-based FP with a 90-day review window so future qemu-ga-specific CVEs get evaluated.
    - **OR-0002 -- Admin-Only Trusted-Input Tooling.** 304 items across 11 package classes: binutils suite (160), vim suite (40), busybox (32), libarchive13t64 (16), libelf+libdw (16), libxslt (8), patch (8), tar (8), git+git-man (8), rsync (4), wget (4). All admin-invoked or trusted-input only; no daemon ingests untrusted input.
 
-   The DR-adjudicated 371 items remain in `oscal/mss-poam-2026-05.json` for audit traceability with `poam-state` set to "Risk Accepted" or "False Positive" and `deviation-request` props pointing at the DR ID. The renderer (`pipelines/render/poam.py`) skips them from the "Open POA&M Items" sheet so the active count auditors see in the xlsx is 3,772.
+   The DR-adjudicated 371 items remain in `oscal/mss-poam-2026-05.json` for audit traceability with `poam-state` set to "Risk Accepted" or "False Positive" and `deviation-request` props pointing at the DR ID. The renderer (`pipelines/render/poam.py`) skips them from the "Open POA&M Items" sheet so the active count auditors see in the xlsx is 3,760.
 
-6. **Wazuh agent restart.** All four in-boundary Ubuntu agents and the smokehouse agent restarted to force syscollector re-inventory after each remediation pass. Vulnerability detector re-evaluated within ~5 minutes per cycle; Wazuh state aggregation confirmed 4,143 in-boundary documents before the final conmon pipeline ran.
+7. **Wazuh agent restart.** All four in-boundary Ubuntu agents and the smokehouse agent restarted to force syscollector re-inventory after each remediation pass. Vulnerability detector re-evaluated within ~5 minutes per cycle; Wazuh state aggregation confirmed 4,131 in-boundary documents before the final conmon pipeline ran.
 
 The reductions are real: every flipped item has documented compensating controls; the 371 DR items will close naturally when Canonical ships fixes (the weekly `runbooks/conmon-apt-sweep.sh` cron picks them up automatically). No findings were closed by marking them in DefectDojo without justification.
 
-### Remaining Open findings (3,772)
+### Remaining Open findings (3,760)
 
-- **linux-image-6.17.0-23-generic** (3,556 items, 94.3% of Open): the running HWE kernel on all four in-boundary Ubuntu hosts. Awaiting Canonical 6.17.0-24+ HWE security update plus coordinated reboot. Not actionable until upstream patches land.
-- **Smokehouse Wazuh agent base image** (29 items): openssl-fips-provider-latest, openssl-libs, python3, python3-libs, curl-minimal, libcurl-minimal, libnghttp2 -- all inside the Wazuh agent 4.14.4 container's Amazon Linux 2 base. Closes when we coordinate a Wazuh manager + agent bump to 4.14.5+.
+- **linux-image-6.17.0-23-generic** (3,556 items, 94.6% of Open): the running HWE kernel on all four in-boundary Ubuntu hosts. Awaiting Canonical 6.17.0-24+ HWE security update plus coordinated reboot. Not actionable until upstream patches land.
+- **Smokehouse Wazuh agent 4.14.5 base image** (17 items): python3 (8), python3-libs (8), libnghttp2 (1) -- inside the Wazuh agent 4.14.5 container's Amazon Linux 2 base. Closes when Wazuh publishes a 4.14.6 image with refreshed base packages.
 - **Misc Ubuntu base packages** (~187 items): libc6 + libc-bin + locales (36), util-linux suite (36), python3.12 + libpython3.12-* (24), polkit suite (12), curl-minimal + libcurl-minimal (12), snapd, dpkg, libicu74, libcairo2, libgcrypt20, login, passwd, libdebuginfod, libnghttp2, libtasn1, expat, gnupg2-minimal, etc. Will close as Canonical ships fixes via the weekly apt sweep.
 
 ### Smokehouse note
 
-Smokehouse (10.10.20.10) is a QNAP TVS-871 NAS running QTS 5.2.9 build 20260327. **This is the latest QTS firmware available for the TVS-X71 series**; verified against `update.qnap.com/QTS_FW_5.2.0.xml` on 2026-05-04. QNAP has not released a 5.3, 5.4, or 6.0 firmware branch for noble-equivalent. The 29 remaining smokehouse findings are inside the Wazuh agent container, not in QTS, and are tracked under the Wazuh agent residual above.
+Smokehouse (10.10.20.10) is a QNAP TVS-871 NAS running QTS 5.2.9 build 20260327. **This is the latest QTS firmware available for the TVS-X71 series**; verified against `update.qnap.com/QTS_FW_5.2.0.xml` on 2026-05-04. QNAP has not released a 5.3, 5.4, or 6.0 firmware branch for noble-equivalent. The 17 remaining smokehouse findings are inside the Wazuh agent 4.14.5 container, not in QTS, and are tracked under the Wazuh agent residual above.
 
 ## Process improvements landed this cycle
 

@@ -1,11 +1,11 @@
 {
   "agent": "smokehouse",
-  "query_iso": "2026-05-04T16:24Z",
-  "total": 29,
+  "query_iso": "2026-05-04T16:50Z",
+  "total": 17,
   "by_severity": {
-    "Medium": 18,
-    "High": 7,
-    "Low": 4
+    "Medium": 12,
+    "High": 3,
+    "Low": 2
   },
   "sample_hits": [
     {
