@@ -1,11 +1,11 @@
 {
   "agent": "dojo",
-  "query_iso": "2026-05-04T15:13Z",
-  "total": 983,
+  "query_iso": "2026-05-04T16:24Z",
+  "total": 981,
   "by_severity": {
     "Medium": 446,
     "-": 263,
-    "High": 240,
+    "High": 238,
     "Low": 19,
     "Critical": 15
   },

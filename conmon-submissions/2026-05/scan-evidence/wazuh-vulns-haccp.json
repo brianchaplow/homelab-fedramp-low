@@ -1,11 +1,11 @@
 {
   "agent": "haccp",
-  "query_iso": "2026-05-04T15:13Z",
-  "total": 1062,
+  "query_iso": "2026-05-04T16:24Z",
+  "total": 1060,
   "by_severity": {
     "Medium": 508,
     "-": 264,
-    "High": 245,
+    "High": 243,
     "Low": 30,
     "Critical": 15
   },

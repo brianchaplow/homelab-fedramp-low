@@ -1,11 +1,11 @@
 {
   "agent": "brisket",
-  "query_iso": "2026-05-04T15:13Z",
-  "total": 1094,
+  "query_iso": "2026-05-04T16:24Z",
+  "total": 1092,
   "by_severity": {
     "Medium": 531,
     "-": 265,
-    "High": 248,
+    "High": 246,
     "Low": 35,
     "Critical": 15
   },

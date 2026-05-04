@@ -26,8 +26,12 @@ Specifically:
 | `libxslt1.1` (XSLT processor) | 8 | brisket, haccp, dojo, regscale | CVEs require admin-controlled XSLT input. No service on these hosts processes externally-supplied XSLT. |
 | `busybox-static`, `busybox-initramfs` | 32 | brisket, haccp, dojo, regscale | The static busybox is invoked only inside the initramfs during early boot, before any network is up. No runtime invocation of busybox commands on untrusted input. |
 | `libarchive13t64` | 16 (incl. 4 Critical) | brisket, haccp, dojo, regscale | Used by `dpkg`, `apt`, `tar`, `bsdtar` to extract Ubuntu-signed package archives from `archive.ubuntu.com` and `security.ubuntu.com`. Apt validates GPG signatures before invoking libarchive. Trusted-input path. |
+| `tar` | 8 | brisket, haccp, dojo, regscale | Same threat model as `libarchive13t64` -- archive extraction utility used by apt/dpkg on signed input and by the admin on trusted backups. No daemon invokes tar on attacker-controlled tarballs. |
+| `rsync` | 4 | brisket, haccp, dojo, regscale | File-copy utility invoked by the admin during backup or replication tasks. No `rsyncd` daemon listens on these hosts (`ss -tlnp | grep :873` returns nothing). All rsync invocations are operator-initiated against operator-controlled endpoints. |
+| `wget` | 4 | brisket, haccp, dojo, regscale | Admin-only HTTP fetcher. Used in occasional setup scripts and ad-hoc downloads from operator-trusted URLs. CVEs typically require crafted server response or HTML link processing; no automation invokes wget on attacker-controlled URLs. |
+| `git`, `git-man` | 8 | brisket, haccp, dojo, regscale | Admin-only source-control client. Repos cloned are operator-controlled (homelab-fedramp-low, brisket-setup, etc.). No CI worker pulls untrusted submodules on these hosts. |
 
-Total covered: **280 items**.
+Total covered: **304 items**.
 
 ## Finding summary
 

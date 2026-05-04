@@ -10,66 +10,68 @@
 
 ## Contents
 
-- `POAM-2026-05.xlsx` -- FedRAMP Rev 5 POA&M, Open Items sheet contains 3,843 active items
+- `POAM-2026-05.xlsx` -- FedRAMP Rev 5 POA&M, Open Items sheet contains 3,796 active items
 - `IIW-2026-05.xlsx` -- FedRAMP Rev 5 Integrated Inventory Workbook (7 components)
-- `oscal/mss-poam-2026-05.json` -- machine-readable POA&M (4,151 total items including DR-adjudicated)
+- `oscal/mss-poam-2026-05.json` -- machine-readable POA&M (4,143 total items including DR-adjudicated)
 - `oscal/mss-component-def-2026-05.json` -- machine-readable inventory
 - `scan-evidence/` -- raw Wazuh indexer vulnerability query responses
 
 ## Status snapshot
 
-**Open POA&M items this cycle:** 3,843 (down from April baseline of 16,944, -77.3%)
+**Open POA&M items this cycle:** 3,796 (down from April baseline of 16,944, -77.6%)
 
 **Severity distribution (Open only):**
 
 - Critical: 56
-- High: 966
-- Medium: 1,723
+- High: 946
+- Medium: 1,696
 - Low: 1,098
 
 **DR-adjudicated (excluded from Open sheet, retained in OSCAL JSON):**
 
-- Risk Accepted via OR-0002: 280 items
-- False Positive via FP-0002: 28 items
+- Risk Accepted via OR-0002: 304 items
+- False Positive via FP-0002: 43 items
 
 ## Diff vs April 2026
 
 | Metric | April 2026 | May 2026 (Open) | Change |
 |---|---:|---:|---:|
-| Total POA&M items | 16,944 | 3,843 | -13,101 (-77.3%) |
+| Total POA&M items | 16,944 | 3,796 | -13,148 (-77.6%) |
 | Critical | 72 | 56 | -16 (-22.2%) |
-| High | 3,254 | 966 | -2,288 (-70.3%) |
-| Medium | 7,622 | 1,723 | -5,899 (-77.4%) |
+| High | 3,254 | 946 | -2,308 (-70.9%) |
+| Medium | 7,622 | 1,696 | -5,926 (-77.7%) |
 | Low | 5,996 | 1,098 | -4,898 (-81.7%) |
-| Unique CVEs | 1,003 | 960 | -43 |
+| Unique CVEs | 1,003 | ~950 | ~ -53 |
 
 ### What drove the reduction
 
-**Three remediation passes plus DR adjudication:**
+**Four remediation passes plus DR adjudication:**
 
 1. **2026-04-12 pass.** Removed stale `linux-image-6.8.0-106-generic` from haccp/dojo/regscale and stale `linux-image-6.8.0-107-generic` from brisket. Brought 16,944 → 4,876 (-71.2%).
 
-2. **2026-05-04 morning pass.** All four in-boundary Ubuntu hosts upgraded to `linux-image-6.17.0-23-generic` during the CVE-2026-31431 "Copy Fail" sweep on 2026-05-03. Today's morning pass purged the predecessor 6.17.0-22 kernels (4 hosts × 889 = 3,556 findings dropped), the older 6.17.0-20 kernel still on haccp (889 findings), and orphaned NVIDIA driver packages on haccp + brisket. apt-get upgrade also picked up curl/libcurl/iproute2 security patches on dojo + regscale. 4,876 → 4,195 (-14.0%).
+2. **2026-05-04 kernel autoremove pass.** All four in-boundary Ubuntu hosts upgraded to `linux-image-6.17.0-23-generic` during the CVE-2026-31431 "Copy Fail" sweep on 2026-05-03. Purged the predecessor 6.17.0-22 kernels (4 hosts × 889 = 3,556 findings dropped), the older 6.17.0-20 kernel still on haccp (889 findings), and orphaned NVIDIA driver packages on haccp + brisket. apt-get upgrade also picked up curl/libcurl/iproute2 security patches on dojo + regscale. 4,876 → 4,195 (-14.0%).
 
-3. **2026-05-04 mid-morning Wazuh agent pass.** Upgraded the smokehouse Wazuh agent Docker container from `wazuh/wazuh-agent:4.14.2` → `4.14.4` (matching the brisket Wazuh manager). Identity preserved (agent ID 006) by persisting `client.keys` to the bind mount before recreating the container. The 4.14.4 image has refreshed Amazon Linux 2 base packages (openssl, python3, curl, libxml2, libcap), which closed 44 of the 73 smokehouse findings. 4,195 → 4,151 (-1.0%).
+3. **2026-05-04 Wazuh agent pass.** Upgraded the smokehouse Wazuh agent Docker container from `wazuh/wazuh-agent:4.14.2` → `4.14.4` (matching the brisket Wazuh manager). Identity preserved (agent ID 006) by persisting `client.keys` to the bind mount before recreating the container. The 4.14.4 image has refreshed Amazon Linux 2 base packages (openssl, python3, curl, libxml2, libcap), which closed 44 of the 73 smokehouse findings. 4,195 → 4,151 (-1.0%).
 
-4. **2026-05-04 DR adjudication pass.** Two new deviation requests filed and applied via `runbooks/apply-deviation-requests.py`:
+4. **2026-05-04 dead-weight package purge.** Removed `telnet` + `inetutils-telnet` from all four hosts. Both are insecure-by-design CLI clients with zero legitimate use on these systems, and all 8 corresponding Wazuh findings were rated High severity. Real remediation, not risk-acceptance. 4,151 → 4,143 (-8 items).
 
-   - **FP-0002 -- Package Installed But Code Path Unreachable.** 28 items: amd64-microcode (20, hard-required by HWE meta but never loaded on Intel CPUs) + libde265-0 (8, HEVC decoder with no media path on these hosts).
-   - **OR-0002 -- Admin-Only Trusted-Input Tooling.** 280 items across 7 package classes: binutils suite (160), vim suite (40), busybox (32), libarchive13t64 (16), libelf+libdw (16), libxslt (8), patch (8). All admin-invoked or trusted-input only; no daemon ingests untrusted input.
+5. **2026-05-04 DR adjudication pass.** Two deviation requests filed and applied via `runbooks/apply-deviation-requests.py`:
 
-   The DR-adjudicated 308 items remain in `oscal/mss-poam-2026-05.json` for audit traceability with `poam-state` set to "Risk Accepted" or "False Positive" and `deviation-request` props pointing at the DR ID. The renderer (`pipelines/render/poam.py`) skips them from the "Open POA&M Items" sheet so the active count auditors see in the xlsx is 3,843.
+   - **FP-0002 -- Package Installed But Code Path Unreachable.** 43 items: amd64-microcode (20, hard-required by HWE meta but never loaded on Intel CPUs), libde265-0 (8, HEVC decoder with no media path on these hosts), libavahi-client3 + libavahi-common3 + libavahi-common-data (15 on brisket, no avahi-daemon installed so the libraries are dead code on disk).
+   - **OR-0002 -- Admin-Only Trusted-Input Tooling.** 304 items across 11 package classes: binutils suite (160), vim suite (40), busybox (32), libarchive13t64 (16), libelf+libdw (16), libxslt (8), patch (8), tar (8), git+git-man (8), rsync (4), wget (4). All admin-invoked or trusted-input only; no daemon ingests untrusted input.
 
-5. **Wazuh agent restart.** All four in-boundary Ubuntu agents and the smokehouse agent restarted to force syscollector re-inventory. Vulnerability detector re-evaluated within ~5 minutes; Wazuh state aggregation confirmed 4,151 in-boundary documents before the conmon pipeline ran.
+   The DR-adjudicated 347 items remain in `oscal/mss-poam-2026-05.json` for audit traceability with `poam-state` set to "Risk Accepted" or "False Positive" and `deviation-request` props pointing at the DR ID. The renderer (`pipelines/render/poam.py`) skips them from the "Open POA&M Items" sheet so the active count auditors see in the xlsx is 3,796.
 
-The reductions are real: every flipped item has documented compensating controls; the 308 DR items will close naturally when Canonical ships fixes (the weekly `runbooks/conmon-apt-sweep.sh` cron picks them up automatically). No findings were closed by marking them in DefectDojo without justification.
+6. **Wazuh agent restart.** All four in-boundary Ubuntu agents and the smokehouse agent restarted to force syscollector re-inventory after each remediation pass. Vulnerability detector re-evaluated within ~5 minutes per cycle; Wazuh state aggregation confirmed 4,143 in-boundary documents before the final conmon pipeline ran.
 
-### Remaining Open findings (3,843)
+The reductions are real: every flipped item has documented compensating controls; the 347 DR items will close naturally when Canonical ships fixes (the weekly `runbooks/conmon-apt-sweep.sh` cron picks them up automatically). No findings were closed by marking them in DefectDojo without justification.
 
-- **linux-image-6.17.0-23-generic** (3,556 items, 92.5% of Open): the running HWE kernel on all four in-boundary Ubuntu hosts. Awaiting Canonical 6.17.0-24+ HWE security update plus coordinated reboot. Not actionable until upstream patches land.
+### Remaining Open findings (3,796)
+
+- **linux-image-6.17.0-23-generic** (3,556 items, 93.7% of Open): the running HWE kernel on all four in-boundary Ubuntu hosts. Awaiting Canonical 6.17.0-24+ HWE security update plus coordinated reboot. Not actionable until upstream patches land.
 - **Smokehouse Wazuh agent base image** (29 items): openssl-fips-provider-latest, openssl-libs, python3, python3-libs, curl-minimal, libcurl-minimal, libnghttp2 -- all inside the Wazuh agent 4.14.4 container's Amazon Linux 2 base. Closes when we coordinate a Wazuh manager + agent bump to 4.14.5+.
-- **Qemu-Guest-Agent** (24 items): present on dojo, regscale, brisket. Mixed CVEs -- many are QEMU host-side (the hypervisor), not guest agent. Candidates for next DR if upstream patch latency persists.
-- **Misc Ubuntu base packages** (~234 items): libc6 + libc-bin + locales (36), libavahi-* (15), bsdutils + bsdextrautils + cpio (12), curl-minimal + libcurl-minimal (12), libnghttp2, libtasn1, expat, gnupg2-minimal, etc. Will close as Canonical ships fixes via the weekly apt sweep.
+- **Qemu-Guest-Agent** (24 items, dojo + regscale): mixed CVEs -- many are QEMU host-side (the hypervisor), not guest agent. Candidates for a future Risk-Adjustment DR.
+- **Misc Ubuntu base packages** (~187 items): libc6 + libc-bin + locales (36), util-linux suite (36), python3.12 + libpython3.12-* (24), polkit suite (12), curl-minimal + libcurl-minimal (12), snapd, dpkg, libicu74, libcairo2, libgcrypt20, login, passwd, libdebuginfod, libnghttp2, libtasn1, expat, gnupg2-minimal, etc. Will close as Canonical ships fixes via the weekly apt sweep.
 
 ### Smokehouse note
 
@@ -85,6 +87,6 @@ Smokehouse (10.10.20.10) is a QNAP TVS-871 NAS running QTS 5.2.9 build 20260327.
 
 ## Data source
 
-All findings sourced from the Wazuh Indexer vulnerability state index via the `pipelines.sh conmon` pipeline on 2026-05-04. DefectDojo was cleared of all prior engagements before this run to eliminate the import-scan pile-up documented in ADR 0007. After ingest, the deviation-request applier flipped 308 items to FP/RA states. The April submission artifacts in this repo are preserved as the historical baseline; only the May artifacts reflect the post-remediation, post-DR state.
+All findings sourced from the Wazuh Indexer vulnerability state index via the `pipelines.sh conmon` pipeline on 2026-05-04. DefectDojo was cleared of all prior engagements before this run to eliminate the import-scan pile-up documented in ADR 0007. After ingest, the deviation-request applier flipped 347 items to FP/RA states. The April submission artifacts in this repo are preserved as the historical baseline; only the May artifacts reflect the post-remediation, post-DR state.
 
 DefectDojo and RegScale CE were brought up only for the duration of this run (per the standard "stop between FedRAMP demos" posture) and shut down after the cycle completed and artifacts landed.

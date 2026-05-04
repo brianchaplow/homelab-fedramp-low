@@ -21,8 +21,9 @@ Specifically:
 |---|---:|---|---|
 | `amd64-microcode` | 20 | brisket, haccp, dojo, regscale | All four in-boundary hosts run Intel CPUs (Ultra 9 285, i7-10700T, virtualized Intel). The package is required as a hard dependency of `linux-image-generic-hwe-24.04` (alongside `intel-microcode`) but the AMD microcode loader is gated on AMD CPU detection and is never invoked. |
 | `libde265-0` | 8 | brisket, haccp | HEVC video decoder library. Installed as a transitive dependency of GTK/libheif but never linked to a live media-decoding code path on these hosts (no video playback, no image-conversion service). |
+| `libavahi-client3`, `libavahi-common3`, `libavahi-common-data` | 15 | brisket | mDNS/Bonjour service-discovery libraries. Pulled in transitively by `libcups2t64` (which is itself a transitive dep of `libgtk-3-0t64`). Critically, **the `avahi-daemon` package is NOT installed on brisket** (`systemctl status avahi-daemon` returns "Unit avahi-daemon.service could not be found"). The CVEs in libavahi-* are exploitable only via the running daemon's mDNS network surface; with no daemon installed, the libraries are dead code on disk. |
 
-Total covered: **28 items**.
+Total covered: **43 items**.
 
 ## Finding summary
 
@@ -49,6 +50,23 @@ The package cannot be removed without breaking the `linux-image-generic-hwe-24.0
 ### libde265-0
 
 `lsof | grep libde265` returns no results on brisket or haccp. The library is pulled in transitively by GTK / libheif / libgdk-pixbuf2 dependencies that exist for desktop session support but are not invoked by any service in the SOC stack (Wazuh, Logstash, ES, Kibana, Arkime, Zeek, Suricata, OpenCTI, Shuffle do not decode HEVC).
+
+### libavahi-client3, libavahi-common3, libavahi-common-data
+
+The `avahi-daemon` package is NOT installed on brisket; verified 2026-05-04:
+
+```
+$ systemctl status avahi-daemon --no-pager
+Unit avahi-daemon.service could not be found.
+$ systemctl is-enabled avahi-daemon
+not-found
+```
+
+The libavahi-* libraries are present only as transitive dependencies via the chain `libavahi-* <- libcups2t64 <- libgtk-3-0t64`. CUPS itself has no print queues configured and no `cupsd` service running on brisket. GTK3 was installed at imaging time as a side-effect of debugging tooling (gnome-keyring-utils, ghostscript-x).
+
+Avahi CVEs are uniformly exploitable only via the mDNS daemon's UDP/5353 network surface. Without `avahi-daemon` installed, no process listens on that port, and the libavahi client APIs are never invoked. `ss -tulnp | grep 5353` returns no listeners.
+
+A future hardening pass could remove libgtk-3-0t64 (and the avahi/cups chain with it) to actually purge the libraries; for now the FP disposition reflects the reachability state.
 
 ## Compensating controls cited
 

@@ -40,10 +40,13 @@ DR_RULES: list[dict[str, Any]] = [
     {
         "dr_id": "FP-0002",
         "state": "False Positive",
-        "rationale": "Package installed but code path unreachable on Intel-only fleet / no media path. See deviation-requests/FP-0002-package-installed-but-unreachable.md.",
+        "rationale": "Package installed but code path unreachable on Intel-only fleet / no media path / no avahi-daemon. See deviation-requests/FP-0002-package-installed-but-unreachable.md.",
         "packages": [
             "amd64-microcode",
             "libde265-0",
+            "libavahi-client3",
+            "libavahi-common3",
+            "libavahi-common-data",
         ],
     },
     {
@@ -71,6 +74,11 @@ DR_RULES: list[dict[str, Any]] = [
             "busybox-static",
             "busybox-initramfs",
             "libarchive13t64",
+            "tar",
+            "rsync",
+            "wget",
+            "git",
+            "git-man",
         ],
     },
 ]
