@@ -1,15 +1,15 @@
 {
   "component-definition": {
-    "uuid": "3a7d5bbe-5c05-4869-96b5-7f52c4e2db23",
+    "uuid": "be0a4950-635e-4ed9-ac80-18b5e9c94b63",
     "metadata": {
       "title": "Managed SOC Service",
-      "last-modified": "2026-04-12T17:07:59.250464+00:00",
+      "last-modified": "2026-05-04T13:48:31.807388+00:00",
       "version": "0.1.0",
       "oscal-version": "1.1.2"
     },
     "components": [
       {
-        "uuid": "28b18457-9612-44b2-b9bc-6442db6cdca4",
+        "uuid": "d1d559a7-8c27-4570-9721-03df6265c017",
         "type": "hardware",
         "title": "smokehouse",
         "description": "Network IDS Sensors (Suricata + Zeek on VLAN 20)",
@@ -102,7 +102,7 @@
         ]
       },
       {
-        "uuid": "844323a1-bff2-4398-9d54-59b0dc8efb7a",
+        "uuid": "0af0d5a2-f76a-4ac2-81cf-bed767ff6f3d",
         "type": "hardware",
         "title": "haccp",
         "description": "Log Analytics + PCAP (ELK 8.17 + Arkime + Zeek span0)",
@@ -154,7 +154,7 @@
           },
           {
             "name": "patch-level",
-            "value": "6.8.0-107-generic"
+            "value": "6.17.0-23-generic"
           },
           {
             "name": "hardware-model",
@@ -195,7 +195,7 @@
         ]
       },
       {
-        "uuid": "2a0d9972-9b42-4fa4-bdd8-243e0874b294",
+        "uuid": "d2978953-d408-4a1e-ad51-36b6d1dd249e",
         "type": "hardware",
         "title": "brisket",
         "description": "SIEM Manager (Wazuh + SOAR + DFIR + OpenCTI + ml-scorer)",
@@ -247,7 +247,7 @@
           },
           {
             "name": "patch-level",
-            "value": "6.17.0-19-generic"
+            "value": "6.17.0-23-generic"
           },
           {
             "name": "hardware-model",
@@ -288,7 +288,7 @@
         ]
       },
       {
-        "uuid": "09dce065-5736-4051-9429-e3c314a92823",
+        "uuid": "a3673e34-ebc1-46c0-a39f-0306f5f3b51d",
         "type": "software",
         "title": "dojo",
         "description": "Vulnerability Management (DefectDojo 2.57.0)",
@@ -340,7 +340,7 @@
           },
           {
             "name": "patch-level",
-            "value": "6.8.0-107-generic"
+            "value": "6.17.0-23-generic"
           },
           {
             "name": "hardware-model",
@@ -377,7 +377,7 @@
         ]
       },
       {
-        "uuid": "498b33c3-1943-436b-86a3-c93efdae0f71",
+        "uuid": "bd2d4789-3b15-4e21-ac10-e4406fc78721",
         "type": "software",
         "title": "regscale",
         "description": "GRC Workflow + OSCAL Ingest (RegScale CE)",
@@ -429,7 +429,7 @@
           },
           {
             "name": "patch-level",
-            "value": "6.8.0-107-generic"
+            "value": "6.17.0-23-generic"
           },
           {
             "name": "hardware-model",
@@ -466,7 +466,7 @@
         ]
       },
       {
-        "uuid": "59879c95-101f-42c3-bdd5-06ea05c3d2d2",
+        "uuid": "92cf4df4-6c50-48cb-886f-0b0221067c2c",
         "type": "hardware",
         "title": "opnsense",
         "description": "Boundary firewall (Protectli VP2420, OPNsense 24.x)",
@@ -531,7 +531,7 @@
         ]
       },
       {
-        "uuid": "5c0961c3-13d4-4229-bc5d-88b8ab6fcef7",
+        "uuid": "c8c96e05-9119-430e-a9f0-8c7a1835c97f",
         "type": "network",
         "title": "mokerlink",
         "description": "L2/L3 microsegmentation (10G managed switch)",
