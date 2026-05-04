@@ -1,6 +1,6 @@
 {
   "agent": "haccp",
-  "query_iso": "2026-05-04T13:50Z",
+  "query_iso": "2026-05-04T15:13Z",
   "total": 1062,
   "by_severity": {
     "Medium": 508,
@@ -24,7 +24,7 @@
         "host": {
           "os": {
             "full": "Ubuntu 24.04.4 LTS (Noble Numbat)",
-            "kernel": "6.17.0-20-generic",
+            "kernel": "6.17.0-23-generic",
             "name": "Ubuntu",
             "platform": "ubuntu",
             "type": "ubuntu",
@@ -43,7 +43,7 @@
           "category": "Packages",
           "classification": "-",
           "description": "A vulnerability has been found in GNU elfutils 0.192 and classified ascritical. This vulnerability affects the function __libdw_thread_tail inthe library libdw_alloc.c of the component eu-readelf. The manipulation ofthe argument w leads to memory corruption. The attack can be initiatedremotely. The complexity of an attack is rather high. The exploitationappears to be difficult. The exploit has been disclosed to the public andmay be used. The name of the patch is2636426a091bd6c6f7f02e49ab20d4cdc6bfc753. It is recommended to apply apatch to fix this issue.",
-          "detected_at": "2026-04-30T20:42:28.654Z",
+          "detected_at": "2026-05-04T15:09:37.635Z",
           "enumeration": "CVE",
           "id": "CVE-2025-1352",
           "published_at": "2025-02-16T15:15:09Z",
@@ -71,7 +71,7 @@
         }
       },
       "sort": [
-        1777581748654,
+        1777907377635,
         "014_02fb20bce425c7444b8aeac00ccf941836574a10_CVE-2025-1352_3171406"
       ]
     },
@@ -89,7 +89,7 @@
         "host": {
           "os": {
             "full": "Ubuntu 24.04.4 LTS (Noble Numbat)",
-            "kernel": "6.17.0-20-generic",
+            "kernel": "6.17.0-23-generic",
             "name": "Ubuntu",
             "platform": "ubuntu",
             "type": "ubuntu",
@@ -108,7 +108,7 @@
           "category": "Packages",
           "classification": "-",
           "description": "A vulnerability classified as problematic was found in GNU elfutils 0.192.This vulnerability affects the function elf_strptr in the library/libelf/elf_strptr.c of the component eu-strip. The manipulation leads todenial of service. It is possible to launch the attack on the local host.The complexity of an attack is rather high. The exploitation appears to bedifficult. The exploit has been disclosed to the public and may be used.The name of the patch is b16f441cca0a4841050e3215a9f120a6d8aea918. It isrecommended to apply a patch to fix this issue.",
-          "detected_at": "2026-04-30T20:42:28.654Z",
+          "detected_at": "2026-05-04T15:09:37.635Z",
           "enumeration": "CVE",
           "id": "CVE-2025-1376",
           "published_at": "2025-02-17T05:15:09Z",
@@ -136,7 +136,7 @@
         }
       },
       "sort": [
-        1777581748654,
+        1777907377635,
         "014_02fb20bce425c7444b8aeac00ccf941836574a10_CVE-2025-1376_3039679"
       ]
     },
@@ -154,7 +154,7 @@
         "host": {
           "os": {
             "full": "Ubuntu 24.04.4 LTS (Noble Numbat)",
-            "kernel": "6.17.0-20-generic",
+            "kernel": "6.17.0-23-generic",
             "name": "Ubuntu",
             "platform": "ubuntu",
             "type": "ubuntu",
@@ -173,7 +173,7 @@
           "category": "Packages",
           "classification": "-",
           "description": "The iconv() function in the GNU C Library versions 2.43 and earlier maycrash due to an assertion failure when converting inputs from the IBM1390or IBM1399 character sets, which may be used to remotely crash anapplication.This vulnerability can be trivially mitigated by removing the IBM1390 andIBM1399 character sets from systems that do not need them.",
-          "detected_at": "2026-04-30T20:42:28.655Z",
+          "detected_at": "2026-05-04T15:09:37.636Z",
           "enumeration": "CVE",
           "id": "CVE-2026-4046",
           "published_at": "2026-03-30T18:16:19Z",
@@ -201,7 +201,7 @@
         }
       },
       "sort": [
-        1777581748655,
+        1777907377636,
         "014_05bf9e1e46382a0b3bec38228a5015a8d3add26f_CVE-2026-4046_3310093"
       ]
     },
@@ -219,7 +219,7 @@
         "host": {
           "os": {
             "full": "Ubuntu 24.04.4 LTS (Noble Numbat)",
-            "kernel": "6.17.0-20-generic",
+            "kernel": "6.17.0-23-generic",
             "name": "Ubuntu",
             "platform": "ubuntu",
             "type": "ubuntu",
@@ -238,7 +238,7 @@
           "category": "Packages",
           "classification": "-",
           "description": "Calling gethostbyaddr or gethostbyaddr_r with a configured nsswitch.confthat specifies the library's DNS backend in the GNU C Library version 2.34to version 2.43 could, with a crafted response from the configured DNSserver, result in a violation of the DNS specification that causes theapplication to treat a non-answer section of the DNS response as a validanswer.",
-          "detected_at": "2026-04-30T20:42:28.655Z",
+          "detected_at": "2026-05-04T15:09:37.636Z",
           "enumeration": "CVE",
           "id": "CVE-2026-4437",
           "published_at": "2026-03-20T20:16:49Z",
@@ -266,7 +266,7 @@
         }
       },
       "sort": [
-        1777581748655,
+        1777907377636,
         "014_05bf9e1e46382a0b3bec38228a5015a8d3add26f_CVE-2026-4437_3306725"
       ]
     },
@@ -284,7 +284,7 @@
         "host": {
           "os": {
             "full": "Ubuntu 24.04.4 LTS (Noble Numbat)",
-            "kernel": "6.17.0-20-generic",
+            "kernel": "6.17.0-23-generic",
             "name": "Ubuntu",
             "platform": "ubuntu",
             "type": "ubuntu",
@@ -303,7 +303,7 @@
           "category": "Packages",
           "classification": "-",
           "description": "Calling gethostbyaddr or gethostbyaddr_r with a configured nsswitch.confthat specifies the library's DNS backend in the GNU C library version 2.34to version 2.43 could result in an invalid DNS hostname being returned tothe caller in violation of the DNS specification.",
-          "detected_at": "2026-04-30T20:42:28.655Z",
+          "detected_at": "2026-05-04T15:09:37.636Z",
           "enumeration": "CVE",
           "id": "CVE-2026-4438",
           "published_at": "2026-03-20T20:16:49Z",
@@ -331,7 +331,7 @@
         }
       },
       "sort": [
-        1777581748655,
+        1777907377636,
         "014_05bf9e1e46382a0b3bec38228a5015a8d3add26f_CVE-2026-4438_3306726"
       ]
     }

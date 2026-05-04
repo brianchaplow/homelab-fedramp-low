@@ -38,6 +38,20 @@ logger = get_logger(__name__)
 
 POAM_SHEET_NAME: str = "Open POA&M Items"
 
+# poam-state values that should NOT appear on the "Open POA&M Items"
+# sheet. Items in these states have been adjudicated via Deviation
+# Request and remain in the OSCAL POA&M JSON for audit traceability,
+# but they are excluded from the active count auditors see in the
+# headline xlsx. The full list of states lives in the FedRAMP
+# OSCAL Rev 5 enum: Open, In Remediation, Risk Accepted, False
+# Positive, Closed, Operational Requirement.
+EXCLUDED_FROM_OPEN_SHEET: frozenset[str] = frozenset({
+    "Risk Accepted",
+    "False Positive",
+    "Closed",
+    "Operational Requirement",
+})
+
 # Data rows begin at row 8 in the Rev 5 template:
 #   row 1-4: document header / CSP metadata rows
 #   row 5:   column headers (POAM ID, Controls, Weakness Name, ...)
@@ -127,8 +141,9 @@ def render_poam_from_oscal(
         )
     ws = wb[POAM_SHEET_NAME]
 
-    for index, item in enumerate(items):
-        row = POAM_DATA_START_ROW + index
+    row_index = 0
+    excluded = 0
+    for item in items:
         props = _props_to_dict(item.get("props", []))
 
         weakness_id = props.get("weakness-id", "")
@@ -137,12 +152,22 @@ def render_poam_from_oscal(
         fedramp_severity = _fedramp_severity(severity)
         is_false_positive = poam_state == "False Positive"
 
+        # Items adjudicated via DR (Risk Accepted / False Positive /
+        # Closed / Operational Requirement) stay in the OSCAL JSON for
+        # audit traceability but are excluded from the headline xlsx.
+        if poam_state in EXCLUDED_FROM_OPEN_SHEET:
+            excluded += 1
+            continue
+
+        row = POAM_DATA_START_ROW + row_index
+        row_index += 1
+
         def cell(name: str, value: Any) -> None:
             if value not in (None, ""):
                 ws.cell(row=row, column=COLUMN_MAP[name], value=value)
 
         # POAM ID: prefix the weakness id to disambiguate from other sources
-        cell("poam-id", f"MSS-{weakness_id}" if weakness_id else f"MSS-{index+1}")
+        cell("poam-id", f"MSS-{weakness_id}" if weakness_id else f"MSS-{row_index}")
         cell("controls", props.get("related-controls", ""))
         cell("title", item.get("title", ""))
         cell("description", item.get("description", ""))
@@ -161,8 +186,9 @@ def render_poam_from_oscal(
     output_path.parent.mkdir(parents=True, exist_ok=True)
     wb.save(output_path)
     logger.info(
-        "wrote POA&M xlsx with %d items starting at row %d -> %s",
-        len(items),
+        "wrote POA&M xlsx with %d open items (%d excluded by DR) starting at row %d -> %s",
+        row_index,
+        excluded,
         POAM_DATA_START_ROW,
         output_path,
     )

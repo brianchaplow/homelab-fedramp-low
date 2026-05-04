@@ -1,11 +1,11 @@
 {
   "agent": "smokehouse",
-  "query_iso": "2026-05-04T13:50Z",
-  "total": 73,
+  "query_iso": "2026-05-04T15:13Z",
+  "total": 29,
   "by_severity": {
-    "Medium": 43,
-    "High": 18,
-    "Low": 12
+    "Medium": 18,
+    "High": 7,
+    "Low": 4
   },
   "sample_hits": [
     {
@@ -17,7 +17,7 @@
           "id": "006",
           "name": "smokehouse",
           "type": "Wazuh",
-          "version": "v4.14.2"
+          "version": "v4.14.4"
         },
         "host": {
           "os": {
@@ -41,7 +41,7 @@
           "category": "Packages",
           "classification": "-",
           "description": "not defined",
-          "detected_at": "2026-04-30T20:42:28.549Z",
+          "detected_at": "2026-05-04T15:09:37.440Z",
           "enumeration": "CVE",
           "id": "CVE-2025-11468",
           "published_at": "2000-01-01T00:00:00Z",
@@ -69,7 +69,7 @@
         }
       },
       "sort": [
-        1777581748549,
+        1777907377440,
         "006_02fba0a14277826ab3e883e4f02ab0ae63af1ff1_CVE-2025-11468_3278328"
       ]
     },
@@ -82,7 +82,7 @@
           "id": "006",
           "name": "smokehouse",
           "type": "Wazuh",
-          "version": "v4.14.2"
+          "version": "v4.14.4"
         },
         "host": {
           "os": {
@@ -106,7 +106,7 @@
           "category": "Packages",
           "classification": "-",
           "description": "not defined",
-          "detected_at": "2026-04-30T20:42:28.549Z",
+          "detected_at": "2026-05-04T15:09:37.440Z",
           "enumeration": "CVE",
           "id": "CVE-2025-15282",
           "published_at": "2000-01-01T00:00:00Z",
@@ -134,7 +134,7 @@
         }
       },
       "sort": [
-        1777581748549,
+        1777907377440,
         "006_02fba0a14277826ab3e883e4f02ab0ae63af1ff1_CVE-2025-15282_3309365"
       ]
     },
@@ -147,7 +147,7 @@
           "id": "006",
           "name": "smokehouse",
           "type": "Wazuh",
-          "version": "v4.14.2"
+          "version": "v4.14.4"
         },
         "host": {
           "os": {
@@ -171,7 +171,7 @@
           "category": "Packages",
           "classification": "-",
           "description": "not defined",
-          "detected_at": "2026-04-30T20:42:28.549Z",
+          "detected_at": "2026-05-04T15:09:37.440Z",
           "enumeration": "CVE",
           "id": "CVE-2026-0672",
           "published_at": "2000-01-01T00:00:00Z",
@@ -199,7 +199,7 @@
         }
       },
       "sort": [
-        1777581748549,
+        1777907377440,
         "006_02fba0a14277826ab3e883e4f02ab0ae63af1ff1_CVE-2026-0672_3309377"
       ]
     },
@@ -212,7 +212,7 @@
           "id": "006",
           "name": "smokehouse",
           "type": "Wazuh",
-          "version": "v4.14.2"
+          "version": "v4.14.4"
         },
         "host": {
           "os": {
@@ -236,7 +236,7 @@
           "category": "Packages",
           "classification": "-",
           "description": "not defined",
-          "detected_at": "2026-04-30T20:42:28.549Z",
+          "detected_at": "2026-05-04T15:09:37.440Z",
           "enumeration": "CVE",
           "id": "CVE-2026-0865",
           "published_at": "2000-01-01T00:00:00Z",
@@ -264,7 +264,7 @@
         }
       },
       "sort": [
-        1777581748549,
+        1777907377440,
         "006_02fba0a14277826ab3e883e4f02ab0ae63af1ff1_CVE-2026-0865_3282087"
       ]
     },
@@ -277,7 +277,7 @@
           "id": "006",
           "name": "smokehouse",
           "type": "Wazuh",
-          "version": "v4.14.2"
+          "version": "v4.14.4"
         },
         "host": {
           "os": {
@@ -301,7 +301,7 @@
           "category": "Packages",
           "classification": "-",
           "description": "not defined",
-          "detected_at": "2026-04-30T20:42:28.549Z",
+          "detected_at": "2026-05-04T15:09:37.440Z",
           "enumeration": "CVE",
           "id": "CVE-2026-1299",
           "published_at": "2000-01-01T00:00:00Z",
@@ -329,7 +329,7 @@
         }
       },
       "sort": [
-        1777581748549,
+        1777907377440,
         "006_02fba0a14277826ab3e883e4f02ab0ae63af1ff1_CVE-2026-1299_3291845"
       ]
     }

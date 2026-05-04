@@ -1,6 +1,6 @@
 {
   "agent": "regscale",
-  "query_iso": "2026-05-04T13:50Z",
+  "query_iso": "2026-05-04T15:13Z",
   "total": 983,
   "by_severity": {
     "Medium": 446,
@@ -24,7 +24,7 @@
         "host": {
           "os": {
             "full": "Ubuntu 24.04.4 LTS (Noble Numbat)",
-            "kernel": "6.17.0-22-generic",
+            "kernel": "6.17.0-23-generic",
             "name": "Ubuntu",
             "platform": "ubuntu",
             "type": "ubuntu",
@@ -43,7 +43,7 @@
           "category": "Packages",
           "classification": "-",
           "description": "util-linux is a random collection of Linux utilities. Prior to version2.41.4, a TOCTOU (Time-of-Check-Time-of-Use) vulnerability has beenidentified in the SUID binary /usr/bin/mount from util-linux. The mountbinary, when setting up loop devices, validates the source file path withuser privileges via fork() + setuid() + realpath(), but subsequentlyre-canonicalizes and opens it with root privileges (euid=0) withoutverifying that the path has not been replaced between both operations.Neither O_NOFOLLOW, nor inode comparison, nor post-open fstat() areemployed. This allows a local unprivileged user to replace the source filewith a symlink pointing to any root-owned file or device during the racewindow, causing the SUID binary to open and mount it as root. Exploitationrequires an /etc/fstab entry with user,loop options whose path points to adirectory where the attacker has write permission, and that /usr/bin/mounthas the SUID bit set (the default configuration on virtually all Linuxdistributions). The impact is unauthorized read access to root-protectedfiles and block devices, including backup images, disk volumes, and anyfile containing a valid filesystem. This issue has been patched in version2.41.4.",
-          "detected_at": "2026-04-30T20:42:28.834Z",
+          "detected_at": "2026-05-04T15:09:37.802Z",
           "enumeration": "CVE",
           "id": "CVE-2026-27456",
           "published_at": "2026-04-03T22:16:25Z",
@@ -71,7 +71,7 @@
         }
       },
       "sort": [
-        1777581748834,
+        1777907377802,
         "017_2045636134526d04165e55daaac5406f09eab81f_CVE-2026-27456_3307618"
       ]
     },
@@ -89,7 +89,7 @@
         "host": {
           "os": {
             "full": "Ubuntu 24.04.4 LTS (Noble Numbat)",
-            "kernel": "6.17.0-22-generic",
+            "kernel": "6.17.0-23-generic",
             "name": "Ubuntu",
             "platform": "ubuntu",
             "type": "ubuntu",
@@ -108,7 +108,7 @@
           "category": "Packages",
           "classification": "-",
           "description": "shadow-utils (aka shadow) 4.4 through 4.17.0 establishes a default/etc/subuid behavior (e.g., uid 100000 through 165535 for the first useraccount) that can realistically conflict with the uids of users defined onlocally administered networks, potentially leading to account takeover,e.g., by leveraging newuidmap for access to an NFS home directory (orsame-host resources in the case of remote logins by these local networkusers). NOTE: it may also be argued that system administrators should nothave assigned uids, within local networks, that are within the range thatcan occur in /etc/subuid.",
-          "detected_at": "2026-04-30T20:42:28.835Z",
+          "detected_at": "2026-05-04T15:09:37.802Z",
           "enumeration": "CVE",
           "id": "CVE-2024-56433",
           "published_at": "2024-12-26T09:15:07Z",
@@ -136,13 +136,13 @@
         }
       },
       "sort": [
-        1777581748835,
+        1777907377802,
         "017_3a513585259474dd2f479faf5344396da64afca2_CVE-2024-56433_3254251"
       ]
     },
     {
       "_index": "wazuh-states-vulnerabilities-wazuh.manager",
-      "_id": "017_46e6984da5bafcd15656cd153370baea37ce2e52_CVE-2023-42366_3161163",
+      "_id": "017_46e6984da5bafcd15656cd153370baea37ce2e52_CVE-2023-42366_3344458",
       "_score": null,
       "_source": {
         "agent": {
@@ -154,7 +154,7 @@
         "host": {
           "os": {
             "full": "Ubuntu 24.04.4 LTS (Noble Numbat)",
-            "kernel": "6.17.0-22-generic",
+            "kernel": "6.17.0-23-generic",
             "name": "Ubuntu",
             "platform": "ubuntu",
             "type": "ubuntu",
@@ -173,7 +173,7 @@
           "category": "Packages",
           "classification": "-",
           "description": "A heap-buffer-overflow was discovered in BusyBox v.1.36.1 in the next_tokenfunction at awk.c:1159.",
-          "detected_at": "2026-04-30T20:42:28.835Z",
+          "detected_at": "2026-05-04T15:09:37.803Z",
           "enumeration": "CVE",
           "id": "CVE-2023-42366",
           "published_at": "2023-11-27T23:15:07Z",
@@ -201,8 +201,8 @@
         }
       },
       "sort": [
-        1777581748835,
-        "017_46e6984da5bafcd15656cd153370baea37ce2e52_CVE-2023-42366_3161163"
+        1777907377803,
+        "017_46e6984da5bafcd15656cd153370baea37ce2e52_CVE-2023-42366_3344458"
       ]
     },
     {
@@ -219,7 +219,7 @@
         "host": {
           "os": {
             "full": "Ubuntu 24.04.4 LTS (Noble Numbat)",
-            "kernel": "6.17.0-22-generic",
+            "kernel": "6.17.0-23-generic",
             "name": "Ubuntu",
             "platform": "ubuntu",
             "type": "ubuntu",
@@ -238,7 +238,7 @@
           "category": "Packages",
           "classification": "-",
           "description": "In netstat in BusyBox through 1.37.0, local users can launch of networkapplication with an argv[0] containing an ANSI terminal escape sequence,leading to a denial of service (terminal locked up) when netstat is used bya victim.",
-          "detected_at": "2026-04-30T20:42:28.835Z",
+          "detected_at": "2026-05-04T15:09:37.803Z",
           "enumeration": "CVE",
           "id": "CVE-2024-58251",
           "published_at": "2025-04-23T18:16:03Z",
@@ -266,7 +266,7 @@
         }
       },
       "sort": [
-        1777581748835,
+        1777907377803,
         "017_46e6984da5bafcd15656cd153370baea37ce2e52_CVE-2024-58251_3281117"
       ]
     },
@@ -284,7 +284,7 @@
         "host": {
           "os": {
             "full": "Ubuntu 24.04.4 LTS (Noble Numbat)",
-            "kernel": "6.17.0-22-generic",
+            "kernel": "6.17.0-23-generic",
             "name": "Ubuntu",
             "platform": "ubuntu",
             "type": "ubuntu",
@@ -303,7 +303,7 @@
           "category": "Packages",
           "classification": "-",
           "description": "In tar in BusyBox through 1.37.0, a TAR archive can have filenames hiddenfrom a listing through the use of terminal escape sequences.",
-          "detected_at": "2026-04-30T20:42:28.835Z",
+          "detected_at": "2026-05-04T15:09:37.803Z",
           "enumeration": "CVE",
           "id": "CVE-2025-46394",
           "published_at": "2025-04-23T16:15:48Z",
@@ -331,7 +331,7 @@
         }
       },
       "sort": [
-        1777581748835,
+        1777907377803,
         "017_46e6984da5bafcd15656cd153370baea37ce2e52_CVE-2025-46394_3263485"
       ]
     }
