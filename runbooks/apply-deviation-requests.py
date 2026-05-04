@@ -50,6 +50,14 @@ DR_RULES: list[dict[str, Any]] = [
         ],
     },
     {
+        "dr_id": "FP-0003",
+        "state": "False Positive",
+        "rationale": "qemu-guest-agent CVEs are against the QEMU hypervisor source package; the vulnerable hw/* device-emulation code lives in qemu-system-x86_64 (not installed). See deviation-requests/FP-0003-qemu-guest-agent-hypervisor-cves.md.",
+        "packages": [
+            "qemu-guest-agent",
+        ],
+    },
+    {
         "dr_id": "OR-0002",
         "state": "Risk Accepted",
         "rationale": "Admin-only tooling with attacker-input requirement; trusted-input invocation only. See deviation-requests/OR-0002-admin-only-trusted-input-tooling.md.",

@@ -18,29 +18,30 @@
 
 ## Status snapshot
 
-**Open POA&M items this cycle:** 3,796 (down from April baseline of 16,944, -77.6%)
+**Open POA&M items this cycle:** 3,772 (down from April baseline of 16,944, -77.7%)
 
 **Severity distribution (Open only):**
 
 - Critical: 56
-- High: 946
-- Medium: 1,696
-- Low: 1,098
+- High: 944
+- Medium: 1,684
+- Low: 1,088
 
 **DR-adjudicated (excluded from Open sheet, retained in OSCAL JSON):**
 
 - Risk Accepted via OR-0002: 304 items
 - False Positive via FP-0002: 43 items
+- False Positive via FP-0003: 24 items
 
 ## Diff vs April 2026
 
 | Metric | April 2026 | May 2026 (Open) | Change |
 |---|---:|---:|---:|
-| Total POA&M items | 16,944 | 3,796 | -13,148 (-77.6%) |
+| Total POA&M items | 16,944 | 3,772 | -13,172 (-77.7%) |
 | Critical | 72 | 56 | -16 (-22.2%) |
-| High | 3,254 | 946 | -2,308 (-70.9%) |
-| Medium | 7,622 | 1,696 | -5,926 (-77.7%) |
-| Low | 5,996 | 1,098 | -4,898 (-81.7%) |
+| High | 3,254 | 944 | -2,310 (-71.0%) |
+| Medium | 7,622 | 1,684 | -5,938 (-77.9%) |
+| Low | 5,996 | 1,088 | -4,908 (-81.9%) |
 | Unique CVEs | 1,003 | ~950 | ~ -53 |
 
 ### What drove the reduction
@@ -55,22 +56,22 @@
 
 4. **2026-05-04 dead-weight package purge.** Removed `telnet` + `inetutils-telnet` from all four hosts. Both are insecure-by-design CLI clients with zero legitimate use on these systems, and all 8 corresponding Wazuh findings were rated High severity. Real remediation, not risk-acceptance. 4,151 → 4,143 (-8 items).
 
-5. **2026-05-04 DR adjudication pass.** Two deviation requests filed and applied via `runbooks/apply-deviation-requests.py`:
+5. **2026-05-04 DR adjudication pass.** Three deviation requests filed and applied via `runbooks/apply-deviation-requests.py`:
 
    - **FP-0002 -- Package Installed But Code Path Unreachable.** 43 items: amd64-microcode (20, hard-required by HWE meta but never loaded on Intel CPUs), libde265-0 (8, HEVC decoder with no media path on these hosts), libavahi-client3 + libavahi-common3 + libavahi-common-data (15 on brisket, no avahi-daemon installed so the libraries are dead code on disk).
+   - **FP-0003 -- qemu-guest-agent: hypervisor-side CVEs against guest-only binary.** 24 items: every CVE Wazuh flags against `qemu-guest-agent` lives in QEMU hypervisor code paths (`hw/ahci`, `hw/pci`, `hw/ide`, `hw/sd`, virtio devices, megasas, eepro100, 9pfs). The vulnerable binary is `qemu-system-x86_64`, which is NOT installed on dojo or regscale; only the guest-side `qemu-ga` daemon is. Class-based FP with a 90-day review window so future qemu-ga-specific CVEs get evaluated.
    - **OR-0002 -- Admin-Only Trusted-Input Tooling.** 304 items across 11 package classes: binutils suite (160), vim suite (40), busybox (32), libarchive13t64 (16), libelf+libdw (16), libxslt (8), patch (8), tar (8), git+git-man (8), rsync (4), wget (4). All admin-invoked or trusted-input only; no daemon ingests untrusted input.
 
-   The DR-adjudicated 347 items remain in `oscal/mss-poam-2026-05.json` for audit traceability with `poam-state` set to "Risk Accepted" or "False Positive" and `deviation-request` props pointing at the DR ID. The renderer (`pipelines/render/poam.py`) skips them from the "Open POA&M Items" sheet so the active count auditors see in the xlsx is 3,796.
+   The DR-adjudicated 371 items remain in `oscal/mss-poam-2026-05.json` for audit traceability with `poam-state` set to "Risk Accepted" or "False Positive" and `deviation-request` props pointing at the DR ID. The renderer (`pipelines/render/poam.py`) skips them from the "Open POA&M Items" sheet so the active count auditors see in the xlsx is 3,772.
 
 6. **Wazuh agent restart.** All four in-boundary Ubuntu agents and the smokehouse agent restarted to force syscollector re-inventory after each remediation pass. Vulnerability detector re-evaluated within ~5 minutes per cycle; Wazuh state aggregation confirmed 4,143 in-boundary documents before the final conmon pipeline ran.
 
-The reductions are real: every flipped item has documented compensating controls; the 347 DR items will close naturally when Canonical ships fixes (the weekly `runbooks/conmon-apt-sweep.sh` cron picks them up automatically). No findings were closed by marking them in DefectDojo without justification.
+The reductions are real: every flipped item has documented compensating controls; the 371 DR items will close naturally when Canonical ships fixes (the weekly `runbooks/conmon-apt-sweep.sh` cron picks them up automatically). No findings were closed by marking them in DefectDojo without justification.
 
-### Remaining Open findings (3,796)
+### Remaining Open findings (3,772)
 
-- **linux-image-6.17.0-23-generic** (3,556 items, 93.7% of Open): the running HWE kernel on all four in-boundary Ubuntu hosts. Awaiting Canonical 6.17.0-24+ HWE security update plus coordinated reboot. Not actionable until upstream patches land.
+- **linux-image-6.17.0-23-generic** (3,556 items, 94.3% of Open): the running HWE kernel on all four in-boundary Ubuntu hosts. Awaiting Canonical 6.17.0-24+ HWE security update plus coordinated reboot. Not actionable until upstream patches land.
 - **Smokehouse Wazuh agent base image** (29 items): openssl-fips-provider-latest, openssl-libs, python3, python3-libs, curl-minimal, libcurl-minimal, libnghttp2 -- all inside the Wazuh agent 4.14.4 container's Amazon Linux 2 base. Closes when we coordinate a Wazuh manager + agent bump to 4.14.5+.
-- **Qemu-Guest-Agent** (24 items, dojo + regscale): mixed CVEs -- many are QEMU host-side (the hypervisor), not guest agent. Candidates for a future Risk-Adjustment DR.
 - **Misc Ubuntu base packages** (~187 items): libc6 + libc-bin + locales (36), util-linux suite (36), python3.12 + libpython3.12-* (24), polkit suite (12), curl-minimal + libcurl-minimal (12), snapd, dpkg, libicu74, libcairo2, libgcrypt20, login, passwd, libdebuginfod, libnghttp2, libtasn1, expat, gnupg2-minimal, etc. Will close as Canonical ships fixes via the weekly apt sweep.
 
 ### Smokehouse note
@@ -87,6 +88,6 @@ Smokehouse (10.10.20.10) is a QNAP TVS-871 NAS running QTS 5.2.9 build 20260327.
 
 ## Data source
 
-All findings sourced from the Wazuh Indexer vulnerability state index via the `pipelines.sh conmon` pipeline on 2026-05-04. DefectDojo was cleared of all prior engagements before this run to eliminate the import-scan pile-up documented in ADR 0007. After ingest, the deviation-request applier flipped 347 items to FP/RA states. The April submission artifacts in this repo are preserved as the historical baseline; only the May artifacts reflect the post-remediation, post-DR state.
+All findings sourced from the Wazuh Indexer vulnerability state index via the `pipelines.sh conmon` pipeline on 2026-05-04. DefectDojo was cleared of all prior engagements before this run to eliminate the import-scan pile-up documented in ADR 0007. After ingest, the deviation-request applier flipped 371 items to FP/RA states across FP-0002, FP-0003, and OR-0002. The April submission artifacts in this repo are preserved as the historical baseline; only the May artifacts reflect the post-remediation, post-DR state.
 
 DefectDojo and RegScale CE were brought up only for the duration of this run (per the standard "stop between FedRAMP demos" posture) and shut down after the cycle completed and artifacts landed.
