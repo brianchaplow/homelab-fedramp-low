@@ -8,16 +8,40 @@ controls selected by the FedRAMP Low baseline profile.
 ## Status
 
 - **Scaffold** -- generated 2026-04-09 during Plan 2 Task 4
-- **Tier-1 authoring** -- pending (Plan 3)
-- **Tier-2 authoring** -- pending (Plan 3)
-- **OSCAL assembly** -- pending (Plan 3 done-criteria)
+- **Tier-1 authoring** -- complete (Plan 3, 2026-04-10)
+- **Tier-2 authoring** -- complete (Plan 3, 2026-04-10)
+- **OSCAL assembly** -- complete; the assembled SSP lives at `oscal/ssp.json` and is reproducible from these markdown sources via `./pipelines.sh ssp-assemble`
 
-Until Plan 3 lands, every control markdown file under `controls/` is
-a Trestle-generated scaffold containing the control statement text
-from the NIST catalog plus `<REPLACE_ME>` placeholders for the FedRAMP
-organizationally-defined parameters (ODPs). The scaffold is
-schema-complete -- it's ready for authoring -- but the implementation
-prose is empty.
+Every control markdown file under `controls/` carries a Trestle-managed
+frontmatter block plus the implementation prose for that control,
+authored against the live homelab environment. ODP parameters are set
+to FedRAMP Low values (or the homelab's declared values where the
+profile leaves them to the operator).
+
+## A note on NIST catalog text
+
+Each control markdown file contains two kinds of content authored by
+two different parties:
+
+1. **NIST 800-53 Rev 5 catalog text** (the control statement, the
+   discussion/guidance, and the `<h1>` control title). This is
+   reproduced **verbatim** from the official NIST OSCAL catalog by
+   Compliance Trestle's `ssp-generate` scaffold. It must not be edited;
+   editing it would break OSCAL provenance and any divergence from
+   NIST's published text would be a finding in its own right. Verbatim
+   reproduction is also why a small number of these files contain Unicode
+   em dashes that would otherwise violate the project's authored-content
+   style rule (no em dashes in prose authored by the operator). The em
+   dashes are inside NIST's own prose, preserved unchanged.
+2. **Implementation prose** authored by the operator under the
+   `## Implementation [a.]`, `## Implementation [b.]`, etc. sections
+   that Trestle generates per control statement part. This is where the
+   homelab-specific evidence lives, and this is where the project's
+   authoring-voice rules (including the no-em-dashes rule) apply.
+
+The split is also why a reviewer can run `trestle validate` against
+`oscal/ssp.json` and get a clean pass -- the catalog provenance survives
+the generate-author-assemble round trip intact.
 
 ## Structure
 

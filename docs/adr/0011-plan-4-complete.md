@@ -35,11 +35,23 @@ success criteria check from the whole-project design spec Section 1.4.
   - Plus a DR README explaining the three FedRAMP DR categories and the
     DR lifecycle.
 - **May 2026 submission package** at `conmon-submissions/2026-05/`:
-  25,416 POA&M items with **25,414 Open + 1 Completed + 1 Deviated** showing
-  three intentionally staged state transitions (finding id=5 mitigated,
-  finding id=2 risk-accepted via risk_acceptance id=1, finding id=16945
-  synthetic CVE-2026-99999 created). Full diff-vs-April README with honest
-  "staged vs organic" callout.
+  4,131 POA&M items in OSCAL JSON, **3,760 Open in the rendered xlsx**
+  (down from the April baseline of 16,944, a 77.8% reduction), with 371
+  items adjudicated to False Positive or Risk Accepted via FP-0002,
+  FP-0003, and OR-0002 and excluded from the Open sheet but retained in
+  OSCAL JSON for audit traceability. Severity distribution of Open items:
+  56 Critical, 940 High, 1,678 Medium, 1,086 Low. Full diff-vs-April
+  README narrating five remediation passes plus the DR adjudication pass.
+
+  Note on numbers: the May cycle was regenerated on 2026-05-04 after
+  the CVE-2026-31431 "Copy Fail" kernel sweep and Wazuh fleet bump
+  (4.14.2 → 4.14.4 → 4.14.5). An earlier interim render of this cycle
+  produced 4,876 Open items at 71.2% reduction; the current numbers
+  above are post-2026-05-04 work and supersede that interim state. Git
+  history on `main` is the audit trail for both intermediate and final
+  states. Earlier drafts of this ADR referenced a staged-synthetic
+  May package (25,416 items with engineered transitions); that approach
+  was abandoned in favor of the live regeneration described here.
 - **SCR-0001** at `significant-changes/SCR-0001-capitol-signals-boundary.md`:
   Three-alternative analysis (status quo / separate host / expand boundary),
   risk delta table, 5 control extensions (AC-3, SC-7, SC-13, AU-2, CM-8).
@@ -133,8 +145,10 @@ repo alone in under 10 minutes:
 
 7. **What's your OSCAL output?**
    `oscal/` directory: catalog (NIST imported), profile (FedRAMP Rev 5 Low),
-   component-definition.json (7 components), poam.json (25,416 items),
-   ssp.json (156 controls). The assembled SSP passes
+   component-definition.json (7 components), poam.json (4,131 items in
+   the May 2026 cycle, 3,760 Open in the rendered xlsx, 371 DR-adjudicated
+   and excluded from the Open sheet but retained in OSCAL JSON for audit
+   traceability), ssp.json (156 controls). The assembled SSP passes
    `trestle validate -f system-security-plans/mss-ssp/system-security-plan.json`.
    POA&M and component-definition are hand-built by the pipeline and are
    valid OSCAL 1.1.2 JSON.
