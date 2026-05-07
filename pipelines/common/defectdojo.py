@@ -35,12 +35,19 @@ logger = get_logger(__name__)
 
 
 class DefectDojoClient:
+    """Small REST client for DefectDojo, the SLA tracker the pipeline pushes
+    findings to. Covers product lookup, engagement create/list, finding
+    import, and finding list. All calls retry up to three times with
+    exponential backoff on transient network errors.
+    """
+
     def __init__(
         self,
         url: str,
         api_key: str,
         verify: bool = False,
     ) -> None:
+        """Set the DefectDojo base URL, API token, and TLS verification flag."""
         self.url = url.rstrip("/")
         self.api_key = api_key
         self.verify = verify
@@ -73,6 +80,10 @@ class DefectDojoClient:
     def list_engagements(
         self, product_id: int | None = None
     ) -> list[dict[str, Any]]:
+        """Return engagements visible to the API key, optionally filtered to
+        one product id. The pipeline uses this to find an existing monthly
+        ConMon engagement before creating a new one.
+        """
         params = {"product": product_id} if product_id is not None else None
         resp = requests.get(
             f"{self.url}/api/v2/engagements/",
@@ -95,6 +106,11 @@ class DefectDojoClient:
         name: str,
         status: str = "In Progress",
     ) -> dict[str, Any]:
+        """Create a new engagement under the given product. Used to open a
+        fresh ConMon cycle (e.g. "ConMon 2026-05") before pushing findings.
+        Start and end dates are set to today since the pipeline reruns
+        idempotently inside a single calendar day.
+        """
         today = date.today().isoformat()
         resp = requests.post(
             f"{self.url}/api/v2/engagements/",

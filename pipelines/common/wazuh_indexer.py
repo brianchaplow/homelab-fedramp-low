@@ -71,6 +71,10 @@ class WazuhIndexerClient:
         password: str,
         verify: bool = False,
     ) -> None:
+        """Set the OpenSearch base URL, basic-auth credentials, and TLS
+        verification flag. No login round-trip is needed; basic auth is
+        attached to every request.
+        """
         self.url = url.rstrip("/")
         self.user = user
         self.password = password

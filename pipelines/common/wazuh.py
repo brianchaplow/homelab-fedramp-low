@@ -65,6 +65,9 @@ class WazuhClient:
         password: str,
         verify: bool = False,
     ) -> None:
+        """Set the Wazuh API base URL, credentials, and TLS verification flag.
+        The JWT is fetched lazily on first request and cached in memory.
+        """
         self.url = url.rstrip("/")
         self.user = user
         self.password = password

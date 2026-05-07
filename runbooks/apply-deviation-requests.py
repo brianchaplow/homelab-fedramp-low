@@ -112,6 +112,13 @@ TITLE_PKG_RE = re.compile(r" in (\S[\S ]*?)\s*$", re.IGNORECASE)
 
 
 def _extract_package(title: str) -> str | None:
+    """Pull the package name out of a POA&M item title.
+
+    Wazuh-sourced titles look like "CVE-2025-1352 in Libelf1t64". The
+    regex captures the trailing "in <package>" segment so the caller
+    can match it against the DR rule table. Returns None when the
+    title does not follow that shape.
+    """
     m = TITLE_PKG_RE.search(title or "")
     return m.group(1).lower() if m else None
 
@@ -167,6 +174,14 @@ def apply(poam_json_path: Path) -> dict[str, int]:
 
 
 def main() -> int:
+    """Command-line entry point.
+
+    Parses the optional --poam-json path, applies the DR rule table to
+    that file in place, and prints a per-DR summary of how many items
+    were flipped, how many were already in the target state, and how
+    many had no matching package. Returns 0 on success, 1 if the input
+    file is missing.
+    """
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     ap.add_argument(
         "--poam-json",

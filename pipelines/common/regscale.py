@@ -39,6 +39,12 @@ logger = get_logger(__name__)
 
 
 class RegScaleClient:
+    """JWT-based REST client for RegScale CE, the GRC platform the pipeline
+    optionally pushes OSCAL artifacts to. Logs in once with username and
+    password, caches the 24-hour token, and re-authenticates automatically
+    if the server returns a 401.
+    """
+
     def __init__(
         self,
         url: str,
@@ -46,6 +52,9 @@ class RegScaleClient:
         password: str,
         verify: bool = False,
     ) -> None:
+        """Set the RegScale base URL, login credentials, and TLS verification
+        flag. The auth token is fetched lazily on first request.
+        """
         self.url = url.rstrip("/")
         self.username = username
         self.password = password

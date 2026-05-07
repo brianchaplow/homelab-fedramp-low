@@ -94,6 +94,11 @@ class Config(BaseModel):
     @field_validator("wazuh_api_url", "wazuh_indexer_url")
     @classmethod
     def must_start_with_https(cls, v: str) -> str:
+        """Enforce that the Wazuh API and Indexer URLs are HTTPS only.
+
+        DefectDojo and RegScale URLs are intentionally exempt: those
+        services run plain HTTP in the lab per ADRs 0003 and 0004.
+        """
         if not v.startswith("https://"):
             raise ValueError(f"Wazuh endpoints must use https://: {v}")
         return v
