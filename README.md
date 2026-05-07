@@ -53,7 +53,7 @@ POA&M items, no hand-edited xlsx, no theatrical 3PAO reports.
 |---|---|
 | The homelab SOC infrastructure (brisket, haccp, smokehouse, dojo, regscale) | The "MSS" commercial offering |
 | Live Wazuh / ELK / Suricata / Zeek / OpenCTI scans and findings | The CSP business relationship |
-| The 4,876 POA&M items (post-remediation) and the 71% April-to-May reduction | The 3PAO assessment and AO approval |
+| The 3,760 Open POA&M items (post-remediation) and the 77.8% April-to-May reduction | The 3PAO assessment and AO approval |
 | The OSCAL SSP / POA&M / IIW pipeline and its Trestle schema validation | The FedRAMP PMO submission workflow |
 | The shared-tenancy compliance gap and OR-0001 DR (found during SSP authoring) | The annual authorization cycle |
 
@@ -70,7 +70,7 @@ POA&M items, no hand-edited xlsx, no theatrical 3PAO reports.
 | **SCR** | [`significant-changes/`](significant-changes/) | One Significant Change Request demonstrating boundary evolution |
 | **OSCAL package** | [`oscal/`](oscal/) | Catalog, profile, component-def, SSP, POA&M: all schema-validated |
 | **Pipelines** | [`pipelines/`](pipelines/) | Python code that regenerates everything from live homelab data |
-| **ADR chain** | [`docs/adr/`](docs/adr/) | Execution decisions and deviations, 0001 to 0010 |
+| **ADR chain** | [`docs/adr/`](docs/adr/) | Execution decisions and deviations, 0001 to 0011 |
 | **Main writeup** | [`writeups/01-building-fedramp-low-conmon-homelab.md`](writeups/01-building-fedramp-low-conmon-homelab.md) | Build narrative (~3,200 words) |
 | **Paramify comparison** | [`writeups/02-paramify-vs-diy.md`](writeups/02-paramify-vs-diy.md) | Fair comparison post (~1,800 words) |
 
@@ -87,7 +87,7 @@ To regenerate the artifacts from current live state:
 | **DefectDojo 2.57** | Deployed on dojo VM (10.10.30.27) | Vulnerability management + FedRAMP Low SLA clock |
 | **RegScale Community Edition** | Deployed on regscale VM (10.10.30.28) | GRC workflow + SSP / POA&M reporting UI |
 | **Compliance Trestle 4.0.1** | Running on PITBOSS / Git Bash | OSCAL authoring + schema validation |
-| **Wazuh Manager 4.14.4** | Existing homelab SIEM | Scan input for findings (5 in-boundary agents) |
+| **Wazuh Manager 4.14.5** | Existing homelab SIEM | Scan input for findings (5 in-boundary agents) |
 | **OpenSearch** | Existing homelab (Wazuh Indexer) | Vulnerability state index for pipeline ingest |
 | **Paramify** | Comparison post only (commercial SaaS, no self-host path) | See [writeup #2](writeups/02-paramify-vs-diy.md) |
 | **ServiceNow GRC** | Not evaluated | Acknowledged for honesty |
@@ -97,7 +97,7 @@ To regenerate the artifacts from current live state:
 
 If you have **60 seconds**:
 
-1. Scroll up to the boundary diagram.
+1. Scan the host reference table at the top to see what's in vs out of boundary.
 2. Skim the "Quick tour" table above.
 3. Open one POA&M xlsx, one DR markdown, one control markdown (try [`trestle-workspace/mss-ssp/si/si-4.md`](trestle-workspace/mss-ssp/si/si-4.md), the writeup hero control).
 
@@ -112,7 +112,7 @@ If you're a **technical reviewer**:
 1. Clone the repo, set up your `~/.env` per [`.env.example`](.env.example).
 2. Run `./pipelines.sh install && ./pipelines.sh test` (136 tests pass).
 3. Run `./pipelines.sh conmon` to regenerate the OSCAL output from live homelab data.
-4. Walk the [ADR chain](docs/adr/) (0001 to 0010) to see every execution decision and deviation from the original plan.
+4. Walk the [ADR chain](docs/adr/) (0001 to 0011) to see every execution decision and deviation from the original plan.
 
 ## Writeups
 
