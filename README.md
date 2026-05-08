@@ -47,6 +47,46 @@ The "system" is a notional **Managed SOC Service (MSS)** built on top of my real
 homelab SOC infrastructure. Everything is generated from live data: no fabricated
 POA&M items, no hand-edited xlsx, no theatrical 3PAO reports.
 
+## Scope and framework mapping
+
+The repo title says "FedRAMP Low" because the **artifacts** in it (OSCAL SSP, POA&M, IIW, Deviation Requests, Significant Change Request, monthly ConMon cycles) are modeled on the FedRAMP Low Rev 5 baseline and use the official FedRAMP Rev 5 xlsx templates. That framing is accurate for what the artifacts are. It would not be accurate to call this a FedRAMP authorization, and the project does not.
+
+FedRAMP is statutorily limited to **cloud computing products and services offered to federal agencies** under the FedRAMP Authorization Act of 2022 (44 USC 3607) and OMB Memorandum M-24-15 (July 2024). The legal definition of "cloud" comes from NIST SP 800-145, which requires five essential characteristics: on-demand self-service, broad network access, resource pooling, rapid elasticity, and measured service. A single-operator homelab fails all five. The framework that legally fits an on-prem mission system is **NIST RMF (SP 800-37 Rev 2)**, implemented for DoD via **DoDI 8510.01**. RMF and FedRAMP share the NIST 800-53 Rev 5 control catalog, the OSCAL data model, the POA&M concept, and the continuous monitoring cycle. The pipeline in this repo would generate the same artifacts for either.
+
+| Artifact or mechanic | FedRAMP cloud package | RMF on-prem package (DoDI 8510.01) | DISA SRG cloud package |
+|---|---|---|---|
+| OSCAL SSP, POA&M, component-def | Required by RFC-0024 (deadline 2026-09-30 initial, 2027-09-30 final) | Valid format under DoD Cybersecurity Reciprocity Playbook (Jan 2024) | Required (FedRAMP-derived) |
+| Monthly ConMon cycle | Required | Required | Required (with DoD overlays) |
+| Three-category DR taxonomy (RA, FP, OR) | Standard FedRAMP language | Different DoD-specific terminology, same semantics | Standard |
+| 156-control NIST 800-53 Rev 5 Low | Direct mapping | Same catalog (different baseline at IL2 and above) | IL2 ≈ FedRAMP Moderate; IL4 = Moderate + DoD overlays; IL5/IL6 = High + DoD overlays |
+| Customer Responsibility Matrix (CRM, SSP Appendix J) | Required for SaaS / PaaS | Not applicable (no tenants) | Required for the CSP side, not for the DoD tenant side |
+| 3PAO assessment | Required for FedRAMP authorization | Different for DoD (component AO, RMF assessor) | Required, FedRAMP-recognized 3PAO |
+| Authorized IaaS reference + control inheritance | Required for SaaS / PaaS | Not applicable | Required (IaaS authorized at FedRAMP High for IL5 and above) |
+
+The project's **operational mechanics** (POA&M state machine, DR adjudication, OSCAL build, monthly cycle, automated evidence) are directly relevant to all three target programs. The project's **scope-bound omissions** (cloud service model, deployment model, CRM, IaaS inheritance, FIPS-validated modules, 3PAO assessment, agency AO) are documented honestly throughout this README and called out individually in the "[What this project does not claim](#what-this-project-does-not-claim)" section near the bottom.
+
+### Service model, deployment model, multi-tenancy
+
+| Field | Value | Why |
+|---|---|---|
+| Cloud Service Model | N/A on-prem | Not a cloud service. If the notional MSS were a real SaaS, the model would be SaaS on top of an authorized IaaS layer (AWS GovCloud or Azure Government would be the typical choice). |
+| Cloud Deployment Model | N/A on-prem | Single-operator homelab. Would be Public Cloud in a real MSS deployment, or possibly Community Cloud if scoped to a federal sector. |
+| Multi-tenancy | Single-operator | The shared-tenancy gap documented in [OR-0001](deviation-requests/OR-0001-shared-tenancy.md) is between MSS workloads and unrelated operator workloads on the same hardware, not between distinct customer tenants. |
+| Customer Responsibility Matrix | None in production form | A demonstrative stub for 10 sample controls (PE, MA, SC, AC, IA, AU families) showing how a real CRM would split CSP-implemented / customer-implemented / inherited-from-IaaS responsibilities is at [`docs/crm-example.md`](docs/crm-example.md). |
+
+### DoD-specific framing for a DISA audience
+
+For a reader coming from DISA rather than the FedRAMP PMO, the more direct framework mappings are:
+
+- **DISA Cloud Computing SRG IL ladder** (IL2 / IL4 / IL5 / IL6) is layered on top of FedRAMP authorizations. IL4 = FedRAMP Moderate + DoD CUI overlays; IL5 / IL6 = FedRAMP High + DoD-specific controls. Building FedRAMP-shaped artifacts is upstream of DISA cloud authorization, not orthogonal to it.
+- **DoDI 8510.01 (RMF for DoD IT)** is the framework that fits an on-prem demonstration like this one cleanly. Same control catalog, same authorization steps, OSCAL formats valid, no cloud-specific artifacts required.
+- **cATO (Continuous ATO)** is the DoD strategic direction: dashboards, automated evidence, real-time indicators replacing paper packages. The pipeline in this repo (monthly OSCAL output, automated POA&M generation, idempotent DR application via [`runbooks/apply-deviation-requests.py`](runbooks/apply-deviation-requests.py), schema validation at every stage) is exactly the mechanics cATO requires.
+- **DoD Cybersecurity Reciprocity Playbook (January 2024)** mandates components accept each other's authorizations without re-validation. Reciprocity-by-OSCAL is the future state RFC-0024 and FedRAMP 20x are enabling.
+
+### FIPS cryptographic posture
+
+The in-boundary Ubuntu hosts run **stock Ubuntu cryptography**, not FIPS-validated modules. This gap is documented inside the SSP under SC-13 ([`trestle-workspace/mss-ssp/sc/sc-13.md`](trestle-workspace/mss-ssp/sc/sc-13.md)): all algorithms in active use (AES, SHA-256, ECDHE, ChaCha20-Poly1305, Ed25519) are NIST-approved at the algorithm level, but the underlying OpenSSL and kernel cryptographic modules are not CMVP-validated. A real FedRAMP or DoD IL package would require Ubuntu Pro FIPS or an equivalent FIPS-enabled build with cited NIST CMVP certificate numbers; that hardening path is deferred as a future phase.
+
 ## What's real, what's notional
 
 | Real | Notional |
@@ -163,6 +203,19 @@ the final output.
 xlsx and markdown are projections. Every artifact is generated, never hand-edited.
 Re-running `./pipelines.sh conmon` regenerates the entire monthly cycle from the
 current state of DefectDojo and the Wazuh Indexer.
+
+## What this project does not claim
+
+To pre-empt the obvious objections from a careful reviewer:
+
+- **Not 3PAO assessed.** No FedRAMP-recognized Third-Party Assessment Organization has reviewed any of these artifacts. Self-assessment is explicitly not equivalent to a 3PAO assessment under FedRAMP.
+- **No agency Authorizing Official approval.** No federal agency AO has signed off on the SSP, POA&M, or any other artifact. The "Approved by: AO (notional)" lines in the DR markdowns are notional and labeled as such.
+- **Not on the FedRAMP Marketplace.** The notional MSS is not, and is not on a path to be, listed on the FedRAMP Marketplace. The Marketplace listing is the public artifact of an actual FedRAMP authorization, which this project does not have and does not claim.
+- **No Customer Responsibility Matrix in the live SSP.** Real FedRAMP SaaS / PaaS packages require Appendix J (the CRM) detailing which controls the CSP implements versus the customer versus inherited from authorized IaaS. The single-operator homelab has no customer to split with. A demonstrative CRM stub for 10 sample controls lives at [`docs/crm-example.md`](docs/crm-example.md).
+- **No FIPS module attestation.** Stock Ubuntu cryptography, no CMVP certificate numbers, no FIPS-validated build. Documented honestly under SC-13 and in the [Scope and framework mapping](#scope-and-framework-mapping) section above.
+- **Not a cloud service.** FedRAMP is statutorily limited to cloud computing under 44 USC 3607 and OMB M-24-15. A homelab fails NIST SP 800-145's five essential cloud characteristics. The framework that legally fits a single-operator on-prem mission system is NIST RMF (DoDI 8510.01 for DoD).
+
+These omissions are the boundary between "this project demonstrates FedRAMP-shaped ConMon mechanics on a real, operating environment" and "this project is a FedRAMP authorization." The repo is honest about where that boundary sits.
 
 ## About the author
 
