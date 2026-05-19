@@ -131,16 +131,16 @@ The single most-impressive artifact in this entire portfolio is the **April -> M
 - **3,760 Open POA&M items** (down from 16,944 in April, a **77.8% reduction**)
 - 56 Critical, 940 High, 1,678 Medium, 1,086 Low
 - ~945 unique CVEs (the residual is dominated by `linux-image-6.17.0-23-generic`, awaiting a Canonical 6.17.0-24+ HWE security update)
-- Six Deviation Requests in force this cycle (RA-0001 Grafana exposure, FP-0001 Ubuntu ESM tracker lag, FP-0002 package-installed-but-unreachable, FP-0003 qemu-guest-agent hypervisor CVEs, OR-0001 shared tenancy on brisket, OR-0002 admin-only trusted-input tooling) — 371 items adjudicated and excluded from the Open sheet, retained in OSCAL JSON for audit traceability
+- Six Deviation Requests in force this cycle (RA-0001 Grafana exposure, FP-0001 Ubuntu ESM tracker lag, FP-0002 package-installed-but-unreachable, FP-0003 qemu-guest-agent hypervisor CVEs, OR-0001 shared tenancy on brisket, OR-0002 admin-only trusted-input tooling); 371 items adjudicated and excluded from the Open sheet, retained in OSCAL JSON for audit traceability
 - One Significant Change Request submitted: SCR-0001 proposing to add Capitol Signals API to the authorization boundary
 
-The reduction is real remediation, not dashboard clicks. The May package landed across two work waves with five remediation passes plus a DR adjudication pass — full breakdown is in [`conmon-submissions/2026-05/README.md`](../conmon-submissions/2026-05/README.md). The three highest-leverage moves:
+The reduction is real remediation, not dashboard clicks. The May package landed across two work waves with five remediation passes plus a DR adjudication pass; full breakdown is in [`conmon-submissions/2026-05/README.md`](../conmon-submissions/2026-05/README.md). The three highest-leverage moves:
 
 1. **2026-04-12: Removed stale kernel packages** from all four in-boundary Ubuntu hosts. Brisket had `linux-image-6.8.0-107-generic` (stale; the HWE kernel was the active boot path). Haccp, dojo, and regscale each had `linux-image-6.8.0-106-generic` (stale; running kernel is `6.8.0-107`). These packages were never booted but carried thousands of CVE findings each. 16,944 → 4,876.
 2. **2026-05-04: HWE kernel sweep during the CVE-2026-31431 "Copy Fail" Linux LPE patch.** All four hosts upgraded to `linux-image-6.17.0-23-generic`. Predecessor 6.17.0-22 + 6.17.0-20 kernels and orphaned NVIDIA modules were purged via `apt-get autoremove`. 4,876 → 4,195.
 3. **2026-05-04: Wazuh fleet bump 4.14.2 → 4.14.4 → 4.14.5.** Container base-image refreshes closed openssl/python/curl/libxml2 CVEs inside the smokehouse Wazuh agent. All 15 fleet agents bumped via Wazuh manager API `PUT /agents/upgrade?agents_list=...` (single call, Linux + Windows, no WinRM/MSI/SSH). 4,195 → 4,131.
 
-After ingest, `runbooks/apply-deviation-requests.py` flipped 371 items to FP/RA states across the FP-0002, FP-0003, and OR-0002 deviation requests (43 + 24 + 304). The renderer respects `poam-state` and excludes those from the Open sheet — that's the 4,131 → 3,760 step.
+After ingest, `runbooks/apply-deviation-requests.py` flipped 371 items to FP/RA states across the FP-0002, FP-0003, and OR-0002 deviation requests (43 + 24 + 304). The renderer respects `poam-state` and excludes those from the Open sheet; that's the 4,131 → 3,760 step.
 
 The Wazuh Indexer confirmed: 0 findings for the purged kernel packages post-remediation. That is the verify-before-close discipline in action: the **next scan** shows the finding absent, not the operator marking it fixed in a dashboard.
 
@@ -193,7 +193,7 @@ I want to be transparent about the boundary between real homelab operation and n
 | The shared-tenancy compliance gap and OR-0001 DR (found during SSP authoring) | The annual authorization cycle |
 | The April-to-May remediation (stale kernels removed, packages patched, re-scanned) | The Managed SOC Service commercial customer relationship |
 
-The April-to-May reduction is real. Stale kernel packages were removed from every in-boundary Ubuntu host, non-kernel packages were patched, the Wazuh fleet was bumped to 4.14.5 to refresh container base-image packages, and the pipeline re-ran against the post-remediation Wazuh Indexer state. The 77.8% reduction comes from packages that are genuinely no longer installed (verified by the absence of findings in the Wazuh Indexer) plus 371 items adjudicated through the FP-0002, FP-0003, and OR-0002 deviation requests with documented compensating controls — not by marking items closed in DefectDojo.
+The April-to-May reduction is real. Stale kernel packages were removed from every in-boundary Ubuntu host, non-kernel packages were patched, the Wazuh fleet was bumped to 4.14.5 to refresh container base-image packages, and the pipeline re-ran against the post-remediation Wazuh Indexer state. The 77.8% reduction comes from packages that are genuinely no longer installed (verified by the absence of findings in the Wazuh Indexer) plus 371 items adjudicated through the FP-0002, FP-0003, and OR-0002 deviation requests with documented compensating controls, not by marking items closed in DefectDojo.
 
 Three things I learned that I'm fairly sure I couldn't have learned by reading alone:
 
