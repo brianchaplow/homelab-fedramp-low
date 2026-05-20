@@ -76,7 +76,7 @@ Adding a new DR: write the markdown, add an entry to `DR_RULES` in `runbooks/app
 
 - **No em dashes** in any authored content (Brian's voice rule). Use commas, colons, semicolons, parentheses, sentence breaks. Applies to DRs, READMEs, writeups.
 - **No Co-Authored-By or Claude attribution** in commit messages.
-- **No secrets in tracked files**. `.env` lives at `/c/Projects/.env` (or `~/.env` on POSIX). Never committed.
+- **No secrets in tracked files**. `.env` lives at `/c/Projects/.env` (or `~/.env` on POSIX). Never committed. `gitleaks` pre-commit hook (v8.30.1) + GitHub Actions workflow at `.github/workflows/gitleaks.yml` enforce this mechanically since 2026-05-20; custom rules at `.gitleaks.toml` block Tailscale CGNAT IPs and multi-line OpenSSH PEM blocks, with a targeted allowlist for FedRAMP SA-9/CA-3 evidence paths where Tailscale IPs are legitimate documentation (`inventory/overlay.yaml`, `oscal/*.json`, `docs/plan-3/evidence-catalog/`, `trestle-workspace/`).
 - **Templates use ASCII hyphens** in product names per ADR 0006 amendment 2026-04-09 (the Plan 1 seed script created products with `-`, not em dashes).
 - **GRC tools (DefectDojo, RegScale) stop between demos.** Bring up only for the duration of a cycle. Standard sequence: spinup -> wait for readiness -> clear prior engagements -> run conmon -> apply DRs -> render -> copy artifacts -> commit -> shutdown. See `~/.claude/projects/C--Projects/memory/fedramp_conmon_flow.md` for the full checklist.
 
