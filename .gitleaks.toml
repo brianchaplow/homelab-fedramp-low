@@ -1,0 +1,47 @@
+# gitleaks config for homelab-fedramp-low
+#
+# Extends the upstream default ruleset with two custom rules added 2026-05-19
+# in response to the workspace audit.
+#
+# Special handling for FedRAMP evidence paths: this repo legitimately
+# references Tailscale CGNAT addresses as SA-9 (External System Services)
+# and CA-3 (Information Exchange) evidence. These addresses are admin-tier
+# behind Tailscale auth, not credentials. The targeted allowlist below
+# permits them ONLY in the documented evidence paths.
+
+[extend]
+useDefault = true
+
+[[rules]]
+id = "tailscale-cgnat-ip"
+description = "Tailscale CGNAT IP literal (100.64.0.0/10) -- admin-tier; permitted only in FedRAMP evidence paths"
+regex = '''\b100\.(6[4-9]|[7-9][0-9]|1[01][0-9]|12[0-7])\.\d+\.\d+\b'''
+tags = ["tailscale", "privacy"]
+
+[[rules]]
+id = "multiline-openssh-private-key"
+description = "Multi-line OpenSSH private key block (closes the 2026-04-11 single-line-scrub blind spot)"
+regex = '''-----BEGIN OPENSSH PRIVATE KEY-----[\s\S]*?-----END OPENSSH PRIVATE KEY-----'''
+tags = ["ssh", "key"]
+
+# Targeted allowlist: Tailscale IPs are legitimate FedRAMP evidence in
+# these specific paths. The general rule still applies everywhere else
+# (e.g. writeups/, runbooks/, pipelines/, tests/).
+
+[[allowlists]]
+description = "FedRAMP SA-9 / CA-3 evidence catalog and SSP control narratives need explicit Tailscale IPs"
+targetRules = ["tailscale-cgnat-ip"]
+paths = [
+    '''inventory/overlay\.yaml$''',
+    '''oscal/.*\.json$''',
+    '''docs/plan-3/evidence-catalog/.*\.md$''',
+    '''trestle-workspace/.*''',
+]
+
+[[allowlists]]
+description = "Self-reference for gitleaks config + pre-commit config"
+paths = [
+    '''\.gitleaks\.toml$''',
+    '''\.pre-commit-config\.yaml$''',
+    '''\.github/workflows/gitleaks\.yml$''',
+]
