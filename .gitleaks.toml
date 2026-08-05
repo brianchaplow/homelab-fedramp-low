@@ -24,9 +24,30 @@ description = "Multi-line OpenSSH private key block (closes the 2026-04-11 singl
 regex = '''-----BEGIN OPENSSH PRIVATE KEY-----[\s\S]*?-----END OPENSSH PRIVATE KEY-----'''
 tags = ["ssh", "key"]
 
+# Added 2026-08-05. Trigger: an outside account forked this repo and the two
+# public SOC repos, prompting a full re-scan. MAC addresses were covered by NO
+# rule in any of the three configs, and that gap let haccp's real span0 NIC MAC
+# (Realtek RTL8156B) sit public here in four files. It was scrubbed from HEAD the
+# same day; the adapter model alone carries the MP-7 evidentiary point.
+[[rules]]
+id = "mac-address"
+description = "MAC address literal -- host/NIC hardware fingerprint; do not commit to public repos"
+regex = '''\b(?:[0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2}\b'''
+tags = ["network", "privacy"]
+
 # Targeted allowlist: Tailscale IPs are legitimate FedRAMP evidence in
 # these specific paths. The general rule still applies everywhere else
 # (e.g. writeups/, runbooks/, pipelines/, tests/).
+#
+# RE-REVIEWED 2026-08-05 and deliberately KEPT. An outside account forked this
+# repo, which prompted a re-examination of this exception. The original reasoning
+# holds: 100.64.0.0/10 is CGNAT, not internet-routable, and reaching any of these
+# addresses requires prior enrollment in the tailnet, so publication does not
+# create a reachable attack surface. Against that, a 3PAO reading AC-17, CA-3,
+# SA-9 and MA-4 expects concrete addressing rather than placeholders, which is
+# the entire point of the artifact. Scrubbing now would also be theatre: the
+# addresses are already in a public fork and cannot be retracted. Revisit only if
+# the tailnet ACL model changes or an address becomes reachable without auth.
 
 [[allowlists]]
 description = "FedRAMP SA-9 / CA-3 evidence catalog and SSP control narratives need explicit Tailscale IPs"
@@ -36,6 +57,29 @@ paths = [
     '''oscal/.*\.json$''',
     '''docs/plan-3/evidence-catalog/.*\.md$''',
     '''trestle-workspace/.*''',
+]
+
+# Targeted allowlist for the mac-address rule. Scoped by VALUE, not by path, so
+# the rule keeps protecting every file: only these three specific literals are
+# exempt, and a new MAC anywhere still trips.
+[[allowlists]]
+description = "MACs that are not in-boundary host hardware identifiers"
+targetRules = ["mac-address"]
+regexes = [
+    # Proxmox/QEMU locally-assigned VM MACs, pinned on purpose so cloud-init stays
+    # stable across edits (deploy/proxmox/, runbooks/restore-from-pbs.md). BC:24:11
+    # is Proxmox's own OUI -- these are synthetic, not hardware fingerprints.
+    '''(?i)\bBC:24:11(?::[0-9A-Fa-f]{2}){3}\b''',
+    # Appears verbatim inside upstream NVD CVE description text carried in the
+    # POA&M OSCAL JSON. Not our infrastructure, not ours to edit.
+    '''\b00:00:00:00:00:20\b''',
+    # HISTORICAL ONLY -- haccp span0 NIC MAC, scrubbed from HEAD 2026-08-05 but
+    # still present in 4 commits (625fc06, 39710a1, 781b096, 14c5972). CI runs
+    # gitleaks-action with fetch-depth: 0, so without this entry the full-history
+    # scan would go red forever. A history rewrite would not help: the repo is
+    # already forked publicly, so the literal cannot be retracted. Treat this
+    # value as burned; the rule still blocks it reappearing anywhere new.
+    '''\b6c:1f:f7:5f:6a:88\b''',
 ]
 
 [[allowlists]]
