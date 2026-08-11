@@ -3,7 +3,7 @@
 This is a public portfolio project demonstrating FedRAMP Low Continuous Monitoring (ConMon) on a homelab. Real artifacts (POA&Ms, OSCAL JSON, deviation requests, SSP, IIW), real Wazuh-sourced findings, real remediation passes. Designed to look familiar to a 3PAO or FedRAMP TRC.
 
 **Public repo:** github.com/brianchaplow/homelab-fedramp-low
-**Status:** Plans 1-4 complete (`plan-4-complete` tag, ADR 0011). Active monthly ConMon cycles run in-place on this tree.
+**Status:** Plans 1-4 complete (`plan-4-complete` tag, ADR 0011). ConMon publication is paused as of 2026-08-10 while lifecycle, asset-attribution, evidence-retention, and package-completeness defects are remediated. The last completed submission is May 2026.
 
 ## Most-used commands
 
@@ -31,7 +31,7 @@ This is a public portfolio project demonstrating FedRAMP Low Continuous Monitori
 | `conmon-submissions/YYYY-MM/` | Per-cycle submission package: POAM xlsx, IIW xlsx, OSCAL JSON, scan-evidence/, README, POAM-SUMMARY. April + May 2026 are the live cycles as of 2026-05. |
 | `deviation-requests/` | DR markdowns (FedRAMP Low DR Guide format). Three categories: RA (Risk Adjustment), FP (False Positive), OR (Operational Requirement). Apply via `runbooks/apply-deviation-requests.py`. |
 | `significant-changes/` | SCR documents (boundary expansion, etc.). |
-| `runbooks/` | Operational scripts + procedure docs. Includes `conmon-apt-sweep.sh` (weekly cron deployed to in-boundary hosts), `apply-deviation-requests.py` (idempotent OSCAL state-flipper), `monthly-conmon.md` (procedure), `cert-trust.md`, `regscale-manual-import.md`, `restore-from-pbs.md`. |
+| `runbooks/` | Operational scripts + procedure docs. Includes the repository-only PATCH-01 core-node apt-sweep design and tests, `apply-deviation-requests.py` (idempotent OSCAL state-flipper), `monthly-conmon.md` (procedure), `cert-trust.md`, `regscale-manual-import.md`, `restore-from-pbs.md`. |
 | `ssp/` + `trestle-workspace/` | OSCAL SSP source: control markdown files (156 controls × 18 families) + Trestle workspace metadata. `pipelines.sh ssp-assemble` regenerates the SSP JSON. |
 | `templates/` | FedRAMP Rev 5 POA&M + IIW xlsx templates. Renderer populates these at the per-template-defined header rows. |
 | `evidence/` | Operator screenshots, config exports, attestations referenced by DRs and SSP. |
@@ -99,9 +99,19 @@ Bumping all agents to match: `PUT /agents/upgrade?agents_list=...` via Wazuh API
 
 ## Weekly apt sweep
 
-`runbooks/conmon-apt-sweep.sh` is deployed to all four in-boundary Ubuntu hosts at `/usr/local/sbin/`, with a cron entry at `/etc/cron.d/conmon-apt-sweep` (Sunday 0400 host-local) and logrotate config at `/etc/logrotate.d/conmon-apt-sweep`. Runs `apt-get update && apt-get upgrade && systemctl restart wazuh-agent`. Skips held packages (Docker / containerd) -- those follow a slower cadence.
+The tracked PATCH-01 revision of `runbooks/conmon-apt-sweep.sh` is scoped to
+`haccp` and `brisket`. It fails closed on missing Docker/containerd holds,
+unsafe APT simulation, low disk, lock contention, runtime version/PID change,
+and host-specific PRE/POST health failures. It publishes
+`/var/lib/conmon-apt-sweep/last-clean-completion` only after a clean run and
+does not issue service restarts or a reboot.
 
-Verify each Monday morning: `tail -3 /var/log/conmon-apt-sweep.log` should end with `=== <ts> conmon-apt-sweep END on <host> ===`.
+This is source state, not live deployment evidence. The proposed canary is
+haccp Sunday 04:00, followed by brisket Monday 04:00 after a clean observation
+window. Do not install the inert legacy `conmon-apt-sweep.cron`; follow
+`runbooks/conmon-apt-sweep.md` and use the matching host-specific cron file.
+Older dojo/regscale deployments need separate workload gates before adopting
+this revision.
 
 ## Test invariants
 

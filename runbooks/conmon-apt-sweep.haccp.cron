@@ -1,0 +1,4 @@
+# /etc/cron.d/conmon-apt-sweep on haccp only.
+# PATCH-01 canary: Sunday 04:00 host-local.
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+0 4 * * 0 root /usr/local/sbin/conmon-apt-sweep.sh --expected-host haccp

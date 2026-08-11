@@ -1,0 +1,4 @@
+# /etc/cron.d/conmon-apt-sweep on brisket only.
+# PATCH-01 promoted node: Monday 04:00 host-local, 24 hours after haccp.
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+0 4 * * 1 root /usr/local/sbin/conmon-apt-sweep.sh --expected-host brisket

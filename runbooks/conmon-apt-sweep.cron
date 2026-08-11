@@ -1,5 +1,10 @@
-# /etc/cron.d/conmon-apt-sweep
-# Weekly apt sweep for FedRAMP Low ConMon -- picks up noble-security
-# patches between manual ConMon cycles. Sunday 0400 host-local.
-PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-0 4 * * 0 root /usr/local/sbin/conmon-apt-sweep.sh
+# Legacy deployment filename retained as a fail-closed warning.
+#
+# Do not install this file in /etc/cron.d. PATCH-01 replaces the former
+# simultaneous Sunday 04:00 schedule with host-specific canary files:
+#
+#   conmon-apt-sweep.haccp.cron   -> haccp, Sunday 04:00 host-local
+#   conmon-apt-sweep.brisket.cron -> brisket, Monday 04:00 host-local
+#
+# Follow conmon-apt-sweep.md and promote the brisket schedule only after a
+# clean haccp canary run and observation window.

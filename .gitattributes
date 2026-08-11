@@ -1,0 +1,3 @@
+/runbooks/conmon-apt-sweep.sh text eol=lf
+/runbooks/test-conmon-apt-sweep.sh text eol=lf
+/runbooks/conmon-apt-sweep*.cron text eol=lf
