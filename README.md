@@ -5,6 +5,12 @@
 > OSCAL-native, aligned with FedRAMP RFC-0024's September 30, 2026 machine-readable
 > authorization package mandate.
 
+> **Operational status (2026-08-10):** Monthly ConMon publication is paused
+> while deviation lifecycle, affected-asset, evidence-retention, and package
+> completeness defects are remediated. The last completed submission is May
+> 2026. April and May artifacts are historical demonstrations, not evidence of
+> a current reporting cycle.
+
 ## Host reference
 
 The homelab uses descriptive hostnames. This table maps them for readers encountering them for the first time.
