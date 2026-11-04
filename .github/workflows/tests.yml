@@ -1,0 +1,24 @@
+name: tests
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  pytest:
+    name: pytest + apt-sweep harness
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install
+        run: python -m pip install -e '.[dev]'
+      - name: pytest (offline; no GRC tools or Wazuh reachable from CI)
+        run: python -m pytest -q tests
+      - name: conmon-apt-sweep regression harness (all commands stubbed)
+        run: bash runbooks/test-conmon-apt-sweep.sh

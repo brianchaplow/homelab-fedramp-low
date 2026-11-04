@@ -156,7 +156,7 @@ If you have **10 minutes**:
 If you're a **technical reviewer**:
 
 1. Clone the repo, set up your `~/.env` per [`.env.example`](.env.example).
-2. Run `./pipelines.sh install && ./pipelines.sh test` (136 tests pass).
+2. Run `./pipelines.sh install && ./pipelines.sh test` (164 tests pass as of 2026-11).
 3. Run `./pipelines.sh conmon` to regenerate the OSCAL output from live homelab data.
 4. Walk the [ADR chain](docs/adr/) (0001 to 0011) to see every execution decision and deviation from the original plan.
 

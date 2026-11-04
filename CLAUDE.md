@@ -11,7 +11,7 @@ This is a public portfolio project demonstrating FedRAMP Low Continuous Monitori
 # from repo root
 ./pipelines.sh smoke          # DefectDojo + RegScale reachability check
 ./pipelines.sh conmon         # full monthly cycle (ingest -> oscal -> render)
-./pipelines.sh test           # 136-test pytest suite (must stay green)
+./pipelines.sh test           # 164-test pytest suite (must stay green)
 ./pipelines.sh ssp-assemble   # rebuild OSCAL SSP from trestle-workspace markdown
 .venv/Scripts/python.exe runbooks/apply-deviation-requests.py --poam-json oscal/poam.json
 .venv/Scripts/python.exe -m pytest tests/        # tests directly
@@ -37,7 +37,7 @@ This is a public portfolio project demonstrating FedRAMP Low Continuous Monitori
 | `evidence/` | Operator screenshots, config exports, attestations referenced by DRs and SSP. |
 | `writeups/` | Public-facing portfolio narratives. Writeup #1 is the main build narrative (3229 words); Writeup #2 is the Paramify comparison (1805 words). |
 | `docs/` | ADRs (`docs/adr/0001` through `0011`), Plan-3 evidence catalog, Plan-2/3/4 design specs, Mermaid diagrams (boundary, pipeline). |
-| `tests/` | pytest suite. Smoke + unit + integration. 136 tests as of 2026-05-04. |
+| `tests/` | pytest suite. Smoke + unit + integration. 164 tests as of 2026-11-04 (136 as of 2026-05-04). CI runs them via `.github/workflows/tests.yml`. |
 
 ## Five in-boundary hosts (FedRAMP system inventory)
 
@@ -115,7 +115,7 @@ this revision.
 
 ## Test invariants
 
-- 136 pytest tests must pass before any cycle commit.
+- All pytest tests (164 as of 2026-11-04) must pass before any cycle commit.
 - `./pipelines.sh ssp-assemble` must succeed (no Trestle YAML errors).
 - All OSCAL artifacts schema-valid (SSP 1.2.1, component-def 1.1.2, POA&M 1.1.2).
 - POAM xlsx rendering: `Open POA&M Items` sheet starts at row 8 (header rows 1-7 are template metadata + guidance + example).
