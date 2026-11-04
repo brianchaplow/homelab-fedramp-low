@@ -88,6 +88,12 @@ Accept the shared-tenancy risk under this Operational Requirement DR.
 Document the compensating controls in SSP SC-32 (Information System
 Partitioning) and AC-4 (Information Flow Enforcement).
 
+Note (2026-11 consistency sweep): SC-32 and AC-4 are not in the FedRAMP
+Rev 5 Low baseline, so the Low SSP has no implementation statements for
+them. Within the assembled SSP, the isolation mechanisms above are
+described under SC-39 (Process Isolation), with boundary enforcement under
+SC-7 and access enforcement under AC-3.
+
 ## Reviewer approval (notional)
 
 - **Approved by:** AO (notional)
