@@ -20,7 +20,10 @@ import pytest
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 SCRIPT = REPO_ROOT / "docs" / "plan-3" / "verify-family.py"
-VENV_PYTHON = REPO_ROOT / ".venv" / "Scripts" / "python.exe"
+# Run the script with the interpreter running pytest. The original hard-coded
+# Windows venv path (.venv/Scripts/python.exe) made these tests fail on
+# Linux, WSL, and CI.
+VENV_PYTHON = Path(sys.executable)
 
 
 def _write_ssp(tmp_path: Path, irs: list[dict]) -> Path:
